@@ -320,6 +320,20 @@ class ScreenTour
             }
             PlatformChecks();
             ShowMain("FlightData", m.MenuFlightData, 3000);
+            foreach (var tabName in new[] { "tabActions", "tabQuick", "tabStatus", "tabPagePreFlight" })
+            {
+                var name = tabName;
+                Step("screen:FlightData-" + name, () =>
+                {
+                    var tabs = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();
+                    var tab = m.FlightData.Controls.Find(name, true).OfType<TabPage>().FirstOrDefault();
+                    if (tab == null)
+                        return;
+                    tabs.SelectedTab = tab;
+                    Wait(1500);
+                    Screenshot("flightdata-" + name);
+                });
+            }
             ShowMain("FlightPlanner", m.MenuFlightPlanner, 4000);
             ShowMain("InitialSetup", m.MenuInitConfig, 4000);
             ShowMain("ConfigTune", m.MenuConfigTune, 4000);

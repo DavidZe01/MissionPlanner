@@ -54,7 +54,7 @@ total       130/132  (98.5%)
 | Windows Forms UI | .NET Framework | Mono (native arm64) + X11 via XQuartz | tested |
 | GDI+ drawing | gdiplus.dll | libgdiplus built with X11, bundled | tested |
 | Skia rendering | libSkiaSharp.dll | libSkiaSharp.dylib (universal), bundled | tested |
-| OpenGL HUD, 3D map | OpenTK WGL | OpenTK GLX via XQuartz; GDI+ HUD where GLX has no renderer | GDI+ path tested; GLX needs a Mac with a GPU (CI VMs have none) |
+| OpenGL HUD, 3D map | OpenTK WGL | GDI+ HUD (as Windows' "GDI+" option); OpenGL via XQuartz GLX only with `MISSIONPLANNER_OPENGL=1` | GDI+ HUD tested; XQuartz places GLX child windows wrongly on real Macs, so the OpenGL 3D views are off by default |
 | Serial ports | Win32 COM | /dev/cu.* (Mono termios) | enumeration tested |
 | Board detection for firmware install | WMI / SetupAPI | IOKit registry (`ioreg`) | parser tested |
 | TCP/UDP/WebSocket links | managed | same | tested with SITL |
@@ -90,6 +90,8 @@ total       130/132  (98.5%)
 - Windows are drawn by XQuartz (X11), so they look like the Linux build rather
   than native macOS windows. Mono has no 64-bit Cocoa backend for Windows
   Forms.
+- The HUD uses GDI+ drawing (Windows' "GDI+" HUD option) and the OpenGL 3D
+  views are off: XQuartz mirrors the position of OpenGL child windows.
 - X input methods are disabled (`MONO_WINFORMS_XIM_STYLE=disabled`) because
   Mono's XIM code crashes on macOS; plain typing works, dead-key composition
   may not.

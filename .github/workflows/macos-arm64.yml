@@ -117,6 +117,14 @@ jobs:
         run: |
           mkdir managed && tar -xzf MissionPlanner-linux-x86_64.tar.gz -C managed
           MP_SITL_DIR=$PWD/sitl-bin ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos 2>&1 | tee package.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MissionPlanner-macos-${{ runner.arch }}
+          path: |
+            bin/macos/MissionPlanner-macos-*.zip
+            bin/macos/MissionPlanner-macos-*.zip.sha256
+          compression-level: 0
+          retention-days: 30
       - name: Test app without a vehicle
         timeout-minutes: 70
         env:
@@ -135,15 +143,6 @@ jobs:
             [ -f "$f" ] || continue
             xwdtopnm "$f" 2>/dev/null | pnmtopng > "${f%.xwd}.png" 2>/dev/null; rm -f "$f"
           done
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: MissionPlanner-macos-${{ runner.arch }}
-          path: |
-            bin/macos/MissionPlanner-macos-*.zip
-            bin/macos/MissionPlanner-macos-*.zip.sha256
-          compression-level: 0
-          retention-days: 30
       - uses: actions/upload-artifact@v4
         if: always()
         with:

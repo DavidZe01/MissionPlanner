@@ -207,6 +207,15 @@ namespace MissionPlanner.Controls
                 }
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     return true;
+                // XQuartz places the GLX surface of a child window at the wrong place (the
+                // HUD appears vertically mirrored within the main window, leaving a white box),
+                // so on macOS draw with GDI+ unless asked to try OpenGL.
+                if (Environment.GetEnvironmentVariable("MISSIONPLANNER_OPENGL") != "1")
+                {
+                    _openGLUsable = false;
+                    log.Info("HUD OpenGL: off on macOS (set MISSIONPLANNER_OPENGL=1 to try it)");
+                    return false;
+                }
                 try
                 {
                     var glxinfo = "/opt/X11/bin/glxinfo";

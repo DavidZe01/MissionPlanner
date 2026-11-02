@@ -45,9 +45,11 @@ ArduRover, ArduHeli), joysticks (SDL2), Bluetooth LE (SimpleBLE/CoreBluetooth),
 speech (macOS `say`), MAVFTP "Mount as Drive" (WebDAV, mounted with the
 built-in client), OpenGL HUD (XQuartz GLX).
 
-The HUD uses OpenGL through XQuartz when XQuartz reports a usable renderer
-(`/opt/X11/bin/glxinfo -B`), and GDI+ drawing otherwise. Set
-`MISSIONPLANNER_NO_OPENGL=1` to force GDI+ (e.g. with graphics problems).
+The HUD draws with GDI+ on macOS: XQuartz's GLX misplaces OpenGL child
+windows (the HUD showed up mirrored, leaving a white box). Set
+`MISSIONPLANNER_OPENGL=1` to try OpenGL anyway; it is then used only when
+`/opt/X11/bin/glxinfo -B` reports a usable renderer. The OpenGL 3D views (Ctrl+F
+3D map) need it.
 
 Serial ports appear as `/dev/cu.usbmodem*` / `/dev/cu.usbserial*`. Logs are in
 `~/Library/Logs/MissionPlanner`. Settings, logs and maps are kept in
