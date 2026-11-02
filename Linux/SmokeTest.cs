@@ -43,6 +43,10 @@ class LinuxSmokeTest
     [STAThread]
     static void Main()
     {
+        // Record what the runtime really executes as (e.g. Arm64 rather than
+        // an x64 process translated by Rosetta).
+        Console.WriteLine("SMOKE_RUNTIME process=" + RuntimeInformation.ProcessArchitecture +
+            " os=" + RuntimeInformation.OSDescription.Trim());
         Settings.CustomUserDataDirectory = Path.Combine(Path.GetTempPath(), "missionplanner-smoke-" + Guid.NewGuid());
         Directory.CreateDirectory(Settings.GetUserDataDirectory());
         Settings.Instance["update_check"] = DateTime.Now.ToShortDateString();

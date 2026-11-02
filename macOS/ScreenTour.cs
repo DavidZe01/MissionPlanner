@@ -1,0 +1,280 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using MissionPlanner;
+using MissionPlanner.Controls;
+using MissionPlanner.Utilities;
+
+// Starts Mission Planner, visits every main screen and opens every
+// configuration/setup page, capturing the X11 display and recording which ones
+// fail. Used to compare platforms (macOS, Linux) against the Windows build.
+//
+// Environment: TOUR_OUT (output directory), TOUR_XWD (xwd binary, optional),
+// TOUR_CONNECT (optional connection string such as tcp:127.0.0.1:5760).
+class ScreenTour
+{
+    [DllImport("libc", EntryPoint = "_exit")]
+    private static extern void Exit(int status);
+
+    private static string outDir;
+    private static string xwd;
+    private static StreamWriter report;
+    private static readonly Queue<KeyValuePair<string, Action>> steps = new Queue<KeyValuePair<string, Action>>();
+    private static Timer stepTimer;
+    private static Timer dialogKiller;
+    private static Form host;
+    private static int shot;
+    private static readonly List<string> asyncErrors = new List<string>();
+    private static int pass, fail;
+
+    private static void Finish(int status)
+    {
+        report?.Flush();
+        Console.Out.Flush();
+        Console.Error.Flush();
+        Exit(status);
+    }
+
+    private static void Screenshot(string name)
+    {
+        if (string.IsNullOrEmpty(xwd))
+            return;
+        try
+        {
+            Application.DoEvents();
+            var file = Path.Combine(outDir, string.Format("{0:000}-{1}.xwd", ++shot, Sanitize(name)));
+            var p = Process.Start(new ProcessStartInfo(xwd, "-root -silent -out \"" + file + "\"") { UseShellExecute = false });
+            if (!p.WaitForExit(15000))
+                p.Kill();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("screenshot failed: " + ex.Message);
+        }
+    }
+
+    private static string Sanitize(string s)
+    {
+        return new string(s.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+    }
+
+    private static void Record(string name, bool ok, long ms, string error)
+    {
+        lock (asyncErrors)
+        {
+            if (asyncErrors.Count > 0)
+            {
+                ok = false;
+                error = (error + " async: " + string.Join(" | ", asyncErrors)).Trim();
+                asyncErrors.Clear();
+            }
+        }
+        if (ok) pass++; else fail++;
+        error = (error ?? "").Replace('\t', ' ').Replace('\r', ' ').Replace('\n', ' ');
+        if (error.Length > 600) error = error.Substring(0, 600);
+        report.WriteLine(name + "\t" + (ok ? "OK" : "FAIL") + "\t" + ms + "\t" + error);
+        report.Flush();
+        Console.WriteLine("TOUR " + (ok ? "OK   " : "FAIL ") + name + (ok ? "" : " " + error));
+    }
+
+    private static void Step(string name, Action action)
+    {
+        steps.Enqueue(new KeyValuePair<string, Action>(name, action));
+    }
+
+    private static void RunNext(object sender, EventArgs e)
+    {
+        stepTimer.Stop();
+        if (steps.Count == 0)
+        {
+            Console.WriteLine("TOUR_DONE pass=" + pass + " fail=" + fail);
+            Finish(0);
+            return;
+        }
+        var step = steps.Dequeue();
+        Console.WriteLine("TOUR START " + step.Key);
+        var sw = Stopwatch.StartNew();
+        try
+        {
+            step.Value();
+            Record(step.Key, true, sw.ElapsedMilliseconds, null);
+        }
+        catch (Exception ex)
+        {
+            var inner = ex is TargetInvocationException && ex.InnerException != null ? ex.InnerException : ex;
+            Record(step.Key, false, sw.ElapsedMilliseconds, inner.GetType().Name + ": " + inner.Message + " @ " + FirstFrame(inner));
+        }
+        stepTimer.Start();
+    }
+
+    private static string FirstFrame(Exception ex)
+    {
+        var lines = (ex.StackTrace ?? "").Split('\n');
+        return string.Join(" < ", lines.Take(3).Select(l => l.Trim()));
+    }
+
+    // Modal dialogs (e.g. "not connected") would stall the tour: close any
+    // window that is not the main window or the page host, and note it.
+    private static void KillDialogs(object sender, EventArgs e)
+    {
+        foreach (Form f in Application.OpenForms.Cast<Form>().ToArray())
+        {
+            if (f == MainV2.instance || f == host || f.IsDisposed)
+                continue;
+            Console.WriteLine("TOUR dialog closed: " + f.GetType().Name + " '" + f.Text + "'");
+            Screenshot("dialog-" + f.GetType().Name);
+            try { f.Close(); } catch { }
+        }
+    }
+
+    private static void ShowMain(string name, ToolStripButton button, int waitMs)
+    {
+        Step("screen:" + name, () =>
+        {
+            button.PerformClick();
+            Wait(waitMs);
+            Screenshot("screen-" + name);
+        });
+    }
+
+    private static void Wait(int ms)
+    {
+        var sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < ms)
+        {
+            Application.DoEvents();
+            System.Threading.Thread.Sleep(20);
+        }
+    }
+
+    private static IEnumerable<Type> PageTypes()
+    {
+        var asm = typeof(MainV2).Assembly;
+        Type[] types;
+        try { types = asm.GetTypes(); }
+        catch (ReflectionTypeLoadException ex) { types = ex.Types.Where(t => t != null).ToArray(); }
+        return types.Where(t => t.IsClass && !t.IsAbstract && typeof(UserControl).IsAssignableFrom(t)
+                                && t.Namespace != null
+                                && (t.Namespace.StartsWith("MissionPlanner.GCSViews.ConfigurationView")
+                                    || t.Namespace == "MissionPlanner.Controls"
+                                    || t.Namespace.StartsWith("MissionPlanner.Controls."))
+                                && t.GetConstructor(Type.EmptyTypes) != null)
+            .OrderBy(t => t.FullName);
+    }
+
+    private static void OpenPage(Type type)
+    {
+        Step("page:" + type.FullName, () =>
+        {
+            if (host == null || host.IsDisposed)
+            {
+                host = new Form { Width = 1100, Height = 750, Text = "Page host", StartPosition = FormStartPosition.Manual, Left = 40, Top = 40 };
+                host.Show();
+            }
+            var control = (UserControl)Activator.CreateInstance(type);
+            try
+            {
+                control.Dock = DockStyle.Fill;
+                host.Text = type.Name;
+                host.Controls.Add(control);
+                ThemeManager.ApplyThemeTo(control);
+                (control as IActivate)?.Activate();
+                Wait(1200);
+                Screenshot("page-" + type.Name);
+                (control as IDeactivate)?.Deactivate();
+            }
+            finally
+            {
+                host.Controls.Remove(control);
+                control.Dispose();
+            }
+        });
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        outDir = Environment.GetEnvironmentVariable("TOUR_OUT") ?? Path.Combine(Path.GetTempPath(), "mp-tour");
+        Directory.CreateDirectory(outDir);
+        xwd = Environment.GetEnvironmentVariable("TOUR_XWD");
+        report = new StreamWriter(Path.Combine(outDir, "tour-report.tsv"));
+        report.WriteLine("item\tresult\tms\terror");
+        Console.WriteLine("TOUR_RUNTIME process=" + RuntimeInformation.ProcessArchitecture +
+            " os=" + RuntimeInformation.OSDescription.Trim());
+
+        Settings.CustomUserDataDirectory = Path.Combine(Path.GetTempPath(), "missionplanner-tour-" + Guid.NewGuid());
+        Directory.CreateDirectory(Settings.GetUserDataDirectory());
+        Settings.Instance["update_check"] = DateTime.Now.ToShortDateString();
+        Settings.Instance["MainWidth"] = "1280";
+        Settings.Instance["MainHeight"] = "900";
+        Settings.Instance["AutoConnect"] = "[]";
+        Settings.Instance["SHOW_TIPS"] = "False";
+        Settings.Instance.Save();
+
+        Application.ThreadException += (s, e) => { lock (asyncErrors) asyncErrors.Add(e.Exception.GetType().Name + ": " + e.Exception.Message); };
+        AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.Error.WriteLine("UNHANDLED " + e.ExceptionObject);
+
+        var start = new Timer { Interval = 15000 };
+        start.Tick += (s, e) =>
+        {
+            start.Stop();
+            Screenshot("startup");
+            var m = MainV2.instance;
+            var connect = Environment.GetEnvironmentVariable("TOUR_CONNECT");
+            if (!string.IsNullOrEmpty(connect))
+                Step("connect:" + connect, () => Connect(connect));
+            ShowMain("FlightData", m.MenuFlightData, 3000);
+            ShowMain("FlightPlanner", m.MenuFlightPlanner, 4000);
+            ShowMain("InitialSetup", m.MenuInitConfig, 4000);
+            ShowMain("ConfigTune", m.MenuConfigTune, 4000);
+            ShowMain("Simulation", m.MenuSimulation, 3000);
+            ShowMain("Help", m.MenuHelp, 2000);
+            ShowMain("FlightData-again", m.MenuFlightData, 2000);
+            var skip = (Environment.GetEnvironmentVariable("TOUR_SKIP") ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var only = Environment.GetEnvironmentVariable("TOUR_ONLY");
+            foreach (var t in PageTypes())
+            {
+                if (skip.Any(x => t.FullName.EndsWith(x.Trim())))
+                {
+                    Record("page:" + t.FullName, false, 0, "SKIPPED (hangs the tour)");
+                    continue;
+                }
+                if (!string.IsNullOrEmpty(only) && !t.FullName.Contains(only))
+                    continue;
+                OpenPage(t);
+            }
+
+            dialogKiller = new Timer { Interval = 3000 };
+            dialogKiller.Tick += KillDialogs;
+            dialogKiller.Start();
+            stepTimer = new Timer { Interval = 300 };
+            stepTimer.Tick += RunNext;
+            stepTimer.Start();
+        };
+        start.Start();
+        Program.Main(new string[0]);
+    }
+
+    private static void Connect(string connect)
+    {
+        // tcp:host:port
+        var parts = connect.Split(':');
+        if (parts.Length != 3 || parts[0] != "tcp")
+            throw new ArgumentException("TOUR_CONNECT must be tcp:host:port");
+        MainV2.comPort.BaseStream = new MissionPlanner.Comms.TcpSerial { Host = parts[1], Port = parts[2] };
+        MainV2.instance.doConnect(MainV2.comPort, "preset", "115200", true, false);
+        var sw = Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < 120000 && (!MainV2.comPort.BaseStream.IsOpen || MainV2.comPort.MAV.param.Count < 100))
+            Wait(500);
+        Wait(3000);
+        if (!MainV2.comPort.BaseStream.IsOpen || MainV2.comPort.MAV.param.Count < 100)
+            throw new Exception("not connected (params=" + MainV2.comPort.MAV.param.Count + ")");
+        Console.WriteLine("TOUR connected params=" + MainV2.comPort.MAV.param.Count + " fw=" + MainV2.comPort.MAV.cs.firmware);
+        Screenshot("connected");
+    }
+}

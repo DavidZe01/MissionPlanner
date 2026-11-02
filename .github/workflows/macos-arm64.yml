@@ -1,0 +1,118 @@
+name: macOS Apple Silicon
+
+on:
+  push:
+    branches: [macos-arm64]
+    paths-ignore: ['ci-results/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  managed:
+    name: Build managed application
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends mono-devel rsync
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: linux-nuget-${{ hashFiles('**/*.csproj', 'Linux/Build.targets') }}
+          restore-keys: linux-nuget-
+      - name: Build
+        run: ./Linux/build.sh 2>&1 | tee managed-build.log
+      - name: Build macOS test tools
+        run: ./macOS/build-tests.sh bin/linux/MissionPlanner-linux-x86_64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: managed
+          path: bin/linux/MissionPlanner-linux-x86_64.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+
+  macos:
+    name: Package and test on ${{ matrix.runner }}
+    needs: managed
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: managed
+      - name: Install dependencies
+        run: |
+          export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
+          brew install mono pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 \
+            dylibbundler netpbm
+          brew install --cask xquartz
+          uname -m; sw_vers; mono --version | head -2; lipo -archs "$(brew --prefix mono)/bin/mono"
+      - name: Package app
+        run: |
+          mkdir managed && tar -xzf MissionPlanner-linux-x86_64.tar.gz -C managed
+          ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos 2>&1 | tee package.log
+      - name: Test app
+        run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: MissionPlanner-macos-${{ runner.arch }}
+          path: |
+            bin/macos/MissionPlanner-macos-*.zip
+            bin/macos/MissionPlanner-macos-*.zip.sha256
+          compression-level: 0
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-${{ matrix.runner }}
+          path: |
+            ci-out
+            package.log
+            bin/macos/work/*.log
+            bin/macos/work/libgdiplus-*/*.log
+
+  results:
+    # Publish logs and screenshots to the ci-results branch so they can be
+    # read with git (artifact downloads need a browser login).
+    name: Publish results
+    needs: macos
+    if: always() && needs.macos.result != 'skipped'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: results-*
+          path: results
+      - name: Push results branch
+        env:
+          SHA: ${{ github.sha }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTCOME: ${{ needs.macos.result }}
+        run: |
+          cd results
+          echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt
+          git init -q -b ci-results
+          git add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -q -m "macOS results for $SHA ($OUTCOME)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-results

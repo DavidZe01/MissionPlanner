@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Mission Planner</string>
+	<key>CFBundleName</key>
+	<string>Mission Planner</string>
+	<key>CFBundleExecutable</key>
+	<string>MissionPlanner</string>
+	<key>CFBundleIconFile</key>
+	<string>MissionPlanner</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.ardupilot.missionplanner</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@VERSION@</string>
+	<key>CFBundleVersion</key>
+	<string>@VERSION@</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>LSArchitecturePriority</key>
+	<array>
+		<string>arm64</string>
+		<string>x86_64</string>
+	</array>
+	<key>LSMinimumSystemVersion</key>
+	<string>12.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Mission Planner connects to vehicles and telemetry radios over Bluetooth.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Mission Planner connects to vehicles, simulators and video streams on the local network.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Mission Planner can show your position on the map and use it for follow-me.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Mission Planner can show a camera or capture device in the HUD.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Mission Planner can record audio with video captures.</string>
+</dict>
+</plist>
