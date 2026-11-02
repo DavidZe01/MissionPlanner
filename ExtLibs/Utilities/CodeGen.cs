@@ -61,12 +61,22 @@ namespace MissionPlanner
                 .Select(a => a.Location);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 refFiles = refs.Where(a => !a.IsDynamic).Select(a => a.Location);
+            // Mono's mscorlib already defines Span<T>, MemoryExtensions, ArrayPool<T>...
+            // which the System.Memory/System.Buffers packages also define: referencing
+            // both makes those names ambiguous (CS0433/CS0121) in plugins. Keep the
+            // package assemblies referenced but out of the global namespace there.
+            var corlibHasSpan = Type.GetType("Mono.Runtime") != null &&
+                                typeof(object).Assembly.GetType("System.Span`1") != null;
             var refmeta = refFiles.Select(a =>
             {
                 try
                 {
                     if (a == "" || !File.Exists(a))
                         return null;
+                    var name = Path.GetFileNameWithoutExtension(a);
+                    if (corlibHasSpan && (name == "System.Memory" || name == "System.Buffers"))
+                        return AssemblyMetadata.CreateFromFile(a)
+                            .GetReference(aliases: System.Collections.Immutable.ImmutableArray.Create("packaged"));
                     return AssemblyMetadata.CreateFromFile(a).GetReference();
                 }
                 catch
