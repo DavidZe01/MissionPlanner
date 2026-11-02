@@ -49,7 +49,8 @@ The HUD draws with GDI+ on macOS: XQuartz's GLX misplaces OpenGL child
 windows (the HUD showed up mirrored, leaving a white box). Set
 `MISSIONPLANNER_OPENGL=1` to try OpenGL anyway; it is then used only when
 `/opt/X11/bin/glxinfo -B` reports a usable renderer. The OpenGL 3D views (Ctrl+F
-3D map) need it.
+3D map) need it. In builds before this change, tick CONFIG → Planner →
+"GDI+ (old type/no HW acceleration)" and restart for the same result.
 
 Serial ports appear as `/dev/cu.usbmodem*` / `/dev/cu.usbserial*`. Logs are in
 `~/Library/Logs/MissionPlanner`. Settings, logs and maps are kept in
