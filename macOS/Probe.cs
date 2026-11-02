@@ -87,6 +87,15 @@ class Probe
                 mav.BaseStream = new TcpSerial { Host = parts[0], Port = parts[1] };
                 mav.Open(false, false, false);
                 Console.WriteLine("sysid " + mav.MAV.sysid + " compid " + mav.MAV.compid + " fw " + mav.MAV.cs.firmware);
+                // the application reads the link on its own thread (MainV2.SerialReader)
+                new Thread(() =>
+                {
+                    while (true)
+                    {
+                        try { mav.readPacketAsync().Wait(); }
+                        catch { Thread.Sleep(10); }
+                    }
+                }) { IsBackground = true, Name = "reader" }.Start();
             }, 90000);
             MAVFtp ftp = null;
             ok &= Run("mavftp-list", () =>
