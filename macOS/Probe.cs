@@ -85,8 +85,8 @@ class Probe
             ok &= Run("mavlink-connect", () =>
             {
                 mav.BaseStream = new TcpSerial { Host = parts[0], Port = parts[1] };
-                mav.Open(false, true, false);
-                Console.WriteLine("sysid " + mav.MAV.sysid + " fw " + mav.MAV.cs.firmware);
+                mav.Open(false, false, false);
+                Console.WriteLine("sysid " + mav.MAV.sysid + " compid " + mav.MAV.compid + " fw " + mav.MAV.cs.firmware);
             }, 90000);
             MAVFtp ftp = null;
             ok &= Run("mavftp-list", () =>
@@ -94,6 +94,8 @@ class Probe
                 ftp = new MAVFtp(mav, mav.MAV.sysid, mav.MAV.compid);
                 var list = ftp.kCmdListDirectory("/", new CancellationTokenSource(30000));
                 Console.WriteLine("/: " + string.Join(", ", list.Select(a => a.Name)));
+                if (!list.Any(a => a.Name == "mp-probe.txt"))
+                    throw new Exception("mp-probe.txt not listed");
             });
             MavFtpWebDav server = null;
             ok &= Run("webdav-server", () =>
