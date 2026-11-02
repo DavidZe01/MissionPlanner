@@ -36,10 +36,6 @@ for _ in $(seq 1 50); do [[ -S /tmp/.X11-unix/X99 ]] && break; sleep 0.2; done
 
 status=0
 part=${CI_TEST_PART:-all}
-if [[ $part == offline || $part == all ]]; then
-run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
-grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
-grep SMOKE_RUNTIME "$out/smoke.log" || true
 
 run_tour() { # name [connection]
     local dir="$out/$1" attempt
@@ -59,6 +55,12 @@ run_tour() { # name [connection]
         xwdtopnm "$f" 2>/dev/null | pnmtopng > "${f%.xwd}.png" 2>/dev/null && rm -f -- "$f"
     done
 }
+
+if [[ $part == offline || $part == all ]]; then
+run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
+grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
+grep SMOKE_RUNTIME "$out/smoke.log" || true
+
 
 run_tour tour
 fi
