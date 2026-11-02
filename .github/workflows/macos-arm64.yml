@@ -105,7 +105,7 @@ jobs:
         run: |
           export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
           brew install mono pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 \
-            dylibbundler netpbm sdl2
+            dylibbundler netpbm sdl2 gstreamer
           brew install --cask xquartz
           uname -m; sw_vers; mono --version | head -2; lipo -archs "$(brew --prefix mono)/bin/mono"
       - name: Package app

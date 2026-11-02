@@ -98,13 +98,27 @@ namespace MissionPlanner
         /// </summary>
         private static void UseOpenTKX11OnMacOS()
         {
-            if (!MONO || !RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            // MISSIONPLANNER_OPENTK_X11 forces this path elsewhere, for testing
+            if (!MONO || (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                          Environment.GetEnvironmentVariable("MISSIONPLANNER_OPENTK_X11") == null))
                 return;
             try
             {
-                typeof(OpenTK.Configuration)
-                    .GetField("runningOnMacOS", BindingFlags.Static | BindingFlags.NonPublic)
-                    .SetValue(null, false);
+                // Configuration.Init re-detects the platform unless it is already
+                // initialised, so describe the X11 platform and mark it initialised.
+                var cfg = typeof(OpenTK.Configuration);
+                var flags = BindingFlags.Static | BindingFlags.NonPublic;
+                cfg.GetField("runningOnUnix", flags).SetValue(null, true);
+                cfg.GetField("runningOnLinux", flags).SetValue(null, false);
+                cfg.GetField("runningOnMacOS", flags).SetValue(null, false);
+                cfg.GetField("<RunningOnWindows>k__BackingField", flags).SetValue(null, false);
+                cfg.GetField("<RunningOnSdl2>k__BackingField", flags).SetValue(null, false);
+                cfg.GetField("<RunningOnX11>k__BackingField", flags).SetValue(null, true);
+                cfg.GetField("<RunningOnMono>k__BackingField", flags).SetValue(null, true);
+                cfg.GetField("initialized", flags).SetValue(null, true);
+                // X11.API and X11.Functions read each other's statics: API must be
+                // initialised first (on Linux, Configuration.Init does that).
+                RuntimeHelpers.RunClassConstructor(cfg.Assembly.GetType("OpenTK.Platform.X11.API").TypeHandle);
                 OpenTK.Toolkit.Init(new OpenTK.ToolkitOptions { Backend = OpenTK.PlatformBackend.PreferX11 });
                 log.Info("OpenTK: X11 backend, X11 available = " + OpenTK.Configuration.RunningOnX11);
             }

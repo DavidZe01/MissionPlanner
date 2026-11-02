@@ -325,6 +325,33 @@ class ScreenTour
             var gst = MissionPlanner.Utilities.GStreamer.LookForGstreamer();
             Console.WriteLine("TOUR gstreamer: " + (string.IsNullOrEmpty(gst) ? "not installed" : gst));
         });
+        Step("feature:gstreamer-hud-video", () =>
+        {
+            MissionPlanner.Utilities.GStreamer.GstLaunch = MissionPlanner.Utilities.GStreamer.LookForGstreamer();
+            if (!MissionPlanner.Utilities.GStreamer.GstLaunchExists)
+                throw new Exception("GStreamer not installed");
+            var gst = MissionPlanner.GCSViews.FlightData.hudGStreamer;
+            var hud = MissionPlanner.GCSViews.FlightData.myhud;
+            try
+            {
+                MainV2.instance.MenuFlightData.PerformClick();
+                hud.bgimage = null;
+                gst.Start("videotestsrc pattern=ball ! video/x-raw,width=640,height=480 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink");
+                // MainV2 copies every decoded frame into the HUD background
+                var sw = Stopwatch.StartNew();
+                while (hud.bgimage == null && sw.ElapsedMilliseconds < 20000)
+                    Wait(200);
+                Wait(1500);
+                Screenshot("gstreamer-hud");
+                if (hud.bgimage == null)
+                    throw new Exception("no video frame reached the HUD");
+                Console.WriteLine("TOUR gstreamer frame: " + hud.bgimage.Width + "x" + hud.bgimage.Height);
+            }
+            finally
+            {
+                gst.Stop();
+            }
+        });
         if (IsMac)
             Step("feature:sitl-bundled", () =>
             {

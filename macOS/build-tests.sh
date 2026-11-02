@@ -10,7 +10,7 @@ mcs -out:"$app_dir/ScreenTour.exe" \
     -r:"$app_dir/MissionPlanner.exe" -r:"$app_dir/Interfaces.dll" \
     -r:"$app_dir/MissionPlanner.Controls.dll" -r:"$app_dir/MissionPlanner.Utilities.dll" \
     -r:"$app_dir/MissionPlanner.Comms.dll" -r:"$app_dir/MissionPlanner.ArduPilot.dll" \
-    -r:"$app_dir/MAVLink.dll" -r:"$app_dir/System.Memory.dll" -r:"$facades/netstandard.dll" "$mac_dir/ScreenTour.cs"
+    -r:"$app_dir/MAVLink.dll" -r:"$app_dir/System.Memory.dll" -r:"$app_dir/OpenTK.GLControl.dll" -r:"$app_dir/OpenTK.dll" -r:"$facades/netstandard.dll" "$mac_dir/ScreenTour.cs"
 cp -- "$app_dir/MissionPlanner.exe.config" "$app_dir/ScreenTour.exe.config"
 parent=$(dirname -- "$app_dir"); name=$(basename -- "$app_dir")
 if [[ -f $parent/$name.tar.gz ]]; then
