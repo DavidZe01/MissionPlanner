@@ -38,6 +38,10 @@ if [[ ! -f $mono_facades/netstandard.dll || ! -f $mono_copyright || ! -f $mono_m
 fi
 
 cd -- "$source_dir"
+# The tree has both Plugins/ and plugins/. MSBuild's Copy task tracks the output
+# directories it creates case-insensitively, so on a case-sensitive filesystem
+# it creates only one of them and the other copies fail. Create both up front.
+mkdir -p -- bin/Release/net461/Plugins bin/Release/net461/plugins
 dotnet build MissionPlanner.csproj --configuration Release \
     -p:MissionPlannerLinuxBuild=true -p:EnableWindowsTargeting=true \
     "-p:DirectoryBuildTargetsPath=$linux_dir/Build.targets" \
