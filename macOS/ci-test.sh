@@ -40,6 +40,7 @@ grep SMOKE_RUNTIME "$out/smoke.log" || true
 
 mkdir -p -- "$out/tour"
 TOUR_OUT="$out/tour" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${TOUR_CONNECT:-} \
+    TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
     run_limited 1500 "$launcher" --tour > "$out/tour.log" 2>&1
 grep -E '^TOUR_(RUNTIME|DONE)' "$out/tour.log" || { echo "TOUR: did not finish"; status=1; }
 for f in "$out"/tour/*.xwd; do

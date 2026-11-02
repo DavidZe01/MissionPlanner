@@ -11,7 +11,7 @@
 # launcher. The bundle needs only Mono and XQuartz installed on the Mac.
 #
 # Build requirements (Homebrew): pkgconf cairo pango giflib libtiff libexif
-# jpeg-turbo libpng libx11 dylibbundler
+# jpeg-turbo libpng libx11 dylibbundler sdl2
 set -euo pipefail
 
 mac_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
@@ -50,6 +50,7 @@ if [[ ! -f $libgdiplus_build/prefix/lib/libgdiplus.0.dylib ]]; then
     (
         cd -- "$libgdiplus_build"
         brew_prefix=$(brew --prefix)
+        export CPPFLAGS="-I$brew_prefix/include ${CPPFLAGS:-}" LDFLAGS="-L$brew_prefix/lib ${LDFLAGS:-}"
         export PKG_CONFIG_PATH="$brew_prefix/lib/pkgconfig:$brew_prefix/share/pkgconfig:$(brew --prefix libx11)/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
         # Do not pass --with-x11: configure treats any form of that option as "disable".
         ./configure --disable-silent-rules --prefix="$libgdiplus_build/prefix" \
@@ -84,6 +85,15 @@ cp -- "$libgdiplus_build/prefix/lib/libgdiplus.0.dylib" "$app/Contents/Framework
 dylibbundler -of -cd -b -x "$app/Contents/Frameworks/libgdiplus.0.dylib" \
     -d "$app/Contents/Frameworks" -p @loader_path/ > "$work_dir/dylibbundler.log"
 install_name_tool -id @loader_path/libgdiplus.0.dylib "$app/Contents/Frameworks/libgdiplus.0.dylib"
+# SDL2 for joysticks (IOKit HID); it only links system frameworks.
+sdl2=$(brew --prefix sdl2 2>/dev/null)/lib/libSDL2-2.0.0.dylib
+if [[ -f $sdl2 ]]; then
+    cp -- "$sdl2" "$app/Contents/Frameworks/"
+    chmod u+w "$app/Contents/Frameworks/libSDL2-2.0.0.dylib"
+    install_name_tool -id @loader_path/libSDL2-2.0.0.dylib "$app/Contents/Frameworks/libSDL2-2.0.0.dylib"
+else
+    echo 'SDL2 not found (brew install sdl2): joysticks will be unavailable.' >&2
+fi
 if [[ ! -f $app/Contents/Frameworks/libX11.6.dylib ]]; then
     echo 'libX11 was not bundled with libgdiplus.' >&2
     exit 1

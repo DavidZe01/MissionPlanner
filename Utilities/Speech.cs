@@ -21,6 +21,10 @@ namespace MissionPlanner.Utilities
 
         bool MONO = false;
 
+        // macOS has a built-in synthesizer (say); festival is not available there.
+        static readonly bool MacOS = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && File.Exists("/usr/bin/say");
+        System.Diagnostics.Process _speechmac;
+
         public bool IsReady
         {
             get
@@ -79,7 +83,11 @@ namespace MissionPlanner.Utilities
             // Stop, for example, QHover from being pronounced "kohver"
             text = Regex.Replace(text, @"\bq((?!u)[a-z]+)", "q $1", RegexOptions.IgnoreCase);
 
-            if (MONO)
+            if (MONO && MacOS)
+            {
+                SpeakMac(text);
+            }
+            else if (MONO)
             {
                 try
                 {
@@ -130,6 +138,34 @@ namespace MissionPlanner.Utilities
             log.Info("TTS: say " + text);
         }
 
+        void SpeakMac(string text)
+        {
+            try
+            {
+                var proc = new System.Diagnostics.Process();
+                proc.StartInfo.FileName = "/usr/bin/say";
+                proc.StartInfo.Arguments = "-f -";
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardInput = true;
+                proc.EnableRaisingEvents = true;
+                proc.Exited += (sender, e) =>
+                {
+                    if (_speechmac == sender)
+                        _state = SynthesizerState.Ready;
+                };
+                _state = SynthesizerState.Speaking;
+                _speechmac = proc;
+                proc.Start();
+                proc.StandardInput.Write(text);
+                proc.StandardInput.Close();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                _state = SynthesizerState.Ready;
+            }
+        }
+
         void _speechlinux_Exited(object sender, EventArgs e)
         {
             log.Info("TTS: exit " + _speechlinux.ExitTime);
@@ -140,6 +176,12 @@ namespace MissionPlanner.Utilities
         {
             if (MONO)
             {
+                try
+                {
+                    if (_speechmac != null && !_speechmac.HasExited)
+                        _speechmac.Kill();
+                }
+                catch { }
                 try
                 {
                     if (_speechlinux != null)
@@ -169,6 +211,8 @@ namespace MissionPlanner.Utilities
                 _speechwindows.Dispose();
             if (_speechlinux != null)
                 _speechlinux.Dispose();
+            if (_speechmac != null)
+                _speechmac.Dispose();
 
             GC.SuppressFinalize(this);
         }

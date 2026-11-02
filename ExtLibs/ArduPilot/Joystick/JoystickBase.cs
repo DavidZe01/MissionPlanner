@@ -24,6 +24,9 @@ namespace MissionPlanner.Joystick
 
         public static PlatformID pid = Environment.OSVersion.Platform;
 
+        // Mono reports PlatformID.Unix on macOS, where there is no Linux joystick device.
+        public static readonly bool MacOS = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
+
         public bool manual_control = false;
 
         string joystickconfigbutton = "joystickbuttons.xml";
@@ -1271,6 +1274,10 @@ namespace MissionPlanner.Joystick
 
         public static IList<string> getDevices()
         {
+            if (MacOS)
+            {
+                return JoystickSDL.getDevices();
+            }
             if (pid == PlatformID.Unix)
             {
                 return JoystickLinux.getDevices();
@@ -1283,6 +1290,10 @@ namespace MissionPlanner.Joystick
 
         public static JoystickBase getJoyStickByName(string name)
         {
+            if (MacOS)
+            {
+                return JoystickSDL.getJoyStickByName(name);
+            }
             if (pid == PlatformID.Unix)
             {
                 return JoystickLinux.getJoyStickByName(name);
@@ -1295,6 +1306,10 @@ namespace MissionPlanner.Joystick
 
         public static JoystickBase Create(Func<MAVLinkInterface> func)
         {
+            if (MacOS)
+            {
+                return new JoystickSDL(func);
+            }
             if (pid == PlatformID.Unix)
             {
                 return new JoystickLinux(func);

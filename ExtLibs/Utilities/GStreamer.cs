@@ -1420,8 +1420,14 @@ namespace MissionPlanner.Utilities
             {
                 // linux
                 "/usr/lib/x86_64-linux-gnu",
+                // linux arm64
+                "/usr/lib/aarch64-linux-gnu",
                 // rpi
                 "/usr/lib/arm-linux-gnueabihf",
+                // macOS: Homebrew (Apple Silicon, Intel) and the official GStreamer framework
+                "/opt/homebrew/lib",
+                "/usr/local/lib",
+                "/Library/Frameworks/GStreamer.framework/Versions/1.0/lib",
                 // current
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 // settings
@@ -1450,12 +1456,16 @@ namespace MissionPlanner.Utilities
                 log.Info($"look in dir {dir}");
                 if (Directory.Exists(dir))
                 {
-                    var ans = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories).Where(a => a.ToLower().Contains("libgstreamer-1.0-0.dll") || a.ToLower().Contains("libgstreamer-1.0.so.0") || a.ToLower().Contains("libgstreamer_android.so")).ToArray();
+                    // only the top level of the system library directories: they are large
+                    var option = dir.StartsWith("/usr/lib") || dir.StartsWith("/opt/homebrew") || dir.StartsWith("/usr/local") || dir.StartsWith("/Library")
+                        ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
+                    var ans = Directory.GetFiles(dir, "*.*", option).Where(a => a.ToLower().Contains("libgstreamer-1.0-0.dll") || a.ToLower().Contains("libgstreamer-1.0.so.0") || a.ToLower().EndsWith("libgstreamer-1.0.0.dylib") || a.ToLower().Contains("libgstreamer_android.so")).ToArray();
 
                     ans = ans.Where(a =>
                         (!is64bit && !a.ToLower().Contains("_64")) || // windows
                         is64bit && a.ToLower().Contains("_64") || // windows
-                        a.ToLower().Contains(".so.") // linux/rpi
+                        a.ToLower().Contains(".so.") || // linux/rpi
+                        a.ToLower().EndsWith(".dylib") // macOS (mapped by the app launcher)
                         ).ToArray();
 
                     if (ans.Length > 0)

@@ -2272,13 +2272,8 @@ namespace MissionPlanner
                 //so we know this thread is stil alive.
                 try
                 {
-                    if (MONO)
-                    {
-                        log.Error("Mono: closing joystick thread");
-                        break;
-                    }
-
-                    if (!MONO)
+                    // The joystick backends (DirectInput, Linux joystick device, SDL2 on
+                    // macOS) share JoystickBase, so this loop runs on every platform.
                     {
                         //joystick stuff
 

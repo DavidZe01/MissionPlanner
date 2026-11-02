@@ -85,14 +85,27 @@ fi
 mono_config_src="$mono_prefix/etc/mono/config"
 [[ -f $mono_config_src ]] || fail "Mono's configuration was not found at $mono_config_src"
 mono_config="$cache_dir/mono-config"
-sed -E -e "s#(<dllmap dll=\"[^\"]*(gdiplus|gdi32)[^\"]*\" target=\")[^\"]*\"#\\1$libgdiplus\"#" \
-    -e "s#(<dllmap dll=\"libX11\" target=\")[^\"]*\"#\\1$libx11\"#" \
-    "$mono_config_src" > "$mono_config.tmp"
-# Older configs may lack a libX11 entry.
-if ! grep -q 'dll="libX11"' "$mono_config.tmp"; then
-    sed -i '' -e "s|</configuration>|	<dllmap dll=\"libX11\" target=\"$libx11\" os=\"osx\"/>\\
-</configuration>|" "$mono_config.tmp"
-fi
+# Extra mappings for native libraries the managed code names by Linux sonames.
+maps=()
+[[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
+for gst_lib in /opt/homebrew/lib /usr/local/lib /Library/Frameworks/GStreamer.framework/Versions/1.0/lib; do
+    if [[ -f $gst_lib/libgstreamer-1.0.0.dylib && -f $gst_lib/libgstapp-1.0.0.dylib ]]; then
+        maps+=("libgstreamer-1.0.so.0=$gst_lib/libgstreamer-1.0.0.dylib" "libgstapp-1.0.so.0=$gst_lib/libgstapp-1.0.0.dylib")
+        break
+    fi
+done
+GDIPLUS=$libgdiplus X11=$libx11 /usr/bin/perl -e '
+    my ($src, @maps) = @ARGV;
+    open(my $in, "<", $src) or die "$src: $!";
+    local $/; my $c = <$in>;
+    # Bundled libgdiplus (with X11) and the libX11 it links against.
+    $c =~ s{(<dllmap\s+dll="[^"]*(?:gdiplus|gdi32)[^"]*"\s+target=")[^"]*"}{$1$ENV{GDIPLUS}"}g;
+    $c =~ s{<dllmap\s+dll="libX11"[^>]*>}{}g;
+    my $add = "\t<dllmap dll=\"libX11\" target=\"$ENV{X11}\"/>\n";
+    for (@maps) { my ($d, $t) = split /=/, $_, 2; $add .= "\t<dllmap dll=\"$d\" target=\"$t\"/>\n"; }
+    $c =~ s{</configuration>}{$add</configuration>};
+    print $c;
+' "$mono_config_src" "${maps[@]}" > "$mono_config.tmp" || fail "Could not write $mono_config"
 mv -f -- "$mono_config.tmp" "$mono_config"
 
 export MONO_CONFIG="$mono_config"
