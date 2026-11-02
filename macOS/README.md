@@ -31,6 +31,20 @@ a libgdiplus built with X11 support, plus their dependencies).
 3. Move `Mission Planner.app` to Applications and open it. XQuartz starts
    automatically.
 
+Optional, for the features that use them (as on Windows, where they are also
+separate installs):
+
+| Feature | Install |
+| --- | --- |
+| HUD video streams, local cameras, OSD Video tool | `brew install gstreamer` |
+| GeoTIFF / imagery overlays (GDAL Custom map) | `brew install gdal` |
+| VLC video test tool | VLC.app in /Applications |
+
+Bundled, nothing to install: native SITL simulators (ArduCopter, ArduPlane,
+ArduRover, ArduHeli), joysticks (SDL2), Bluetooth LE (SimpleBLE/CoreBluetooth),
+speech (macOS `say`), MAVFTP "Mount as Drive" (WebDAV, mounted with the
+built-in client), OpenGL HUD (XQuartz GLX).
+
 Serial ports appear as `/dev/cu.usbmodem*` / `/dev/cu.usbserial*`. Logs are in
 `~/Library/Logs/MissionPlanner`. Settings, logs and maps are kept in
 `~/.local/share/Mission Planner` (shared with the Linux build's layout).
