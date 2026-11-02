@@ -55,8 +55,16 @@ class LinuxSmokeTest
         Settings.Instance["AutoConnect"] = "[]";
         Settings.Instance.Save();
         timer = new Timer { Interval = 10000 };
+        var waits = 0;
         timer.Tick += (sender, args) => {
             timer.Stop();
+            // slow machines (or emulation) may still be starting: wait for the main window
+            if ((MainV2.instance == null || MainV2.instance.FlightData == null || !MainV2.instance.Visible) && ++waits < 60)
+            {
+                timer.Interval = 5000;
+                timer.Start();
+                return;
+            }
             try
             {
                 var flightData = MainV2.instance.FlightData;

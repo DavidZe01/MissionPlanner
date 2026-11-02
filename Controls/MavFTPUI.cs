@@ -719,11 +719,53 @@ namespace MissionPlanner.Controls
             PopulateTreeView();
         }
 
+        private void MountWebDav()
+        {
+            if (MavFtpWebDav.IsMounted)
+            {
+                try
+                {
+                    MavFtpWebDav.Unmount();
+                    btnMountFuse.Text = "Mount as Drive";
+                    toolStripStatusLabel1.Text = "Drive unmounted";
+                }
+                catch (Exception ex)
+                {
+                    log.Error("Unmount error", ex);
+                    CustomMessageBox.Show("Failed to unmount: " + ex.Message);
+                }
+                return;
+            }
+
+            string mountPoint = MavFtpWebDav.DefaultMountPoint;
+            if (InputBox.Show("Mount Point", "Enter the folder to mount the vehicle files on", ref mountPoint) != DialogResult.OK)
+                return;
+
+            try
+            {
+                MavFtpWebDav.Mount(_mavftp, mountPoint);
+                btnMountFuse.Text = "Unmount Drive";
+                toolStripStatusLabel1.Text = "Mounted at " + mountPoint;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Mount error", ex);
+                CustomMessageBox.Show("Failed to mount: " + ex.Message);
+            }
+        }
+
         // Default drive letter used for the FUSE mount
         private const string DefaultMountPoint = "M:\\";
 
         private void BtnMountFuse_Click(object sender, EventArgs e)
         {
+            // macOS/Linux: serve the vehicle files over WebDAV and mount with the OS client
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                MountWebDav();
+                return;
+            }
+
             if (MavFtpDokan.IsMounted)
             {
                 // Unmount

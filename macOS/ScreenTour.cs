@@ -220,14 +220,25 @@ class ScreenTour
         AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.Error.WriteLine("UNHANDLED " + e.ExceptionObject);
 
         var start = new Timer { Interval = 15000 };
+        var waits = 0;
         start.Tick += (s, e) =>
         {
             start.Stop();
+            if ((MainV2.instance == null || MainV2.instance.FlightData == null || !MainV2.instance.Visible) && ++waits < 60)
+            {
+                start.Interval = 5000;
+                start.Start();
+                return;
+            }
             Screenshot("startup");
             var m = MainV2.instance;
             var connect = Environment.GetEnvironmentVariable("TOUR_CONNECT");
             if (!string.IsNullOrEmpty(connect))
+            {
                 Step("connect:" + connect, () => Connect(connect));
+                FeatureChecks();
+            }
+            PlatformChecks();
             ShowMain("FlightData", m.MenuFlightData, 3000);
             ShowMain("FlightPlanner", m.MenuFlightPlanner, 4000);
             ShowMain("InitialSetup", m.MenuInitConfig, 4000);
@@ -258,6 +269,177 @@ class ScreenTour
         };
         start.Start();
         Program.Main(new string[0]);
+    }
+
+    private static bool IsMac
+    {
+        get { return RuntimeInformation.IsOSPlatform(OSPlatform.OSX); }
+    }
+
+    // Platform services that work without a vehicle.
+    private static void PlatformChecks()
+    {
+        Step("feature:usb-device-enumeration", () =>
+        {
+            var ports = MissionPlanner.Utilities.Linux.GetAllCOMPorts();
+            Console.WriteLine("TOUR usb devices: " + ports.Count);
+        });
+        Step("feature:serial-port-list", () =>
+        {
+            var ports = MissionPlanner.Comms.SerialPort.GetPortNames();
+            Console.WriteLine("TOUR serial ports: " + string.Join(",", ports));
+        });
+        Step("feature:joystick-enumeration", () =>
+        {
+            var devices = MissionPlanner.Joystick.JoystickBase.getDevices();
+            Console.WriteLine("TOUR joysticks: " + devices.Count);
+            if (IsMac && !MissionPlanner.Joystick.JoystickSDL.IsSupported)
+                throw new Exception("SDL2 joystick backend not available");
+        });
+        Step("feature:speech", () =>
+        {
+            var speech = new MissionPlanner.Utilities.Speech { speechEnable = true };
+            var engine = MainV2.speechEngine;
+            MainV2.speechEngine = speech;
+            try
+            {
+                speech.SpeakAsync("Mission Planner test");
+                var sw = Stopwatch.StartNew();
+                while (!speech.IsReady && sw.ElapsedMilliseconds < 20000)
+                    Wait(100);
+                if (!speech.IsReady)
+                    throw new Exception("speech did not finish");
+            }
+            finally
+            {
+                MainV2.speechEngine = engine;
+            }
+        });
+        Step("feature:local-camera-enumeration", () =>
+        {
+            var cameras = MissionPlanner.Utilities.GStreamer.ListLocalCameras();
+            Console.WriteLine("TOUR cameras: " + cameras.Count);
+        });
+        Step("feature:gstreamer-discovery", () =>
+        {
+            var gst = MissionPlanner.Utilities.GStreamer.LookForGstreamer();
+            Console.WriteLine("TOUR gstreamer: " + (string.IsNullOrEmpty(gst) ? "not installed" : gst));
+        });
+        if (IsMac)
+            Step("feature:sitl-bundled", () =>
+            {
+                var dir = MissionPlanner.GCSViews.SITL.BundledPath;
+                foreach (var vehicle in new[] { "ArduCopter", "ArduPlane", "ArduRover", "ArduHeli" })
+                    if (string.IsNullOrEmpty(dir) || !File.Exists(Path.Combine(dir, vehicle)))
+                        throw new Exception("missing bundled SITL " + vehicle + " in '" + dir + "'");
+            });
+    }
+
+    // Vehicle operations against the connected simulator.
+    private static void FeatureChecks()
+    {
+        Step("feature:parameters", () =>
+        {
+            var count = MainV2.comPort.MAV.param.Count;
+            if (count < 500)
+                throw new Exception("only " + count + " parameters");
+            Console.WriteLine("TOUR parameters: " + count);
+        });
+        Step("feature:parameter-write", () =>
+        {
+            if (!MainV2.comPort.setParam("WPNAV_SPEED", 750))
+                throw new Exception("setParam failed");
+            if (Math.Abs(MainV2.comPort.GetParam("WPNAV_SPEED") - 750) > 0.1)
+                throw new Exception("read back " + MainV2.comPort.GetParam("WPNAV_SPEED"));
+        });
+        Step("feature:mission-upload-download", () =>
+        {
+            var home = MainV2.comPort.MAV.cs.PlannedHomeLocation;
+            double lat = MainV2.comPort.MAV.cs.lat, lng = MainV2.comPort.MAV.cs.lng;
+            var mission = new List<Locationwp>();
+            mission.Add(new Locationwp().Set(lat, lng, 0, (ushort) MAVLink.MAV_CMD.WAYPOINT));
+            mission.Add(new Locationwp().Set(lat, lng, 20, (ushort) MAVLink.MAV_CMD.TAKEOFF));
+            mission.Add(new Locationwp().Set(lat + 0.0005, lng, 30, (ushort) MAVLink.MAV_CMD.WAYPOINT));
+            mission.Add(new Locationwp().Set(lat + 0.0005, lng + 0.0005, 30, (ushort) MAVLink.MAV_CMD.WAYPOINT));
+            mission.Add(new Locationwp().Set(0, 0, 0, (ushort) MAVLink.MAV_CMD.RETURN_TO_LAUNCH));
+            for (int i = 0; i < mission.Count; i++)
+            {
+                var wp = mission[i];
+                wp.frame = (byte) MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
+                mission[i] = wp;
+            }
+            var sysid = (byte) MainV2.comPort.sysidcurrent;
+            var compid = (byte) MainV2.comPort.compidcurrent;
+            MissionPlanner.ArduPilot.mav_mission.upload(MainV2.comPort, sysid, compid, MAVLink.MAV_MISSION_TYPE.MISSION, mission).GetAwaiter().GetResult();
+            var back = MissionPlanner.ArduPilot.mav_mission.download(MainV2.comPort, sysid, compid, MAVLink.MAV_MISSION_TYPE.MISSION).GetAwaiter().GetResult();
+            if (back.Count != mission.Count)
+                throw new Exception("downloaded " + back.Count + " items, uploaded " + mission.Count);
+            Console.WriteLine("TOUR mission items: " + back.Count);
+        });
+        Step("feature:mavftp-list", () =>
+        {
+            var ftp = new MissionPlanner.ArduPilot.Mavlink.MAVFtp(MainV2.comPort, (byte) MainV2.comPort.sysidcurrent, (byte) MainV2.comPort.compidcurrent);
+            var entries = ftp.kCmdListDirectory("/", new System.Threading.CancellationTokenSource(30000));
+            Console.WriteLine("TOUR mavftp /: " + string.Join(", ", entries.Select(a => a.Name)));
+            if (entries.Count == 0)
+                throw new Exception("empty listing");
+        });
+        if (IsMac)
+            Step("feature:mavftp-mount", () =>
+            {
+                var ftp = new MissionPlanner.ArduPilot.Mavlink.MAVFtp(MainV2.comPort, (byte) MainV2.comPort.sysidcurrent, (byte) MainV2.comPort.compidcurrent);
+                var dir = Path.Combine(Path.GetTempPath(), "mavftp-" + Guid.NewGuid().ToString("N").Substring(0, 8));
+                MissionPlanner.ArduPilot.Mavlink.MavFtpWebDav.Mount(ftp, dir);
+                try
+                {
+                    var entries = Directory.GetFileSystemEntries(dir);
+                    Console.WriteLine("TOUR mounted: " + string.Join(", ", entries.Select(Path.GetFileName)));
+                    if (entries.Length == 0)
+                        throw new Exception("mounted folder is empty");
+                    var file = Directory.GetFiles(dir, "*", SearchOption.AllDirectories).FirstOrDefault();
+                    if (file != null)
+                        Console.WriteLine("TOUR read " + file + ": " + File.ReadAllBytes(file).Length + " bytes");
+                    File.WriteAllText(Path.Combine(dir, "mp-test.txt"), "written through WebDAV");
+                    if (File.ReadAllText(Path.Combine(dir, "mp-test.txt")) != "written through WebDAV")
+                        throw new Exception("write/read back mismatch");
+                    File.Delete(Path.Combine(dir, "mp-test.txt"));
+                }
+                finally
+                {
+                    MissionPlanner.ArduPilot.Mavlink.MavFtpWebDav.Unmount();
+                }
+            });
+        Step("feature:log-list", () =>
+        {
+            var logs = MainV2.comPort.GetLogList();
+            Console.WriteLine("TOUR onboard logs: " + logs.Count);
+        });
+        Step("feature:arm-takeoff", () =>
+        {
+            MainV2.comPort.setMode("GUIDED");
+            var sw = Stopwatch.StartNew();
+            bool armed = false;
+            while (!armed && sw.ElapsedMilliseconds < 120000)
+            {
+                armed = MainV2.comPort.doARM(true);
+                if (!armed)
+                    Wait(3000);
+            }
+            if (!armed)
+                throw new Exception("could not arm: " + MainV2.comPort.MAV.cs.messageHigh);
+            if (!MainV2.comPort.doCommand(MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 10))
+                throw new Exception("takeoff rejected");
+            sw.Restart();
+            while (MainV2.comPort.MAV.cs.alt < 5 && sw.ElapsedMilliseconds < 60000)
+                Wait(500);
+            Console.WriteLine("TOUR altitude: " + MainV2.comPort.MAV.cs.alt);
+            if (MainV2.comPort.MAV.cs.alt < 5)
+                throw new Exception("did not climb");
+            MainV2.instance.MenuFlightData.PerformClick();
+            Wait(3000);
+            Screenshot("flying");
+            MainV2.comPort.setMode("LAND");
+        });
     }
 
     private static void Connect(string connect)
