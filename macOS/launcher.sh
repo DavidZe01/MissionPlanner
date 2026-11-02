@@ -86,7 +86,7 @@ mono_config_src="$mono_prefix/etc/mono/config"
 [[ -f $mono_config_src ]] || fail "Mono's configuration was not found at $mono_config_src"
 mono_config="$cache_dir/mono-config"
 # Extra mappings for native libraries the managed code names by Linux sonames.
-maps=()
+maps=("libdl.so=/usr/lib/libSystem.B.dylib")
 [[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
 for gst_lib in /opt/homebrew/lib /usr/local/lib /Library/Frameworks/GStreamer.framework/Versions/1.0/lib; do
     if [[ -f $gst_lib/libgstreamer-1.0.0.dylib && -f $gst_lib/libgstapp-1.0.0.dylib ]]; then
@@ -114,6 +114,9 @@ if [[ -x $contents/Resources/sitl/ArduCopter ]]; then
     export MISSIONPLANNER_SITL_DIR="$contents/Resources/sitl"
 fi
 export MONO_MWF_MAC_FORCE_X11=1
+# Mono's X input method code frees memory owned by Xlib (XGetIMValues), which
+# macOS's allocator aborts on. Keyboard input works without XIM.
+export MONO_WINFORMS_XIM_STYLE=${MONO_WINFORMS_XIM_STYLE:-disabled}
 export MONO_PATH="$mono_prefix/lib/mono/4.5/Facades${MONO_PATH:+:$MONO_PATH}"
 export DYLD_FALLBACK_LIBRARY_PATH="$app_dir:$frameworks:$mono_prefix/lib:/opt/homebrew/lib:/usr/local/lib:/opt/X11/lib:/usr/lib"
 export PATH="$mono_prefix/bin:$PATH"
