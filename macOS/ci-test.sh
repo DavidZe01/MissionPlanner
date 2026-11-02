@@ -35,6 +35,8 @@ for _ in $(seq 1 50); do [[ -S /tmp/.X11-unix/X99 ]] && break; sleep 0.2; done
 } > "$out/environment.txt" 2>&1
 
 status=0
+part=${CI_TEST_PART:-all}
+if [[ $part == offline || $part == all ]]; then
 run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
 grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
 grep SMOKE_RUNTIME "$out/smoke.log" || true
@@ -59,7 +61,9 @@ run_tour() { # name [connection]
 }
 
 run_tour tour
+fi
 
+if [[ $part == connected || $part == all ]]; then
 # Same tour connected to the bundled native simulator (ArduCopter SITL).
 sitl_dir="$app/Contents/Resources/sitl"
 if [[ -x $sitl_dir/ArduCopter ]]; then
@@ -78,6 +82,7 @@ if [[ -x $sitl_dir/ArduCopter ]]; then
     kill "$sitl_pid" 2>/dev/null
 else
     echo "SITL: not bundled"
+fi
 fi
 cp -R "$HOME/Library/Logs/MissionPlanner" "$out/logs" 2>/dev/null || true
 cp "$app/Contents/Resources/app/BUILD-INFO.txt" "$out/" 2>/dev/null || true
