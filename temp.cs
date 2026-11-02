@@ -994,6 +994,12 @@ namespace MissionPlanner
 
         private void but_3dmap_Click(object sender, EventArgs e)
         {
+            // creating an OpenGL context where GLX has no usable renderer aborts the process
+            if (!MissionPlanner.Controls.HUD.OpenGLUsable)
+            {
+                CustomMessageBox.Show("OpenGL is not available on this display.", Strings.ERROR);
+                return;
+            }
             var ogl = new OpenGLtest2();
             var frm = ogl.ShowUserControl();
         }

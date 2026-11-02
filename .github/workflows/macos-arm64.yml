@@ -6,6 +6,11 @@ on:
     paths-ignore: ['ci-results/**']
   workflow_dispatch:
 
+concurrency:
+  # a newer push supersedes the runs still testing older commits
+  group: macos-arm64-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

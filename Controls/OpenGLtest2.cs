@@ -99,6 +99,14 @@ namespace MissionPlanner.Controls
 
         public List<Locationwp> WPs { get; set; }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            // creating an OpenGL context where GLX has no usable renderer aborts the process
+            if (!MissionPlanner.Controls.HUD.OpenGLUsable)
+                return;
+            base.OnHandleCreated(e);
+        }
+
         public OpenGLtest2() : base()
         {
             instance = this;

@@ -57,6 +57,14 @@ namespace MissionPlanner.Controls
 
         public MissionPlanner.Utilities.Vector3 rpy = new MissionPlanner.Utilities.Vector3();
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            // creating an OpenGL context where GLX has no usable renderer aborts the process
+            if (!MissionPlanner.Controls.HUD.OpenGLUsable)
+                return;
+            base.OnHandleCreated(e);
+        }
+
         public OpenGLtest()
         {
             instance = this;
