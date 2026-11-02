@@ -44,7 +44,7 @@ run_tour() { # name [connection]
     # a step that hangs ends the run (TOUR HANG); the next run resumes after it
     for attempt in 1 2 3 4 5 6; do
         TOUR_OUT="$dir" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${2:-} \
-            TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
+            TOUR_SKIP=${TOUR_SKIP-} \
             run_limited 1800 "$launcher" --tour >> "$dir.log" 2>&1
         grep -q '^TOUR_DONE' "$dir.log" && break
     done
