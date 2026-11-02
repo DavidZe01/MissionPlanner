@@ -89,6 +89,7 @@ mono_config="$cache_dir/mono-config"
 maps=("libdl.so=/usr/lib/libSystem.B.dylib")
 [[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
 [[ -f $frameworks/libsimplecble.dylib ]] && maps+=("simpleble-c.dll=$frameworks/libsimplecble.dylib")
+[[ -f $frameworks/libuser32stub.dylib ]] && maps+=("user32.dll=$frameworks/libuser32stub.dylib" "user32=$frameworks/libuser32stub.dylib")
 # OpenTK (OpenGL HUD, 3D views) through GLX and the X extensions of XQuartz.
 x11_lib=/opt/X11/lib
 for pair in "libGL.so.1=libGL.1.dylib" "libGL=libGL.1.dylib" "opengl32.dll=libGL.1.dylib" "glu32.dll=libGLU.1.dylib" \

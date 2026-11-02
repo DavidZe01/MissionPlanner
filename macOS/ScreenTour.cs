@@ -506,7 +506,9 @@ class ScreenTour
             if (entries.Count == 0)
                 throw new Exception("empty listing");
         });
-        if (IsMac)
+        // The mount itself is tested by Probe.exe in a separate process: here the
+        // server and the reader would share one process, which can block it.
+        if (IsMac && Environment.GetEnvironmentVariable("TOUR_MOUNT") == "1")
             Step("feature:mavftp-mount", () =>
             {
                 var ftp = new MissionPlanner.ArduPilot.Mavlink.MAVFtp(MainV2.comPort, (byte) MainV2.comPort.sysidcurrent, (byte) MainV2.comPort.compidcurrent);

@@ -116,6 +116,9 @@ if [[ -f $simpleble_build/out/libsimplecble.dylib ]]; then
     done
     otool -L "$app/Contents/Frameworks/libsimplecble.dylib" | sed 1d
 fi
+# No-op user32 functions for libraries that call them while painting.
+cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \
+    -o "$app/Contents/Frameworks/libuser32stub.dylib" "$mac_dir/user32stub.c"
 # SDL2 for joysticks (IOKit HID); it only links system frameworks.
 sdl2=$(brew --prefix sdl2 2>/dev/null)/lib/libSDL2-2.0.0.dylib
 if [[ -f $sdl2 ]]; then
