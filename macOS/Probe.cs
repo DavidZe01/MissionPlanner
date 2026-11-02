@@ -18,6 +18,10 @@ class Probe
 {
     static int frames;
 
+    // Environment.Exit waits for threads blocked in native code (e.g. GStreamer)
+    [System.Runtime.InteropServices.DllImport("libc", EntryPoint = "_exit")]
+    static extern void Exit(int status);
+
     static void OnFrame(object sender, object image)
     {
         if (image != null)
@@ -27,22 +31,23 @@ class Probe
     static bool Run(string name, Action action, int timeoutMs = 60000)
     {
         var sw = Stopwatch.StartNew();
-        var task = Task.Run(action);
-        try
+        Exception error = null;
+        var thread = new Thread(() =>
         {
-            if (!task.Wait(timeoutMs))
-            {
-                Console.WriteLine("PROBE HANG " + name + " after " + timeoutMs / 1000 + " s");
-                return false;
-            }
-            Console.WriteLine("PROBE OK   " + name + " (" + sw.ElapsedMilliseconds + " ms)");
-            return true;
-        }
-        catch (AggregateException ex)
-        {
-            Console.WriteLine("PROBE FAIL " + name + ": " + ex.InnerException);
-            return false;
-        }
+            try { action(); }
+            catch (Exception ex) { error = ex; }
+        }) { IsBackground = true, Name = "probe " + name };
+        thread.Start();
+        string result;
+        if (!thread.Join(timeoutMs))
+            result = "PROBE HANG " + name + " after " + timeoutMs / 1000 + " s";
+        else if (error != null)
+            result = "PROBE FAIL " + name + ": " + error;
+        else
+            result = "PROBE OK   " + name + " (" + sw.ElapsedMilliseconds + " ms)";
+        Console.WriteLine(result);
+        Console.Out.Flush();
+        return result.StartsWith("PROBE OK");
     }
 
     static int Main(string[] args)
@@ -109,6 +114,16 @@ class Probe
                                           (body.Split(new[] { "<D:href>" }, StringSplitOptions.None).Length - 1) + " entries");
                     }
                 }
+                var get = (HttpWebRequest)WebRequest.Create(server.Url + "mp-probe.txt");
+                get.Timeout = 30000;
+                using (var res = (HttpWebResponse)get.GetResponse())
+                using (var sr = new StreamReader(res.GetResponseStream()))
+                {
+                    var text = sr.ReadToEnd().Trim();
+                    Console.WriteLine("GET mp-probe.txt " + (int)res.StatusCode + ": " + text);
+                    if (text != "mission planner probe")
+                        throw new Exception("unexpected content");
+                }
             });
             server?.Close();
             ok &= Run("webdav-mount", () =>
@@ -128,7 +143,7 @@ class Probe
 
         Console.WriteLine(ok ? "PROBE_PASS" : "PROBE_FAIL");
         Console.Out.Flush();
-        Environment.Exit(ok ? 0 : 1);
+        Exit(ok ? 0 : 1);
         return 0;
     }
 }

@@ -175,7 +175,67 @@ namespace MissionPlanner.Controls
 
         public int huddrawtime = 0;
 
-        [DefaultValue(true)] public bool opengl { get; set; }
+        private bool _opengl = true;
+
+        /// <summary>Draw with OpenGL (otherwise GDI+). Stays off where OpenGL is unusable.</summary>
+        [DefaultValue(true)]
+        public bool opengl
+        {
+            get { return _opengl; }
+            set { _opengl = value && OpenGLUsable; }
+        }
+
+        private static bool? _openGLUsable;
+
+        /// <summary>
+        /// On macOS the HUD's OpenGL goes through XQuartz's GLX. Where it has no usable
+        /// renderer (e.g. a virtual machine without a GPU) creating a context aborts the
+        /// whole process, so ask XQuartz's glxinfo in a separate process first.
+        /// </summary>
+        public static bool OpenGLUsable
+        {
+            get
+            {
+                if (_openGLUsable.HasValue)
+                    return _openGLUsable.Value;
+                _openGLUsable = true;
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    return true;
+                try
+                {
+                    var glxinfo = "/opt/X11/bin/glxinfo";
+                    var psi = new System.Diagnostics.ProcessStartInfo(glxinfo, "-B")
+                    {
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true
+                    };
+                    using (var p = System.Diagnostics.Process.Start(psi))
+                    {
+                        var output = p.StandardOutput.ReadToEndAsync();
+                        var error = p.StandardError.ReadToEndAsync();
+                        if (!p.WaitForExit(15000))
+                        {
+                            try { p.Kill(); } catch { }
+                            _openGLUsable = false;
+                        }
+                        else
+                        {
+                            var text = output.Result + error.Result;
+                            _openGLUsable = p.ExitCode == 0 && text.Contains("OpenGL renderer string") &&
+                                            !text.Contains("invalid pixel format") && !text.Contains("Error");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                    _openGLUsable = false;
+                }
+                log.Info("HUD OpenGL usable: " + _openGLUsable.Value);
+                return _openGLUsable.Value;
+            }
+        }
 
         [Browsable(false)] public bool npotSupported { get; private set; }
 
@@ -3757,6 +3817,9 @@ namespace MissionPlanner.Controls
                         opengl=false;
                     }
                 }
+
+                if (!OpenGLUsable)
+                    opengl = false;
 
                 if (opengl && !DesignMode)
                 {

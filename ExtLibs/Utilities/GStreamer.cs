@@ -1430,6 +1430,14 @@ namespace MissionPlanner.Utilities
             if (!File.Exists(gstdir))
                 return;
 
+            // A system GStreamer (Linux packages, Homebrew, the macOS framework) knows its
+            // plugin directory. Pointing GST_PLUGIN_PATH at e.g. /opt/homebrew/lib would
+            // make it load every library there as a plugin; the variables below are for
+            // the self-contained Windows distribution only.
+            if (Environment.OSVersion.Platform == PlatformID.Unix &&
+                (gstdir.StartsWith("/usr/") || gstdir.StartsWith("/opt/") || gstdir.StartsWith("/Library/")))
+                return;
+
             gstdir = Path.GetDirectoryName(gstdir);
             gstdir = Path.GetDirectoryName(gstdir);
 

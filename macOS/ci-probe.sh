@@ -30,12 +30,13 @@ grep -E '^PROBE|frames:' "$out/probe-gstreamer.log" || true
 
 sitl_dir="$app/Contents/Resources/sitl"
 simdir=$(mktemp -d)
+echo "mission planner probe" > "$simdir/mp-probe.txt"
 (cd "$simdir" && exec "$sitl_dir/ArduCopter" -Mquad -O-35.363261,149.165230,584,353 -s1 \
     --serial0 tcp:0 --defaults "$sitl_dir/copter.parm" > "$out/sitl.log" 2>&1) &
 sitl=$!
 sleep 8
 DISPLAY=:98 run_limited 400 "$launcher" --probe vehicle 127.0.0.1:5760 > "$out/probe-vehicle.log" 2>&1
-grep -E '^PROBE|^/:|^serving|^(OPTIONS|PROPFIND) |^mounted' "$out/probe-vehicle.log" || true
+grep -E '^PROBE|^/:|^serving|^(OPTIONS|PROPFIND|GET) |^mounted' "$out/probe-vehicle.log" || true
 kill "$sitl" 2>/dev/null
 kill "$xvfb" 2>/dev/null
 
