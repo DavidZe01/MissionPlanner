@@ -31,6 +31,7 @@ for _ in $(seq 1 50); do [[ -S /tmp/.X11-unix/X99 ]] && break; sleep 0.2; done
     file "$app/Contents/Frameworks/libgdiplus.0.dylib" "$app/Contents/Resources/app/libSkiaSharp.dylib"
     otool -L "$app/Contents/Frameworks/libgdiplus.0.dylib"
     ls -la "$app/Contents/Frameworks"
+    ls -d /opt/X11/etc/fonts /opt/X11/lib/X11/fontconfig /opt/homebrew/etc/fonts 2>&1
 } > "$out/environment.txt" 2>&1
 
 status=0

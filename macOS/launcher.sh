@@ -128,8 +128,16 @@ export MONO_WINFORMS_XIM_STYLE=${MONO_WINFORMS_XIM_STYLE:-disabled}
 export MONO_PATH="$mono_prefix/lib/mono/4.5/Facades${MONO_PATH:+:$MONO_PATH}"
 export DYLD_FALLBACK_LIBRARY_PATH="$app_dir:$frameworks:$mono_prefix/lib:/opt/homebrew/lib:/usr/local/lib:/opt/X11/lib:/usr/lib"
 export PATH="$mono_prefix/bin:$PATH"
-export FONTCONFIG_PATH=${FONTCONFIG_PATH:-/opt/X11/lib/X11/fontconfig}
-[[ -d $FONTCONFIG_PATH ]] || unset FONTCONFIG_PATH
+# The bundled fontconfig needs a configuration: XQuartz's (always installed)
+# or Homebrew's. Both list the macOS font folders.
+if [[ -z ${FONTCONFIG_PATH:-} ]]; then
+    for fc in /opt/X11/etc/fonts /opt/X11/lib/X11/fontconfig /opt/homebrew/etc/fonts /usr/local/etc/fonts; do
+        if [[ -f $fc/fonts.conf ]]; then
+            export FONTCONFIG_PATH=$fc
+            break
+        fi
+    done
+fi
 
 cd -- "$app_dir"
 {
