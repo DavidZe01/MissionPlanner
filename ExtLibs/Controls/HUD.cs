@@ -199,6 +199,12 @@ namespace MissionPlanner.Controls
                 if (_openGLUsable.HasValue)
                     return _openGLUsable.Value;
                 _openGLUsable = true;
+                // MISSIONPLANNER_NO_OPENGL forces GDI+ drawing (e.g. broken OpenGL drivers)
+                if (Environment.GetEnvironmentVariable("MISSIONPLANNER_NO_OPENGL") != null)
+                {
+                    _openGLUsable = false;
+                    return false;
+                }
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     return true;
                 try

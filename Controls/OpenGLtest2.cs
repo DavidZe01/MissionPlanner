@@ -99,16 +99,11 @@ namespace MissionPlanner.Controls
 
         public List<Locationwp> WPs { get; set; }
 
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            // creating an OpenGL context where GLX has no usable renderer aborts the process
-            if (!MissionPlanner.Controls.HUD.OpenGLUsable)
-                return;
-            base.OnHandleCreated(e);
-        }
-
         public OpenGLtest2() : base()
         {
+            // without a usable OpenGL renderer creating the context aborts the process (GLX)
+            if (!MissionPlanner.Controls.HUD.OpenGLUsable)
+                throw new NotSupportedException("OpenGL is not available on this display");
             instance = this;
             InitializeComponent();
             Click += OnClick;
