@@ -4,8 +4,8 @@ set -euo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 if [[ -f "$script_dir/MissionPlanner.exe" ]]; then
     app_dir=$script_dir
-elif [[ -f "$script_dir/../bin/linux/MissionPlanner-linux-x86_64/MissionPlanner.exe" ]]; then
-    app_dir="$script_dir/../bin/linux/MissionPlanner-linux-x86_64"
+elif [[ -f "$script_dir/../bin/linux/MissionPlanner-linux-$(uname -m)/MissionPlanner.exe" ]]; then
+    app_dir="$script_dir/../bin/linux/MissionPlanner-linux-$(uname -m)"
 else
     echo 'MissionPlanner.exe not found. Run Linux/build.sh or extract the complete Linux archive.' >&2
     exit 1
@@ -14,10 +14,16 @@ if ! command -v mono >/dev/null; then
     echo 'Mono runtime is required. See README.md for the runtime-only installation command.' >&2
     exit 1
 fi
-if [[ $(uname -m) != x86_64 ]]; then
-    echo 'This download is built for Linux x86_64.' >&2
+host_arch=$(uname -m)
+package_arch=$(cat -- "$app_dir/ARCH" 2>/dev/null || echo x86_64)
+if [[ $host_arch != "$package_arch" ]]; then
+    echo "This download is built for Linux $package_arch, but this machine is $host_arch." >&2
     exit 1
 fi
+case $package_arch in
+    aarch64) native_dir=arm64; rid=linux-arm64 ;;
+    *) native_dir=x64; rid=linux-x64 ;;
+esac
 if [[ -z ${DISPLAY:-} ]]; then
     echo 'An X11 display is required (use XWayland on a Wayland desktop).' >&2
     exit 1
@@ -30,7 +36,7 @@ export MONO_PATH="$PWD/mono-facades${MONO_PATH:+:$MONO_PATH}"
 # Ubuntu's legacy GTK overlay-scrollbar module can crash Mono WinForms at startup.
 export LIBOVERLAY_SCROLLBAR=0
 export GTK_MODULES=
-export LD_LIBRARY_PATH="$PWD:$PWD/x64:$PWD/runtimes/linux-x64/native${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="$PWD:$PWD/$native_dir:$PWD/runtimes/$rid/native${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 if [[ ${1:-} == --self-test ]]; then
     shift
     exec mono LinuxSmokeTest.exe "$@"

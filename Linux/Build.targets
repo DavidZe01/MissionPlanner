@@ -4,6 +4,11 @@
     <TargetFrameworks Condition="$([System.String]::Copy('$(TargetFrameworks)').Contains('net472'))">net472</TargetFrameworks>
     <TargetFrameworks Condition="$([System.String]::Copy('$(TargetFrameworks)').Contains('net461'))">net472</TargetFrameworks>
     <TargetFrameworks Condition="$([System.String]::Copy('$(TargetFrameworks)').Contains('netstandard2.0'))">netstandard2.0</TargetFrameworks>
+    <!-- Native runtime packaged for Linux: linux-x64 (default) or linux-arm64.
+         Managed code is AnyCPU IL and is JIT-compiled natively by Mono on either. -->
+    <MissionPlannerLinuxRid Condition="'$(MissionPlannerLinuxRid)' == ''">linux-x64</MissionPlannerLinuxRid>
+    <MissionPlannerLinuxNativeDir Condition="'$(MissionPlannerLinuxRid)' == 'linux-x64'">x64</MissionPlannerLinuxNativeDir>
+    <MissionPlannerLinuxNativeDir Condition="'$(MissionPlannerLinuxRid)' == 'linux-arm64'">arm64</MissionPlannerLinuxNativeDir>
   </PropertyGroup>
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
     <!-- Match the application's managed SkiaSharp version. -->
@@ -15,7 +20,9 @@
   <!-- The package's desktop targets copy glibc and musl to the same path.
        Select glibc explicitly for the Ubuntu/Debian download. -->
   <Target Name="CopyLinuxSkia" AfterTargets="Build" Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
-    <Copy SourceFiles="$(PkgSkiaSharp_NativeAssets_Linux_NoDependencies)/runtimes/linux-x64/native/libSkiaSharp.so"
-          DestinationFiles="$(TargetDir)x64/libSkiaSharp.so" />
+    <Error Condition="'$(MissionPlannerLinuxNativeDir)' == ''"
+           Text="Unsupported MissionPlannerLinuxRid '$(MissionPlannerLinuxRid)'. Use linux-x64 or linux-arm64." />
+    <Copy SourceFiles="$(PkgSkiaSharp_NativeAssets_Linux_NoDependencies)/runtimes/$(MissionPlannerLinuxRid)/native/libSkiaSharp.so"
+          DestinationFiles="$(TargetDir)$(MissionPlannerLinuxNativeDir)/libSkiaSharp.so" />
   </Target>
 </Project>

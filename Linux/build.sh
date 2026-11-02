@@ -5,8 +5,10 @@ linux_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source_dir=$(dirname -- "$linux_dir")
 if [[ ${1:-} == --help ]]; then
     echo 'Usage: Linux/build.sh [dotnet build options]'
-    echo 'Builds Release and writes bin/linux/MissionPlanner-linux-x86_64.tar.gz.'
+    echo 'Builds Release and writes bin/linux/MissionPlanner-linux-<arch>.tar.gz.'
     echo 'Requires .NET SDK 10, mono-devel, rsync, tar and gzip. No submodules are needed.'
+    echo 'Architecture defaults to the host (x86_64 or aarch64); set MP_LINUX_ARCH to'
+    echo 'package for the other one. Managed code is AnyCPU, only native libraries differ.'
     exit 0
 fi
 for tool in dotnet mono mcs rsync tar gzip sha256sum; do
@@ -15,10 +17,12 @@ for tool in dotnet mono mcs rsync tar gzip sha256sum; do
         exit 1
     fi
 done
-if [[ $(uname -m) != x86_64 ]]; then
-    echo 'This package currently targets Linux x86_64.' >&2
-    exit 1
-fi
+arch=${MP_LINUX_ARCH:-$(uname -m)}
+case $arch in
+    x86_64|amd64) arch=x86_64; rid=linux-x64; native_dir=x64; other_native_dir=arm64 ;;
+    aarch64|arm64) arch=aarch64; rid=linux-arm64; native_dir=arm64; other_native_dir=x64 ;;
+    *) echo "Unsupported architecture: $arch (use x86_64 or aarch64)." >&2; exit 1 ;;
+esac
 mono_posix=${MONO_POSIX_PATH:-/usr/lib/mono/4.5/Mono.Posix.dll}
 if [[ ! -f $mono_posix ]]; then
     echo "Mono.Posix not found: $mono_posix (install mono-devel or set MONO_POSIX_PATH)." >&2
@@ -37,7 +41,7 @@ cd -- "$source_dir"
 dotnet build MissionPlanner.csproj --configuration Release \
     -p:MissionPlannerLinuxBuild=true -p:EnableWindowsTargeting=true \
     "-p:DirectoryBuildTargetsPath=$linux_dir/Build.targets" \
-    "-p:MonoPosixPath=$mono_posix" "$@"
+    "-p:MonoPosixPath=$mono_posix" "-p:MissionPlannerLinuxRid=$rid" "$@"
 
 app_dir="$source_dir/bin/Release/net461"
 mono "$app_dir/version.exe" "$app_dir/MissionPlanner.exe" > "$app_dir/version.txt"
@@ -60,15 +64,16 @@ mcs -out:"$app_dir/LinuxSmokeTest.exe" \
     -r:"$mono_facades/netstandard.dll" "$linux_dir/SmokeTest.cs"
 cp -- "$app_dir/MissionPlanner.exe.config" "$app_dir/LinuxSmokeTest.exe.config"
 
-package_name=MissionPlanner-linux-x86_64
+package_name=MissionPlanner-linux-$arch
 output_dir="$source_dir/bin/linux"
 package_dir="$output_dir/$package_name"
 mkdir -p -- "$package_dir"
 # Copy a runnable application, excluding Windows installers/native backends and
 # build diagnostics. Keep plugins and managed dependencies, including Roslyn.
+# Only the Linux native libraries of the target architecture are kept.
 rsync -a --delete \
-    --exclude='/Drivers/' --exclude='/gdal/' --exclude='/x86/' \
-    --exclude='/x64/*.dll' --exclude='/arm/' --exclude='/arm64/' --exclude='*.dylib' \
+    --exclude='/Drivers/' --exclude='/gdal/' --exclude='/x86/' --exclude='/arm/' \
+    --exclude="/$other_native_dir/" --exclude="/$native_dir/*.dll" --exclude='*.dylib' \
     --exclude='*.pdb' --exclude='*.mdb' --exclude='*.log' \
     "$app_dir/" "$package_dir/"
 # Ubuntu ships these runtime forwarding assemblies in mono-devel. Bundle them
@@ -91,6 +96,7 @@ fi
 cp -- "$linux_dir/run.sh" "$package_dir/run.sh"
 cp -- "$linux_dir/README.md" "$package_dir/README.md"
 cp -- COPYING.txt "$package_dir/COPYING.txt"
+echo "$arch" > "$package_dir/ARCH"
 chmod +x "$package_dir/run.sh"
 
 revision=$(git rev-parse HEAD 2>/dev/null || echo unknown)
@@ -101,6 +107,7 @@ if [[ -n $(git status --porcelain --untracked-files=normal 2>/dev/null) ]]; then
     echo "Working tree modified: $dirty"
     echo "Source: https://github.com/${GITHUB_REPOSITORY:-ArduPilot/MissionPlanner}/tree/$revision"
     echo "Built UTC: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo "Architecture: $arch ($rid)"
     echo "SDK: $(dotnet --version)"
     head -n 1 < <(mono --version)
 } > "$package_dir/BUILD-INFO.txt"
