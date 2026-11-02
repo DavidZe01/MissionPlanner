@@ -90,6 +90,30 @@ namespace MissionPlanner
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+        /// <summary>
+        /// On macOS, Mono's Windows Forms draws through X11 (XQuartz), but OpenTK picks
+        /// its Cocoa/Carbon backends whenever it detects macOS, which cannot use X11
+        /// windows (and abort the process). Make OpenTK take its X11/GLX path, as on
+        /// Linux, before the first GLControl (the HUD) initialises it.
+        /// </summary>
+        private static void UseOpenTKX11OnMacOS()
+        {
+            if (!MONO || !RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                return;
+            try
+            {
+                typeof(OpenTK.Configuration)
+                    .GetField("runningOnMacOS", BindingFlags.Static | BindingFlags.NonPublic)
+                    .SetValue(null, false);
+                OpenTK.Toolkit.Init(new OpenTK.ToolkitOptions { Backend = OpenTK.PlatformBackend.PreferX11 });
+                log.Info("OpenTK: X11 backend, X11 available = " + OpenTK.Configuration.RunningOnX11);
+            }
+            catch (Exception ex)
+            {
+                log.Error("OpenTK X11 setup failed", ex);
+            }
+        }
+
         public static void Main(string[] args)
         {
             Start(args);
@@ -244,6 +268,8 @@ namespace MissionPlanner
 
             if (File.Exists(Settings.GetRunningDirectory() + "splashbg.png")) // 600*375
                 SplashBG = new Bitmap(Settings.GetRunningDirectory() + "splashbg.png");
+
+            UseOpenTKX11OnMacOS();
 
             try
             {

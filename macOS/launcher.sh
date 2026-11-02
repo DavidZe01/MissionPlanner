@@ -89,6 +89,13 @@ mono_config="$cache_dir/mono-config"
 maps=("libdl.so=/usr/lib/libSystem.B.dylib")
 [[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
 [[ -f $frameworks/libsimplecble.dylib ]] && maps+=("simpleble-c.dll=$frameworks/libsimplecble.dylib")
+# OpenTK (OpenGL HUD, 3D views) through GLX and the X extensions of XQuartz.
+x11_lib=/opt/X11/lib
+for pair in "libGL.so.1=libGL.1.dylib" "libGL=libGL.1.dylib" "opengl32.dll=libGL.1.dylib" "glu32.dll=libGLU.1.dylib" \
+    "libXi=libXi.6.dylib" "libXcursor.so.1=libXcursor.1.dylib" "libXinerama=libXinerama.1.dylib" \
+    "libXrandr.so.2=libXrandr.2.dylib" "libXxf86vm=libXxf86vm.1.dylib" "libXext=libXext.6.dylib"; do
+    [[ -f $x11_lib/${pair#*=} ]] && maps+=("${pair%%=*}=$x11_lib/${pair#*=}")
+done
 for gst_lib in /opt/homebrew/lib /usr/local/lib /Library/Frameworks/GStreamer.framework/Versions/1.0/lib; do
     if [[ -f $gst_lib/libgstreamer-1.0.0.dylib && -f $gst_lib/libgstapp-1.0.0.dylib ]]; then
         maps+=("libgstreamer-1.0.so.0=$gst_lib/libgstreamer-1.0.0.dylib" "libgstapp-1.0.so.0=$gst_lib/libgstapp-1.0.0.dylib")

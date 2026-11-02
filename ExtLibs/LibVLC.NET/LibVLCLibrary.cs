@@ -48,23 +48,85 @@ namespace LibVLC.NET
     #region WIN32 API
 
     //==========================================================================
-    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    [DllImport("kernel32.dll", EntryPoint = "SetDllDirectory", CharSet = CharSet.Unicode, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool SetDllDirectory(string lpPathName);
+    private static extern bool Win32SetDllDirectory(string lpPathName);
 
     //==========================================================================
-    [DllImport("kernel32", SetLastError = true)]
-    private static extern IntPtr LoadLibrary(string lpFileName);
+    [DllImport("kernel32", EntryPoint = "LoadLibrary", SetLastError = true)]
+    private static extern IntPtr Win32LoadLibrary(string lpFileName);
 
     //==========================================================================
-    [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-    private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+    [DllImport("kernel32", EntryPoint = "GetProcAddress", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+    private static extern IntPtr Win32GetProcAddress(IntPtr hModule, string procName);
 
     //==========================================================================
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool FreeLibrary(IntPtr hModule);
+    [DllImport("kernel32.dll", EntryPoint = "FreeLibrary", SetLastError = true)]
+    private static extern bool Win32FreeLibrary(IntPtr hModule);
 
     #endregion // WIN32 API
+
+    #region POSIX (macOS, Linux)
+
+    // dlopen/dlsym are in libc on glibc 2.34+ and in libSystem on macOS.
+    [DllImport("libc", EntryPoint = "dlopen")]
+    private static extern IntPtr posix_dlopen(string fileName, int flags);
+
+    [DllImport("libc", EntryPoint = "dlsym")]
+    private static extern IntPtr posix_dlsym(IntPtr handle, string symbol);
+
+    [DllImport("libc", EntryPoint = "dlclose")]
+    private static extern int posix_dlclose(IntPtr handle);
+
+    private const int RTLD_NOW = 2;
+    private const int RTLD_GLOBAL_LINUX = 0x100;
+    private const int RTLD_GLOBAL_MAC = 0x8;
+
+    private static readonly bool IsWindows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+    private static readonly bool IsMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+    // Name of the libvlc library on this platform.
+    private static string LibVLCFileName
+    {
+      get { return IsWindows ? "libvlc.dll" : IsMac ? "libvlc.dylib" : "libvlc.so.5"; }
+    }
+
+    private static bool SetDllDirectory(string lpPathName)
+    {
+      if(IsWindows)
+        return Win32SetDllDirectory(lpPathName);
+      // VLC finds its modules through VLC_PLUGIN_PATH outside Windows.
+      if(lpPathName != null)
+      {
+        foreach(var plugins in new[] { Path.Combine(lpPathName, "plugins"), Path.Combine(lpPathName, "..", "plugins"), Path.Combine(lpPathName, "vlc", "plugins") })
+          if(System.IO.Directory.Exists(plugins))
+          {
+            Environment.SetEnvironmentVariable("VLC_PLUGIN_PATH", Path.GetFullPath(plugins));
+            break;
+          }
+      }
+      return true;
+    }
+
+    private static IntPtr LoadLibrary(string lpFileName)
+    {
+      if(IsWindows)
+        return Win32LoadLibrary(lpFileName);
+      var path = Path.Combine(Path.GetDirectoryName(lpFileName), LibVLCFileName);
+      return posix_dlopen(path, RTLD_NOW | (IsMac ? RTLD_GLOBAL_MAC : RTLD_GLOBAL_LINUX));
+    }
+
+    private static IntPtr GetProcAddress(IntPtr hModule, string procName)
+    {
+      return IsWindows ? Win32GetProcAddress(hModule, procName) : posix_dlsym(hModule, procName);
+    }
+
+    private static bool FreeLibrary(IntPtr hModule)
+    {
+      return IsWindows ? Win32FreeLibrary(hModule) : posix_dlclose(hModule) == 0;
+    }
+
+    #endregion // POSIX
 
     //==========================================================================
     private IntPtr m_Handle;
@@ -407,9 +469,15 @@ namespace LibVLC.NET
                       entry_assembly_path,
                       current_directory_path,
                       program_files_path1,
-                      program_files_path
+                      program_files_path,
+                      // macOS: the VLC application bundle
+                      "/Applications/VLC.app/Contents/MacOS/lib",
+                      // Linux: libvlc5 from the distribution
+                      "/usr/lib/x86_64-linux-gnu",
+                      "/usr/lib/aarch64-linux-gnu",
+                      "/usr/lib"
                   })
-                  if(System.IO.Directory.Exists(directory))
+                  if(System.IO.Directory.Exists(directory) && (IsWindows || File.Exists(Path.Combine(directory, LibVLCFileName))))
                       try
                       {
                           m_DefaultLibraryHandle = GetOrLoadLibrary(directory);

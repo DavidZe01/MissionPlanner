@@ -125,9 +125,26 @@ if [[ -f $sdl2 ]]; then
 else
     echo 'SDL2 not found (brew install sdl2): joysticks will be unavailable.' >&2
 fi
-if [[ ! -f $app/Contents/Frameworks/libX11.6.dylib ]]; then
-    echo 'libX11 was not bundled with libgdiplus.' >&2
-    exit 1
+# Use XQuartz's X client libraries instead of Homebrew's copies. Mono's Windows
+# Forms, cairo/libgdiplus and XQuartz's libGL (used by the OpenGL HUD) then
+# share one libX11, so they can share one X display connection.
+x11_lib=/opt/X11/lib
+[[ -f $x11_lib/libX11.6.dylib ]] || { echo "XQuartz is required to build ($x11_lib missing)." >&2; exit 1; }
+for lib in "$app/Contents/Frameworks/"*.dylib; do
+    chmod u+w "$lib"
+    for dep in $(otool -L "$lib" | awk 'NR > 1 {print $1}' | grep '^@loader_path/' || true); do
+        name=$(basename -- "$dep")
+        if [[ $name =~ ^lib(X|xcb) && -f $x11_lib/$name ]]; then
+            install_name_tool -change "$dep" "$x11_lib/$name" "$lib"
+        fi
+    done
+done
+for lib in "$app/Contents/Frameworks/"lib{X,xcb}*.dylib; do
+    [[ -f $lib && -f $x11_lib/$(basename -- "$lib") ]] && rm -f -- "$lib"
+done
+if otool -L "$app/Contents/Frameworks/"*.dylib | grep -q '@loader_path/lib\(X\|xcb\)'; then
+    echo 'Some X11 libraries could not be mapped to XQuartz:' >&2
+    otool -L "$app/Contents/Frameworks/"*.dylib | grep '@loader_path/lib\(X\|xcb\)' >&2
 fi
 
 # Optional native SITL simulators (directory with ArduCopter, ArduPlane, ...).
