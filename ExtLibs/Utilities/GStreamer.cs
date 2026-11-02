@@ -1239,6 +1239,9 @@ namespace MissionPlanner.Utilities
             return list;
         }
 
+        /// <summary>Drop frames the consumer is too slow for (live video). False delivers every frame.</summary>
+        public bool DropFrames { get; set; } = true;
+
         public Thread Start(string stringpipeline)
         {
             Stop();
@@ -1314,8 +1317,9 @@ namespace MissionPlanner.Utilities
 
             if (appsink != IntPtr.Zero)
             {
-                NativeMethods.gst_app_sink_set_drop(appsink, true);
-                NativeMethods.gst_app_sink_set_max_buffers(appsink, 1);
+                NativeMethods.gst_app_sink_set_drop(appsink, DropFrames);
+                // live video keeps only the newest frame; file processing must not lose any
+                NativeMethods.gst_app_sink_set_max_buffers(appsink, DropFrames ? 1u : 4u);
                 log.Info("set appsink params ");
             }
 

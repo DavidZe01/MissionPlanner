@@ -167,6 +167,46 @@ class ScreenTour
             .OrderBy(t => t.FullName);
     }
 
+    private static IEnumerable<Type> FormTypes()
+    {
+        var asm = typeof(MainV2).Assembly;
+        Type[] types;
+        try { types = asm.GetTypes(); }
+        catch (ReflectionTypeLoadException ex) { types = ex.Types.Where(t => t != null).ToArray(); }
+        // the main window and startup/teardown forms are exercised by the tour itself
+        var skip = new[] { "MainV2", "Splash", "ScreenTour", "Program" };
+        return types.Where(t => t.IsClass && !t.IsAbstract && t.IsPublic && typeof(Form).IsAssignableFrom(t)
+                                && t.Namespace != null && t.Namespace.StartsWith("MissionPlanner")
+                                && !skip.Contains(t.Name)
+                                && t.GetConstructor(Type.EmptyTypes) != null)
+            .OrderBy(t => t.FullName);
+    }
+
+    private static void OpenForm(Type type)
+    {
+        Step("form:" + type.FullName, () =>
+        {
+            var form = (Form)Activator.CreateInstance(type);
+            try
+            {
+                form.StartPosition = FormStartPosition.Manual;
+                form.Left = 60;
+                form.Top = 60;
+                form.Show();
+                Wait(1000);
+                Screenshot("form-" + type.Name);
+            }
+            finally
+            {
+                if (!form.IsDisposed)
+                {
+                    form.Close();
+                    form.Dispose();
+                }
+            }
+        });
+    }
+
     private static void OpenPage(Type type)
     {
         Step("page:" + type.FullName, () =>
@@ -259,6 +299,16 @@ class ScreenTour
                     continue;
                 OpenPage(t);
             }
+            if (string.IsNullOrEmpty(only) && Environment.GetEnvironmentVariable("TOUR_FORMS") != "0")
+                foreach (var t in FormTypes())
+                {
+                    if (skip.Any(x => t.FullName.EndsWith(x.Trim())))
+                    {
+                        Record("form:" + t.FullName, false, 0, "SKIPPED (hangs the tour)");
+                        continue;
+                    }
+                    OpenForm(t);
+                }
 
             dialogKiller = new Timer { Interval = 3000 };
             dialogKiller.Tick += KillDialogs;

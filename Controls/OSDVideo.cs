@@ -182,6 +182,13 @@ namespace MissionPlanner.Controls
 
         private void StartCapture()
         {
+            // macOS/Linux: decode with GStreamer (DirectShow is Windows only)
+            if (MainV2.MONO)
+            {
+                StartCaptureGStreamer();
+                return;
+            }
+
             int hr;
 
             ISampleGrabber sampGrabber = null;
@@ -642,6 +649,14 @@ namespace MissionPlanner.Controls
 
             try
             {
+                if (MainV2.MONO)
+                {
+                    // managed MJPEG writer instead of the Windows AVI API
+                    avioutput = new AviWriter();
+                    avioutput.avi_start(System.IO.Path.GetDirectoryName(txtAviFileName.Text) + System.IO.Path.DirectorySeparatorChar +
+                        System.IO.Path.GetFileNameWithoutExtension(txtAviFileName.Text) + "-overlay.avi");
+                }
+                else
                 newManager =
                     new AviManager(
                         System.IO.Path.GetDirectoryName(txtAviFileName.Text) + System.IO.Path.DirectorySeparatorChar +
@@ -660,6 +675,113 @@ namespace MissionPlanner.Controls
 
             this.MaximumSize = this.Size;
             this.MinimumSize = this.Size;
+        }
+
+        // ---- GStreamer path (macOS, Linux) ----
+        private AviWriter avioutput;
+        private MissionPlanner.Utilities.GStreamer gstfile;
+        private const int GstFps = 25;
+
+        /// <summary>Show the logged state at a video time (the time-offset slider applies).</summary>
+        private void ApplyFlightData(DateTime when)
+        {
+            var at = when.AddSeconds(trackBar1.Value);
+            // flightdata is sampled every 100 ms
+            at = at.AddMilliseconds(-(at.Millisecond % 100)).AddTicks(-(at.Ticks % TimeSpan.TicksPerMillisecond));
+            for (int back = 0; back <= 1000; back += 100)
+            {
+                CurrentState cs;
+                if (flightdata.TryGetValue(at.AddMilliseconds(-back), out cs))
+                {
+                    hud1.datetime = cs.datetime;
+                    bindingSource1.DataSource = cs;
+                    bindingSource1.ResetBindings(false);
+                    return;
+                }
+            }
+        }
+
+        private void StartCaptureGStreamer()
+        {
+            MissionPlanner.Utilities.GStreamer.GstLaunch = MissionPlanner.Utilities.GStreamer.LookForGstreamer();
+            if (!MissionPlanner.Utilities.GStreamer.GstLaunchExists || !File.Exists(txtAviFileName.Text))
+            {
+                BeginInvoke((Action)(() => CustomMessageBox.Show("GStreamer and a video file are required.", Strings.ERROR)));
+                return;
+            }
+
+            framecount = 0;
+            int width = 0, height = 0;
+            var location = txtAviFileName.Text.Replace("\\", "/").Replace("\"", "\\\"");
+            gstfile = new MissionPlanner.Utilities.GStreamer { DropFrames = false };
+            gstfile.OnNewImage += (sender, frame) =>
+            {
+                if (frame == null)
+                {
+                    // end of the video
+                    try
+                    {
+                        avioutput?.avi_end(width, height, GstFps);
+                        avioutput?.avi_close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("avi close failed " + ex);
+                    }
+                    avioutput = null;
+                    BeginInvoke((Action)(() => CustomMessageBox.Show("Done: " +
+                        System.IO.Path.GetFileNameWithoutExtension(txtAviFileName.Text) + "-overlay.avi")));
+                    return;
+                }
+
+                try
+                {
+                    var time = framecount / (double)GstFps;
+                    framecount++;
+                    // copy: the decoder reuses its buffer after this callback
+                    Bitmap video;
+                    using (var view = new Bitmap(frame.Width, frame.Height, 4 * frame.Width, PixelFormat.Format32bppPArgb,
+                               frame.LockBits(Rectangle.Empty, null, SkiaSharp.SKColorType.Bgra8888).Scan0))
+                        video = new Bitmap(view);
+
+                    Bitmap composed = null;
+                    Invoke((Action)(() =>
+                    {
+                        videopos = startlogtime.AddSeconds(time);
+                        ApplyFlightData(videopos);
+                        trackBar_mediapos.Value = Math.Max(trackBar_mediapos.Minimum,
+                            Math.Min(trackBar_mediapos.Maximum, (int)time));
+                        hud1.HoldInvalidation = true;
+                        hud1.opengl = false;
+                        hud1.bgimage = video;
+                        hud1.streamjpgenable = true;
+                        if (fullresolution)
+                        {
+                            hud1.Width = video.Width;
+                            hud1.Height = video.Height;
+                        }
+                        hud1.Refresh();
+                        composed = (Bitmap)hud1.objBitmap.Clone();
+                    }));
+
+                    using (composed)
+                    using (var ms = new MemoryStream())
+                    {
+                        composed.Save(ms, ImageFormat.Jpeg);
+                        width = composed.Width;
+                        height = composed.Height;
+                        avioutput?.avi_add(ms.ToArray(), (uint)ms.Length);
+                        // keep the header current so a partial file still plays
+                        avioutput?.avi_end(width, height, GstFps);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("OSD frame failed " + ex);
+                }
+            };
+            gstfile.Start("filesrc location=\"" + location + "\" ! decodebin ! videoconvert ! videorate ! video/x-raw,format=BGRx,framerate=" +
+                          GstFps + "/1 ! appsink name=outsink sync=false");
         }
 
         private static class NativeMethods
