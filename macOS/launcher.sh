@@ -88,6 +88,7 @@ mono_config="$cache_dir/mono-config"
 # Extra mappings for native libraries the managed code names by Linux sonames.
 maps=("libdl.so=/usr/lib/libSystem.B.dylib")
 [[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
+[[ -f $frameworks/libsimplecble.dylib ]] && maps+=("simpleble-c.dll=$frameworks/libsimplecble.dylib")
 for gst_lib in /opt/homebrew/lib /usr/local/lib /Library/Frameworks/GStreamer.framework/Versions/1.0/lib; do
     if [[ -f $gst_lib/libgstreamer-1.0.0.dylib && -f $gst_lib/libgstapp-1.0.0.dylib ]]; then
         maps+=("libgstreamer-1.0.so.0=$gst_lib/libgstreamer-1.0.0.dylib" "libgstapp-1.0.so.0=$gst_lib/libgstapp-1.0.0.dylib")

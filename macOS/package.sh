@@ -63,6 +63,24 @@ if [[ ! -f $libgdiplus_build/prefix/lib/libgdiplus.0.dylib ]]; then
     )
 fi
 
+# --- SimpleBLE C bindings (Bluetooth LE through CoreBluetooth) ------------------
+# CommsBLE uses the SimpleBLE 0.9 C API; only a Windows build ships with the app.
+simpleble_version=v0.9.1
+simpleble_build="$work_dir/simpleble-$simpleble_version-$arch"
+if [[ ! -f $simpleble_build/out/libsimplecble.dylib ]] && command -v cmake >/dev/null; then
+    rm -rf -- "$simpleble_build" && mkdir -p -- "$simpleble_build/out"
+    if curl -fsSL "https://codeload.github.com/simpleble/simpleble/tar.gz/refs/tags/$simpleble_version" \
+            | tar -xz -C "$simpleble_build" --strip-components=1 \
+        && cmake -S "$simpleble_build/simplecble" -B "$simpleble_build/build" -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=ON > "$simpleble_build/cmake.log" 2>&1 \
+        && cmake --build "$simpleble_build/build" -j"$(sysctl -n hw.ncpu)" >> "$simpleble_build/cmake.log" 2>&1; then
+        find "$simpleble_build/build" -name 'libsimple*.dylib' -exec cp -L {} "$simpleble_build/out/" \;
+    else
+        echo 'SimpleBLE build failed: Bluetooth LE will be unavailable.' >&2
+        tail -20 "$simpleble_build/cmake.log" >&2 || true
+    fi
+fi
+
 # --- native SkiaSharp (universal) ---------------------------------------------
 skia_pkg="$work_dir/skiasharp.nativeassets.macos.$skia_version.nupkg"
 [[ -f $skia_pkg ]] || curl -fsSL -o "$skia_pkg" \
@@ -85,6 +103,19 @@ cp -- "$libgdiplus_build/prefix/lib/libgdiplus.0.dylib" "$app/Contents/Framework
 dylibbundler -of -cd -b -x "$app/Contents/Frameworks/libgdiplus.0.dylib" \
     -d "$app/Contents/Frameworks" -p @loader_path/ > "$work_dir/dylibbundler.log"
 install_name_tool -id @loader_path/libgdiplus.0.dylib "$app/Contents/Frameworks/libgdiplus.0.dylib"
+# SimpleBLE: point its install names at the bundle.
+if [[ -f $simpleble_build/out/libsimplecble.dylib ]]; then
+    cp -L -- "$simpleble_build/out/"libsimple*.dylib "$app/Contents/Frameworks/"
+    for lib in "$app/Contents/Frameworks/"libsimple*.dylib; do
+        [[ -L $lib ]] && continue
+        chmod u+w "$lib"
+        install_name_tool -id "@loader_path/$(basename -- "$lib")" "$lib"
+        for dep in $(otool -L "$lib" | awk 'NR > 1 {print $1}' | grep -E '(@rpath/|/build/).*libsimple' || true); do
+            install_name_tool -change "$dep" "@loader_path/$(basename -- "$dep")" "$lib"
+        done
+    done
+    otool -L "$app/Contents/Frameworks/libsimplecble.dylib" | sed 1d
+fi
 # SDL2 for joysticks (IOKit HID); it only links system frameworks.
 sdl2=$(brew --prefix sdl2 2>/dev/null)/lib/libSDL2-2.0.0.dylib
 if [[ -f $sdl2 ]]; then

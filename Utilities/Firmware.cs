@@ -1242,6 +1242,11 @@ namespace MissionPlanner.Utilities
 
         bool isParrotWifiConnected(string ssid)
         {
+            // The SSID query uses the Windows WLAN API. Elsewhere skip the check:
+            // the following ping/telnet to the vehicle shows whether it is reachable.
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+                return true;
+
             IEnumerable<string> connectedSSIDs = NativeWifi.GetConnectedNetworkSsids();
             bool ssidFound = false;
 

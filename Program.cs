@@ -398,6 +398,13 @@ namespace MissionPlanner
 #endif
                 GMap.NET.MapProviders.GMapProviders.List.Add(MissionPlanner.Utilities.GDAL.GetProvider());
             }
+            else if (MissionPlanner.Utilities.GdalCli.Available)
+            {
+                // macOS/Linux: the GDAL command line tools (e.g. brew install gdal)
+                Console.WriteLine("Setup gdal (command line tools)");
+                MissionPlanner.Utilities.GDAL.GDALBase = new MissionPlanner.Utilities.GdalCli();
+                GMap.NET.MapProviders.GMapProviders.List.Add(MissionPlanner.Utilities.GDAL.GetProvider());
+            }
 
             Console.WriteLine("Setup proxy");
             // add proxy settings
