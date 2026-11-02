@@ -17,7 +17,32 @@ read/write, mission upload/download, MAVFTP, logs, arming and takeoff.
 
 ## Results
 
-@RESULTS@
+### macOS, Apple Silicon (macos-15), without and with a vehicle
+
+```
+feature      12/12  
+screen        7/7   
+page         77/80  
+   FAIL page:MissionPlanner.Controls.OpenGLtest: NotSupportedException: OpenGL is not available on this display @ at MissionPlanner.Controls.OpenGLtest..ctor () [0x00099] in <acee25e5e77a4f0cb3a98835dfb5bbfb>:
+   FAIL page:MissionPlanner.Controls.OpenGLtest2: NotSupportedException: OpenGL is not available on this display @ at MissionPlanner.Controls.OpenGLtest2..ctor () [0x0011f] in <acee25e5e77a4f0cb3a98835dfb5bbfb>
+   FAIL page:MissionPlanner.GCSViews.ConfigurationView.ConfigHWCompass2: NullReferenceException: Object reference not set to an instance of an object @ at MissionPlanner.GCSViews.ConfigurationView.ConfigHWCompass2.Activate () [0x002f
+form         28/28  
+connect       1/1   
+total       125/128  (97.7%)
+```
+
+### Linux ARM64 (ubuntu-24.04-arm), without a vehicle
+
+```
+page         78/80  
+   FAIL page:MissionPlanner.GCSViews.ConfigurationView.ConfigParamLoading: SKIPPED (hangs the tour)
+   FAIL page:MissionPlanner.GCSViews.ConfigurationView.ConfigHWCompass2: NullReferenceException: Object reference not set to an instance of an object @ at MissionPlanner.GCSViews.ConfigurationView.ConfigHWCompass2.Activate () [0x002f
+feature       7/7   
+screen        7/7   
+form         38/38  
+total       130/132  (98.5%)
+```
+
 
 ## Operating-system dependencies
 
