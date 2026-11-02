@@ -44,20 +44,63 @@ jobs:
           compression-level: 0
           retention-days: 7
 
+  sitl:
+    # ArduPilot publishes no macOS simulator builds: build them natively.
+    name: Build ArduPilot SITL for macOS
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - id: ap
+        run: |
+          sha=$(git ls-remote https://github.com/ArduPilot/ardupilot refs/tags/ArduCopter-stable | cut -f1)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+      - id: cache
+        uses: actions/cache@v4
+        with:
+          path: sitl-bin
+          key: sitl-macos-${{ runner.arch }}-${{ steps.ap.outputs.sha }}
+      - name: Build simulators
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          git clone -q --depth 1 --branch ArduCopter-stable --recurse-submodules --shallow-submodules \
+            https://github.com/ArduPilot/ardupilot ardupilot
+          python3 -m venv venv && . venv/bin/activate
+          pip install -q empy==3.3.4 pexpect future ptyprocess lxml
+          cd ardupilot
+          ./waf configure --board sitl > ../waf-configure.log 2>&1 || { tail -50 ../waf-configure.log; exit 1; }
+          ./waf copter heli plane rover 2>&1 | tail -20
+          mkdir -p ../sitl-bin
+          cp build/sitl/bin/arducopter ../sitl-bin/ArduCopter
+          cp build/sitl/bin/arducopter-heli ../sitl-bin/ArduHeli
+          cp build/sitl/bin/arduplane ../sitl-bin/ArduPlane
+          cp build/sitl/bin/ardurover ../sitl-bin/ArduRover
+          cp Tools/autotest/default_params/copter.parm ../sitl-bin/
+          echo "ArduPilot ArduCopter-stable ${{ steps.ap.outputs.sha }} $(git describe --tags --always)" > ../sitl-bin/VERSION.txt
+      - run: file sitl-bin/*; cat sitl-bin/VERSION.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sitl
+          path: sitl-bin
+          retention-days: 7
+
   macos:
     name: Package and test on ${{ matrix.runner }}
-    needs: managed
+    needs: [managed, sitl]
     strategy:
       fail-fast: false
       matrix:
         runner: [macos-15]
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 60
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: managed
+      - uses: actions/download-artifact@v4
+        with:
+          name: sitl
+          path: sitl-bin
       - name: Install dependencies
         run: |
           export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
@@ -68,7 +111,7 @@ jobs:
       - name: Package app
         run: |
           mkdir managed && tar -xzf MissionPlanner-linux-x86_64.tar.gz -C managed
-          ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos 2>&1 | tee package.log
+          MP_SITL_DIR=$PWD/sitl-bin ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos 2>&1 | tee package.log
       - name: Test app
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
       - uses: actions/upload-artifact@v4

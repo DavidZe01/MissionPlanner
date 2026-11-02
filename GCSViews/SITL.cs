@@ -41,7 +41,9 @@ namespace MissionPlanner.GCSViews
         string sitldirectory = Settings.GetUserDataDirectory() + "sitl" +
                                Path.DirectorySeparatorChar;
 
-        public static string BundledPath = "";
+        // Simulator binaries shipped with the application. Set by mobile builds and
+        // by the macOS launcher (ArduPilot publishes no macOS SITL builds).
+        public static string BundledPath = Environment.GetEnvironmentVariable("MISSIONPLANNER_SITL_DIR") ?? "";
 
         GMapOverlay markeroverlay;
 

@@ -1181,6 +1181,64 @@ namespace MissionPlanner.Utilities
         }
 
         [HandleProcessCorruptedStateExceptions, SecurityCritical]
+        /// <summary>
+        /// Pipeline that captures a local camera into the appsink, used where
+        /// DirectShow is unavailable (macOS: AVFoundation, Linux: V4L2).
+        /// </summary>
+        public static string LocalCameraPipeline(int index)
+        {
+            string source;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                source = "avfvideosrc device-index=" + index;
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                var devices = ListLocalCameras();
+                source = "v4l2src device=" + (index >= 0 && index < devices.Count ? devices[index] : "/dev/video" + index);
+            }
+            else
+                source = "ksvideosrc device-index=" + index;
+            return source + " ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink";
+        }
+
+        /// <summary>
+        /// Names of local cameras in device-index order (macOS) or /dev/video order (Linux).
+        /// </summary>
+        public static List<string> ListLocalCameras()
+        {
+            var list = new List<string>();
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    var psi = new System.Diagnostics.ProcessStartInfo("/usr/sbin/system_profiler", "SPCameraDataType")
+                    {
+                        UseShellExecute = false, RedirectStandardOutput = true
+                    };
+                    using (var p = System.Diagnostics.Process.Start(psi))
+                    {
+                        var output = p.StandardOutput.ReadToEnd();
+                        p.WaitForExit(10000);
+                        // camera names are the indented lines ending in ':' below "Camera:"
+                        foreach (var line in output.Split('\n'))
+                        {
+                            var t = line.TrimEnd();
+                            if (t.EndsWith(":") && line.StartsWith("    ") && !line.StartsWith("      "))
+                                list.Add(t.Trim().TrimEnd(':'));
+                        }
+                    }
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && Directory.Exists("/dev"))
+                {
+                    list.AddRange(Directory.GetFiles("/dev", "video*").OrderBy(a => a.Length).ThenBy(a => a));
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            return list;
+        }
+
         public Thread Start(string stringpipeline)
         {
             Stop();

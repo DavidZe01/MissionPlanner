@@ -109,6 +109,10 @@ GDIPLUS=$libgdiplus X11=$libx11 /usr/bin/perl -e '
 mv -f -- "$mono_config.tmp" "$mono_config"
 
 export MONO_CONFIG="$mono_config"
+# Native macOS SITL binaries built from ArduPilot's stable release.
+if [[ -x $contents/Resources/sitl/ArduCopter ]]; then
+    export MISSIONPLANNER_SITL_DIR="$contents/Resources/sitl"
+fi
 export MONO_MWF_MAC_FORCE_X11=1
 export MONO_PATH="$mono_prefix/lib/mono/4.5/Facades${MONO_PATH:+:$MONO_PATH}"
 export DYLD_FALLBACK_LIBRARY_PATH="$app_dir:$frameworks:$mono_prefix/lib:/opt/homebrew/lib:/usr/local/lib:/opt/X11/lib:/usr/lib"

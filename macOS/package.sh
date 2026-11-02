@@ -99,6 +99,14 @@ if [[ ! -f $app/Contents/Frameworks/libX11.6.dylib ]]; then
     exit 1
 fi
 
+# Optional native SITL simulators (directory with ArduCopter, ArduPlane, ...).
+if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
+    mkdir -p -- "$app/Contents/Resources/sitl"
+    cp -- "$MP_SITL_DIR"/Ardu* "$app/Contents/Resources/sitl/"
+    cp -- "$MP_SITL_DIR"/VERSION.txt "$MP_SITL_DIR"/*.parm "$app/Contents/Resources/sitl/" 2>/dev/null || true
+    chmod +x "$app/Contents/Resources/sitl"/Ardu*
+fi
+
 cp -- "$mac_dir/launcher.sh" "$app/Contents/MacOS/MissionPlanner"
 chmod +x "$app/Contents/MacOS/MissionPlanner"
 version=$(head -n 1 "$managed_dir/version.txt" 2>/dev/null | tr -cd '0-9.' || true)
@@ -117,6 +125,9 @@ fi
 # Apple Silicon only runs signed native code; install_name_tool invalidated the
 # linker signatures. Sign ad hoc (users of a downloaded copy clear quarantine).
 codesign --force --sign - "$app/Contents/Frameworks/"*.dylib "$app/Contents/Resources/app/libSkiaSharp.dylib"
+if [[ -d $app/Contents/Resources/sitl ]]; then
+    codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
+fi
 codesign --force --sign - "$app"
 
 {

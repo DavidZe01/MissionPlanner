@@ -5230,10 +5230,31 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        /// <summary>
+        /// Show a local camera in the HUD through GStreamer, where DirectShow is
+        /// unavailable (macOS, Linux).
+        /// </summary>
+        public static bool StartLocalCamera(int index)
+        {
+            GStreamer.GstLaunch = GStreamer.LookForGstreamer();
+            if (!GStreamer.GstLaunchExists)
+            {
+                GStreamerUI.DownloadGStreamer();
+                if (!GStreamer.GstLaunchExists)
+                    return false;
+            }
+
+            hudGStreamer.Start(GStreamer.LocalCameraPipeline(index));
+            return true;
+        }
+
         private void startCameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MainV2.MONO)
+            {
+                StartLocalCamera(Settings.Instance.GetInt32("video_device"));
                 return;
+            }
             if (MainV2.cam == null)
             {
                 try

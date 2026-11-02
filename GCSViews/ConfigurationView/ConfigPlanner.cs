@@ -259,7 +259,13 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void BUT_videostart_Click(object sender, EventArgs e)
         {
             if (MainV2.MONO)
+            {
+                // GStreamer capture (AVFoundation on macOS, V4L2 on Linux)
+                Settings.Instance["video_device"] = Math.Max(0, CMB_videosources.SelectedIndex).ToString();
+                if (GCSViews.FlightData.StartLocalCamera(Math.Max(0, CMB_videosources.SelectedIndex)))
+                    BUT_videostart.Enabled = false;
                 return;
+            }
 
             // stop first
             BUT_videostop_Click(sender, e);
@@ -287,6 +293,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void BUT_videostop_Click(object sender, EventArgs e)
         {
             BUT_videostart.Enabled = true;
+            if (MainV2.MONO)
+                GCSViews.FlightData.hudGStreamer.Stop();
             if (MainV2.cam != null)
             {
                 MainV2.cam.Dispose();
@@ -742,7 +750,10 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void CMB_videosources_Click(object sender, EventArgs e)
         {
             if (MainV2.MONO)
+            {
+                CMB_videosources.DataSource = GStreamer.ListLocalCameras();
                 return;
+            }
             // the reason why i dont populate this list is because on linux/mac this call will fail.
             var capt = new Capture();
 

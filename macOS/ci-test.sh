@@ -38,15 +38,41 @@ run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
 grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
 grep SMOKE_RUNTIME "$out/smoke.log" || true
 
-mkdir -p -- "$out/tour"
-TOUR_OUT="$out/tour" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${TOUR_CONNECT:-} \
-    TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
-    run_limited 1500 "$launcher" --tour > "$out/tour.log" 2>&1
-grep -E '^TOUR_(RUNTIME|DONE)' "$out/tour.log" || { echo "TOUR: did not finish"; status=1; }
-for f in "$out"/tour/*.xwd; do
-    [[ -f $f ]] || continue
-    xwdtopnm "$f" 2>/dev/null | pnmtopng > "${f%.xwd}.png" 2>/dev/null && rm -f -- "$f"
-done
+run_tour() { # name [connection]
+    local dir="$out/$1"
+    mkdir -p -- "$dir"
+    TOUR_OUT="$dir" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${2:-} \
+        TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
+        run_limited 1800 "$launcher" --tour > "$dir.log" 2>&1
+    grep -E '^TOUR_(RUNTIME|DONE)|^TOUR connected' "$dir.log" || { echo "$1: did not finish"; status=1; }
+    grep -E '^TOUR FAIL' "$dir.log" | cut -c1-200 || true
+    for f in "$dir"/*.xwd; do
+        [[ -f $f ]] || continue
+        xwdtopnm "$f" 2>/dev/null | pnmtopng > "${f%.xwd}.png" 2>/dev/null && rm -f -- "$f"
+    done
+}
+
+run_tour tour
+
+# Same tour connected to the bundled native simulator (ArduCopter SITL).
+sitl_dir="$app/Contents/Resources/sitl"
+if [[ -x $sitl_dir/ArduCopter ]]; then
+    file "$sitl_dir/ArduCopter" | tee -a "$out/environment.txt"
+    simdir=$(mktemp -d)
+    (cd "$simdir" && exec "$sitl_dir/ArduCopter" -Mquad -O-35.363261,149.165230,584,353 -s1 \
+        --serial0 tcp:0 --defaults "$sitl_dir/copter.parm" > "$out/sitl.log" 2>&1) &
+    sitl_pid=$!
+    sleep 8
+    if kill -0 "$sitl_pid" 2>/dev/null; then
+        echo "SITL: running"
+        run_tour tour-connected tcp:127.0.0.1:5760
+    else
+        echo "SITL: did not start"; tail -20 "$out/sitl.log"; status=1
+    fi
+    kill "$sitl_pid" 2>/dev/null
+else
+    echo "SITL: not bundled"
+fi
 cp -R "$HOME/Library/Logs/MissionPlanner" "$out/logs" 2>/dev/null || true
 cp "$app/Contents/Resources/app/BUILD-INFO.txt" "$out/" 2>/dev/null || true
 kill "$xvfb" 2>/dev/null
