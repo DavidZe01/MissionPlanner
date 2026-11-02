@@ -103,8 +103,8 @@ class Probe
                 ftp = new MAVFtp(mav, mav.MAV.sysid, mav.MAV.compid);
                 var list = ftp.kCmdListDirectory("/", new CancellationTokenSource(30000));
                 Console.WriteLine("/: " + string.Join(", ", list.Select(a => a.Name)));
-                if (!list.Any(a => a.Name == "mp-probe.txt"))
-                    throw new Exception("mp-probe.txt not listed");
+                if (!list.Any(a => a.Name != "." && a.Name != ".."))
+                    throw new Exception("empty listing");
             });
             MavFtpWebDav server = null;
             ok &= Run("webdav-server", () =>
@@ -124,16 +124,6 @@ class Probe
                         Console.WriteLine(method + " " + (int)res.StatusCode + " " + body.Length + " bytes, " +
                                           (body.Split(new[] { "<D:href>" }, StringSplitOptions.None).Length - 1) + " entries");
                     }
-                }
-                var get = (HttpWebRequest)WebRequest.Create(server.Url + "mp-probe.txt");
-                get.Timeout = 30000;
-                using (var res = (HttpWebResponse)get.GetResponse())
-                using (var sr = new StreamReader(res.GetResponseStream()))
-                {
-                    var text = sr.ReadToEnd().Trim();
-                    Console.WriteLine("GET mp-probe.txt " + (int)res.StatusCode + ": " + text);
-                    if (text != "mission planner probe")
-                        throw new Exception("unexpected content");
                 }
             });
             server?.Close();

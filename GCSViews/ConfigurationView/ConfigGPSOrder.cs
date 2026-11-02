@@ -26,13 +26,23 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 return;
             }
 
+            // a parameter missing from this firmware reads as 0 (current firmware names the
+            // detected ids GPS1_CAN_NODEID/GPS2_CAN_NODEID, older GPS_CAN_NODEID1/2)
+            double Param(params string[] names)
+            {
+                foreach (var name in names)
+                    if (MainV2.comPort.MAV.param.ContainsKey(name) && MainV2.comPort.MAV.param[name] != null)
+                        return MainV2.comPort.MAV.param[name].Value;
+                return 0;
+            }
+
             // get the detected id's
-            var id1 = MainV2.comPort.MAV.param["GPS_CAN_NODEID1"];
-            var id2 = MainV2.comPort.MAV.param["GPS_CAN_NODEID2"];
+            var id1 = new { Value = Param("GPS_CAN_NODEID1", "GPS1_CAN_NODEID") };
+            var id2 = new { Value = Param("GPS_CAN_NODEID2", "GPS2_CAN_NODEID") };
 
             // get the override id's
-            var id1ovr = MainV2.comPort.MAV.param["GPS1_CAN_OVRIDE"];
-            var id2ovr = MainV2.comPort.MAV.param["GPS2_CAN_OVRIDE"];
+            var id1ovr = new { Value = Param("GPS1_CAN_OVRIDE") };
+            var id2ovr = new { Value = Param("GPS2_CAN_OVRIDE") };
 
             var list = new List<GPSCAN>();
 
