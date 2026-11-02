@@ -23,6 +23,9 @@ namespace MissionPlanner.Log
         public LogIndex()
         {
             InitializeComponent();
+            // ObjectListView draws overlays with Win32 layered windows (user32)
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+                objectListView1.UseOverlays = false;
 
             this.olvColumnImage.Renderer = new NonSelectableRenderer();
         }

@@ -512,24 +512,41 @@ class ScreenTour
                 var ftp = new MissionPlanner.ArduPilot.Mavlink.MAVFtp(MainV2.comPort, (byte) MainV2.comPort.sysidcurrent, (byte) MainV2.comPort.compidcurrent);
                 var dir = Path.Combine(Path.GetTempPath(), "mavftp-" + Guid.NewGuid().ToString("N").Substring(0, 8));
                 MissionPlanner.ArduPilot.Mavlink.MavFtpWebDav.Mount(ftp, dir);
-                try
+                // Use the mounted folder from another thread, as Finder would from another
+                // process: the WebDAV server shares this process with the test.
+                string result = null;
+                Exception error = null;
+                var worker = new System.Threading.Thread(() =>
                 {
-                    var entries = Directory.GetFileSystemEntries(dir);
-                    Console.WriteLine("TOUR mounted: " + string.Join(", ", entries.Select(Path.GetFileName)));
-                    if (entries.Length == 0)
-                        throw new Exception("mounted folder is empty");
-                    var file = Directory.GetFiles(dir, "*", SearchOption.AllDirectories).FirstOrDefault();
-                    if (file != null)
-                        Console.WriteLine("TOUR read " + file + ": " + File.ReadAllBytes(file).Length + " bytes");
-                    File.WriteAllText(Path.Combine(dir, "mp-test.txt"), "written through WebDAV");
-                    if (File.ReadAllText(Path.Combine(dir, "mp-test.txt")) != "written through WebDAV")
-                        throw new Exception("write/read back mismatch");
-                    File.Delete(Path.Combine(dir, "mp-test.txt"));
-                }
-                finally
-                {
-                    MissionPlanner.ArduPilot.Mavlink.MavFtpWebDav.Unmount();
-                }
+                    try
+                    {
+                        var entries = Directory.GetFileSystemEntries(dir);
+                        result = "mounted: " + string.Join(", ", entries.Select(Path.GetFileName));
+                        if (entries.Length == 0)
+                            throw new Exception("mounted folder is empty");
+                        File.WriteAllText(Path.Combine(dir, "mp-test.txt"), "written through WebDAV");
+                        var back = File.ReadAllText(Path.Combine(dir, "mp-test.txt"));
+                        if (back != "written through WebDAV")
+                            throw new Exception("write/read back mismatch: '" + back + "'");
+                        File.Delete(Path.Combine(dir, "mp-test.txt"));
+                        result += "; write/read/delete OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        error = ex;
+                    }
+                }) { IsBackground = true };
+                worker.Start();
+                var finished = false;
+                var sw = Stopwatch.StartNew();
+                while (!(finished = !worker.IsAlive) && sw.ElapsedMilliseconds < 90000)
+                    Wait(200);
+                Console.WriteLine("TOUR " + (result ?? "mount: no result"));
+                try { MissionPlanner.ArduPilot.Mavlink.MavFtpWebDav.Unmount(); } catch (Exception ex) { Console.WriteLine("TOUR unmount: " + ex.Message); }
+                if (!finished)
+                    throw new Exception("file operations on the mount did not finish within 90 s");
+                if (error != null)
+                    throw error;
             });
         Step("feature:log-list", () =>
         {

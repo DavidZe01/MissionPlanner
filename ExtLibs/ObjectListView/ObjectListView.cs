@@ -10427,10 +10427,6 @@ namespace BrightIdeasSoftware
             if (!this.UseOverlays)
                 return false;
 
-            // Overlays are Win32 layered windows (user32), unavailable on macOS/Linux
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-                return false;
-
             // If there are no overlays, guess...
             if (!this.HasOverlays)
                 return false;

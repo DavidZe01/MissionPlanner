@@ -109,7 +109,17 @@ namespace MissionPlanner.ArduPilot.Mavlink
             try
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    Exec("/sbin/umount", "\"" + (mountPoint ?? _mountPoint) + "\"");
+                {
+                    try
+                    {
+                        Exec("/sbin/umount", "\"" + (mountPoint ?? _mountPoint) + "\"", 15000);
+                    }
+                    catch
+                    {
+                        // busy (e.g. a Finder window): force it, the server goes away next
+                        Exec("/sbin/umount", "-f \"" + (mountPoint ?? _mountPoint) + "\"", 15000);
+                    }
+                }
                 else if (File.Exists("/usr/bin/gio"))
                     Exec("/usr/bin/gio", "mount -u \"" + server.Url.Replace("http://", "dav://") + "\"");
             }
