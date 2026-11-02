@@ -133,12 +133,58 @@ jobs:
             bin/macos/work/*.log
             bin/macos/work/libgdiplus-*/*.log
 
+  linux-arm64:
+    # The same application on native ARM64 Linux (e.g. Ubuntu on Asahi or a Raspberry Pi).
+    name: Build and test on Linux ARM64
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends mono-devel rsync xvfb xauth x11-apps netpbm \
+            $(cat Linux/runtime-packages.txt) gstreamer1.0-plugins-base gstreamer1.0-tools
+          uname -m; mono --version | head -1
+      - name: Build
+        run: ./Linux/build.sh 2>&1 | tail -5
+      - name: Test
+        run: |
+          app=bin/linux/MissionPlanner-linux-aarch64
+          ./macOS/build-tests.sh "$app"
+          mkdir -p ci-out/tour
+          xvfb-run -a -s "-screen 0 1400x1000x24" timeout --signal=QUIT --kill-after=10s 300s "$app/run.sh" --self-test > ci-out/smoke.log 2>&1 || true
+          grep -E 'SMOKE_RUNTIME|LINUX_SMOKE_TEST_PASS' ci-out/smoke.log
+          cd "$app"
+          export MONO_PATH=$PWD/mono-facades PATH=$PWD/mono-tools:$PATH LD_LIBRARY_PATH=$PWD:$PWD/arm64
+          TOUR_OUT=$GITHUB_WORKSPACE/ci-out/tour TOUR_XWD=/usr/bin/xwd TOUR_SKIP=ConfigParamLoading \
+            xvfb-run -a -s "-screen 0 1400x1000x24" timeout --signal=QUIT --kill-after=10s 1800s mono ScreenTour.exe > $GITHUB_WORKSPACE/ci-out/tour.log 2>&1 || true
+          cd "$GITHUB_WORKSPACE"
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR FAIL' ci-out/tour.log | cut -c1-200 || true
+          for f in ci-out/tour/*.xwd; do xwdtopnm "$f" 2>/dev/null | pnmtopng > "${f%.xwd}.png" && rm -f "$f"; done
+          grep -qx LINUX_SMOKE_TEST_PASS ci-out/smoke.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-linux-arm64
+          path: ci-out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MissionPlanner-linux-aarch64
+          path: |
+            bin/linux/MissionPlanner-linux-aarch64.tar.gz
+            bin/linux/MissionPlanner-linux-aarch64.tar.gz.sha256
+          retention-days: 30
+
   results:
     # Publish logs and screenshots to the ci-results branch so they can be
     # read with git (artifact downloads need a browser login).
     name: Publish results
-    needs: macos
-    if: always() && needs.macos.result != 'skipped'
+    needs: [macos, linux-arm64]
+    if: always()
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -151,7 +197,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          OUTCOME: ${{ needs.macos.result }}
+          OUTCOME: macos=${{ needs.macos.result }} linux-arm64=${{ needs.linux-arm64.result }}
         run: |
           cd results
           echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt
