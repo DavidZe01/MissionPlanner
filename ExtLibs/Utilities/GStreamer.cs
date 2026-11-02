@@ -1563,7 +1563,10 @@ namespace MissionPlanner.Utilities
         public void Stop()
         {
             threadShouldRun = false;
-            _backgroundWorker?.Join();
+            // the frame loop polls every 5 s; never block the caller (often the UI thread,
+            // which a frame handler may be waiting on) indefinitely
+            if (_backgroundWorker != null && !_backgroundWorker.Join(TimeSpan.FromSeconds(12)))
+                log.Warn("gstreamer thread did not stop");
         }
 
         public static void DownloadGStreamer(Action<int, string> status = null)

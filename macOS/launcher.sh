@@ -142,6 +142,7 @@ cd -- "$app_dir"
 case ${1:-} in
     --self-test) shift; exec "$mono_bin" LinuxSmokeTest.exe "$@" ;;
     --tour) shift; exec "$mono_bin" ScreenTour.exe "$@" ;;
+    --probe) shift; exec "$mono_bin" Probe.exe "$@" ;;
 esac
 if [[ -t 1 ]]; then
     exec "$mono_bin" MissionPlanner.exe "$@"

@@ -133,6 +133,53 @@ jobs:
             bin/macos/work/*.log
             bin/macos/work/libgdiplus-*/*.log
 
+  probe:
+    # Quick headless checks (GStreamer, MAVFTP/WebDAV) and the real XQuartz server.
+    name: Probe platform services on macOS
+    needs: [managed, sitl]
+    runs-on: macos-15
+    permissions:
+      contents: write
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: managed
+      - uses: actions/download-artifact@v4
+        with:
+          name: sitl
+          path: sitl-bin
+      - name: Install dependencies
+        run: |
+          export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
+          brew install mono pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 \
+            dylibbundler netpbm sdl2 gstreamer
+          brew install --cask xquartz
+      - name: Package app
+        run: |
+          mkdir managed && tar -xzf MissionPlanner-linux-x86_64.tar.gz -C managed
+          MP_SITL_DIR=$PWD/sitl-bin ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos > package.log 2>&1
+      - name: Probe
+        run: ./macOS/ci-probe.sh "bin/macos/Mission Planner.app" probe-out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-probe
+          path: probe-out
+      - name: Publish probe results
+        if: always()
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          cp package.log probe-out/ 2>/dev/null || true
+          cd probe-out
+          echo "commit=$SHA" > RESULT.txt
+          git init -q -b ci-probe
+          git add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -q -m "probe results for $SHA"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-probe
+
   linux-arm64:
     # The same application on native ARM64 Linux (e.g. Ubuntu on Asahi or a Raspberry Pi).
     name: Build and test on Linux ARM64
@@ -183,7 +230,7 @@ jobs:
     # Publish logs and screenshots to the ci-results branch so they can be
     # read with git (artifact downloads need a browser login).
     name: Publish results
-    needs: [macos, linux-arm64]
+    needs: [macos, linux-arm64, probe]
     if: always()
     runs-on: ubuntu-22.04
     permissions:
@@ -197,7 +244,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          OUTCOME: macos=${{ needs.macos.result }} linux-arm64=${{ needs.linux-arm64.result }}
+          OUTCOME: macos=${{ needs.macos.result }} linux-arm64=${{ needs.linux-arm64.result }} probe=${{ needs.probe.result }}
         run: |
           cd results
           echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt

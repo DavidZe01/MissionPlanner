@@ -39,12 +39,17 @@ grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo 
 grep SMOKE_RUNTIME "$out/smoke.log" || true
 
 run_tour() { # name [connection]
-    local dir="$out/$1"
+    local dir="$out/$1" attempt
     mkdir -p -- "$dir"
-    TOUR_OUT="$dir" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${2:-} \
-        TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
-        run_limited 1800 "$launcher" --tour > "$dir.log" 2>&1
-    grep -E '^TOUR_(RUNTIME|DONE)|^TOUR connected' "$dir.log" || { echo "$1: did not finish"; status=1; }
+    # a step that hangs ends the run (TOUR HANG); the next run resumes after it
+    for attempt in 1 2 3 4 5 6; do
+        TOUR_OUT="$dir" TOUR_XWD=/opt/X11/bin/xwd TOUR_CONNECT=${2:-} \
+            TOUR_SKIP=${TOUR_SKIP-ConfigParamLoading} \
+            run_limited 1800 "$launcher" --tour >> "$dir.log" 2>&1
+        grep -q '^TOUR_DONE' "$dir.log" && break
+    done
+    grep -E '^TOUR_DONE|^TOUR HANG|^TOUR connected' "$dir.log" || true
+    grep -q '^TOUR_DONE' "$dir.log" || { echo "$1: did not finish"; status=1; }
     grep -E '^TOUR FAIL' "$dir.log" | cut -c1-200 || true
     for f in "$dir"/*.xwd; do
         [[ -f $f ]] || continue

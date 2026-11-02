@@ -31,6 +31,10 @@ class ScreenTour
     private static int shot;
     private static readonly List<string> asyncErrors = new List<string>();
     private static int pass, fail;
+    // resuming after a hung step: items already reported are not run again
+    private static readonly HashSet<string> done = new HashSet<string>();
+    private static volatile string current;
+    private static readonly Stopwatch currentTime = new Stopwatch();
 
     private static void Finish(int status)
     {
@@ -65,6 +69,8 @@ class ScreenTour
 
     private static void Record(string name, bool ok, long ms, string error)
     {
+        if (done.Contains(name))
+            return;
         lock (asyncErrors)
         {
             if (asyncErrors.Count > 0)
@@ -82,9 +88,32 @@ class ScreenTour
         Console.WriteLine("TOUR " + (ok ? "OK   " : "FAIL ") + name + (ok ? "" : " " + error));
     }
 
-    private static void Step(string name, Action action)
+    private static void Step(string name, Action action, bool always = false)
     {
+        if (done.Contains(name) && !always)
+            return;
         steps.Enqueue(new KeyValuePair<string, Action>(name, action));
+    }
+
+    // A step that never returns (a native call or a modal loop that does not end)
+    // would stop the tour: record it and exit, so the caller can resume after it.
+    private static void Watchdog()
+    {
+        var limit = int.Parse(Environment.GetEnvironmentVariable("TOUR_STEP_TIMEOUT") ?? "150") * 1000;
+        while (true)
+        {
+            System.Threading.Thread.Sleep(1000);
+            var name = current;
+            if (name == null || currentTime.ElapsedMilliseconds < limit)
+                continue;
+            Console.WriteLine("TOUR HANG " + name);
+            lock (asyncErrors)
+            {
+                report.WriteLine(name + "\tFAIL\t" + currentTime.ElapsedMilliseconds + "\tHANG: did not finish within " + limit / 1000 + " s");
+                report.Flush();
+            }
+            Finish(3);
+        }
     }
 
     private static void RunNext(object sender, EventArgs e)
@@ -98,6 +127,8 @@ class ScreenTour
         }
         var step = steps.Dequeue();
         Console.WriteLine("TOUR START " + step.Key);
+        current = step.Key;
+        currentTime.Restart();
         var sw = Stopwatch.StartNew();
         try
         {
@@ -109,6 +140,7 @@ class ScreenTour
             var inner = ex is TargetInvocationException && ex.InnerException != null ? ex.InnerException : ex;
             Record(step.Key, false, sw.ElapsedMilliseconds, inner.GetType().Name + ": " + inner.Message + " @ " + FirstFrame(inner));
         }
+        current = null;
         stepTimer.Start();
     }
 
@@ -242,8 +274,16 @@ class ScreenTour
         outDir = Environment.GetEnvironmentVariable("TOUR_OUT") ?? Path.Combine(Path.GetTempPath(), "mp-tour");
         Directory.CreateDirectory(outDir);
         xwd = Environment.GetEnvironmentVariable("TOUR_XWD");
-        report = new StreamWriter(Path.Combine(outDir, "tour-report.tsv"));
-        report.WriteLine("item\tresult\tms\terror");
+        var reportPath = Path.Combine(outDir, "tour-report.tsv");
+        if (File.Exists(reportPath))
+            foreach (var line in File.ReadAllLines(reportPath).Skip(1))
+                done.Add(line.Split('\t')[0]);
+        report = new StreamWriter(reportPath, true);
+        if (done.Count == 0)
+            report.WriteLine("item\tresult\tms\terror");
+        else
+            Console.WriteLine("TOUR resuming after " + done.Count + " items");
+        new System.Threading.Thread(Watchdog) { IsBackground = true, Name = "tour watchdog" }.Start();
         Console.WriteLine("TOUR_RUNTIME process=" + RuntimeInformation.ProcessArchitecture +
             " os=" + RuntimeInformation.OSDescription.Trim());
 
@@ -275,7 +315,7 @@ class ScreenTour
             var connect = Environment.GetEnvironmentVariable("TOUR_CONNECT");
             if (!string.IsNullOrEmpty(connect))
             {
-                Step("connect:" + connect, () => Connect(connect));
+                Step("connect:" + connect, () => Connect(connect), true);
                 FeatureChecks();
             }
             PlatformChecks();
@@ -424,10 +464,15 @@ class ScreenTour
         });
         Step("feature:parameter-write", () =>
         {
-            if (!MainV2.comPort.setParam("WPNAV_SPEED", 750))
-                throw new Exception("setParam failed");
-            if (Math.Abs(MainV2.comPort.GetParam("WPNAV_SPEED") - 750) > 0.1)
-                throw new Exception("read back " + MainV2.comPort.GetParam("WPNAV_SPEED"));
+            var name = new[] { "RTL_ALT", "WPNAV_SPEED", "WP_SPD" }.First(n => MainV2.comPort.MAV.param.ContainsKey(n));
+            var old = MainV2.comPort.GetParam(name);
+            var value = old + 100;
+            if (!MainV2.comPort.setParam(name, value))
+                throw new Exception("setParam " + name + " failed");
+            if (Math.Abs(MainV2.comPort.GetParam(name) - value) > 0.1)
+                throw new Exception("read back " + MainV2.comPort.GetParam(name));
+            MainV2.comPort.setParam(name, old);
+            Console.WriteLine("TOUR parameter " + name + ": " + old + " -> " + value + " -> " + old);
         });
         Step("feature:mission-upload-download", () =>
         {

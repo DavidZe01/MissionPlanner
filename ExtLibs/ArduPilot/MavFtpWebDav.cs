@@ -61,18 +61,30 @@ namespace MissionPlanner.ArduPilot.Mavlink
             _mavftp = mavftp;
         }
 
+        /// <summary>Serve the vehicle files over WebDAV on localhost without mounting them.</summary>
+        public static MavFtpWebDav Serve(MAVFtp mavftp)
+        {
+            var server = new MavFtpWebDav(mavftp);
+            server.Start();
+            return server;
+        }
+
+        public void Close()
+        {
+            Stop();
+        }
+
         public static void Mount(MAVFtp mavftp, string mountPoint)
         {
             if (_instance != null)
                 throw new InvalidOperationException("Already mounted at " + _mountPoint);
 
-            var server = new MavFtpWebDav(mavftp);
-            server.Start();
+            var server = Serve(mavftp);
             try
             {
                 Directory.CreateDirectory(mountPoint);
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    Exec("/sbin/mount_webdav", "-S -v MAVFTP \"" + server.Url + "\" \"" + mountPoint + "\"");
+                    Exec("/sbin/mount_webdav", "-s -v MAVFTP \"" + server.Url + "\" \"" + mountPoint + "\"");
                 else if (File.Exists("/usr/bin/gio"))
                     Exec("/usr/bin/gio", "mount \"" + server.Url.Replace("http://", "dav://") + "\"");
                 else
@@ -113,7 +125,7 @@ namespace MissionPlanner.ArduPilot.Mavlink
             }
         }
 
-        private static void Exec(string file, string args)
+        private static void Exec(string file, string args, int timeoutMs = 30000)
         {
             var psi = new ProcessStartInfo(file, args)
             {
@@ -123,10 +135,19 @@ namespace MissionPlanner.ArduPilot.Mavlink
             };
             using (var p = Process.Start(psi))
             {
-                var err = p.StandardError.ReadToEnd();
-                p.WaitForExit(60000);
+                // read asynchronously: a mount helper may leave a daemon holding the pipes open
+                var err = p.StandardError.ReadToEndAsync();
+                var output = p.StandardOutput.ReadToEndAsync();
+                if (!p.WaitForExit(timeoutMs))
+                {
+                    try { p.Kill(); } catch { }
+                    throw new TimeoutException(Path.GetFileName(file) + " did not finish within " + timeoutMs / 1000 + " s");
+                }
                 if (p.ExitCode != 0)
-                    throw new Exception(Path.GetFileName(file) + " failed (" + p.ExitCode + "): " + err.Trim());
+                {
+                    var text = (err.Wait(1000) ? err.Result : "") + (output.Wait(1000) ? output.Result : "");
+                    throw new Exception(Path.GetFileName(file) + " failed (" + p.ExitCode + "): " + text.Trim());
+                }
             }
         }
 
