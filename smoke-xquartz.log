@@ -1,0 +1,236 @@
+SMOKE_RUNTIME process=Arm64 os=Unix 25.6.0.0
+Gtk not found (missing LD_LIBRARY_PATH to libgtk-x11-2.0.so.0?), using built-in colorscheme
+If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 
+
+
+Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe
+To fix any filename case issues under mono use    export MONO_IOMAP=drive:case
+for pinvoke      MONO_LOG_LEVEL=debug MONO_LOG_MASK=dll mono MissionPlanner.exe
+watch -n 1 ls -l /proc/$(pidof mono)/fd
+watch -n 1 lsof -p $(pidof mono)
+Data Dir /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/missionplanner-smoke-189ca539-9435-41d5-8b9d-7425a7d1261b/Mission Planner/
+Log Dir /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/missionplanner-smoke-189ca539-9435-41d5-8b9d-7425a7d1261b/Mission Planner/logs
+Running Dir /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/
+User Data Dir /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/missionplanner-smoke-189ca539-9435-41d5-8b9d-7425a7d1261b/Mission Planner/
+PlacesRecentDocuments Dir 
+PlacesDesktop Dir /Users/runner/Desktop
+PlacesPersonal Dir /Users/runner
+PlacesMyComputer Dir 
+INFO MissionPlanner.Program - ******************* Logging Configured *******************
+INFO MissionPlanner.Program - OpenTK: X11 backend, X11 available = True
+INFO MissionPlanner.Program - /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/arm64/libSkiaSharp
+INFO MissionPlanner.Program - Skia Error 
+ERROR MissionPlanner.Program - System.EntryPointNotFoundException: LoadLibrary assembly:<unknown assembly> type:<unknown type> member:(null)
+  at (wrapper managed-to-native) MissionPlanner.Utilities.NativeLibrary.LoadLibrary(string)
+  at MissionPlanner.Program.Start (System.String[] args) [0x00428] in <48c9f9d5235b42b7a28a59aaf9986e1e>:0 
+4.0.0.0
+Splash .ctor
+IconFile
+Splash.Show()
+Debugger.IsAttached False
+Application.DoEvents
+Application.DoEvents
+Setup GMaps 1
+Setup GMaps 2
+Setup GoogleMapProvider API
+Setup Tracking.productName
+Setup Tracking.primaryScreenBitsPerPixel
+Setup Settings.Instance.UserAgent
+Setup check gdal dir
+Setup proxy
+Setup proxy
+Setup CleanupFiles
+INFO MissionPlanner.Program - 64bit os True, 64bit process True, OS Arch Arm64, OS Desc Unix 25.6.0.0, FW Desc Mono 6.14.1 (tarball Tue Apr 29 17:43:02 UTC 2025)
+INFO MissionPlanner.Program - Runtime Version v4.0.30319
+INFO MissionPlanner.Program - 6.14.1 (tarball Tue Apr 29 17:43:02 UTC 2025)
+Application.Run(new MainV2())
+INFO MissionPlanner.MainV2 - Mainv2 ctor
+INFO MissionPlanner.MainV2 - Loading config
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 0 in file:line:column <filename unknown>:0:0 adsb_UpdatePlanePosition MainV2 System.EventHandler`1[MissionPlanner.Utilities.adsb+PointLatLngAltHdg]
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 0 in file:line:column <filename unknown>:0:0 <.ctor>b__106_0 MainV2 System.EventHandler`1[System.ValueTuple`2[System.String,MAVLink+MAV_COLLISION_THREAT_LEVEL]]
+INFO MissionPlanner.MainV2 - myview width 292 height 273
+INFO MissionPlanner.MainV2 - this   width 1109 height 604
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+BurntKermit.mpsystheme theme is loading
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+INFO MissionPlanner.Utilities.srtm - .cctor
+INFO MissionPlanner.Utilities.srtm - requestRunner start
+INFO MissionPlanner.Utilities.srtm - /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/missionplanner-smoke-189ca539-9435-41d5-8b9d-7425a7d1261b/Mission Planner/srtm
+INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True
+INFO MissionPlanner.MainV2 - Create FD
+INFO MissionPlanner.GCSViews.FlightData - Ctor Start
+INFO MissionPlanner.Controls.HUD - Static HUD ctor
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - Instance HUD ctor
+INFO MissionPlanner.Controls.HUD - HUD OpenGL usable: False
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz
+Using backup param data
+INFO MissionPlanner.GCSViews.FlightData - Components Done
+INFO MissionPlanner.GCSViews.FlightData - Tunning Graph Settings
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 213155.70358035 bps 1024 0.004804s 0.9917963% of 103247     
+INFO MissionPlanner.Utilities.Download - 255744.255744256 bps 1024 0.004004s 1.001007% of 102297     
+INFO MissionPlanner.Utilities.Download - 255234.297108674 bps 1024 0.004012s 0.4691544% of 218265     
+INFO MissionPlanner.Utilities.Download - 261892.583120205 bps 1024 0.00391s 0.517802% of 197759     
+INFO MissionPlanner.Utilities.Download - 185104.844540853 bps 1024 0.005532s 0.836574% of 122404     
+INFO MissionPlanner.Utilities.Download - 191904.047976012 bps 1024 0.005336s 1.603081% of 63877     
+INFO MissionPlanner.Utilities.Download - 197683.397683398 bps 1024 0.00518s 0.9126641% of 112199     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 128000000 bps 1024 8E-06s 0.6136476% of 166871     
+INFO MissionPlanner.GCSViews.FlightData - HUD Settings
+INFO MissionPlanner.GCSViews.FlightData - Graph Setup
+INFO MissionPlanner.GCSViews.FlightData - Map Setup
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 85333333.3333333 bps 1024 1.2E-05s 0.5974991% of 171381     
+INFO MissionPlanner.MainV2 - Create FP
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz 63877
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz 103247
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz 122404
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz 102297
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz 112199
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz 166871
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz 197759
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz 218265
+INFO MissionPlanner.Utilities.Download - 711237.793380729 bps 96941 0.136299s 56.56461% of 171381     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz 171381
+INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params
+INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 30
+INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - updateMapType invoke req? False
+INFO MissionPlanner.MainV2 - Create SIM
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.MainV2 - myview width 1101 height 843
+INFO MissionPlanner.MainV2 - this   width 1109 height 900
+INFO MissionPlanner.MainV2 - myview width 1192 height 843
+INFO MissionPlanner.MainV2 - this   width 1200 height 900
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 0 in file:line:column <filename unknown>:0:0 comPort_MavChanged MainV2 System.EventHandler
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - Load Pluggins
+INFO MissionPlanner.Plugin.PluginLoader - Plugin path: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/plugins/
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Grid 1.3.9802.34392 by Michael Oborne
+INFO MissionPlanner.MainV2 - Load Pluggins... Done
+INFO MissionPlanner.MainV2 - show FlightData
+Open MissionPlanner.GCSViews.FlightData FlightData
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnHandleCreated Start
+INFO MissionPlanner.Controls.HUD - OnLoad Start
+INFO MissionPlanner.Controls.HUD - OnLoad Done
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 558 397
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 558 418
+HUD 1 hz drawtime 165 gl False
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 558 416
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 558 416
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - show FlightData... Done
+INFO MissionPlanner.MainV2 - start http
+INFO MissionPlanner.MainV2 - start joystick
+INFO MissionPlanner.Utilities.httpserver - Listening for client
+INFO MissionPlanner.MainV2 - start serialreader
+INFO MissionPlanner.MainV2 - start adsbsender
+INFO MissionPlanner.MainV2 - start plugin thread
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz
+INFO MissionPlanner.ArduPilot.APFirmware - https://firmware.oborne.me/manifest.json.gz
+INFO MissionPlanner.MainV2 - start AutoConnect
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 113777777.777778 bps 1024 9E-06s 2.714164% of 37728     
+INFO MissionPlanner.Utilities.Download - 341333333.333333 bps 1024 3E-06s 2.754169% of 37180     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 128000000 bps 1024 8E-06s 2.499268% of 40972     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 56888888.8888889 bps 1024 1.8E-05s 2.588735% of 39556     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz 37180
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz 39556
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz 40972
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz 37728
+INFO MissionPlanner.MainV2 - Loaded 4855 airports
+INFO MissionPlanner.Utilities.KIndex - K-Index is 1
+INFO MissionPlanner.MainV2 - appload time
+LINUX_SMOKE_TEST_PASS
