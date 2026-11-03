@@ -68,18 +68,52 @@ jobs:
     name: Build ArduPilot SITL for macOS
     runs-on: macos-15
     timeout-minutes: 60
+    permissions:
+      contents: read
+      actions: read
     steps:
       - id: ap
         run: |
           sha=$(git ls-remote https://github.com/ArduPilot/ardupilot refs/tags/ArduCopter-stable | cut -f1)
+          [[ -n $sha ]] || { echo "could not resolve ArduCopter-stable"; exit 1; }
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
       - id: cache
         uses: actions/cache@v4
         with:
           path: sitl-bin
           key: sitl-macos-${{ runner.arch }}-${{ steps.ap.outputs.sha }}
-      - name: Build simulators
+      # Caches are per branch/tag, so a tag-triggered run misses the cache:
+      # reuse the newest "sitl" artifact of an earlier run when it is the same
+      # ArduPilot commit, instead of compiling ArduPilot again.
+      - id: prev
         if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=sitl&per_page=50" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | last | .workflow_run.id // empty' || true)
+          echo "previous sitl artifact: run ${run:-none}"
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+      - if: steps.prev.outputs.run != ''
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: sitl
+          path: sitl-prev
+          run-id: ${{ steps.prev.outputs.run }}
+          github-token: ${{ github.token }}
+      - id: reuse
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          if [[ -x sitl-prev/ArduCopter || -f sitl-prev/ArduCopter ]] && grep -qF "${{ steps.ap.outputs.sha }}" sitl-prev/VERSION.txt 2>/dev/null; then
+            rm -rf sitl-bin && mv sitl-prev sitl-bin && chmod +x sitl-bin/Ardu*
+            echo "reusing simulators from run ${{ steps.prev.outputs.run }}"
+            echo "hit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "no reusable simulators; building"
+          fi
+      - name: Build simulators
+        if: steps.cache.outputs.cache-hit != 'true' && steps.reuse.outputs.hit != 'true'
         run: |
           git clone -q --depth 1 --branch ArduCopter-stable --recurse-submodules --shallow-submodules \
             https://github.com/ArduPilot/ardupilot ardupilot
