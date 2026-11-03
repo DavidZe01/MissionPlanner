@@ -4,9 +4,13 @@ name: macOS Apple Silicon
 # Default: build, package the app and a ~2 minute startup test (about 20
 # runner-minutes in total). The long screen tours and Linux ARM64 are opt-in.
 on:
-  # Creating a tag named macos-build-<anything> runs the default (smoke) build;
-  # the Actions "Run workflow" button offers the options below.
+  # The default (smoke) build runs when a push to macos-arm64 changes the file
+  # .github/macos-build-request (other pushes start nothing), or when a tag
+  # named macos-build-<anything> is created. The Actions "Run workflow" button
+  # offers the options below.
   push:
+    branches: [macos-arm64]
+    paths: ['.github/macos-build-request']
     tags: ['macos-build-*']
   workflow_dispatch:
     inputs:

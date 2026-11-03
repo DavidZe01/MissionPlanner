@@ -68,4 +68,6 @@ macOS/package.sh bin/linux/MissionPlanner-linux-x86_64
 
 The result is `bin/macos/Mission Planner.app` and `MissionPlanner-macos-<arch>.zip`.
 `.github/workflows/macos-arm64.yml` does both steps and tests the app on an
-Apple Silicon runner (`--self-test` and the `--tour` screen tour).
+Apple Silicon runner (`--self-test`, and with `tests: full` the `--tour` screen
+tours). It runs only on request: from the Actions "Run workflow" button, or by
+pushing a change to `.github/macos-build-request` on the `macos-arm64` branch.
