@@ -56,13 +56,14 @@ run_tour() { # name [connection]
     done
 }
 
+if [[ $part == smoke || $part == all ]]; then
+    run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
+    grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
+    grep SMOKE_RUNTIME "$out/smoke.log" || true
+fi
+
 if [[ $part == offline || $part == all ]]; then
-run_limited 150 "$launcher" --self-test > "$out/smoke.log" 2>&1
-grep -qx LINUX_SMOKE_TEST_PASS "$out/smoke.log" && echo "SMOKE: PASS" || { echo "SMOKE: FAIL"; status=1; }
-grep SMOKE_RUNTIME "$out/smoke.log" || true
-
-
-run_tour tour
+    run_tour tour
 fi
 
 if [[ $part == connected || $part == all ]]; then

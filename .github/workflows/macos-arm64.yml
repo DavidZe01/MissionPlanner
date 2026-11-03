@@ -1,13 +1,27 @@
 name: macOS Apple Silicon
 
+# Manual only: macOS runners are expensive, so nothing runs on push.
+# Default: build, package the app and a ~2 minute startup test (about 20
+# runner-minutes in total). The long screen tours and Linux ARM64 are opt-in.
 on:
+  # Creating a tag named macos-build-<anything> runs the default (smoke) build;
+  # the Actions "Run workflow" button offers the options below.
   push:
-    branches: [macos-arm64]
-    paths-ignore: ['ci-results/**']
+    tags: ['macos-build-*']
   workflow_dispatch:
+    inputs:
+      tests:
+        description: 'smoke = startup test only; full = screen tours + SITL + probes (about 2 h of macOS runner)'
+        type: choice
+        options: [smoke, full]
+        default: smoke
+      linux_arm64:
+        description: 'Also build and test the Linux ARM64 package'
+        type: boolean
+        default: false
 
 concurrency:
-  # a newer push supersedes the runs still testing older commits
+  # never two runs of this workflow at once
   group: macos-arm64-${{ github.ref }}
   cancel-in-progress: true
 
@@ -89,14 +103,10 @@ jobs:
           retention-days: 7
 
   macos:
-    name: Package and test on ${{ matrix.runner }}
+    name: Package and test on macOS
     needs: [managed, sitl]
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [macos-26]
-    runs-on: ${{ matrix.runner }}
-    timeout-minutes: 180
+    runs-on: macos-26
+    timeout-minutes: ${{ inputs.tests == 'full' && 150 || 40 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -125,17 +135,27 @@ jobs:
             bin/macos/MissionPlanner-macos-*.zip.sha256
           compression-level: 0
           retention-days: 30
-      - name: Test app without a vehicle
-        timeout-minutes: 70
+      - name: Startup test
+        timeout-minutes: 10
+        env:
+          CI_TEST_PART: smoke
+        run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
+      - name: Screen tour without a vehicle
+        if: inputs.tests == 'full'
+        timeout-minutes: 60
         env:
           CI_TEST_PART: offline
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
-      - name: Test app connected to the simulator
-        if: always()
-        timeout-minutes: 60
+      - name: Screen tour connected to the simulator
+        if: inputs.tests == 'full' && !cancelled()
+        timeout-minutes: 50
         env:
           CI_TEST_PART: connected
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
+      - name: Probe platform services
+        if: inputs.tests == 'full' && !cancelled()
+        timeout-minutes: 20
+        run: ./macOS/ci-probe.sh "bin/macos/Mission Planner.app" ci-out/probe
       - name: Convert remaining screenshots
         if: always()
         run: |
@@ -146,65 +166,19 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: results-${{ matrix.runner }}
+          name: results-macos
           path: |
             ci-out
             package.log
             bin/macos/work/*.log
             bin/macos/work/libgdiplus-*/*.log
 
-  probe:
-    # Quick headless checks (GStreamer, MAVFTP/WebDAV) and the real XQuartz server.
-    name: Probe platform services on macOS
-    needs: [managed, sitl]
-    runs-on: macos-26
-    permissions:
-      contents: write
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: managed
-      - uses: actions/download-artifact@v4
-        with:
-          name: sitl
-          path: sitl-bin
-      - name: Install dependencies
-        run: |
-          export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
-          brew install mono pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 \
-            dylibbundler netpbm sdl2 gstreamer
-          brew install --cask xquartz
-      - name: Package app
-        run: |
-          mkdir managed && tar -xzf MissionPlanner-linux-x86_64.tar.gz -C managed
-          MP_SITL_DIR=$PWD/sitl-bin ./macOS/package.sh managed/MissionPlanner-linux-x86_64 bin/macos > package.log 2>&1
-      - name: Probe
-        run: ./macOS/ci-probe.sh "bin/macos/Mission Planner.app" probe-out
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: results-probe
-          path: probe-out
-      - name: Publish probe results
-        if: always()
-        env:
-          SHA: ${{ github.sha }}
-        run: |
-          cp package.log probe-out/ 2>/dev/null || true
-          cd probe-out
-          echo "commit=$SHA" > RESULT.txt
-          git init -q -b ci-probe
-          git add -A
-          git -c user.name=ci -c user.email=ci@localhost commit -q -m "probe results for $SHA"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-probe
-
   linux-arm64:
     # The same application on native ARM64 Linux (e.g. Ubuntu on Asahi or a Raspberry Pi).
     name: Build and test on Linux ARM64
+    if: inputs.linux_arm64
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 90
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v5
@@ -225,6 +199,7 @@ jobs:
           mkdir -p ci-out/tour
           xvfb-run -a -s "-screen 0 1400x1000x24" timeout --signal=QUIT --kill-after=10s 300s "$app/run.sh" --self-test > ci-out/smoke.log 2>&1 || true
           grep -E 'SMOKE_RUNTIME|LINUX_SMOKE_TEST_PASS' ci-out/smoke.log
+          if [[ "${{ inputs.tests }}" != full ]]; then grep -qx LINUX_SMOKE_TEST_PASS ci-out/smoke.log; exit; fi
           cd "$app"
           export MONO_PATH=$PWD/mono-facades PATH=$PWD/mono-tools:$PATH LD_LIBRARY_PATH=$PWD:$PWD/arm64
           TOUR_OUT=$GITHUB_WORKSPACE/ci-out/tour TOUR_XWD=/usr/bin/xwd TOUR_SKIP=ConfigParamLoading \
@@ -250,8 +225,8 @@ jobs:
     # Publish logs and screenshots to the ci-results branch so they can be
     # read with git (artifact downloads need a browser login).
     name: Publish results
-    needs: [macos, linux-arm64, probe]
-    if: always()
+    needs: [macos, linux-arm64]
+    if: always() && inputs.tests == 'full'
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -264,7 +239,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          OUTCOME: macos=${{ needs.macos.result }} linux-arm64=${{ needs.linux-arm64.result }} probe=${{ needs.probe.result }}
+          OUTCOME: macos=${{ needs.macos.result }} linux-arm64=${{ needs.linux-arm64.result }}
         run: |
           cd results
           echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt
