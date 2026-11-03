@@ -1,5 +1,10 @@
 name: OSX Build
-on: [push, workflow_dispatch, pull_request]
+on:
+  push:
+    # not on the macOS port branch: it has its own manual workflow
+    branches-ignore: [macos-arm64]
+  workflow_dispatch:
+  pull_request:
 
 jobs:
   buildIOS:
