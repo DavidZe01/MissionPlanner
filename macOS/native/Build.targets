@@ -14,8 +14,8 @@
     <IsMissionPlannerMacProject Condition="$(MissionPlannerMacProjects.Contains(';$(MSBuildProjectName);'))">true</IsMissionPlannerMacProject>
   </PropertyGroup>
 
-  <!-- Only Mission Planner itself is an app: solo, WebAPIs and others declare Exe, and an
-       app bundle (self-contained) cannot reference non-self-contained executables. -->
+  <!-- Only Mission Planner itself is an app (solo, WebAPIs and px4uploader are Exe only
+       when MissionPlannerMacNative is not set: this file comes too late for the SDK). -->
   <PropertyGroup Condition="'$(IsMacPlaygroundProject)' != 'true' And '$(MSBuildProjectName)' != 'MissionPlanner'">
     <OutputType>Library</OutputType>
     <StartupObject></StartupObject>
@@ -103,9 +103,6 @@
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(MissionPlannerMacCompileOnly)' != 'true'">osx-arm64</RuntimeIdentifier>
     <AppBundleManifest>$(MSBuildThisFileDirectory)Info.plist</AppBundleManifest>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-    <!-- solo and WebAPIs declare Exe; the SDK has decided that before this file can make
-         them libraries, so do not require referenced executables to be self-contained -->
-    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
     <!-- the static registrar (as eM Client's test app) -->
     <MonoBundlingExtraArgs>--registrar:static</MonoBundlingExtraArgs>
   </PropertyGroup>
