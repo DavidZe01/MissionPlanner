@@ -41,3 +41,4 @@
 2026-11-04 native: tell apart a stuck SDL2 library load from a stuck first call
 2026-11-04 native: fix the SDL2 NativeLibrary trace guard (__MACOS__)
 2026-11-04 native: print the real DefineConstants for the SDL2 trace guard
+2026-11-04 native: trace the SDL2 dlopen itself (runtime OS check)
