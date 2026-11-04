@@ -32,3 +32,4 @@
 2026-11-04 native: retry 3 (Retina and library checks)
 2026-11-04 native: on the owner self-hosted Mac runner
 2026-11-04 native: pick the macos workload by Xcode version (self-hosted Mac has Xcode 27)
+2026-11-04 native: retry past an Xcode 27.1 vs 27.2 point-release mismatch
