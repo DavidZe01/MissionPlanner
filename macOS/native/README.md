@@ -53,8 +53,14 @@ public keys only) and have version 10.0.0.0:
   menus: Cmd+C/V/X/A/Z in text fields, Cmd+Q), and files opened from Finder or dropped on
   the Dock icon (`.tlog` plays in Flight Data, `.bin`/`.log` open in the log browser; the
   document types are in `Info.plist`).
-- `GLControl.cs`: OpenTK's GLControl drives Carbon AGL on macOS; this one has its
-  members without an OpenGL context yet (GDI+ HUD, as in the X11 build).
+- `GLControl.cs`: OpenTK's GLControl drives Carbon AGL on macOS; this one puts an
+  NSOpenGLContext (legacy profile, accelerated or else any renderer) on the control's
+  NSView and registers it with OpenTK as an external context. OpenTK is set up without
+  a platform layer (its Cocoa one discards the application's pending events); make
+  current and swap go through CGL, for worker threads (the 3D map's tile loader gets a
+  shared context, `CreateSharedContext`). Paints happen only when Windows Forms asks.
+- GStreamer is bundled (`build.sh`, Contents/MonoBundle/gstreamer, relocated with
+  dylibbundler); `MacNative.Init` sets its plugin path and registry.
 - Windows Forms resources are BinaryFormatter data: the compatibility implementation
   (`System.Runtime.Serialization.Formatters`) is enabled for the app.
 - Name clashes: macOS framework namespaces (`Speech`, `Symbols`) and newer .NET types

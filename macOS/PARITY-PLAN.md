@@ -41,19 +41,21 @@ GDI+, `LockBits` de solo lectura sin alterar el bitmap, y `Visible`/`Invalidate`
 otros hilos. OpenTK se usa sin su capa Cocoa (que descarta los eventos pendientes de la
 aplicación): solo carga las funciones OpenGL del contexto de AppKit.
 
-Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41817188461):
+Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41839088400):
 
 | Prueba | Resultado |
 | --- | --- |
-| Arranque nativo arm64 (sin Mono ni XQuartz) | Sigue en marcha a los 90 s; ventana, menú y Dock de macOS |
-| Recorrido de pantallas sin vehículo | 145/148 (98,0 %): las 21 pantallas y las 14 pestañas de Flight Data, 77 de 80 páginas de Setup/Config, los 38 formularios, 9/9 funciones (puertos USB/serie, joystick SDL2, voz, cámaras, GStreamer con video en el HUD, SITL incluido, búfer del HUD) |
-| Conectado al SITL ArduCopter incluido (TCP) | 38/38 (100 %): 1370 parámetros, escritura y lectura de un parámetro, subida y bajada de una misión, listado MAVFTP, logs a bordo, armar y despegar (5,6 m) |
+| Arranque nativo arm64 (sin Mono ni XQuartz) | Sigue en marcha a los 90 s; ventana, menú y Dock de macOS; HUD por OpenGL |
+| Recorrido de pantallas sin vehículo | 147/148 (99,3 %): las 21 pantallas y las 14 pestañas de Flight Data, 79 de 80 páginas (incluidas las dos vistas 3D OpenGL), los 38 formularios, 9/9 funciones (puertos USB/serie, joystick SDL2, voz, cámaras, video en el HUD con el GStreamer incluido, SITL incluido) |
+| Conectado al SITL ArduCopter incluido (TCP) | 38/38 (100 %): 1370 parámetros, escritura y lectura de un parámetro, subida y bajada de una misión, listado MAVFTP, logs a bordo, armar y despegar (6 m) |
+| Sin Homebrew | El GStreamer de Homebrew se desinstala tras compilar: el video usa el de la app |
 | Abrir un `.tlog` desde Finder (LaunchServices) | Se abre y se reproduce en Flight Data |
 | Permisos | Bluetooth y red local se piden a nombre de "Mission Planner" |
 
-Los 3 fallos: las dos vistas OpenGL de prueba (`OpenGLtest`, `OpenGLtest2`, solo
-accesibles desde el formulario de depuración; punto 2.2) y `ConfigHWCompass2`, que
-falla igual en Windows y Linux cuando no hay vehículo conectado.
+El único fallo, `ConfigHWCompass2`, falla igual en Windows y Linux cuando no hay vehículo
+conectado. La máquina virtual de CI no tiene aceleración OpenGL: allí se usa el renderizador
+por software de Apple; en un Mac el contexto es acelerado por la GPU. La superficie OpenGL
+es de 1x (en pantallas Retina se escala, como el búfer GDI+ del HUD).
 
 ## Cómo se hizo la comparación
 
