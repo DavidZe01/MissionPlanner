@@ -524,6 +524,8 @@ namespace OpenTK
             paintRequested = true;
             nsContext.Update();
             UpdateBackingScale(view);
+            Console.WriteLine("OpenGL view attached: " + GetType().Name + ", backing scale " +
+                (backingScale.TryGetValue(cglContext, out var attachedScale) ? attachedScale : 1f));
         }
 
         void UpdateDrawable()

@@ -172,8 +172,9 @@ jobs:
           }
           # a step that hangs ends the run (TOUR HANG, stacks from tour-hang.sh); the next run resumes after it
           for attempt in 1 2 3 4 5 6; do
+              # DYLD_PRINT_LIBRARIES: every library the process loads, to check where they come from
               MISSIONPLANNER_TOUR=1 MISSIONPLANNER_FIRSTCHANCE=1 TOUR_OUT="$PWD/out/tour" TOUR_XWD=/usr/sbin/screencapture \
-                  TOUR_STEP_TIMEOUT=90 TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
+                  TOUR_STEP_TIMEOUT=90 TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" DYLD_PRINT_LIBRARIES=1 \
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
@@ -182,6 +183,11 @@ jobs:
           grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
           python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
+          # libraries loaded by the app (GStreamer, SDL, libusb, SimpleBLE...): none from Homebrew
+          grep -E '^dyld\[[0-9]+\]: ' out/tour.log | sed -E 's/^dyld\[[0-9]+\]: //' | sort -u > out/libraries-loaded.txt || true
+          echo "libraries loaded: $(wc -l < out/libraries-loaded.txt), from the app: $(grep -c 'Mission Planner.app/' out/libraries-loaded.txt), bundled GStreamer: $(grep -c 'MonoBundle/gstreamer/' out/libraries-loaded.txt)"
+          echo "LIBRARIES FROM HOMEBREW OR /usr/local: $(grep -cE '^/(opt/homebrew|usr/local)/' out/libraries-loaded.txt)"
+          grep -E '^/(opt/homebrew|usr/local)/' out/libraries-loaded.txt | head -20 || true
           # where each hung step was stuck: the thread running the tour, then the native main thread
           for f in out/tour/hang-*-managed.txt; do
               [[ -f $f ]] || continue
@@ -247,6 +253,37 @@ jobs:
           screencapture -x out/open-document.png || true
           grep -m1 MACOS_OPEN_DOCUMENT out/open-document.log && echo "OPEN DOCUMENT: OK" || echo "OPEN DOCUMENT: not received"
           pkill -f 'Contents/MacOS/MissionPlanner' || true
+      - name: Retina (HiDPI) display
+        # a virtual 2x display (hidpi-display.m) made the main one: the app with the HUD drawn by
+        # OpenGL and by GDI+ at Retina resolution
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 8
+        run: |
+          app=$(head -1 out/mp-app.txt); [[ -n $app ]] || exit 0
+          app=$PWD/$app
+          clang -fobjc-arc -framework Foundation -framework CoreGraphics macOS/native/hidpi-display.m -o "$RUNNER_TEMP/hidpi-display"
+          "$RUNNER_TEMP/hidpi-display" 1280 800 > out/hidpi-display.log 2>&1 &
+          display_pid=$!
+          sleep 6
+          cat out/hidpi-display.log
+          grep -q 'main=yes' out/hidpi-display.log || { echo "RETINA: no HiDPI main display"; kill "$display_pid" 2>/dev/null; exit 0; }
+          # (a saved window position may be on the other display)
+          rm -f "$HOME/Library/Application Support/Mission Planner/config.xml"
+          for mode in opengl gdi; do
+              if [[ $mode == gdi ]]; then export MISSIONPLANNER_NO_OPENGL=1; fi
+              "$app/Contents/MacOS/MissionPlanner" > "out/hidpi-$mode.log" 2>&1 &
+              pid=$!
+              sleep 50
+              perl -e 'alarm 15; exec @ARGV' osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
+              sleep 3
+              screencapture -x -m "out/hidpi-$mode.png" || true
+              echo "RETINA $mode: $(sips -g pixelWidth -g pixelHeight "out/hidpi-$mode.png" 2>/dev/null | awk '/pixel/ {printf "%s ", $2}')"
+              grep -E 'OpenGL view attached|OpenGL backing scale|HUD OpenGL' "out/hidpi-$mode.log" | sort -u | head -5
+              if kill -0 "$pid" 2>/dev/null; then echo "RETINA $mode: running"; else echo "RETINA $mode: exited"; fi
+              kill "$pid" 2>/dev/null; sleep 2; kill -9 "$pid" 2>/dev/null || true
+          done
+          kill "$display_pid" 2>/dev/null || true
       - name: Sign with Developer ID and notarize
         # only when the repository has the secrets of an Apple Developer Program account
         # (macOS/native/sign-notarize.sh lists them); otherwise the app stays signed ad hoc
