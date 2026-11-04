@@ -17,3 +17,4 @@
 2026-11-04 native: bitmap graphics, Visible, SDL3; screen tour
 2026-11-04 native: tool strips, modal loop and timers, SITL, connected tour
 2026-11-04 native: bitmap Graphics, Finder documents, GStreamer, SITL path, app artifact
+2026-11-04 native: themed buttons, Clear, video frames, plugins, HUD back buffer
