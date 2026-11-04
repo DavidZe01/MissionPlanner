@@ -5,3 +5,4 @@
 2026-11-04 first native Mission Planner build and run
 2026-11-04 native build: bash 3.2 fix, bundle completion, arm64 test app
 2026-11-04 native: libraries only, first app bundle
+2026-11-04 native: executable references
