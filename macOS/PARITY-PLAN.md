@@ -30,7 +30,8 @@ Con esto quedan resueltos los puntos 2.1 (interfaz X11), 2.2 (OpenGL), 2.3 (GStr
 2.5 (abrir archivos desde Finder) y 2.7 (Mono y XQuartz como requisitos). El punto 2.8
 (firma Developer ID y notarización) está preparado en el workflow (`sign-notarize.sh`) y
 se activa al añadir al repositorio los secretos de una cuenta del Apple Developer Program;
-sin ella la app va firmada ad hoc. Siguen pendientes 2.4 (actualizador) y 2.6 (Log Analyzer).
+sin ella la app va firmada ad hoc. Decisión (uso personal en tu M4): seguir sin cuenta; la app
+se instala con `install.sh`, sin cuarentena, y abre desde Finder sin pasos extra. Siguen pendientes 2.4 (actualizador) y 2.6 (Log Analyzer).
 
 Correcciones que necesitó la biblioteca Cocoa para Mission Planner (detalle en
 `ExtLibs/mac-playground/README.md`): identidades de ensamblado compatibles con .NET
@@ -41,15 +42,16 @@ GDI+, `LockBits` de solo lectura sin alterar el bitmap, y `Visible`/`Invalidate`
 otros hilos. OpenTK se usa sin su capa Cocoa (que descarta los eventos pendientes de la
 aplicación): solo carga las funciones OpenGL del contexto de AppKit.
 
-Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41839088400):
+Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41847250419):
 
 | Prueba | Resultado |
 | --- | --- |
 | Arranque nativo arm64 (sin Mono ni XQuartz) | Sigue en marcha a los 90 s; ventana, menú y Dock de macOS; HUD por OpenGL |
 | Recorrido de pantallas sin vehículo | 147/148 (99,3 %): las 21 pantallas y las 14 pestañas de Flight Data, 79 de 80 páginas (incluidas las dos vistas 3D OpenGL), los 38 formularios, 9/9 funciones (puertos USB/serie, joystick SDL2, voz, cámaras, video en el HUD con el GStreamer incluido, SITL incluido) |
-| Conectado al SITL ArduCopter incluido (TCP) | 38/38 (100 %): 1370 parámetros, escritura y lectura de un parámetro, subida y bajada de una misión, listado MAVFTP, logs a bordo, armar y despegar (6 m) |
+| Conectado al SITL ArduCopter incluido (TCP) | 38/38 (100 %, HUD con GDI+ directo): 1370 parámetros, escritura y lectura de un parámetro, subida y bajada de una misión, listado MAVFTP, logs a bordo, armar y despegar (6,5 m) |
 | Sin Homebrew | El GStreamer de Homebrew se desinstala tras compilar: el video usa el de la app |
 | Abrir un `.tlog` desde Finder (LaunchServices) | Se abre y se reproduce en Flight Data |
+| Instalar con `install.sh` | Instalada sin atributo de cuarentena; abre y queda en marcha |
 | Permisos | Bluetooth y red local se piden a nombre de "Mission Planner" |
 
 El único fallo, `ConfigHWCompass2`, falla igual en Windows y Linux cuando no hay vehículo
