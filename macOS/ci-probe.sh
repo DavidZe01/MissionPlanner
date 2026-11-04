@@ -38,6 +38,10 @@ sleep 8
 DISPLAY=:98 run_limited 400 "$launcher" --probe vehicle 127.0.0.1:5760 > "$out/probe-vehicle.log" 2>&1
 grep -E '^PROBE|^/:|^serving|^(OPTIONS|PROPFIND|GET) |^mounted' "$out/probe-vehicle.log" || true
 kill "$sitl" 2>/dev/null
+
+# firmware board detection from USB ids (no hardware needed)
+DISPLAY=:98 run_limited 120 "$launcher" --probe boards > "$out/probe-boards.log" 2>&1
+grep -E '^PROBE|->' "$out/probe-boards.log" || true
 kill "$xvfb" 2>/dev/null
 
 # the real XQuartz server, as on a user's Mac
@@ -53,4 +57,34 @@ if [[ -S /tmp/.X11-unix/X0 ]]; then
 else
     echo "XQuartz did not start"
 fi
+
+# Bluetooth and camera as macOS sees them when the app is opened from Finder: it reads the
+# usage descriptions from the Info.plist of the app the process belongs to, and ends a
+# process that has none. Compare the app (Mono runs in mono-host, inside the bundle) with a
+# copy whose launcher has to exec Homebrew's mono.
+nohost="$(dirname -- "$app")/Mission Planner mono.app"
+rm -rf -- "$nohost" && cp -R "$app" "$nohost" && rm -f -- "$nohost/Contents/MacOS/mono-host"
+codesign --force --sign - "$nohost" > /dev/null 2>&1 || true
+logs="$HOME/Library/Logs/MissionPlanner"
+privacy_probe() { # label app probe args...
+    local label=$1 bundle=$2 name=$3
+    shift 2
+    rm -f -- "$logs/probe-$name.log"
+    run_limited 120 /usr/bin/open -W -n -a "$bundle" --args --probe "$@" > "$out/open-$name-$label.txt" 2>&1
+    cp -- "$logs/probe-$name.log" "$out/probe-$name-$label.log" 2>/dev/null || echo "(no output)" > "$out/probe-$name-$label.log"
+    echo "$name opened as an app, $label: $(grep -E '^(probe |PROBE |ble|frames)' "$out/probe-$name-$label.log" | tr '\n' ' ' | cut -c1-300)"
+}
+camera="avfvideosrc device-index=0 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink"
+privacy_probe host "$app" ble
+privacy_probe mono "$nohost" ble
+privacy_probe host "$app" gstreamer "$camera"
+privacy_probe mono "$nohost" gstreamer "$camera"
+ls -la "$HOME/Library/Logs/DiagnosticReports/" > "$out/crash-reports.txt" 2>&1
+for f in "$HOME"/Library/Logs/DiagnosticReports/*; do
+    [[ -f $f ]] && grep -q -i -E 'usage description|privacy-sensitive' "$f" && { echo "== $f"; grep -i -E -m4 'usage description|privacy-sensitive|"procName"|Process:' "$f"; }
+done > "$out/privacy-crashes.txt" 2>&1
+head -20 "$out/privacy-crashes.txt"
+/usr/bin/log show --last 15m --style compact \
+    --predicate 'process == "tccd" OR eventMessage CONTAINS[c] "usage description"' > "$out/tcc.log" 2>&1 || true
+grep -i -E 'mono|Mission Planner|org.ardupilot|usage description' "$out/tcc.log" | tail -25 || true
 exit $status

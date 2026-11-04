@@ -320,16 +320,19 @@ class ScreenTour
             }
             PlatformChecks();
             ShowMain("FlightData", m.MenuFlightData, 3000);
-            foreach (var tabName in new[] { "tabActions", "tabQuick", "tabStatus", "tabPagePreFlight" })
+            // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
+            // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
+            var tabControl = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();
+            var tabNames = tabControl.TabPages.Cast<TabPage>().Select(p => p.Name).ToList();
+            foreach (var tabName in tabNames)
             {
                 var name = tabName;
                 Step("screen:FlightData-" + name, () =>
                 {
-                    var tabs = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();
-                    var tab = m.FlightData.Controls.Find(name, true).OfType<TabPage>().FirstOrDefault();
+                    var tab = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(p => p.Name == name);
                     if (tab == null)
                         return;
-                    tabs.SelectedTab = tab;
+                    tabControl.SelectedTab = tab;
                     Wait(1500);
                     Screenshot("flightdata-" + name);
                 });

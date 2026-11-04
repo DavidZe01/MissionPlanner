@@ -14,6 +14,8 @@ using MissionPlanner.Utilities;
 // Headless checks of the platform services the UI relies on, quick to run in CI:
 //   Probe.exe gstreamer            frames from a GStreamer pipeline
 //   Probe.exe vehicle host:port    MAVLink, MAVFTP, the WebDAV server and the OS mount
+//   Probe.exe boards               firmware board detection from USB ids
+//   Probe.exe ble                  a Bluetooth LE scan (CoreBluetooth on macOS)
 class Probe
 {
     static int frames;
@@ -50,8 +52,34 @@ class Probe
         return result.StartsWith("PROBE OK");
     }
 
+    // writes to the console and to a log file: opened as an app (open -a) there is no console
+    class Tee : TextWriter
+    {
+        readonly TextWriter a, b;
+        public Tee(TextWriter a, TextWriter b) { this.a = a; this.b = b; }
+        public override System.Text.Encoding Encoding => a.Encoding;
+        public override void Write(char value) { a.Write(value); b.Write(value); }
+        public override void Write(string value) { a.Write(value); b.Write(value); }
+        public override void WriteLine(string value) { a.WriteLine(value); b.WriteLine(value); }
+        public override void Flush() { a.Flush(); b.Flush(); }
+    }
+
     static int Main(string[] args)
     {
+        var logDir = Environment.GetEnvironmentVariable("PROBE_LOG_DIR") ??
+                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs", "MissionPlanner");
+        try
+        {
+            Directory.CreateDirectory(logDir);
+            var file = new StreamWriter(Path.Combine(logDir, "probe-" + (args.Length > 0 ? args[0] : "none") + ".log"), false) { AutoFlush = true };
+            Console.SetOut(new Tee(Console.Out, file));
+            Console.WriteLine("probe " + string.Join(" ", args) + " pid " + Process.GetCurrentProcess().Id +
+                              " runner " + (Environment.GetEnvironmentVariable("MP_LIBMONO") != null ? "mono-host" : "mono"));
+        }
+        catch
+        {
+        }
+
         Settings.CustomUserDataDirectory = Path.Combine(Path.GetTempPath(), "mp-probe-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(Settings.GetUserDataDirectory());
         var ok = true;
@@ -76,6 +104,53 @@ class Probe
                 if (frames < 30)
                     throw new Exception("only " + frames + " frames");
             }, 45000);
+        }
+
+        if (args.Length > 0 && args[0] == "boards")
+        {
+            // board detection for firmware upload from USB ids and product names, in the format
+            // Linux.GetAllCOMPorts reads them from the IOKit registry (macOS) or sysfs (Linux)
+            var cases = new[]
+            {
+                new { board = "fmuv2", id = @"USB\VID_0483&PID_5740&REV_0000", expect = "px4v2", bl = "" },
+                new { board = "fmuv3-BL", id = @"USB\VID_1209&PID_5740&REV_0000", expect = "px4v3", bl = "" },
+                new { board = "CubeOrange-BL", id = @"USB\VID_2DAE&PID_1016&REV_0000", expect = "chbootloader", bl = "CubeOrange" },
+                new { board = "MatekH743", id = @"USB\VID_1209&PID_5740&REV_0000", expect = "chbootloader", bl = "MatekH743" },
+                new { board = "PX4 FMU v4.x", id = @"USB\VID_26AC&PID_0012&REV_0000", expect = "px4v4", bl = "" },
+            };
+            foreach (var c in cases)
+            {
+                ok &= Run("board " + c.board, () =>
+                {
+                    var ports = new System.Collections.Generic.List<MissionPlanner.ArduPilot.DeviceInfo>
+                    {
+                        // another USB serial device first: it must be skipped
+                        new MissionPlanner.ArduPilot.DeviceInfo { name = "/dev/cu.usbserial-A1", board = "FT232R USB UART", description = "", hardwareid = @"USB\VID_0403&PID_6001&REV_0000" },
+                        new MissionPlanner.ArduPilot.DeviceInfo { name = "/dev/cu.usbmodem1101", board = c.board, description = "", hardwareid = c.id },
+                    };
+                    var ans = BoardDetect.DetectBoard("/dev/cu.usbmodem1101", ports);
+                    Console.WriteLine(c.board + " -> " + ans + (ans == BoardDetect.boards.chbootloader ? " " + BoardDetect.chbootloader : ""));
+                    if (ans.ToString() != c.expect || (c.bl != "" && BoardDetect.chbootloader != c.bl))
+                        throw new Exception("expected " + c.expect + " " + c.bl);
+                }, 20000);
+            }
+        }
+
+        if (args.Length > 0 && args[0] == "ble")
+        {
+            // Bluetooth LE through the bundled SimpleBLE (CoreBluetooth), as the connection list
+            // does. macOS ends a process that uses Bluetooth without a usage description in the
+            // Info.plist of the app it belongs to: reaching "PROBE OK" means it did not.
+            ok &= Run("ble-scan", () =>
+            {
+                var ports = CommsBLE.SerialPort_GetCustomPorts();
+                Console.WriteLine("ble: adapter check done, " + ports.Count + " ports");
+                Console.Out.Flush();
+                // the scan runs in the background for 5 s
+                Thread.Sleep(8000);
+                ports = CommsBLE.SerialPort_GetCustomPorts();
+                Console.WriteLine("ble ports: " + string.Join(", ", ports));
+            }, 30000);
         }
 
         if (args.Length > 1 && args[0] == "vehicle")

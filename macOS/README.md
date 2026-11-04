@@ -62,7 +62,7 @@ On any machine with the .NET 10 SDK and Mono, build the managed application
 (`Linux/build.sh`). Then, on a Mac with Homebrew:
 
 ```sh
-brew install pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 dylibbundler sdl2
+brew install pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 dylibbundler sdl2 libusb
 macOS/package.sh bin/linux/MissionPlanner-linux-x86_64
 ```
 

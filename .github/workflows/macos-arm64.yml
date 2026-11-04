@@ -1,8 +1,10 @@
 name: macOS Apple Silicon
 
-# Manual only: macOS runners are expensive, so nothing runs on push.
-# Default: build, package the app and a ~2 minute startup test (about 20
-# runner-minutes in total). The long screen tours and Linux ARM64 are opt-in.
+# Manual only: macOS runners are expensive, so ordinary pushes start nothing.
+# Default (smoke): build, package the app and a ~2 minute startup test (about
+# 20 runner-minutes in total). probe adds ~10 minutes of platform checks
+# (video, vehicle link, board detection, Bluetooth/camera permissions, XQuartz);
+# full adds the screen tours (about 2 h). Linux ARM64 is opt-in.
 on:
   # The default (smoke) build runs when a push to macos-arm64 changes the file
   # .github/macos-build-request (other pushes start nothing), or when a tag
@@ -15,9 +17,9 @@ on:
   workflow_dispatch:
     inputs:
       tests:
-        description: 'smoke = startup test only; full = screen tours + SITL + probes (about 2 h of macOS runner)'
+        description: 'smoke = startup test only; probe = + platform checks (~10 min); full = + screen tours with SITL (about 2 h of macOS runner)'
         type: choice
-        options: [smoke, full]
+        options: [smoke, probe, full]
         default: smoke
       linux_arm64:
         description: 'Also build and test the Linux ARM64 package'
@@ -31,6 +33,11 @@ concurrency:
 
 permissions:
   contents: read
+
+env:
+  # smoke, probe or full: the Run workflow choice, or [tests=probe] / [tests=full] in the
+  # message of the commit that changed .github/macos-build-request
+  TESTS: ${{ inputs.tests || (contains(github.event.head_commit.message, '[tests=full]') && 'full') || (contains(github.event.head_commit.message, '[tests=probe]') && 'probe') || 'smoke' }}
 
 defaults:
   run:
@@ -144,7 +151,7 @@ jobs:
     name: Package and test on macOS
     needs: [managed, sitl]
     runs-on: macos-26
-    timeout-minutes: ${{ inputs.tests == 'full' && 150 || 40 }}
+    timeout-minutes: ${{ (inputs.tests == 'full' || contains(github.event.head_commit.message, '[tests=full]')) && 150 || 60 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -158,7 +165,7 @@ jobs:
         run: |
           export HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1
           brew install mono pkgconf cairo pango giflib libtiff libexif jpeg-turbo libpng libx11 \
-            dylibbundler netpbm sdl2 gstreamer
+            dylibbundler netpbm sdl2 gstreamer libusb
           brew install --cask xquartz
           uname -m; sw_vers; mono --version | head -2; lipo -archs "$(brew --prefix mono)/bin/mono"
       - name: Package app
@@ -179,19 +186,19 @@ jobs:
           CI_TEST_PART: smoke
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
       - name: Screen tour without a vehicle
-        if: inputs.tests == 'full'
+        if: env.TESTS == 'full'
         timeout-minutes: 60
         env:
           CI_TEST_PART: offline
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
       - name: Screen tour connected to the simulator
-        if: inputs.tests == 'full' && !cancelled()
+        if: env.TESTS == 'full' && !cancelled()
         timeout-minutes: 50
         env:
           CI_TEST_PART: connected
         run: ./macOS/ci-test.sh "bin/macos/Mission Planner.app" ci-out
       - name: Probe platform services
-        if: inputs.tests == 'full' && !cancelled()
+        if: (env.TESTS == 'full' || env.TESTS == 'probe') && !cancelled()
         timeout-minutes: 20
         run: ./macOS/ci-probe.sh "bin/macos/Mission Planner.app" ci-out/probe
       - name: Convert remaining screenshots
@@ -237,7 +244,7 @@ jobs:
           mkdir -p ci-out/tour
           xvfb-run -a -s "-screen 0 1400x1000x24" timeout --signal=QUIT --kill-after=10s 300s "$app/run.sh" --self-test > ci-out/smoke.log 2>&1 || true
           grep -E 'SMOKE_RUNTIME|LINUX_SMOKE_TEST_PASS' ci-out/smoke.log
-          if [[ "${{ inputs.tests }}" != full ]]; then grep -qx LINUX_SMOKE_TEST_PASS ci-out/smoke.log; exit; fi
+          if [[ "$TESTS" != full ]]; then grep -qx LINUX_SMOKE_TEST_PASS ci-out/smoke.log; exit; fi
           cd "$app"
           export MONO_PATH=$PWD/mono-facades PATH=$PWD/mono-tools:$PATH LD_LIBRARY_PATH=$PWD:$PWD/arm64
           TOUR_OUT=$GITHUB_WORKSPACE/ci-out/tour TOUR_XWD=/usr/bin/xwd TOUR_SKIP=ConfigParamLoading \
@@ -264,7 +271,9 @@ jobs:
     # read with git (artifact downloads need a browser login).
     name: Publish results
     needs: [macos, linux-arm64]
-    if: always() && inputs.tests == 'full'
+    if: >-
+      always() && (inputs.tests == 'full' || inputs.tests == 'probe' ||
+      contains(github.event.head_commit.message, '[tests=full]') || contains(github.event.head_commit.message, '[tests=probe]'))
     runs-on: ubuntu-22.04
     permissions:
       contents: write

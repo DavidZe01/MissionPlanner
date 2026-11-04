@@ -88,6 +88,7 @@ mono_config="$cache_dir/mono-config"
 # Extra mappings for native libraries the managed code names by Linux sonames.
 maps=("libdl.so=/usr/lib/libSystem.B.dylib")
 [[ -f $frameworks/libSDL2-2.0.0.dylib ]] && maps+=("SDL2=$frameworks/libSDL2-2.0.0.dylib")
+[[ -f $frameworks/libusb-1.0.0.dylib ]] && maps+=("libusb-1.0=$frameworks/libusb-1.0.0.dylib" "libusb-1.0.dll=$frameworks/libusb-1.0.0.dylib")
 [[ -f $frameworks/libsimplecble.dylib ]] && maps+=("simpleble-c.dll=$frameworks/libsimplecble.dylib")
 [[ -f $frameworks/libuser32stub.dylib ]] && maps+=("user32.dll=$frameworks/libuser32stub.dylib" "user32=$frameworks/libuser32stub.dylib")
 # OpenTK (OpenGL HUD, 3D views) through GLX and the X extensions of XQuartz.
@@ -123,6 +124,12 @@ if [[ -x $contents/Resources/sitl/ArduCopter ]]; then
     export MISSIONPLANNER_SITL_DIR="$contents/Resources/sitl"
 fi
 export MONO_MWF_MAC_FORCE_X11=1
+# Bluetooth LE needs macOS to attribute the access to this app, which it does when the app
+# was opened by LaunchServices (Finder, Dock, open); from a terminal it would be the
+# terminal's. MISSIONPLANNER_BLE=1 scans anyway.
+if [[ $PPID != 1 && -z ${MISSIONPLANNER_BLE:-} ]]; then
+    export MISSIONPLANNER_NO_BLE=${MISSIONPLANNER_NO_BLE:-1}
+fi
 # Mono's X input method code frees memory owned by Xlib (XGetIMValues), which
 # macOS's allocator aborts on. Keyboard input works without XIM.
 export MONO_WINFORMS_XIM_STYLE=${MONO_WINFORMS_XIM_STYLE:-disabled}
@@ -141,19 +148,35 @@ if [[ -z ${FONTCONFIG_PATH:-} ]]; then
 fi
 
 cd -- "$app_dir"
+
+# Run Mono through mono-host (an executable in this bundle) so that macOS reads the
+# Bluetooth/camera usage descriptions from this app's Info.plist; a process whose
+# executable is Homebrew's mono has none. Falls back to mono if the host cannot run.
+runner=("$mono_bin")
+host="$contents/MacOS/mono-host"
+libmono=
+for candidate in "$mono_prefix"/lib/libmonosgen-2.0.1.dylib "$mono_prefix"/lib/libmonosgen-2.0.dylib; do
+    [[ -f $candidate ]] && { libmono=$candidate; break; }
+done
+if [[ -z ${MISSIONPLANNER_NO_HOST:-} && -x $host && -n $libmono ]] \
+    && MP_LIBMONO=$libmono "$host" version.exe MissionPlanner.exe > /dev/null 2>> "$log_dir/launcher.log"; then
+    export MP_LIBMONO=$libmono
+    runner=("$host")
+fi
+
 {
     echo "=== $(date) Mission Planner for macOS"
     echo "machine=$machine macOS=$(/usr/bin/sw_vers -productVersion 2>/dev/null)"
-    echo "mono=$mono_real archs=$mono_archs"
+    echo "mono=$mono_real archs=$mono_archs runner=${runner[0]} libmono=$libmono"
     echo "libgdiplus=$libgdiplus libX11=$libx11 DISPLAY=$DISPLAY"
 } >> "$log_dir/launcher.log"
 
 case ${1:-} in
-    --self-test) shift; exec "$mono_bin" LinuxSmokeTest.exe "$@" ;;
-    --tour) shift; exec "$mono_bin" ScreenTour.exe "$@" ;;
-    --probe) shift; exec "$mono_bin" Probe.exe "$@" ;;
+    --self-test) shift; exec "${runner[@]}" LinuxSmokeTest.exe "$@" ;;
+    --tour) shift; exec "${runner[@]}" ScreenTour.exe "$@" ;;
+    --probe) shift; exec "${runner[@]}" Probe.exe "$@" ;;
 esac
 if [[ -t 1 ]]; then
-    exec "$mono_bin" MissionPlanner.exe "$@"
+    exec "${runner[@]}" MissionPlanner.exe "$@"
 fi
-exec "$mono_bin" MissionPlanner.exe "$@" >> "$log_dir/MissionPlanner.log" 2>&1
+exec "${runner[@]}" MissionPlanner.exe "$@" >> "$log_dir/MissionPlanner.log" 2>&1

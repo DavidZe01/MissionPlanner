@@ -119,6 +119,9 @@ fi
 # No-op user32 functions for libraries that call them while painting.
 cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \
     -o "$app/Contents/Frameworks/libuser32stub.dylib" "$mac_dir/user32stub.c"
+# Runs Mono inside a process whose executable is in this bundle, so macOS reads the
+# Bluetooth/camera usage descriptions from our Info.plist (see monohost.c).
+cc -O2 -arch "$arch" -o "$app/Contents/MacOS/mono-host" "$mac_dir/monohost.c"
 # SDL2 for joysticks (IOKit HID); it only links system frameworks.
 sdl2=$(brew --prefix sdl2 2>/dev/null)/lib/libSDL2-2.0.0.dylib
 if [[ -f $sdl2 ]]; then
@@ -127,6 +130,15 @@ if [[ -f $sdl2 ]]; then
     install_name_tool -id @loader_path/libSDL2-2.0.0.dylib "$app/Contents/Frameworks/libSDL2-2.0.0.dylib"
 else
     echo 'SDL2 not found (brew install sdl2): joysticks will be unavailable.' >&2
+fi
+# libusb for DFU flashing (LibUsbDotNet); it only links system frameworks.
+libusb=$(brew --prefix libusb 2>/dev/null)/lib/libusb-1.0.0.dylib
+if [[ -f $libusb ]]; then
+    cp -- "$libusb" "$app/Contents/Frameworks/"
+    chmod u+w "$app/Contents/Frameworks/libusb-1.0.0.dylib"
+    install_name_tool -id @loader_path/libusb-1.0.0.dylib "$app/Contents/Frameworks/libusb-1.0.0.dylib"
+else
+    echo 'libusb not found (brew install libusb): DFU flashing will be unavailable.' >&2
 fi
 # Use XQuartz's X client libraries instead of Homebrew's copies. Mono's Windows
 # Forms, cairo/libgdiplus and XQuartz's libGL (used by the OpenGL HUD) then
@@ -173,19 +185,24 @@ if command -v sips >/dev/null && command -v iconutil >/dev/null; then
     iconutil -c icns "$iconset" -o "$app/Contents/Resources/MissionPlanner.icns"
 fi
 
-# Apple Silicon only runs signed native code; install_name_tool invalidated the
-# linker signatures. Sign ad hoc (users of a downloaded copy clear quarantine).
-codesign --force --sign - "$app/Contents/Frameworks/"*.dylib "$app/Contents/Resources/app/libSkiaSharp.dylib"
-if [[ -d $app/Contents/Resources/sitl ]]; then
-    codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
-fi
-codesign --force --sign - "$app"
-
 {
     cat "$managed_dir/BUILD-INFO.txt" 2>/dev/null || true
     echo "macOS bundle built on $(sw_vers -productVersion) $arch"
     echo "libgdiplus $libgdiplus_version (X11), SkiaSharp native $skia_version"
-} > "$app/Contents/Resources/app/BUILD-INFO.txt"
+} > "$app/Contents/Resources/app/BUILD-INFO.txt.new"
+mv -- "$app/Contents/Resources/app/BUILD-INFO.txt.new" "$app/Contents/Resources/app/BUILD-INFO.txt"
+
+# Apple Silicon only runs signed native code; install_name_tool invalidated the
+# linker signatures. Sign ad hoc (users of a downloaded copy clear quarantine).
+# Nothing in the bundle may change after this: macOS identifies the app (e.g. for
+# its Bluetooth and camera permissions) by this signature.
+codesign --force --sign - "$app/Contents/Frameworks/"*.dylib "$app/Contents/Resources/app/libSkiaSharp.dylib"
+if [[ -d $app/Contents/Resources/sitl ]]; then
+    codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
+fi
+codesign --force --sign - "$app/Contents/MacOS/mono-host"
+codesign --force --sign - "$app"
+codesign --verify --strict "$app" && echo "Signature: valid"
 
 package_name="MissionPlanner-macos-$arch"
 rm -f -- "$output_dir/$package_name.zip"
