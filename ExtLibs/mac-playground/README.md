@@ -23,7 +23,10 @@ Changes for Mission Planner:
   closed from a timer returns from ShowDialog;
 - `Control.Visible` read from a worker thread (XplatUICocoa.IsVisible) does not
   call AppKit off the main thread;
-- `Graphics.FromImage`: what is drawn shows in the bitmap while the Graphics lives;
+- `Graphics.FromImage`: each Graphics draws through a context of its own on the
+  bitmap's memory (two Graphics of one bitmap no longer share transform, clip and
+  saved states: the second drew upside down), and what is drawn shows in the
+  bitmap's image while the Graphics lives;
 - small API gaps: SaveFileDialog.OverwritePrompt/CreatePrompt,
   ImageAttributes.SetRemapTable (no-op); clipper's top-level types internal.
 

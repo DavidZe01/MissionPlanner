@@ -45,5 +45,55 @@
 	<string>Mission Planner can show a camera or capture device in the HUD.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mission Planner can record audio with video captures.</string>
+	<!-- files opened from Finder (MacNative.OpenDocument): telemetry logs are played in
+	     Flight Data, DataFlash logs open in the log browser, as on Windows -->
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MAVLink Telemetry Log</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.ardupilot.missionplanner.tlog</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>DataFlash Log</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>bin</string>
+				<string>log</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.ardupilot.missionplanner.tlog</string>
+			<key>UTTypeDescription</key>
+			<string>MAVLink Telemetry Log</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>tlog</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -64,8 +64,9 @@ jobs:
           dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
           # .NET stacks of a hung screen-tour step (macOS/native/tour-hang.sh)
           dotnet tool install --global dotnet-stack 2>&1 | tail -1 || true
-          # native libraries bundled into the app (joysticks, DFU flashing)
-          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb 2>&1 | tail -2
+          # native libraries bundled into the app (joysticks, DFU flashing); GStreamer (video)
+          # is used from Homebrew, as by the X11 app
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb gstreamer 2>&1 | tail -2
       - name: Build the Windows Forms test app
         # validated on macOS 26: only when the request commit asks for [formstest]
         if: contains(github.event.head_commit.message, '[formstest]')
@@ -118,6 +119,8 @@ jobs:
           app=$(head -1 out/mp-app.txt)
           if [[ -n $app ]]; then
               du -sh "$app" | tee -a out/result.txt
+              # the app to download (ditto keeps the bundle's signature and symlinks)
+              ditto -c -k --keepParent "$app" MissionPlanner-macos-native-arm64.zip
               (cd "$app/Contents" && find . -maxdepth 2 | sort | head -80) > out/mp-app-contents.txt
               ls bin/Release/net461 | head -100 > out/mp-output-dir.txt
           fi
@@ -196,6 +199,8 @@ jobs:
         run: |
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || exit 0
+          # absolute: the simulator runs in its own directory
+          app=$PWD/$app
           sitl_dir="$app/Contents/Resources/sitl"
           [[ -x $sitl_dir/ArduCopter ]] || { echo "SITL: not bundled"; exit 0; }
           simdir=$(mktemp -d) sitl_log=$PWD/out/sitl.log
@@ -215,6 +220,22 @@ jobs:
           kill "$sitl_pid" 2>/dev/null || true
           grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-connected.log | cut -c1-220
           python3 macOS/summarize-tour.py out/tour-connected/tour-report.tsv | tail -30 || true
+      - name: Open a telemetry log from Finder
+        # LaunchServices hands the file to the app as an Apple event (Info.plist document types)
+        timeout-minutes: 5
+        run: |
+          app=$(head -1 out/mp-app.txt)
+          # the connected tour's log (its data directory is under $TMPDIR)
+          tlog=$(find "${TMPDIR:-/tmp}" "$HOME/Library/Application Support/Mission Planner" -name '*.tlog' -size +10k 2>/dev/null | head -1)
+          [[ -n $app && -n $tlog ]] || { echo "no app or no telemetry log from the connected tour"; exit 0; }
+          ls -la "$tlog"
+          open -a "$PWD/$app" --stdout "$PWD/out/open-document.log" --stderr "$PWD/out/open-document.log" "$tlog"
+          sleep 50
+          osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
+          sleep 5
+          screencapture -x out/open-document.png || true
+          grep -m1 MACOS_OPEN_DOCUMENT out/open-document.log && echo "OPEN DOCUMENT: OK" || echo "OPEN DOCUMENT: not received"
+          pkill -f 'Contents/MacOS/MissionPlanner' || true
       - name: Smaller screenshots
         # JPEG instead of PNG keeps the results (and the ci-native branch) small
         if: always()
@@ -228,6 +249,14 @@ jobs:
         with:
           name: results-native
           path: out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: MissionPlanner-macos-native-arm64
+          path: MissionPlanner-macos-native-arm64.zip
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 14
 
   results:
     # Logs and screenshots on the ci-native branch, readable with git.

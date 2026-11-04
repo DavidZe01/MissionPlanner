@@ -580,13 +580,51 @@ namespace System.Drawing {
 			dirty = true;
 		}
 
+		// A new context on the bitmap's memory (that of GetRenderableContext), with a state of
+		// its own: for Graphics.FromImage. null when the bitmap has no such memory.
+		internal CGBitmapContext NewDrawingContext ()
+		{
+			var shared = GetRenderableContext ();
+			var data = shared?.Data ?? IntPtr.Zero;
+			if (data == IntPtr.Zero)
+				return null;
+			try {
+				return new CGBitmapContext (data, shared.Width, shared.Height, shared.BitsPerComponent,
+					shared.BytesPerRow, shared.ColorSpace, shared.BitmapInfo);
+			}
+			catch (Exception) {
+				return null;
+			}
+		}
+
 		internal override CGImage NativeCGImage {
 			get {
 				if (dirty || liveGraphics > 0) {
 					dirty = false;
-					base.NativeCGImage = GetRenderableContext().ToImage();
+					var context = GetRenderableContext();
+					base.NativeCGImage = Snapshot(context) ?? context.ToImage();
 				}
 				return base.NativeCGImage;
+			}
+		}
+
+		// An image of the bitmap's memory as it is now. The drawing may have gone through
+		// another context on the same memory (Graphics.FromImage), so do not rely on what
+		// the bitmap's own context knows.
+		static CGImage Snapshot (CGBitmapContext context)
+		{
+			var data = context?.Data ?? IntPtr.Zero;
+			if (data == IntPtr.Zero)
+				return null;
+			try {
+				using var bytes = NSData.FromBytes (data, (nuint)(context.BytesPerRow * context.Height));
+				using var provider = new CGDataProvider (bytes);
+				return new CGImage ((int)context.Width, (int)context.Height, (int)context.BitsPerComponent,
+					(int)context.BitsPerPixel, (int)context.BytesPerRow, context.ColorSpace, context.BitmapInfo,
+					provider, null, true, CGColorRenderingIntent.Default);
+			}
+			catch (Exception) {
+				return null;
 			}
 		}
 

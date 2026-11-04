@@ -50,7 +50,9 @@ public keys only) and have version 10.0.0.0:
 - `MacNative.cs`: native libraries the code names as on Windows/Linux (Mono had dllmap):
   `libdl.so`, `SDL2`, `simpleble-c.dll`, `user32.dll` (no-op stub), `libusb-1.0`,
   `lib*.so.N` (GStreamer from Homebrew). Also the macOS menu bar (application and Edit
-  menus: Cmd+C/V/X/A/Z in text fields, Cmd+Q).
+  menus: Cmd+C/V/X/A/Z in text fields, Cmd+Q), and files opened from Finder or dropped on
+  the Dock icon (`.tlog` plays in Flight Data, `.bin`/`.log` open in the log browser; the
+  document types are in `Info.plist`).
 - `GLControl.cs`: OpenTK's GLControl drives Carbon AGL on macOS; this one has its
   members without an OpenGL context yet (GDI+ HUD, as in the X11 build).
 - Windows Forms resources are BinaryFormatter data: the compatibility implementation

@@ -5,6 +5,7 @@
 //   names with dllmap); resolve them to the copies in the app bundle or Homebrew.
 // - The macOS menu bar: an application menu (About, Quit) and an Edit menu, which is
 //   what makes Cmd+C / Cmd+V / Cmd+X / Cmd+A / Cmd+Z work in text fields.
+// - Files opened from Finder (.tlog, .bin, .log; document types in Info.plist).
 #if MACNATIVE
 using System;
 using System.Collections.Generic;
@@ -201,6 +202,102 @@ namespace MissionPlanner
             catch (Exception ex)
             {
                 Console.WriteLine("macOS menu bar: " + ex);
+            }
+            ReceiveDocuments();
+        }
+
+        static readonly Queue<string> documents = new Queue<string>();
+        static System.Windows.Forms.Timer documentTimer;
+
+        /// <summary>
+        /// Files opened from Finder or dropped on the Dock icon (the document types in Info.plist).
+        /// macOS sends them as an Apple event, not as arguments: open them like Program.args.
+        /// </summary>
+        static void ReceiveDocuments()
+        {
+            try
+            {
+                var app = NSApplication.SharedApplication;
+                // AppKit calls application:openURLs: when the delegate has it (the Cocoa driver's
+                // delegate does), application:openFiles: otherwise
+                app.OpenUrls += (sender, e) =>
+                {
+                    foreach (var url in e.Urls)
+                        if (url.IsFileUrl && !string.IsNullOrEmpty(url.Path))
+                            QueueDocument(url.Path);
+                };
+                app.OpenFiles += (sender, e) =>
+                {
+                    foreach (var file in e.Filenames)
+                        QueueDocument(file);
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("macOS documents: " + ex);
+            }
+        }
+
+        static void QueueDocument(string path)
+        {
+            lock (documents)
+                documents.Enqueue(path);
+            if (documentTimer == null)
+            {
+                documentTimer = new System.Windows.Forms.Timer { Interval = 500 };
+                documentTimer.Tick += (sender, e) => OpenDocuments();
+            }
+            documentTimer.Start();
+        }
+
+        static void OpenDocuments()
+        {
+            // a file that starts the app arrives before the main window is up
+            var main = MainV2.instance;
+            if (main == null || main.IsDisposed || !main.Visible || main.FlightData == null)
+                return;
+            documentTimer.Stop();
+            while (true)
+            {
+                string path;
+                lock (documents)
+                {
+                    if (documents.Count == 0)
+                        break;
+                    path = documents.Dequeue();
+                }
+                try
+                {
+                    OpenDocument(main, path);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("open " + path + ": " + ex);
+                }
+            }
+        }
+
+        // as MainV2 does with a file given as argument
+        static void OpenDocument(MainV2 main, string path)
+        {
+            if (!File.Exists(path))
+                return;
+            Console.WriteLine("MACOS_OPEN_DOCUMENT " + path);
+            switch (Path.GetExtension(path).ToLowerInvariant())
+            {
+                case ".tlog":
+                    main.MenuFlightData.PerformClick();
+                    main.FlightData.LoadLogFile(path);
+                    main.FlightData.BUT_playlog_Click(null, null);
+                    break;
+                case ".bin":
+                case ".log":
+                    var browse = new MissionPlanner.Log.LogBrowse();
+                    MissionPlanner.Utilities.ThemeManager.ApplyThemeTo(browse);
+                    browse.logfilename = path;
+                    browse.Show(main);
+                    browse.BringToFront();
+                    break;
             }
         }
     }

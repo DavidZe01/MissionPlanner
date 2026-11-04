@@ -223,6 +223,8 @@ namespace System.Drawing {
 					context.RestoreState();
 					if (hasClientTransform)
 						context.RestoreState();
+					if (ownsContext)
+						context.Dispose();
 					context = null;
 				}
 
@@ -1052,16 +1054,25 @@ namespace System.Drawing {
 
 			var bitmapContext = b.GetRenderableContext ();
 
+			// Each Graphics draws through a context of its own on the bitmap's memory: Graphics
+			// sets transforms relative to the context's state, so a second Graphics on a shared
+			// context (the first one not disposed, as Mission Planner's HUD does on resize) would
+			// inherit the first one's flip, transform and clip: the drawing came out upside down.
+			// In GDI+ the Graphics of one bitmap are independent.
+			var ownContext = b.NewDrawingContext ();
+
 			// what is drawn shows in the bitmap's image (see Bitmap.liveGraphics)
-			var graphics = new Graphics (bitmapContext, false);
+			var graphics = new Graphics (ownContext ?? bitmapContext, false);
+			graphics.ownsContext = ownContext != null;
 			graphics.targetBitmap = b;
 			System.Threading.Interlocked.Increment (ref b.liveGraphics);
 			b.MarkDirty ();
 			return graphics;
 		}
 
-		// the bitmap this Graphics draws into (Graphics.FromImage)
+		// the bitmap this Graphics draws into (Graphics.FromImage), through a context of its own
 		Bitmap targetBitmap;
+		bool ownsContext;
 		
 		public void SetClip (RectangleF rect)
 		{

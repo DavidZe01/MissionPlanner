@@ -206,15 +206,49 @@ class ScreenTour
     // window that is not the main window or the page host, and note it.
     private static void KillDialogs(object sender, EventArgs e)
     {
+#if MACNATIVE
+        // a native file panel (NSOpenPanel or NSSavePanel run modally) is not a Form
+        try
+        {
+            var app = AppKit.NSApplication.SharedApplication;
+            if (app.ModalWindow is AppKit.NSSavePanel panel)
+            {
+                Console.WriteLine("TOUR dialog closed: native " + panel.GetType().Name + " '" + panel.Title + "'");
+                Screenshot("dialog-" + panel.GetType().Name);
+                app.AbortModal();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("TOUR native panel: " + ex.Message);
+        }
+#endif
         foreach (Form f in Application.OpenForms.Cast<Form>().ToArray())
         {
-            if (f == MainV2.instance || f == host || f.IsDisposed)
+            if (f == MainV2.instance || f == host || f == formUnderTest || f.IsDisposed)
                 continue;
             Console.WriteLine("TOUR dialog closed: " + f.GetType().Name + " '" + f.Text + "'");
             Screenshot("dialog-" + f.GetType().Name);
-            try { f.Close(); } catch { }
+            // closed from the message loop rather than inside this tick, so that a dialog the
+            // closing opens (an error message) is closed by a later tick: on macOS a timer does
+            // not fire again while its handler runs
+            var form = f;
+            try
+            {
+                form.BeginInvoke((Action)(() =>
+                {
+                    try { if (!form.IsDisposed) form.Close(); } catch { }
+                }));
+            }
+            catch
+            {
+                try { form.Close(); } catch { }
+            }
         }
     }
+
+    // the form OpenForm shows: the step closes it, not KillDialogs
+    private static Form formUnderTest;
 
     private static void ShowMain(string name, ToolStripButton button, int waitMs)
     {
@@ -271,6 +305,7 @@ class ScreenTour
         Step("form:" + type.FullName, () =>
         {
             var form = (Form)Activator.CreateInstance(type);
+            formUnderTest = form;
             try
             {
                 form.StartPosition = FormStartPosition.Manual;
@@ -282,6 +317,7 @@ class ScreenTour
             }
             finally
             {
+                formUnderTest = null;
                 if (!form.IsDisposed)
                 {
                     form.Close();

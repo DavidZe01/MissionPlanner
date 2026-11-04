@@ -403,7 +403,8 @@ namespace MissionPlanner.Log
         {
             threadrun = false;
             System.Threading.Thread.Sleep(500);
-            if (comPort.IsOpen)
+            // no port when the form is opened without the terminal's connection
+            if (comPort != null && comPort.IsOpen)
             {
                 comPort.Close();
             }
