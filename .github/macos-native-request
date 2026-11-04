@@ -20,3 +20,4 @@
 2026-11-04 native: themed buttons, Clear, video frames, plugins, HUD back buffer
 2026-11-04 native: OpenGL (NSOpenGLContext), bundled GStreamer
 2026-11-04 native: OpenGL renderer fallback, GStreamer install names
+2026-11-04 native: OpenGL paints on request
