@@ -177,7 +177,7 @@ jobs:
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120
           # OpenGL (NSOpenGLContext) and the bundled GStreamer
           grep -E 'HUD OpenGL|OpenGL context|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true

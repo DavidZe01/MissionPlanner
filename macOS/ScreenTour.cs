@@ -70,6 +70,8 @@ class ScreenTour
         return new string(s.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
     }
 
+    private static string CurrentStepFile => Path.Combine(outDir, "current-step.txt");
+
     private static void Record(string name, bool ok, long ms, string error)
     {
         if (done.Contains(name))
@@ -180,6 +182,8 @@ class ScreenTour
         var step = steps.Dequeue();
         Console.WriteLine("TOUR START " + step.Key);
         current = step.Key;
+        // a step that ends the process (a crash) is recorded when the next run resumes
+        try { File.WriteAllText(CurrentStepFile, step.Key); } catch { }
         currentTime.Restart();
         var sw = Stopwatch.StartNew();
         try
@@ -193,6 +197,7 @@ class ScreenTour
             Record(step.Key, false, sw.ElapsedMilliseconds, inner.GetType().Name + ": " + inner.Message + " @ " + FirstFrame(inner));
         }
         current = null;
+        try { File.Delete(CurrentStepFile); } catch { }
         stepTimer.Start();
     }
 
@@ -373,6 +378,18 @@ class ScreenTour
             report.WriteLine("item\tresult\tms\terror");
         else
             Console.WriteLine("TOUR resuming after " + done.Count + " items");
+        if (File.Exists(CurrentStepFile))
+        {
+            var crashed = File.ReadAllText(CurrentStepFile).Trim();
+            File.Delete(CurrentStepFile);
+            if (crashed.Length > 0 && !done.Contains(crashed))
+            {
+                report.WriteLine(crashed + "\tFAIL\t0\tCRASH: the process ended during this step");
+                report.Flush();
+                done.Add(crashed);
+                Console.WriteLine("TOUR CRASH " + crashed);
+            }
+        }
         new System.Threading.Thread(Watchdog) { IsBackground = true, Name = "tour watchdog" }.Start();
         Console.WriteLine("TOUR_RUNTIME process=" + RuntimeInformation.ProcessArchitecture +
             " os=" + RuntimeInformation.OSDescription.Trim());

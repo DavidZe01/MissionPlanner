@@ -40,6 +40,12 @@ namespace OpenTK
         [DllImport(OpenGLFramework)]
         static extern int CGLSetParameter(IntPtr context, int parameter, ref int value);
 
+        [DllImport(OpenGLFramework)]
+        static extern int CGLCreateContext(IntPtr pixelFormat, IntPtr share, out IntPtr context);
+
+        [DllImport(OpenGLFramework)]
+        static extern int CGLDestroyContext(IntPtr context);
+
         const int kCGLCPSwapInterval = 222;
 
         static readonly object initLock = new object();
@@ -48,6 +54,8 @@ namespace OpenTK
         static bool? contextAvailable;
 
         NSOpenGLContext nsContext;
+        NSOpenGLPixelFormat pixelFormat;
+        IntPtr cglPixelFormat;
         IntPtr cglContext;
         GraphicsContext openTKContext;
         CocoaGLContext context;
@@ -202,9 +210,9 @@ namespace OpenTK
             try
             {
                 InitToolkit();
-                var format = CreatePixelFormat() ?? throw new GraphicsContextException("no OpenGL pixel format");
-                using (format)
-                    nsContext = new NSOpenGLContext(format, null);
+                pixelFormat = CreatePixelFormat() ?? throw new GraphicsContextException("no OpenGL pixel format");
+                cglPixelFormat = pixelFormat.CGLPixelFormat.Handle;
+                nsContext = new NSOpenGLContext(pixelFormat, null);
                 cglContext = nsContext.CGLContext.Handle;
                 CGLSetCurrentContext(cglContext);
                 // OpenTK loads the entry points of the current context
@@ -250,6 +258,101 @@ namespace OpenTK
             cglContext = IntPtr.Zero;
             viewAttached = false;
             context = null;
+            pixelFormat?.Dispose();
+            pixelFormat = null;
+            cglPixelFormat = IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// A context sharing this one's objects (textures, buffers), without a drawable, for a
+        /// worker thread to make current there: what OpenTK.GameWindow gives the 3D map's tile
+        /// loader on other platforms. CGL, so any thread may create it.
+        /// </summary>
+        public IGraphicsContext CreateSharedContext()
+        {
+            if (cglContext == IntPtr.Zero || cglPixelFormat == IntPtr.Zero)
+                throw new GraphicsContextException("No OpenGL context to share");
+            if (CGLCreateContext(cglPixelFormat, cglContext, out var shared) != 0 || shared == IntPtr.Zero)
+                throw new GraphicsContextException("CGLCreateContext failed");
+            // OpenTK's entry points and GraphicsContext.CurrentContext for this context too
+            var previous = CGLGetCurrentContext();
+            CGLSetCurrentContext(shared);
+            GraphicsContext registered = null;
+            try
+            {
+                registered = new GraphicsContext(new ContextHandle(shared), GetAddress,
+                    () => new ContextHandle(CGLGetCurrentContext()));
+            }
+            finally
+            {
+                CGLSetCurrentContext(previous);
+            }
+            return new SharedCglContext(shared, registered, GraphicsMode);
+        }
+
+        // a CGL context of a worker thread (CreateSharedContext)
+        sealed class SharedCglContext : IGraphicsContext, IGraphicsContextInternal
+        {
+            IntPtr cgl;
+            GraphicsContext registered;
+
+            public SharedCglContext(IntPtr cgl, GraphicsContext registered, GraphicsMode mode)
+            {
+                this.cgl = cgl;
+                this.registered = registered;
+                GraphicsMode = mode;
+            }
+
+            public void SwapBuffers()
+            {
+            }
+
+            public void MakeCurrent(IWindowInfo window)
+            {
+                if (window == null)
+                {
+                    if (cgl != IntPtr.Zero && CGLGetCurrentContext() == cgl)
+                        CGLSetCurrentContext(IntPtr.Zero);
+                    return;
+                }
+                CGLSetCurrentContext(cgl);
+            }
+
+            public bool IsCurrent => cgl != IntPtr.Zero && CGLGetCurrentContext() == cgl;
+
+            public bool IsDisposed => cgl == IntPtr.Zero;
+
+            public int SwapInterval { get; set; }
+
+            public void Update(IWindowInfo window)
+            {
+            }
+
+            public GraphicsMode GraphicsMode { get; }
+
+            public bool ErrorChecking { get; set; }
+
+            public void LoadAll() => registered?.LoadAll();
+
+            public IGraphicsContext Implementation => this;
+
+            public ContextHandle Context => new ContextHandle(cgl);
+
+            public IntPtr GetAddress(string function) => GLControl.GetAddress(function);
+
+            public IntPtr GetAddress(IntPtr function) => GLControl.GetAddress(Marshal.PtrToStringAnsi(function));
+
+            public void Dispose()
+            {
+                if (cgl == IntPtr.Zero)
+                    return;
+                if (CGLGetCurrentContext() == cgl)
+                    CGLSetCurrentContext(IntPtr.Zero);
+                registered?.Dispose();
+                registered = null;
+                CGLDestroyContext(cgl);
+                cgl = IntPtr.Zero;
+            }
         }
 
         // The drawable is the control's NSView while that is shown in a window (main thread

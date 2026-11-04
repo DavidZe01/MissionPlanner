@@ -338,9 +338,20 @@ namespace MissionPlanner.Controls
             GMaps.Instance.CacheOnIdleRead = false;
             GMaps.Instance.BoostCacheEngine = true;
             // shared context
-            // (the native macOS app has no OpenTK windows: the textures are made in this
-            // control's context, which tileInfo makes current here under textureSemaphore)
-#if !MACNATIVE
+#if MACNATIVE
+            // (the native macOS app has no OpenTK windows: a context sharing this control's,
+            // current on this thread, as the hidden GameWindow's is elsewhere)
+            try
+            {
+                IMGContext = CreateSharedContext();
+                IMGContext.MakeCurrent(WindowInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("3D map tile loader: " + ex.Message);
+                return;
+            }
+#else
             var win = new OpenTK.GameWindow(640, 480, Context.GraphicsMode);
             win.Visible = false;
             IMGContext = win.Context;
@@ -380,6 +391,9 @@ namespace MissionPlanner.Controls
 
                 System.Threading.Thread.Sleep(100);
             }
+#if MACNATIVE
+            IMGContext?.Dispose();
+#endif
         }
 
         public int minzoom { get; set; } = 12;
