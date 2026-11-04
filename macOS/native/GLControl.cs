@@ -18,6 +18,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using AppKit;
+using CoreGraphics;
 using Foundation;
 using OpenTK.Graphics;
 using OpenTK.Platform;
@@ -121,11 +122,149 @@ namespace OpenTK
             }
         }
 
-        static IntPtr GetAddress(string function)
+        static IntPtr RealAddress(string function)
         {
             if (openGL == IntPtr.Zero)
                 openGL = NativeLibrary.Load(OpenGLFramework);
             return NativeLibrary.TryGetExport(openGL, function, out var address) ? address : IntPtr.Zero;
+        }
+
+        // OpenTK takes every entry point from here
+        static IntPtr GetAddress(string function)
+        {
+            var real = RealAddress(function);
+            if (real == IntPtr.Zero)
+                return real;
+            switch (function)
+            {
+                case "glViewport":
+                    realViewport ??= Marshal.GetDelegateForFunctionPointer<Int4Function>(real);
+                    return scaledViewportAddress;
+                case "glScissor":
+                    realScissor ??= Marshal.GetDelegateForFunctionPointer<Int4Function>(real);
+                    return scaledScissorAddress;
+                case "glLineWidth":
+                    realLineWidth ??= Marshal.GetDelegateForFunctionPointer<FloatFunction>(real);
+                    return scaledLineWidthAddress;
+                case "glPointSize":
+                    realPointSize ??= Marshal.GetDelegateForFunctionPointer<FloatFunction>(real);
+                    return scaledPointSizeAddress;
+                case "glGetIntegerv":
+                    realGetIntegerv ??= Marshal.GetDelegateForFunctionPointer<GetIntegervFunction>(real);
+                    return scaledGetIntegervAddress;
+                case "glReadPixels":
+                    realReadPixels ??= Marshal.GetDelegateForFunctionPointer<ReadPixelsFunction>(real);
+                    return scaledReadPixelsAddress;
+            }
+            return real;
+        }
+
+        // Retina: the drawable has the screen's pixels (wantsBestResolutionOpenGLSurface) while
+        // Mission Planner gives viewports, scissor boxes, line widths and read-backs in points,
+        // the size of its controls. These entry points scale by the backing scale of the
+        // context current on the calling thread (1 on a 1x screen, so they change nothing).
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, float> backingScale =
+            new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, float>();
+
+        static float CurrentScale => backingScale.TryGetValue(CGLGetCurrentContext(), out var scale) ? scale : 1f;
+
+        static int Scale(int value, float scale) => scale == 1f ? value : (int)Math.Round(value * scale);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void Int4Function(int a, int b, int c, int d);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void FloatFunction(float value);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void GetIntegervFunction(int name, IntPtr data);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        delegate void ReadPixelsFunction(int x, int y, int width, int height, int format, int type, IntPtr pixels);
+
+        const int GL_VIEWPORT = 0x0BA2, GL_SCISSOR_BOX = 0x0C10, GL_UNSIGNED_BYTE = 0x1401, GL_RGBA = 0x1908, GL_BGRA = 0x80E1;
+
+        static Int4Function realViewport, realScissor;
+        static FloatFunction realLineWidth, realPointSize;
+        static GetIntegervFunction realGetIntegerv;
+        static ReadPixelsFunction realReadPixels;
+
+        static readonly Int4Function scaledViewport = (x, y, width, height) =>
+        {
+            var scale = CurrentScale;
+            realViewport(Scale(x, scale), Scale(y, scale), Scale(width, scale), Scale(height, scale));
+        };
+
+        static readonly Int4Function scaledScissor = (x, y, width, height) =>
+        {
+            var scale = CurrentScale;
+            realScissor(Scale(x, scale), Scale(y, scale), Scale(width, scale), Scale(height, scale));
+        };
+
+        static readonly FloatFunction scaledLineWidth = width => realLineWidth(width * CurrentScale);
+
+        static readonly FloatFunction scaledPointSize = size => realPointSize(size * CurrentScale);
+
+        // the viewport and scissor box read back in points, as they were given
+        static readonly GetIntegervFunction scaledGetIntegerv = (name, data) =>
+        {
+            realGetIntegerv(name, data);
+            var scale = CurrentScale;
+            if (scale != 1f && data != IntPtr.Zero && (name == GL_VIEWPORT || name == GL_SCISSOR_BOX))
+                for (int i = 0; i < 4; i++)
+                    Marshal.WriteInt32(data, i * 4, (int)Math.Round(Marshal.ReadInt32(data, i * 4) / scale));
+        };
+
+        // a screenshot of the size asked for (points): the screen's pixels, sampled down
+        static readonly ReadPixelsFunction scaledReadPixels = (x, y, width, height, format, type, pixels) =>
+        {
+            var scale = CurrentScale;
+            if (scale == 1f || pixels == IntPtr.Zero || width <= 0 || height <= 0 || type != GL_UNSIGNED_BYTE ||
+                (format != GL_RGBA && format != GL_BGRA))
+            {
+                realReadPixels(x, y, width, height, format, type, pixels);
+                return;
+            }
+            int sourceWidth = Scale(width, scale), sourceHeight = Scale(height, scale);
+            var source = new int[sourceWidth * sourceHeight];
+            var handle = GCHandle.Alloc(source, GCHandleType.Pinned);
+            try
+            {
+                realReadPixels(Scale(x, scale), Scale(y, scale), sourceWidth, sourceHeight, format, type, handle.AddrOfPinnedObject());
+            }
+            finally
+            {
+                handle.Free();
+            }
+            var result = new int[width * height];
+            for (int row = 0; row < height; row++)
+            {
+                var sourceRow = Math.Min(sourceHeight - 1, (int)(row * scale)) * sourceWidth;
+                for (int column = 0; column < width; column++)
+                    result[row * width + column] = source[sourceRow + Math.Min(sourceWidth - 1, (int)(column * scale))];
+            }
+            Marshal.Copy(result, 0, pixels, result.Length);
+        };
+
+        static readonly IntPtr scaledViewportAddress = Marshal.GetFunctionPointerForDelegate(scaledViewport);
+        static readonly IntPtr scaledScissorAddress = Marshal.GetFunctionPointerForDelegate(scaledScissor);
+        static readonly IntPtr scaledLineWidthAddress = Marshal.GetFunctionPointerForDelegate(scaledLineWidth);
+        static readonly IntPtr scaledPointSizeAddress = Marshal.GetFunctionPointerForDelegate(scaledPointSize);
+        static readonly IntPtr scaledGetIntegervAddress = Marshal.GetFunctionPointerForDelegate(scaledGetIntegerv);
+        static readonly IntPtr scaledReadPixelsAddress = Marshal.GetFunctionPointerForDelegate(scaledReadPixels);
+
+        // the backing scale of the attached view; a change (another screen) resizes the viewport
+        void UpdateBackingScale(NSView view)
+        {
+            var scale = (float)view.ConvertSizeToBacking(new CGSize(1, 1)).Width;
+            if (scale <= 0 || float.IsNaN(scale))
+                scale = 1f;
+            if (backingScale.TryGetValue(cglContext, out var previous) && previous == scale)
+                return;
+            backingScale[cglContext] = scale;
+            Console.WriteLine("OpenGL backing scale " + scale + " for " + GetType().Name);
+            // the control sets its viewport on resize (HUD.doResize, OpenGLtest2.test_Resize)
+            BeginInvoke((Action)(() => OnResize(EventArgs.Empty)));
         }
 
         // An accelerated renderer first (the Mac's GPU); else any, such as Apple's software
@@ -220,6 +359,8 @@ namespace OpenTK
                 cglPixelFormat = pixelFormat.CGLPixelFormat.Handle;
                 nsContext = new NSOpenGLContext(pixelFormat, null);
                 cglContext = nsContext.CGLContext.Handle;
+                // until the view is attached: the main screen's scale
+                backingScale[cglContext] = (float)(NSScreen.MainScreen?.BackingScaleFactor ?? 1);
                 CGLSetCurrentContext(cglContext);
                 // OpenTK loads the entry points of the current context
                 openTKContext = new GraphicsContext(new ContextHandle(cglContext), GetAddress,
@@ -261,6 +402,7 @@ namespace OpenTK
                 nsContext.Dispose();
                 nsContext = null;
             }
+            backingScale.TryRemove(cglContext, out _);
             cglContext = IntPtr.Zero;
             viewAttached = false;
             context = null;
@@ -376,10 +518,12 @@ namespace OpenTK
             var view = ObjCRuntime.Runtime.GetNSObject<NSView>(Handle);
             if (view?.Window == null || view.IsHiddenOrHasHiddenAncestor)
                 return;
+            view.WantsBestResolutionOpenGLSurface = true;
             nsContext.View = view;
             viewAttached = true;
             paintRequested = true;
             nsContext.Update();
+            UpdateBackingScale(view);
         }
 
         void UpdateDrawable()
@@ -467,6 +611,12 @@ namespace OpenTK
             if (cglContext == IntPtr.Zero)
                 return;
             AttachView();
+            if (viewAttached && NSThread.IsMain)
+            {
+                var view = ObjCRuntime.Runtime.GetNSObject<NSView>(Handle);
+                if (view?.Window != null)
+                    UpdateBackingScale(view);
+            }
             CGLFlushDrawable(cglContext);
         }
 

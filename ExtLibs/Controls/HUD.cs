@@ -1141,10 +1141,10 @@ namespace MissionPlanner.Controls
         internal IGraphics graphicsObjectGDIP;
 
         // set while doPaint draws straight into the paint Graphics instead of objBitmap (LIB, and
-        // the native macOS app with MISSIONPLANNER_HUD_DIRECT=1)
+        // the native macOS app unless MISSIONPLANNER_HUD_DIRECT=0)
         bool directPaint;
 
-        static readonly bool HudDirectPaint = Environment.GetEnvironmentVariable("MISSIONPLANNER_HUD_DIRECT") == "1";
+        static readonly bool HudDirectPaint = Environment.GetEnvironmentVariable("MISSIONPLANNER_HUD_DIRECT") != "0";
 
         private DateTime starttime = DateTime.MinValue;
 
@@ -1425,8 +1425,8 @@ namespace MissionPlanner.Controls
                 // the MJPEG stream (and for the first frame, which initialises streamjpg).
                 var direct = !opengl && !streamjpgenable && streamjpg != null;
 #else
-                // the native macOS app can do the same into the view's CoreGraphics context
-                // (MISSIONPLANNER_HUD_DIRECT=1, while it is compared with the back buffer)
+                // the native macOS app does the same into the view's CoreGraphics context, at
+                // the screen's resolution (Retina); MISSIONPLANNER_HUD_DIRECT=0: the back buffer
                 var direct = HudDirectPaint && !opengl && !streamjpgenable && streamjpg != null;
 #endif
                 IGraphics buffered = graphicsObjectGDIP;

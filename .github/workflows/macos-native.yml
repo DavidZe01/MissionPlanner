@@ -179,7 +179,7 @@ jobs:
           done
           grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120
           # OpenGL (NSOpenGLContext) and the bundled GStreamer
-          grep -E 'HUD OpenGL|OpenGL context|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
+          grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
           python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
           # where each hung step was stuck: the thread running the tour, then the native main thread
@@ -222,7 +222,7 @@ jobs:
           kill -0 "$sitl_pid" 2>/dev/null || { echo "SITL: did not start"; tail -20 out/sitl.log; exit 0; }
           mkdir -p out/tour-connected
           MISSIONPLANNER_TOUR=1 TOUR_OUT="$PWD/out/tour-connected" TOUR_XWD=/usr/sbin/screencapture \
-              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 \
+              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 MISSIONPLANNER_NO_OPENGL=1 \
               TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
               "$app/Contents/MacOS/MissionPlanner" > out/tour-connected.log 2>&1 &
           pid=$!
@@ -287,6 +287,23 @@ jobs:
           if-no-files-found: ignore
           compression-level: 0
           retention-days: 14
+
+      - name: Install with install.sh
+        # the app just uploaded, installed as a user would (GitHub CLI, no browser), then opened
+        if: success()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          MP_RUN=${{ github.run_id }} MP_REPO=${{ github.repository }} MP_APPLICATIONS="$HOME/Applications" MP_NO_OPEN=1 \
+              ./macOS/native/install.sh
+          app="$HOME/Applications/Mission Planner.app"
+          if xattr "$app" | grep -q com.apple.quarantine; then echo "INSTALL: quarantined"; else echo "INSTALL: no quarantine attribute"; fi
+          open "$app"
+          sleep 45
+          if pgrep -f "$app/Contents/MacOS/MissionPlanner" >/dev/null; then echo "INSTALLED APP: running"; else echo "INSTALLED APP: not running"; fi
+          pkill -f 'Contents/MacOS/MissionPlanner' || true
 
   results:
     # Logs and screenshots on the ci-native branch, readable with git.
