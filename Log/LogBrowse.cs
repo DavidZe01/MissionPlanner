@@ -45,6 +45,24 @@ namespace MissionPlanner.Log
         DFLogBuffer logdata;
         Hashtable logdatafilter = new Hashtable();
 
+        // On Mono the grid is a fixed block of rows scrolled by this bar instead of a virtual
+        // grid (see the Mono branch where the grid is set up): grid row r shows log row
+        // monoRowOffset + r.
+        VScrollBar monoVBar;
+        int monoRowOffset;
+
+        int MonoRowCount => logdatafilter.Count > 0 ? logdatafilter.Count : (logdata?.Count ?? 0);
+
+        void MonoResetGrid()
+        {
+            if (monoVBar == null)
+                return;
+            monoRowOffset = 0;
+            monoVBar.Value = 0;
+            monoVBar.Maximum = Math.Max(0, MonoRowCount);
+            dataGridView1.Invalidate();
+        }
+
         List<TextObj> ModeCache = new List<TextObj>();
         List<TextObj> ModePolyCache = new List<TextObj>();
         List<TextObj> MSGCache = new List<TextObj>();
@@ -192,7 +210,15 @@ namespace MissionPlanner.Log
 
                 try
                 {
-                    dataGridView1.CurrentCell = dataGridView1[1, line - 1];
+                    if (MainV2.MONO && monoVBar != null)
+                    {
+                        if (line < 1 || line > MonoRowCount)
+                            throw new ArgumentOutOfRangeException(nameof(line));
+                        scrollGrid(dataGridView1, line - 1);
+                        dataGridView1.CurrentCell = dataGridView1[1, line - 1 - monoRowOffset];
+                    }
+                    else
+                        dataGridView1.CurrentCell = dataGridView1[1, line - 1];
                 }
                 catch
                 {
@@ -2853,6 +2879,11 @@ main()
             if (dr != DialogResult.OK)
             {
                 logdatafilter.Clear();
+                if (MainV2.MONO)
+                {
+                    MonoResetGrid();
+                    return;
+                }
                 dataGridView1.Rows.Clear();
                 dataGridView1.RowCount = logdata.Count;
                 dataGridView1.Invalidate();
@@ -2892,6 +2923,9 @@ main()
                     dataGridView1.RowCount = logdata.Count;
                 }
             }
+
+            if (MainV2.MONO)
+                MonoResetGrid();
 
             dataGridView1.Invalidate();
         }
@@ -3300,6 +3334,17 @@ main()
         {
             int halfWay = (dataGridView.DisplayedRowCount(false) / 2);
 
+            if (MainV2.MONO && monoVBar != null && dataGridView == dataGridView1)
+            {
+                if (index < 0)
+                    return;
+                // keep the row inside the block of grid rows, near the middle of the view
+                var first = index - monoRowOffset;
+                if (first < 0 || first >= dataGridView.DisplayedRowCount(false))
+                    monoVBar.Value = Math.Max(0, Math.Min(monoVBar.Maximum, index - halfWay));
+                return;
+            }
+
             if ((index < 0) && (dataGridView.SelectedRows.Count > 0))
             {
                 index = dataGridView.SelectedRows[0].Index;
@@ -3510,11 +3555,14 @@ main()
                 try
                 {
                     scrollGrid(dataGridView1, SampleID);
-                    dataGridView1.CurrentCell = dataGridView1.Rows[SampleID].Cells[1];
+                    var gridRow = SampleID;
+                    if (MainV2.MONO && monoVBar != null)
+                        gridRow = SampleID - monoRowOffset;
+                    dataGridView1.CurrentCell = dataGridView1.Rows[gridRow].Cells[1];
 
                     dataGridView1.ClearSelection();
-                    dataGridView1.Rows[(int)SampleID].Selected = true;
-                    dataGridView1.Rows[(int)SampleID].Cells[1].Selected = true;
+                    dataGridView1.Rows[(int)gridRow].Selected = true;
+                    dataGridView1.Rows[(int)gridRow].Cells[1].Selected = true;
                 }
                 catch
                 {
@@ -3527,6 +3575,8 @@ main()
             int x = e.RowIndex;
             if ((x >= 0) && (x < dataGridView1.Rows.Count))
             {
+                if (MainV2.MONO && monoVBar != null)
+                    x += monoRowOffset;
                 GoToSample(x, true, true, false);
             }
         }
@@ -3651,18 +3701,27 @@ main()
                 {
                     log.Info("set dgv datasourse " + (GC.GetTotalMemory(false) / 1024.0 / 1024.0));
 
-                    if (MainV2.MONO)
+                    if (MainV2.MONO && monoVBar != null)
                     {
-                        int rowstartoffset = 0;
+                        // the grid shown again or another log: reuse the bar and its handlers
+                        dataGridView1.ColumnCount = colcount;
+                        MonoResetGrid();
+                        if (dataGridView1.Rows.Count > 0)
+                            populateRowData(0, 0, 0);
+                    }
+                    else if (MainV2.MONO)
+                    {
+                        monoRowOffset = 0;
 
                         dataGridView1.ScrollBars = ScrollBars.Horizontal;
 
                         var VBar = new VScrollBar();
+                        monoVBar = VBar;
                         VBar.Visible = true;
                         VBar.Top = 0;
                         VBar.Height = dataGridView1.Height;
                         VBar.Dock = DockStyle.Right;
-                        VBar.Maximum = logdata.Count;
+                        VBar.Maximum = MonoRowCount;
 
                         dataGridView1.Controls.Add(VBar);
 
@@ -3670,8 +3729,8 @@ main()
 
                         dataGridView1.RowPrePaint += (sender, args) =>
                         {
-                            VBar.Maximum = logdata.Count;
-                            populateRowData(rowstartoffset, args.RowIndex, args.RowIndex);
+                            VBar.Maximum = Math.Max(0, MonoRowCount);
+                            populateRowData(monoRowOffset, args.RowIndex, args.RowIndex);
                         };
 
                         dataGridView1.ColumnCount = colcount;
@@ -3684,7 +3743,7 @@ main()
 
                         VBar.ValueChanged += (sender, args) =>
                         {
-                            rowstartoffset = VBar.Value;
+                            monoRowOffset = VBar.Value;
                             dataGridView1.Invalidate();
                         };
                     }

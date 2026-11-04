@@ -358,6 +358,26 @@ namespace MissionPlanner.Utilities
         /// <param name="temp"></param>
         /// <param name="historyhash"></param>
         /// <param name="relType"></param>
+        /// <summary>
+        /// adb.exe ships with Mission Planner on Windows. On macOS and Linux it comes from Android
+        /// platform-tools (brew install android-platform-tools, or the Android SDK).
+        /// </summary>
+        static string AdbPath()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                return "adb.exe";
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var adb = new[]
+            {
+                "/opt/homebrew/bin/adb", "/usr/local/bin/adb", "/usr/bin/adb",
+                Path.Combine(home, "Library", "Android", "sdk", "platform-tools", "adb"),
+                Path.Combine(home, "Android", "Sdk", "platform-tools", "adb")
+            }.FirstOrDefault(File.Exists);
+            if (adb == null)
+                throw new FileNotFoundException("adb was not found: install Android platform-tools (macOS: brew install android-platform-tools)");
+            return adb;
+        }
+
         public bool updateLegacy(string comport, software temp, string historyhash, List<DeviceInfo> ports)
         {
             BoardDetect.boards board = BoardDetect.boards.none;
@@ -1026,7 +1046,7 @@ namespace MissionPlanner.Utilities
 
             try
             {
-                AdbServer.Instance.StartServer("adb.exe", true);
+                AdbServer.Instance.StartServer(AdbPath(), true);
                 IAdbClient adbClient = AdbClient.Instance;
 
                 string response = adbClient.Connect(new DnsEndPoint("192.168.42.1", 9050));

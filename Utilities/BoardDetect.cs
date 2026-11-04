@@ -63,7 +63,8 @@ namespace MissionPlanner.Utilities
             ICommsSerial serialPort = new SerialPort();
             serialPort.PortName = port;
 
-            if (!MONO)
+            // the USB product names and ids in ports come from SetupAPI on Windows and from the
+            // IOKit registry or sysfs on macOS and Linux (Linux.GetAllCOMPorts), so use them everywhere
             {
                 try
                 {
@@ -195,7 +196,10 @@ namespace MissionPlanner.Utilities
                 {
                     log.Error(ex);
                 }
+            }
 
+            if (!MONO)
+            {
                 ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_SerialPort"); // Win32_USBControllerDevice
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
                 foreach (ManagementObject obj2 in searcher.Get())

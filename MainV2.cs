@@ -833,6 +833,20 @@ namespace MissionPlanner
                     NativeMethods.SetThreadExecutionState(
                         NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED);
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && File.Exists("/usr/bin/caffeinate"))
+            {
+                // as SetThreadExecutionState on Windows: no idle system sleep while mp is open
+                // (caffeinate -w ends with this process)
+                try
+                {
+                    Process.Start(new ProcessStartInfo("/usr/bin/caffeinate",
+                        "-i -w " + Process.GetCurrentProcess().Id) { UseShellExecute = false });
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
+            }
 
             ChangeUnits();
 
@@ -3622,6 +3636,23 @@ namespace MissionPlanner
                 // prescan
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                     MissionPlanner.Comms.CommsBLE.SerialPort_GetCustomPorts();
+                // macOS: the bundled SimpleBLE (CoreBluetooth). The launcher sets MP_LIBMONO when
+                // Mono runs in the app's own process (mono-host), which macOS needs to grant
+                // Bluetooth access, and MISSIONPLANNER_NO_BLE when it was not opened as an app.
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                         !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MP_LIBMONO")) &&
+                         string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MISSIONPLANNER_NO_BLE")))
+                    Task.Run(() =>
+                    {
+                        try
+                        {
+                            MissionPlanner.Comms.CommsBLE.SerialPort_GetCustomPorts();
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error(ex);
+                        }
+                    });
 
 #if !LIB
                 MissionPlanner.Comms.CommsWinUSB.SerialPort_GetCustomPorts();

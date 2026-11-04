@@ -23,6 +23,15 @@ namespace MissionPlanner.Utilities
                 return "";
             }
 
+            // the downloaded analyzer (runner.exe) is a Windows program
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                CustomMessageBox.Show(
+                    "The Log Analyzer is a Windows program. Open the log in the DataFlash Log browser (Review a Log), or in UAV Log Viewer [link;https://plot.ardupilot.org;plot.ardupilot.org].",
+                    "Log Analyzer");
+                return "";
+            }
+
             var dir = Settings.GetDataDirectory() + "LogAnalyzer" +
                       Path.DirectorySeparatorChar;
 

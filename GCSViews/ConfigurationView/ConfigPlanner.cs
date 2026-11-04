@@ -1187,8 +1187,11 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
-                        Arguments = folderPath,
-                        FileName = "explorer.exe"
+                        Arguments = "\"" + folderPath + "\"",
+                        // Finder on macOS, the file manager on Linux
+                        FileName = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "/usr/bin/open"
+                            : RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "xdg-open" : "explorer.exe",
+                        UseShellExecute = false
                     };
 
                     Process.Start(startInfo);

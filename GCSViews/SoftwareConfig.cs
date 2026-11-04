@@ -203,7 +203,8 @@ namespace MissionPlanner.GCSViews
                             AddBackstageViewPage(typeof(ConfigFriendlyParamsAdv), Strings.AdvancedParams, null, true);
                         }
 
-                        if (!Program.MONO && ConfigOSD.IsApplicable() && MainV2.DisplayConfiguration.displayOSD)
+                        // the OSD editor is plain Windows Forms and opens under Mono too (macOS screen tour)
+                        if (ConfigOSD.IsApplicable() && MainV2.DisplayConfiguration.displayOSD)
                         {
                             AddBackstageViewPage(typeof(ConfigOSD), Strings.OnboardOSD);
                         }

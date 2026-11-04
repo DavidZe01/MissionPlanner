@@ -62,7 +62,8 @@ namespace MissionPlanner.Controls
                     e.Bounds);
 
             string text = combo.Items[e.Index].ToString();
-            if (!MainV2.MONO)
+            // Windows names come from WMI, macOS names from the IOKit registry (Program.SerialPort_GetDeviceName)
+            if (!MainV2.MONO || System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
             {
                 text = text + " " + SerialPort.GetNiceName(text);
             }

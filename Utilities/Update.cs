@@ -30,6 +30,25 @@ namespace MissionPlanner.Utilities
 
         static HttpClient client = new HttpClient();
 
+        // The macOS app runs a MissionPlanner.exe built with the macOS changes, plus native
+        // libraries for macOS: the Windows update would replace them with the Windows build and
+        // break the app, so on macOS an update is a new Mission Planner.app.
+        static bool MacOSApp => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+            System.Runtime.InteropServices.OSPlatform.OSX);
+
+        static void ShowMacOSUpdate(string changelog)
+        {
+            var page = ConfigurationManager.AppSettings["MacOSUpdatePage"];
+            if (string.IsNullOrEmpty(page))
+                page = "https://github.com/DavidZe01/MissionPlanner/blob/macos-arm64/macOS/README.md";
+            var text = changelog == null
+                ? ""
+                : "A newer Mission Planner is available [link;" + changelog + ";ChangeLog].\n\n";
+            CustomMessageBox.Show(text + "On macOS, update by installing a new build of Mission Planner.app [link;" +
+                                  page + ";macOS app]. The Windows updater would replace the macOS version.",
+                "Update");
+        }
+
         static Update()
         {
             client.DefaultRequestHeaders.Add("User-Agent", Settings.Instance.UserAgent);
@@ -190,6 +209,12 @@ namespace MissionPlanner.Utilities
                    if (dobeta)
                        extra = "BETA ";
 
+                   if (MacOSApp)
+                   {
+                       ShowMacOSUpdate(baseurl.Replace("version.txt", "ChangeLog.txt"));
+                       return;
+                   }
+
                    var dr = CustomMessageBox.Show(
                        extra + Strings.UpdateFound + " [link;" + baseurl.Replace("version.txt", "ChangeLog.txt") + ";ChangeLog]",
                        Strings.UpdateNow, MessageBoxButtons.YesNo);
@@ -215,6 +240,12 @@ namespace MissionPlanner.Utilities
             if (Program.WindowsStoreApp)
             {
                 CustomMessageBox.Show(Strings.Not_available_when_used_as_a_windows_store_app);
+                return;
+            }
+
+            if (MacOSApp)
+            {
+                ShowMacOSUpdate(null);
                 return;
             }
 

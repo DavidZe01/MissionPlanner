@@ -565,8 +565,24 @@ namespace MissionPlanner
             }
         }
 
+        private static List<MissionPlanner.ArduPilot.DeviceInfo> macPorts = new List<MissionPlanner.ArduPilot.DeviceInfo>();
+        private static DateTime macPortsRead = DateTime.MinValue;
+
         private static string SerialPort_GetDeviceName(string port)
         {
+            // macOS: the USB product name from the IOKit registry, as Windows shows the device name
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // one registry read serves all the ports of a list redraw
+                if (macPortsRead.AddSeconds(5) < DateTime.Now)
+                {
+                    macPorts = MissionPlanner.Utilities.Linux.GetAllCOMPorts();
+                    macPortsRead = DateTime.Now;
+                }
+                var dialin = port.Replace("/dev/tty.", "/dev/cu.");
+                return macPorts.FirstOrDefault(a => a.name == port || a.name == dialin).board ?? "";
+            }
+
             ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_SerialPort"); // Win32_USBControllerDevice
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
             {
