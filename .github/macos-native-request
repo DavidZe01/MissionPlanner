@@ -30,3 +30,4 @@
 2026-11-04 native: retry (no macOS arm64 runner was available)
 2026-11-04 native: retry 2 (macOS arm64 runner capacity)
 2026-11-04 native: retry 3 (Retina and library checks)
+2026-11-04 native: on the owner self-hosted Mac runner
