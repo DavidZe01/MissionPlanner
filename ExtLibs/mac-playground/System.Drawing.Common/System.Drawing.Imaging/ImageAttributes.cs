@@ -152,7 +152,8 @@ namespace System.Drawing.Imaging
 
 		public void SetRemapTable(ColorMap[] map, ColorAdjustType type)
 		{
-			throw new PlatformNotSupportedException ();
+			// Not applied when drawing (like SetColorKey): throwing here broke the painting of
+			// controls that recolour their icons (Mission Planner's BSE panels).
 		}
 
 		public void ClearRemapTable()
@@ -162,7 +163,6 @@ namespace System.Drawing.Imaging
 
 		public void ClearRemapTable(ColorAdjustType type)
 		{
-			throw new PlatformNotSupportedException ();
 		}
 
 		public void SetBrushRemapTable(ColorMap[] map)
