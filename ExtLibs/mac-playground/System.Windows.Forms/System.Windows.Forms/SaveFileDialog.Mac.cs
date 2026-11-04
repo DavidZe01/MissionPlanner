@@ -13,6 +13,12 @@ namespace System.Windows.Forms
 	{
 		public string Description { get; set; }
 
+		// NSSavePanel always asks before replacing a file and lets the user create one:
+		// kept for the Windows Forms API.
+		public bool OverwritePrompt { get; set; } = true;
+
+		public bool CreatePrompt { get; set; }
+
 		// Gets or sets the root folder where the browsing starts from.
 		public Environment.SpecialFolder RootFolder { get; set; }
 

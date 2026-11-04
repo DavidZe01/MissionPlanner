@@ -10,7 +10,11 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <LangVersion>preview</LangVersion>
-    <AssemblyVersion>5.0.0</AssemblyVersion>
+    <!-- the version and identity binaries built for .NET Framework and .NET reference -->
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)../keys/open.pub</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -50,10 +54,5 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-macos'">
     <Compile Include="System.Drawing.Printing\*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>MacBridge</_Parameter1>
-    </AssemblyAttribute>
   </ItemGroup>
 </Project>

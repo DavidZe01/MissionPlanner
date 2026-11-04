@@ -9,7 +9,8 @@ namespace MissionPlanner.Utilities
     /// </summary>
     public static class PollDelay
     {
-        private static readonly bool mono = Type.GetType("Mono.Runtime") != null;
+        private static readonly bool mono = Type.GetType("Mono.Runtime") != null ||
+            !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
 
         // the default Windows timer tick, so Task.Delay(1) really waits this long there
         private const int WindowsTickMs = 15;

@@ -99,7 +99,8 @@ namespace MissionPlanner
         private static void UseOpenTKX11OnMacOS()
         {
             // MISSIONPLANNER_OPENTK_X11 forces this path elsewhere, for testing
-            if (!MONO || (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+            // only for Mono's X11 Windows Forms (not .NET's Cocoa one)
+            if (Type.GetType("Mono.Runtime") == null || (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
                           Environment.GetEnvironmentVariable("MISSIONPLANNER_OPENTK_X11") == null))
                 return;
             try
@@ -169,6 +170,10 @@ namespace MissionPlanner
             // Encoding.GetEncoding(0), because SharpZipLib caches the system default code page.
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 #endif
+#if MACNATIVE
+            // native macOS app: native library names (Mono had dllmap)
+            MacNative.Init();
+#endif
             Program.args = args;
             Console.WriteLine(
                 "If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 \n\n");
@@ -191,7 +196,8 @@ namespace MissionPlanner
             Console.WriteLine("PlacesMyComputer Dir " + Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));
 
             var t = Type.GetType("Mono.Runtime");
-            MONO = (t != null);
+            // .NET on macOS too: not Windows' .NET Framework
+            MONO = (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
             if (MONO && Settings.isUnix)
                 MonoTableLayoutSettingsConverter.Register();
 
@@ -207,6 +213,9 @@ namespace MissionPlanner
             Thread = Thread.CurrentThread;
 
             System.Windows.Forms.Application.EnableVisualStyles();
+#if MACNATIVE
+            MacNative.CreateMenuBar();
+#endif
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {

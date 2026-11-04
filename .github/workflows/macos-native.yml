@@ -25,7 +25,7 @@ jobs:
   native:
     name: Build and run on macOS
     runs-on: macos-26
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v5
@@ -69,6 +69,47 @@ jobs:
           if kill -0 "$pid" 2>/dev/null; then echo "FORMSTEST running after 20 s" | tee -a out/result.txt; else echo "FORMSTEST exited: $(wait "$pid"; echo $?)" | tee -a out/result.txt; fi
           kill "$pid" 2>/dev/null || true
           tail -20 out/formstest-run.log
+      - name: Build Mission Planner
+        timeout-minutes: 25
+        run: |
+          # app icon from the Windows one
+          iconset=macOS/native/obj/MissionPlanner.iconset
+          mkdir -p "$iconset"
+          for size in 16 32 128 256 512; do
+              sips -z $size $size mpdesktop150.png --out "$iconset/icon_${size}x${size}.png" >/dev/null
+              sips -z $((size * 2)) $((size * 2)) mpdesktop150.png --out "$iconset/icon_${size}x${size}@2x.png" >/dev/null
+          done
+          iconutil -c icns "$iconset" -o macOS/native/obj/MissionPlanner.icns
+          ./macOS/native/build.sh > out/build-missionplanner.log 2>&1 || echo "BUILD FAILED" | tee -a out/result.txt
+          grep -E ' error |Build succeeded|Time Elapsed' out/build-missionplanner.log | sort -u | head -30
+          find bin/macos-native -maxdepth 3 -name '*.app' | tee out/mp-app.txt
+          app=$(head -1 out/mp-app.txt)
+          if [[ -n $app ]]; then
+              du -sh "$app" | tee -a out/result.txt
+              (cd "$app/Contents" && find . -maxdepth 2 | sort | head -80) > out/mp-app-contents.txt
+              ls bin/macos-native | head -100 > out/mp-output-dir.txt
+          fi
+      - name: Run Mission Planner
+        timeout-minutes: 6
+        run: |
+          app=$(head -1 out/mp-app.txt)
+          [[ -n $app ]] || { echo "no app"; exit 1; }
+          "$app/Contents/MacOS/MissionPlanner" > out/mp-run.log 2>&1 &
+          pid=$!
+          for t in 15 45 90; do
+              sleep $(( t == 15 ? 15 : 30 ))
+              screencapture -x "out/mp-${t}s.png" || true
+              kill -0 "$pid" 2>/dev/null || break
+          done
+          if kill -0 "$pid" 2>/dev/null; then echo "MISSIONPLANNER running after 90 s" | tee -a out/result.txt; else echo "MISSIONPLANNER exited: $(wait "$pid"; echo $?)" | tee -a out/result.txt; fi
+          kill "$pid" 2>/dev/null || true
+          sleep 2; kill -9 "$pid" 2>/dev/null || true
+          tail -40 out/mp-run.log
+          cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports 2>/dev/null || true
+          for d in "$HOME/Documents/Mission Planner" "$HOME/.local/share/Mission Planner" "$HOME/Library/Application Support/Mission Planner"; do
+              [[ -f $d/MissionPlanner.log ]] && cp "$d/MissionPlanner.log" out/MissionPlanner.log
+          done
+          true
       - uses: actions/upload-artifact@v4
         if: always()
         with:

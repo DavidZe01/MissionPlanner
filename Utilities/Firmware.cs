@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+// .NET 7 also has System.IO.UnixFileMode
+using UnixFileMode = SharpAdbClient.UnixFileMode;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;

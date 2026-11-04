@@ -18,6 +18,9 @@ using OSDConfigurator.Extensions;
 
 namespace MissionPlanner.GCSViews.ConfigurationView
 {
+    // macOS's Symbols framework is a namespace of the same name
+    using Symbols = OSDConfigurator.GUI.Symbols;
+
     public partial class ConfigOSD : MyUserControl, IActivate, IDeactivate
     {
         [DebuggerDisplay("{Name}: {Value}")]

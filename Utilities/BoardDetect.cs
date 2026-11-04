@@ -58,7 +58,7 @@ namespace MissionPlanner.Utilities
         public static boards DetectBoard(string port, List<DeviceInfo> ports)
         {
             var t = Type.GetType("Mono.Runtime");
-            var MONO = (t != null);
+            var MONO = (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
 
             ICommsSerial serialPort = new SerialPort();
             serialPort.PortName = port;

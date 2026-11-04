@@ -58,7 +58,7 @@ namespace MissionPlanner.Utilities
         public static void updateCheckMain(IProgressReporterDialogue frmProgressReporter)
         {
             var t = Type.GetType("Mono.Runtime");
-            MONO = (t != null);
+            MONO = (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
 
             try
             {

@@ -52,7 +52,8 @@ namespace MissionPlanner.Utilities
         public Speech()
         {
             var t = Type.GetType("Mono.Runtime");
-            MONO = (t != null);
+            // .NET on macOS too: not Windows' .NET Framework
+            MONO = (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
 
             log.Info("TTS: init, mono = " + MONO);
 

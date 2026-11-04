@@ -122,7 +122,7 @@ namespace GMap.NET
             {
                try
                {
-                  isRunningOnMono = (Type.GetType("Mono.Runtime") != null);
+                  isRunningOnMono = (Type.GetType("Mono.Runtime") != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
                   return isRunningOnMono.Value;
                }
                catch

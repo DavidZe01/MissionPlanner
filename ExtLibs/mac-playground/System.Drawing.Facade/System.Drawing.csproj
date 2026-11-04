@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    System.Drawing.dll as .NET Framework had it: every System.Drawing type, forwarded to
+    System.Drawing.Common (CoreGraphics) and System.Drawing.Primitives. Binaries built for
+    .NET Framework (OpenTK, ObjectListView, ...) reference System.Drawing; .NET's own
+    System.Drawing facade (4.0.0.0) forwards only the primitive types, so this one
+    (4.0.1.0) replaces it. TypeForwards.cs is generated from the built assemblies.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-macos</TargetFramework>
+    <SupportedOSPlatformVersion>12.0</SupportedOSPlatformVersion>
+    <AssemblyName>System.Drawing</AssemblyName>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <FileVersion>10.0.99.0</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)../keys/microsoft.pub</AssemblyOriginatorKeyFile>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../System.Drawing.Common/System.Drawing.Common.csproj" />
+  </ItemGroup>
+</Project>

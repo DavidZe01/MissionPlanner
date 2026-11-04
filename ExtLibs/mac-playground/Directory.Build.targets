@@ -5,7 +5,7 @@
   
   <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-macos'">
     <DefineConstants>$(DefineConstants);MAC</DefineConstants>
-    <SupportedOSPlatformVersion>11.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>12.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(EnableDefaultItems)' == 'true' ">
@@ -38,7 +38,8 @@
   </Target>
 
   <Target Name="AddInternalsVisibleTo" BeforeTargets="GetAssemblyAttributes">
-    <ItemGroup Condition="!$(AssemblyName.EndsWith('.Test'))">
+    <!-- signed assemblies (System.Windows.Forms, System.Drawing.Common) cannot name unsigned friends -->
+    <ItemGroup Condition="!$(AssemblyName.EndsWith('.Test')) And '$(SignAssembly)' != 'true'">
       <InternalsVisibleToSuffix Include=".Test" />
     </ItemGroup>
 

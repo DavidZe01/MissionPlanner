@@ -313,7 +313,8 @@ namespace MissionPlanner.Utilities
         static bool isMono()
         {
             var t = Type.GetType("Mono.Runtime");
-            return (t != null);
+            // .NET on macOS too: not Windows' .NET Framework
+            return (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
         }
 
         public static bool isUnix = Environment.OSVersion.Platform == PlatformID.Unix;

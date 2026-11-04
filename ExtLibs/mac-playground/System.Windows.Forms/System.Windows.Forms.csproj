@@ -10,7 +10,11 @@
     <AssemblyName>System.Windows.Forms</AssemblyName>
     <DisableExtraReferences>true</DisableExtraReferences>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyVersion>5.0.0</AssemblyVersion>
+    <!-- the version and identity binaries built for .NET Framework and .NET reference -->
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)../keys/ecma.pub</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>

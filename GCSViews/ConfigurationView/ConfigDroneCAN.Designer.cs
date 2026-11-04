@@ -33,13 +33,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.menu_parameters = new System.Windows.Forms.MenuItem();
-            this.menu_restart = new System.Windows.Forms.MenuItem();
-            this.menu_update = new System.Windows.Forms.MenuItem();
-            this.menu_updatebeta = new System.Windows.Forms.MenuItem();
-            this.menu_passthrough = new System.Windows.Forms.MenuItem();
-            this.menu_passthrough4 = new System.Windows.Forms.MenuItem();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenuStrip();
+            this.menu_parameters = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_restart = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_update = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_updatebeta = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_passthrough = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_passthrough4 = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.but_uavcaninspector = new MissionPlanner.Controls.MyButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -112,7 +112,7 @@
             // 
             // contextMenu1
             // 
-            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.contextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_parameters,
             this.menu_restart,
             this.menu_update,
@@ -122,38 +122,31 @@
             // 
             // menu_parameters
             // 
-            this.menu_parameters.Index = 0;
             this.menu_parameters.Text = "Parameters";
             this.menu_parameters.Click += new System.EventHandler(this.menu_parameters_Click);
             // 
             // menu_restart
             // 
-            this.menu_restart.Index = 1;
             this.menu_restart.Text = "Restart";
             this.menu_restart.Click += new System.EventHandler(this.menu_restart_Click);
             // 
             // menu_update
             // 
-            this.menu_update.Index = 2;
             this.menu_update.Text = "Update";
             this.menu_update.Click += new System.EventHandler(this.menu_update_Click);
             // 
             // menu_updatebeta
             // 
-            this.menu_updatebeta.Index = 3;
             this.menu_updatebeta.Text = "Update Beta";
             this.menu_updatebeta.Click += new System.EventHandler(this.menu_updatebeta_Click);
             // 
             // menu_passthrough
             // 
-            this.menu_passthrough.Index = 4;
-            this.menu_passthrough.RadioCheck = true;
             this.menu_passthrough.Text = "CANPassThrough Here3";
             this.menu_passthrough.Click += new System.EventHandler(this.menu_passthrough_Click);
             // 
             // menu_passthrough4
             // 
-            this.menu_passthrough4.Index = 5;
             this.menu_passthrough4.Text = "CANPassThough Here3+/4";
             this.menu_passthrough4.Click += new System.EventHandler(this.menu_passthrough4_Click);
             // 
@@ -508,7 +501,7 @@
             this.SoftwareVersion,
             this.SoftwareCRC,
             this.Menu});
-            this.myDataGridView1.ContextMenu = this.contextMenu1;
+            this.myDataGridView1.ContextMenuStrip = this.contextMenu1;
             this.myDataGridView1.DataSource = this.uAVCANModelBindingSource;
             this.myDataGridView1.Location = new System.Drawing.Point(7, 89);
             this.myDataGridView1.Name = "myDataGridView1";
@@ -665,12 +658,12 @@
         public System.Windows.Forms.BindingSource uAVCANModelBindingSource;
         private System.Windows.Forms.DataGridView DGDebug;
         private System.Windows.Forms.CheckBox chk_canonclose;
-        private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem menu_passthrough;
-        private System.Windows.Forms.MenuItem menu_update;
-        private System.Windows.Forms.MenuItem menu_parameters;
-        private System.Windows.Forms.MenuItem menu_restart;
-        private System.Windows.Forms.MenuItem menu_updatebeta;
+        private System.Windows.Forms.ContextMenuStrip contextMenu1;
+        private System.Windows.Forms.ToolStripMenuItem menu_passthrough;
+        private System.Windows.Forms.ToolStripMenuItem menu_update;
+        private System.Windows.Forms.ToolStripMenuItem menu_parameters;
+        private System.Windows.Forms.ToolStripMenuItem menu_restart;
+        private System.Windows.Forms.ToolStripMenuItem menu_updatebeta;
         private System.Windows.Forms.DataGridViewTextBoxColumn Node;
         private System.Windows.Forms.DataGridViewTextBoxColumn Level;
         private System.Windows.Forms.DataGridViewTextBoxColumn Source;
@@ -685,7 +678,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SoftwareVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn SoftwareCRC;
         private System.Windows.Forms.DataGridViewButtonColumn Menu;
-        private System.Windows.Forms.MenuItem menu_passthrough4;
+        private System.Windows.Forms.ToolStripMenuItem menu_passthrough4;
         private Controls.MyButton but_stats;
         private System.Windows.Forms.ComboBox cmb_interfacetype;
         private System.Windows.Forms.ComboBox cmb_networkinterface;

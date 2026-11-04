@@ -43,12 +43,14 @@ using Flurl.Util;
 using Org.BouncyCastle.Bcpg;
 using log4net.Repository.Hierarchy;
 using System.Numerics;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using static MAVLink;
 using DroneCAN;
 
 namespace MissionPlanner
 {
+    // macOS's Speech framework is a namespace of the same name
+    using Speech = MissionPlanner.Utilities.Speech;
+
     public partial class MainV2 : Form
     {
         private static readonly ILog log =
@@ -752,7 +754,8 @@ namespace MissionPlanner
             catch { }
 
             var t = Type.GetType("Mono.Runtime");
-            MONO = (t != null);
+            // .NET on macOS too: not Windows' .NET Framework
+            MONO = (t != null || !System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows));
 
             try
             {
