@@ -15,10 +15,29 @@ else
     extra+=(-p:MissionPlannerMacCompileOnly=true -p:OutputType=Library -p:IsMacEnabled=false -p:BundleOriginalResources=false -p:AppManifestDetectionEnabled=false -p:StartupObject=)
 fi
 cd -- "$source_dir"
-dotnet build MissionPlanner.csproj -c Release \
-    "-p:DirectoryBuildTargetsPath=$native_dir/Build.targets" -p:MissionPlannerMacNative=true \
-    -p:MissionPlannerLinuxBuild=true \
-    ${extra[@]+"${extra[@]}"} "$@"
+build_args=(dotnet build MissionPlanner.csproj -c Release
+    "-p:DirectoryBuildTargetsPath=$native_dir/Build.targets" -p:MissionPlannerMacNative=true
+    -p:MissionPlannerLinuxBuild=true)
+build_log=$(mktemp)
+if ! "${build_args[@]}" ${extra[@]+"${extra[@]}"} "$@" 2>&1 | tee "$build_log"; then
+    # The .NET for macOS workload refuses an installed Xcode that is a later point release
+    # than the exact one it expects ("requires Xcode 27.1. The current version of Xcode is
+    # 27.2."), even within the same major version, where it is almost always compatible
+    # (https://github.com/dotnet/macios troubleshooting: -p:ValidateXcodeVersion=false).
+    # Retry past just that check, but only for a same-major mismatch: a real major-version
+    # gap (a brand new Xcode the workload has never seen) can fail to compile or link instead.
+    required=$(grep -oE 'requires Xcode [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $3}')
+    installed=$(grep -oE 'current version of Xcode is [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $NF}')
+    rm -f "$build_log"
+    if [[ -n $required && -n $installed && ${required%%.*} == "${installed%%.*}" ]]; then
+        echo "Xcode $installed vs. the workload's $required (same major version): retrying with -p:ValidateXcodeVersion=false" >&2
+        "${build_args[@]}" ${extra[@]+"${extra[@]}"} "$@" -p:ValidateXcodeVersion=false
+    else
+        exit 1
+    fi
+else
+    rm -f "$build_log"
+fi
 
 [[ $(uname -s) == Darwin ]] || exit 0
 
