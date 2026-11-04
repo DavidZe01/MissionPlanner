@@ -24,7 +24,11 @@ defaults:
 jobs:
   native:
     name: Build and run on macOS
-    runs-on: macos-26
+    # the owner's own Mac (self-hosted runner, no GitHub-hosted macOS queue); default labels
+    # for a runner registered without --labels. Revert to `runs-on: macos-26` for a
+    # GitHub-hosted runner (disposable VM, but Apple Silicon macOS runners can queue for a
+    # long time depending on capacity).
+    runs-on: [self-hosted, macOS, ARM64]
     timeout-minutes: 100
     permissions:
       contents: read
