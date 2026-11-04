@@ -21,3 +21,4 @@
 2026-11-04 native: OpenGL (NSOpenGLContext), bundled GStreamer
 2026-11-04 native: OpenGL renderer fallback, GStreamer install names
 2026-11-04 native: OpenGL paints on request
+2026-11-04 native: shared GL context for the 3D map
