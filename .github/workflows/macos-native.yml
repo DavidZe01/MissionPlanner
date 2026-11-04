@@ -42,10 +42,12 @@ jobs:
           dotnet workload config --update-mode manifests
           dotnet workload install macos --from-rollback-file rollback.json 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
           dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          # native libraries bundled into the app (joysticks, DFU flashing)
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb 2>&1 | tail -2
       - name: Build the Windows Forms test app
         timeout-minutes: 15
         run: |
-          build() { dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release > out/build-formstest.log 2>&1; }
+          build() { dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release -r osx-arm64 > out/build-formstest.log 2>&1; }
           if ! build && grep -q -i 'xcode' out/build-formstest.log; then
               # the workload may want the Xcode it was built with
               echo "retrying with Xcode 26.5" | tee -a out/environment.txt
@@ -55,7 +57,7 @@ jobs:
               build || true
           fi
           grep -E 'error|warning MT|Build succeeded' out/build-formstest.log | sort -u | head -20
-          find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' | tee out/apps.txt
+          find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' -path '*arm64*' | tee out/apps.txt
       - name: Run the test app
         timeout-minutes: 5
         run: |
@@ -64,7 +66,10 @@ jobs:
           file "$exe" | tee -a out/environment.txt
           "$exe" > out/formstest-run.log 2>&1 &
           pid=$!
-          sleep 20
+          sleep 10
+          # started from a shell the app is not brought to the front
+          osascript -e "tell application id \"com.emclient.formstest.1\" to activate" || true
+          sleep 10
           screencapture -x out/formstest.png || true
           if kill -0 "$pid" 2>/dev/null; then echo "FORMSTEST running after 20 s" | tee -a out/result.txt; else echo "FORMSTEST exited: $(wait "$pid"; echo $?)" | tee -a out/result.txt; fi
           kill "$pid" 2>/dev/null || true
@@ -98,6 +103,8 @@ jobs:
           pid=$!
           for t in 15 45 90; do
               sleep $(( t == 15 ? 15 : 30 ))
+              osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
+              sleep 1
               screencapture -x "out/mp-${t}s.png" || true
               kill -0 "$pid" 2>/dev/null || break
           done

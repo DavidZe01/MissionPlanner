@@ -2,6 +2,7 @@
 # Build Mission Planner as a native macOS app (.NET for macOS, Cocoa Windows Forms).
 # On Linux this only compiles (MissionPlannerMacCompileOnly); on a Mac it makes the .app.
 # Usage: macOS/native/build.sh [extra dotnet build arguments]
+# (bash 3.2 on macOS: empty arrays are expanded with ${a[@]+...} under set -u)
 set -euo pipefail
 native_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source_dir=$(cd -- "$native_dir/../.." && pwd)
@@ -12,4 +13,31 @@ cd -- "$source_dir"
 dotnet build MissionPlanner.csproj -c Release \
     "-p:DirectoryBuildTargetsPath=$native_dir/Build.targets" -p:MissionPlannerMacNative=true \
     -p:MissionPlannerLinuxBuild=true \
-    "${extra[@]}" "$@"
+    ${extra[@]+"${extra[@]}"} "$@"
+
+[[ $(uname -s) == Darwin ]] || exit 0
+
+# Complete the app bundle: Mission Planner looks for its data files (Scripts, plugins,
+# graphs, NoFly, XML, ...) next to its assembly, which in the bundle is Contents/MonoBundle.
+out_dir="$source_dir/bin/macos-native"
+app="$out_dir/MissionPlanner.app"
+[[ -d $app ]] || { echo "no app bundle at $app" >&2; exit 1; }
+bundle="$app/Contents/MonoBundle"
+rsync -a --ignore-existing --exclude '*.app' --exclude 'runtimes/' --exclude '*.pdb' "$out_dir/" "$bundle/"
+# native libraries the code loads by name (see MacNative.cs)
+arch=$(uname -m)
+cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \
+    -o "$bundle/libuser32stub.dylib" "$native_dir/../user32stub.c"
+for lib in sdl2:libSDL2-2.0.0.dylib libusb:libusb-1.0.0.dylib; do
+    src="$(brew --prefix "${lib%%:*}" 2>/dev/null)/lib/${lib#*:}"
+    if [[ -f $src ]]; then
+        cp -- "$src" "$bundle/" && chmod u+w "$bundle/${lib#*:}"
+        install_name_tool -id "@loader_path/${lib#*:}" "$bundle/${lib#*:}"
+    else
+        echo "${lib%%:*} not found (brew install ${lib%%:*}): $src" >&2
+    fi
+done
+# the bundle changed after the SDK signed it
+codesign --force --deep --sign - "$app"
+codesign --verify --strict "$app" && echo "Signature: valid"
+echo "App: $app"
