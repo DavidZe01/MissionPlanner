@@ -26,3 +26,4 @@
 2026-11-04 native: LockBits conversion, Invalidate threads, PATH
 2026-11-04 native: Retina OpenGL, direct GDI+ HUD, installer
 2026-11-04 native: confirmation run
+2026-11-04 native: Retina display and library origin checks
