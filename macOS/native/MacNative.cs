@@ -30,8 +30,14 @@ namespace MissionPlanner
             "/Library/Frameworks/GStreamer.framework/Versions/1.0/lib",
         };
 
+        static bool initialised;
+
         public static void Init()
         {
+            // the screen tour starts Program.Main again
+            if (initialised)
+                return;
+            initialised = true;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
         }
 

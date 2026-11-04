@@ -14,7 +14,7 @@ using MissionPlanner.Utilities;
 // configuration/setup page, capturing the X11 display and recording which ones
 // fail. Used to compare platforms (macOS, Linux) against the Windows build.
 //
-// Environment: TOUR_OUT (output directory), TOUR_XWD (xwd binary, optional),
+// Environment: TOUR_OUT (output directory), TOUR_XWD (xwd or screencapture binary, optional),
 // TOUR_CONNECT (optional connection string such as tcp:127.0.0.1:5760).
 class ScreenTour
 {
@@ -51,8 +51,11 @@ class ScreenTour
         try
         {
             Application.DoEvents();
-            var file = Path.Combine(outDir, string.Format("{0:000}-{1}.xwd", ++shot, Sanitize(name)));
-            var p = Process.Start(new ProcessStartInfo(xwd, "-root -silent -out \"" + file + "\"") { UseShellExecute = false });
+            // xwd on X11; macOS's screencapture for the native (Cocoa) app
+            var mac = Path.GetFileName(xwd) == "screencapture";
+            var file = Path.Combine(outDir, string.Format("{0:000}-{1}.{2}", ++shot, Sanitize(name), mac ? "png" : "xwd"));
+            var args = mac ? "-x \"" + file + "\"" : "-root -silent -out \"" + file + "\"";
+            var p = Process.Start(new ProcessStartInfo(xwd, args) { UseShellExecute = false });
             if (!p.WaitForExit(15000))
                 p.Kill();
         }
@@ -269,7 +272,7 @@ class ScreenTour
     }
 
     [STAThread]
-    static void Main()
+    internal static void Main()
     {
         outDir = Environment.GetEnvironmentVariable("TOUR_OUT") ?? Path.Combine(Path.GetTempPath(), "mp-tour");
         Directory.CreateDirectory(outDir);

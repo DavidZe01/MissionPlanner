@@ -173,6 +173,13 @@ namespace MissionPlanner
 #if MACNATIVE
             // native macOS app: native library names (Mono had dllmap)
             MacNative.Init();
+            // the screen tour (macOS/ScreenTour.cs) runs inside the app, which it then starts
+            if (Environment.GetEnvironmentVariable("MISSIONPLANNER_TOUR") == "1")
+            {
+                Environment.SetEnvironmentVariable("MISSIONPLANNER_TOUR", null);
+                ScreenTour.Main();
+                return;
+            }
 #endif
             Program.args = args;
             Console.WriteLine(
