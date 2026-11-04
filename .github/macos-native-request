@@ -10,3 +10,4 @@
 2026-11-04 native: no OpenGLES
 2026-11-04 native: arm64, no __Internal
 2026-11-04 native: config, TLS, logs
+2026-11-04 native: custom resource types
