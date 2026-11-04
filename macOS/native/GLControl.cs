@@ -114,18 +114,61 @@ namespace OpenTK
             return NativeLibrary.TryGetExport(openGL, function, out var address) ? address : IntPtr.Zero;
         }
 
-        static NSOpenGLPixelFormat CreatePixelFormat()
+        // An accelerated renderer first (the Mac's GPU); else any, such as Apple's software
+        // renderer on a virtual machine without OpenGL acceleration (CI runners)
+        static readonly NSOpenGLPixelFormatAttribute[][] pixelFormats =
         {
-            return new NSOpenGLPixelFormat(new[]
+            new[]
             {
-                NSOpenGLPixelFormatAttribute.DoubleBuffer,
-                NSOpenGLPixelFormatAttribute.Accelerated,
+                NSOpenGLPixelFormatAttribute.DoubleBuffer, NSOpenGLPixelFormatAttribute.Accelerated,
                 NSOpenGLPixelFormatAttribute.ColorSize, (NSOpenGLPixelFormatAttribute)24,
                 NSOpenGLPixelFormatAttribute.AlphaSize, (NSOpenGLPixelFormatAttribute)8,
                 NSOpenGLPixelFormatAttribute.DepthSize, (NSOpenGLPixelFormatAttribute)24,
                 NSOpenGLPixelFormatAttribute.StencilSize, (NSOpenGLPixelFormatAttribute)8,
                 (NSOpenGLPixelFormatAttribute)0,
-            });
+            },
+            new[]
+            {
+                NSOpenGLPixelFormatAttribute.DoubleBuffer,
+                NSOpenGLPixelFormatAttribute.ColorSize, (NSOpenGLPixelFormatAttribute)24,
+                NSOpenGLPixelFormatAttribute.AlphaSize, (NSOpenGLPixelFormatAttribute)8,
+                NSOpenGLPixelFormatAttribute.DepthSize, (NSOpenGLPixelFormatAttribute)24,
+                NSOpenGLPixelFormatAttribute.StencilSize, (NSOpenGLPixelFormatAttribute)8,
+                (NSOpenGLPixelFormatAttribute)0,
+            },
+            new[]
+            {
+                NSOpenGLPixelFormatAttribute.DoubleBuffer,
+                NSOpenGLPixelFormatAttribute.DepthSize, (NSOpenGLPixelFormatAttribute)16,
+                (NSOpenGLPixelFormatAttribute)0,
+            },
+        };
+
+        static int pixelFormatIndex = -1;
+
+        static NSOpenGLPixelFormat CreatePixelFormat()
+        {
+            var first = Math.Max(0, pixelFormatIndex);
+            for (int i = first; i < pixelFormats.Length; i++)
+            {
+                try
+                {
+                    var format = new NSOpenGLPixelFormat(pixelFormats[i]);
+                    if (format.Handle != IntPtr.Zero)
+                    {
+                        if (pixelFormatIndex != i)
+                            Console.WriteLine("OpenGL pixel format " + i + (i == 0 ? " (accelerated)" : " (any renderer)"));
+                        pixelFormatIndex = i;
+                        return format;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // initWithAttributes: returned nil
+                    Console.WriteLine("OpenGL pixel format " + i + ": " + ex.Message.Split('\n')[0]);
+                }
+            }
+            return null;
         }
 
         /// <summary>Whether an accelerated OpenGL context can be made (MISSIONPLANNER_NO_OPENGL: no).</summary>
@@ -137,8 +180,9 @@ namespace OpenTK
                 {
                     try
                     {
-                        using (var format = CreatePixelFormat())
-                            contextAvailable = format != null && format.Handle != IntPtr.Zero;
+                        var format = CreatePixelFormat();
+                        contextAvailable = format != null;
+                        format?.Dispose();
                     }
                     catch (Exception ex)
                     {
@@ -158,7 +202,8 @@ namespace OpenTK
             try
             {
                 InitToolkit();
-                using (var format = CreatePixelFormat())
+                var format = CreatePixelFormat() ?? throw new GraphicsContextException("no OpenGL pixel format");
+                using (format)
                     nsContext = new NSOpenGLContext(format, null);
                 cglContext = nsContext.CGLContext.Handle;
                 CGLSetCurrentContext(cglContext);
@@ -207,13 +252,15 @@ namespace OpenTK
             context = null;
         }
 
-        // The drawable is the control's NSView, once that is in a window (main thread only).
+        // The drawable is the control's NSView while that is shown in a window (main thread
+        // only); hidden (another screen in front, say), the surface is released, or it would
+        // stay on top of what replaces it.
         void AttachView()
         {
-            if (viewAttached || nsContext == null || !IsHandleCreated || !NSThread.IsMain)
+            if (viewAttached || nsContext == null || !IsHandleCreated || !Visible || !NSThread.IsMain)
                 return;
             var view = ObjCRuntime.Runtime.GetNSObject<NSView>(Handle);
-            if (view?.Window == null)
+            if (view?.Window == null || view.IsHiddenOrHasHiddenAncestor)
                 return;
             nsContext.View = view;
             viewAttached = true;
@@ -224,6 +271,15 @@ namespace OpenTK
         {
             if (nsContext == null || !NSThread.IsMain)
                 return;
+            if (!Visible || !IsHandleCreated)
+            {
+                if (viewAttached)
+                {
+                    nsContext.ClearDrawable();
+                    viewAttached = false;
+                }
+                return;
+            }
             if (!viewAttached)
                 AttachView();
             else

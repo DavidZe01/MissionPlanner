@@ -241,6 +241,24 @@ jobs:
           screencapture -x out/open-document.png || true
           grep -m1 MACOS_OPEN_DOCUMENT out/open-document.log && echo "OPEN DOCUMENT: OK" || echo "OPEN DOCUMENT: not received"
           pkill -f 'Contents/MacOS/MissionPlanner' || true
+      - name: Sign with Developer ID and notarize
+        # only when the repository has the secrets of an Apple Developer Program account
+        # (macOS/native/sign-notarize.sh lists them); otherwise the app stays signed ad hoc
+        if: always()
+        timeout-minutes: 35
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: |
+          app=$(head -1 out/mp-app.txt 2>/dev/null || true)
+          if [[ -z $MACOS_CERTIFICATE || -z $app ]]; then
+              echo "No Developer ID secrets: the app is signed ad hoc"
+              exit 0
+          fi
+          ./macOS/native/sign-notarize.sh "$app" MissionPlanner-macos-native-arm64.zip 2>&1 | tee out/sign-notarize.log
       - name: Smaller screenshots
         # JPEG instead of PNG keeps the results (and the ci-native branch) small
         if: always()

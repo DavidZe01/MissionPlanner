@@ -67,6 +67,15 @@ unzip it (it holds `MissionPlanner-macos-native-arm64.zip`, made with `ditto`), 
 `xattr -dr com.apple.quarantine "Mission Planner.app"` (the bundle is signed ad hoc, not
 notarized) and open it from Finder. GStreamer (video) comes from `brew install gstreamer`.
 
+## Signing
+
+`build.sh` signs the bundle ad hoc, which is all macOS needs to run it on the Mac it was
+downloaded to (after removing the quarantine attribute). To open it from Finder without
+that step, the app must carry a Developer ID signature and Apple's notarization: with an
+Apple Developer Program account, add the secrets listed in `sign-notarize.sh` to the
+repository and `macos-native.yml` signs every binary in the bundle with the hardened
+runtime (`Entitlements.plist`), notarizes, staples the ticket and publishes that app.
+
 ## CI
 
 `.github/workflows/macos-native.yml` builds and starts the app on an Apple Silicon

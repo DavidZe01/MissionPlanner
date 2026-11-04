@@ -102,6 +102,10 @@ if [[ -n $gst_prefix && -d $gst_prefix/lib/gstreamer-1.0 ]] && command -v dylibb
     dylibbundler -of -b "${fix[@]}" -d "$gst/lib" -p '@loader_path/../lib/' -s "$(brew --prefix)/lib" \
         > "$source_dir/bin/macos-native-work/gstreamer-dylibbundler.log" 2>&1 \
         || { echo "GStreamer bundling failed" >&2; tail -20 "$source_dir/bin/macos-native-work/gstreamer-dylibbundler.log" >&2; }
+    # dylibbundler fixed the plugins' references, not their own install names
+    for f in "$gst"/plugins/*.dylib; do
+        install_name_tool -id "@loader_path/$(basename -- "$f")" "$f" 2>/dev/null
+    done
     codesign --force --sign - "$gst"/lib/*.dylib "$gst"/plugins/*.dylib
     if otool -L "$gst"/lib/*.dylib "$gst"/plugins/*.dylib | grep -E '^\s+/(opt|usr/local)/' >&2; then
         echo "GStreamer: references outside the app remain (above)" >&2
