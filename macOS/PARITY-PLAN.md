@@ -43,11 +43,13 @@ páginas de Setup/Config, las ~70 herramientas de Ctrl+F y los formularios.
 | 11 | GStreamer ausente | Lo descarga automáticamente | En ARM64 no hacía nada y el video simplemente no funcionaba | Explica cómo instalarlo (`brew install gstreamer`). Incluirlo en la app es el punto 2.3 |
 | 12 | Log Analyzer | Descarga `runner.exe` | Fallaba al ejecutarlo | Explica la alternativa (navegador de logs, plot.ardupilot.org). Portarlo es el punto 2.6 |
 | 13 | Firma del `.app` | n/a | `BUILD-INFO.txt` se escribía después de firmar, lo que invalidaba la firma. macOS la usa para identificar la app al conceder permisos | Se firma al final y se verifica la firma |
-| 14 | Permisos de privacidad (Bluetooth, cámara, micrófono, red local) | n/a | El ejecutable era el `mono` de Homebrew, que no pertenece a ninguna app: macOS podía cerrar el proceso al primer acceso a Bluetooth o cámara | CI lo confirmó: con el `mono` de Homebrew, macOS atribuye Bluetooth y cámara a `mono-sgen`. El aviso diría "mono-sgen" y el permiso se perdería con cada actualización de Mono. `mono-host` es un ejecutable dentro del `.app` que carga Mono en el mismo proceso; probado en Linux (la app arranca). La primera ejecución en Mac no lo usó por un fallo en la comprobación previa del lanzador (rutas relativas), ya corregido; falta verificarlo en una segunda ejecución |
+| 14 | Permisos de privacidad (Bluetooth, cámara, micrófono, red local) | n/a | El ejecutable era el `mono` de Homebrew, que no pertenece a ninguna app: macOS podía cerrar el proceso al primer acceso a Bluetooth o cámara | CI lo confirmó: con el `mono` de Homebrew, macOS atribuye Bluetooth y cámara a `mono-sgen`. El aviso diría "mono-sgen" y el permiso se perdería con cada actualización de Mono. Solución: `mono-host`, un ejecutable dentro del `.app` que carga Mono en el mismo proceso. Verificado en CI (ejecución 41778933586): la app arranca a través de él y macOS atribuye ahora Bluetooth y cámara a `org.ardupilot.missionplanner` (Mission Planner) |
 | 15 | Cobertura de pruebas | n/a | El recorrido abría 4 de las 14 pestañas de Flight Data | Abre todas (Scripts, Telemetry Logs, DataFlash Logs, Servo, Payload…) |
 
-Verificado en un Mac de CI (macOS 26, arm64; ejecución 41777508138):
-- Arranque nativo arm64.
+Verificado en un Mac de CI (macOS 26, arm64; ejecuciones 41777508138 y 41778933586):
+- Arranque nativo arm64 a través de `mono-host`, en un X virtual y en XQuartz.
+- Firma del `.app` válida.
+- Permisos de Bluetooth y cámara a nombre de Mission Planner.
 - Detección de placas: los 5 casos.
 - Video GStreamer en el HUD: 31 cuadros.
 - MAVLink con el SITL nativo, listado MAVFTP, servidor WebDAV y montaje.
@@ -181,7 +183,7 @@ apartado 4):
 ## 3. Plan por fases
 
 **Fase 1 (en curso):**
-1. Ejecución de CI en modo `probe`: confirmar que `mono-host` funciona, que la firma es válida y qué pasa con el Bluetooth y la cámara con y sin `mono-host`.
+1. ~~Ejecución de CI en modo `probe`~~: hecha. `mono-host`, la firma, la detección de placas, el Bluetooth y la cámara quedan verificados.
 2. Si el modo `probe` pasa, publicar el `.app` con las 15 correcciones y que lo pruebes con la lista del apartado 4.
 3. Un recorrido completo (`[tests=full]`) para las 14 pestañas de Flight Data.
 
