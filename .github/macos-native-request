@@ -8,3 +8,4 @@
 2026-11-04 native: executable references
 2026-11-04 native: executable projects as libraries
 2026-11-04 native: no OpenGLES
+2026-11-04 native: arm64, no __Internal
