@@ -159,7 +159,7 @@ for candidate in "$mono_prefix"/lib/libmonosgen-2.0.1.dylib "$mono_prefix"/lib/l
     [[ -f $candidate ]] && { libmono=$candidate; break; }
 done
 if [[ -z ${MISSIONPLANNER_NO_HOST:-} && -x $host && -n $libmono ]] \
-    && MP_LIBMONO=$libmono "$host" version.exe MissionPlanner.exe > /dev/null 2>> "$log_dir/launcher.log"; then
+    && MP_LIBMONO=$libmono "$host" "$app_dir/version.exe" "$app_dir/MissionPlanner.exe" > /dev/null 2>> "$log_dir/launcher.log"; then
     export MP_LIBMONO=$libmono
     runner=("$host")
 fi

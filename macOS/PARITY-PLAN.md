@@ -31,7 +31,7 @@ páginas de Setup/Config, las ~70 herramientas de Ctrl+F y los formularios.
 | # | Función | Windows | Port antes | Ahora |
 | --- | --- | --- | --- | --- |
 | 1 | Detección de placa al instalar firmware (Install Firmware Legacy y "Load custom firmware") | Identifica la placa por VID/PID y nombre USB | Saltaba esa detección en Mono y preguntaba "¿Es una APM 2+? ¿Pixhawk?…": con placas ChibiOS modernas podía elegir el firmware equivocado | Usa los datos USB de IOKit (macOS) o sysfs (Linux). Probado con 5 casos (Cube Orange en bootloader, Matek H743, fmuv2/3, Pixracer) |
-| 2 | Conexiones Bluetooth LE | Escanea y lista los dispositivos BLE en el desplegable de puertos | El escaneo solo se registraba en Windows: en macOS nunca aparecían | Escanea con SimpleBLE (CoreBluetooth) cuando la app se abre desde Finder/Dock. Pendiente de confirmar en CI que macOS no cierra la app (ver punto 14) |
+| 2 | Conexiones Bluetooth LE | Escanea y lista los dispositivos BLE en el desplegable de puertos | El escaneo solo se registraba en Windows: en macOS nunca aparecían | Escanea con SimpleBLE (CoreBluetooth) cuando la app se abre desde Finder/Dock. CI: el escaneo funciona y macOS pide el permiso de Bluetooth sin cerrar la app |
 | 3 | Página "Onboard OSD" (Config) | Visible si el autopiloto tiene OSD | Oculta siempre en Mono | Visible; abre sin errores en el recorrido de pantallas |
 | 4 | Navegador de logs DataFlash: tabla | Tabla virtual | En Mono, bloque fijo de 1.000 filas: doble clic, Ctrl+G y el salto desde la gráfica iban a la fila equivocada pasada la 1.000; la barra ignoraba el filtro; cancelar el filtro creaba una fila por línea de log; reabrir la tabla añadía otra barra | Corregidos los cuatro |
 | 5 | Actualizaciones | Descarga e instala la nueva versión | Habría instalado la versión de Windows encima del port y roto la app | En macOS avisa de la nueva versión e indica que hay que instalar un nuevo `.app` |
@@ -43,8 +43,15 @@ páginas de Setup/Config, las ~70 herramientas de Ctrl+F y los formularios.
 | 11 | GStreamer ausente | Lo descarga automáticamente | En ARM64 no hacía nada y el video simplemente no funcionaba | Explica cómo instalarlo (`brew install gstreamer`). Incluirlo en la app es el punto 2.3 |
 | 12 | Log Analyzer | Descarga `runner.exe` | Fallaba al ejecutarlo | Explica la alternativa (navegador de logs, plot.ardupilot.org). Portarlo es el punto 2.6 |
 | 13 | Firma del `.app` | n/a | `BUILD-INFO.txt` se escribía después de firmar, lo que invalidaba la firma. macOS la usa para identificar la app al conceder permisos | Se firma al final y se verifica la firma |
-| 14 | Permisos de privacidad (Bluetooth, cámara, micrófono, red local) | n/a | El ejecutable era el `mono` de Homebrew, que no pertenece a ninguna app: macOS podía cerrar el proceso al primer acceso a Bluetooth o cámara | `mono-host`: un ejecutable dentro del `.app` que carga Mono en el mismo proceso. Probado en Linux (la app arranca). La ejecución en modo `probe` lo compara en un Mac con y sin él |
+| 14 | Permisos de privacidad (Bluetooth, cámara, micrófono, red local) | n/a | El ejecutable era el `mono` de Homebrew, que no pertenece a ninguna app: macOS podía cerrar el proceso al primer acceso a Bluetooth o cámara | CI lo confirmó: con el `mono` de Homebrew, macOS atribuye Bluetooth y cámara a `mono-sgen`. El aviso diría "mono-sgen" y el permiso se perdería con cada actualización de Mono. `mono-host` es un ejecutable dentro del `.app` que carga Mono en el mismo proceso; probado en Linux (la app arranca). La primera ejecución en Mac no lo usó por un fallo en la comprobación previa del lanzador (rutas relativas), ya corregido; falta verificarlo en una segunda ejecución |
 | 15 | Cobertura de pruebas | n/a | El recorrido abría 4 de las 14 pestañas de Flight Data | Abre todas (Scripts, Telemetry Logs, DataFlash Logs, Servo, Payload…) |
+
+Verificado en un Mac de CI (macOS 26, arm64; ejecución 41777508138):
+- Arranque nativo arm64.
+- Detección de placas: los 5 casos.
+- Video GStreamer en el HUD: 31 cuadros.
+- MAVLink con el SITL nativo, listado MAVFTP, servidor WebDAV y montaje.
+- Escaneo Bluetooth.
 
 ## 2. Diferencias que quedan, con alternativas y plan
 

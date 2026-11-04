@@ -3636,11 +3636,10 @@ namespace MissionPlanner
                 // prescan
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                     MissionPlanner.Comms.CommsBLE.SerialPort_GetCustomPorts();
-                // macOS: the bundled SimpleBLE (CoreBluetooth). The launcher sets MP_LIBMONO when
-                // Mono runs in the app's own process (mono-host), which macOS needs to grant
-                // Bluetooth access, and MISSIONPLANNER_NO_BLE when it was not opened as an app.
+                // macOS: the bundled SimpleBLE (CoreBluetooth); macOS asks for Bluetooth permission
+                // on the first scan. The launcher sets MISSIONPLANNER_NO_BLE when the app was not
+                // opened by LaunchServices (the permission would then go to the terminal).
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
-                         !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MP_LIBMONO")) &&
                          string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MISSIONPLANNER_NO_BLE")))
                     Task.Run(() =>
                     {
