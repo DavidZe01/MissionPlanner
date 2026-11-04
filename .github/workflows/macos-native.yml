@@ -60,11 +60,21 @@ jobs:
         run: |
           mkdir -p out
           { sw_vers; uname -m; xcodebuild -version; xcode-select -p; ls -d /Applications/Xcode*; dotnet --version; } 2>&1 | tee out/environment.txt
-          # .NET for macOS 26.5, for the runner's Xcode 26 (the newest workload, 27.x, is for the macOS 27 SDK)
+          # .NET for macOS pinned to the workload version matching the runner's Xcode: GitHub's
+          # macos-26 runner has Xcode 26.6, which needs the 26.5.10318 workload (the newest
+          # workload, 27.x, needs Xcode 27 and targets the macOS 27 SDK). A self-hosted runner
+          # (someone's own, possibly newer, Mac) may have a newer Xcode instead, so detect it.
           cd "$RUNNER_TEMP"
-          echo '{"microsoft.net.sdk.macos": "26.5.10318/10.0.100"}' > rollback.json
           dotnet workload config --update-mode manifests
-          dotnet workload install macos --from-rollback-file rollback.json 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          xcode_major=$(xcodebuild -version | awk '/^Xcode /{split($2, v, "."); print v[1]; exit}')
+          if [[ ${xcode_major:-0} -ge 27 ]]; then
+              echo "Xcode $xcode_major.x: updating to the newest macos workload (targets the macOS 27 SDK)"
+              dotnet workload update 2>&1 | tail -5 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+              dotnet workload install macos 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          else
+              echo '{"microsoft.net.sdk.macos": "26.5.10318/10.0.100"}' > rollback.json
+              dotnet workload install macos --from-rollback-file rollback.json 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          fi
           dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
           # .NET stacks of a hung screen-tour step (macOS/native/tour-hang.sh)
           dotnet tool install --global dotnet-stack 2>&1 | tail -1 || true
