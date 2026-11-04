@@ -39,6 +39,29 @@ namespace MissionPlanner
                 return;
             initialised = true;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
+            // diagnostics: every distinct exception, also the ones Mission Planner handles
+            if (Environment.GetEnvironmentVariable("MISSIONPLANNER_FIRSTCHANCE") == "1")
+            {
+                var seen = new HashSet<string>();
+                AppDomain.CurrentDomain.FirstChanceException += (sender, e) =>
+                {
+                    try
+                    {
+                        var ex = e.Exception;
+                        var frame = new System.Diagnostics.StackTrace(ex, false).GetFrame(0)?.GetMethod();
+                        var key = ex.GetType().Name + " " + ex.Message + " @ " + frame?.DeclaringType + "." + frame?.Name;
+                        lock (seen)
+                        {
+                            if (seen.Count > 300 || !seen.Add(key))
+                                return;
+                        }
+                        Console.Error.WriteLine("FIRSTCHANCE " + key);
+                    }
+                    catch
+                    {
+                    }
+                };
+            }
             // log4net writes to ${ALLUSERSPROFILE}/Mission Planner/MissionPlanner.log (app.config):
             // on macOS that is ~/Library/Logs/Mission Planner/MissionPlanner.log
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ALLUSERSPROFILE")))

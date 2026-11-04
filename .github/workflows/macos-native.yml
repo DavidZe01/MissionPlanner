@@ -103,7 +103,7 @@ jobs:
         run: |
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || { echo "no app"; exit 1; }
-          "$app/Contents/MacOS/MissionPlanner" > out/mp-run.log 2>&1 &
+          MISSIONPLANNER_FIRSTCHANCE=1 "$app/Contents/MacOS/MissionPlanner" > out/mp-run.log 2>&1 &
           pid=$!
           for t in 15 45 90; do
               sleep $(( t == 15 ? 15 : 30 ))
