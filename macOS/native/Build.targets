@@ -39,6 +39,12 @@
     <LangVersion>12.0</LangVersion>
   </PropertyGroup>
 
+  <!-- diagnostic: confirm which #if symbols this workload's pack actually defines
+       (two different workload versions were seen to pick different ones) -->
+  <Target Name="PrintDefineConstants" BeforeTargets="CoreCompile" Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
+    <Message Importance="high" Text="MissionPlanner DefineConstants: $(DefineConstants)" />
+  </Target>
+
   <ItemGroup Condition="'$(IsMissionPlannerMacProject)' == 'true'">
     <!-- .NET Framework and NuGet Windows Forms/System.Drawing: replaced by mac-playground -->
     <PackageReference Remove="System.Drawing.Common" />
