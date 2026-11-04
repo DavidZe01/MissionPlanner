@@ -63,6 +63,23 @@ namespace MissionPlanner
         /// </summary>
         public static Image IconFile = null;
 
+        /// <summary>
+        /// Sets a window's icon from IconFile. Icons made from bitmaps (HICON) are Windows only:
+        /// elsewhere (the native macOS app) the window keeps its icon and the Dock shows the app's.
+        /// </summary>
+        public static void SetFormIcon(Form form)
+        {
+            if (IconFile == null || form == null)
+                return;
+            try
+            {
+                form.Icon = Icon.FromHandle(((Bitmap) IconFile).GetHicon());
+            }
+            catch (PlatformNotSupportedException)
+            {
+            }
+        }
+
         public static Splash Splash;
 
         internal static Thread Thread;
@@ -346,8 +363,7 @@ namespace MissionPlanner
             }
 
             Console.WriteLine("IconFile");
-            if (IconFile != null)
-                Splash.Icon = Icon.FromHandle(((Bitmap) IconFile).GetHicon());
+            SetFormIcon(Splash);
 
             string strVersion = File.Exists("version.txt")
                 ? File.ReadAllText("version.txt")
