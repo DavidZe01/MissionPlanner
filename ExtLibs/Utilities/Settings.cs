@@ -354,6 +354,12 @@ namespace MissionPlanner.Utilities
             if (isUnix && !Directory.Exists(oldApproachPath)) // Do not use new AppData path if old path already exists
             {                                                 // E.g. do not migrate to new aproach if directory exists
                 path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                // .NET on macOS has LocalApplicationData in ~/Library/Application Support, Mono in
+                // ~/.local/share: keep using the Mono build's data (settings, logs, maps) if it is there
+                var monoPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share");
+                if (path != monoPath && !Directory.Exists(Path.Combine(path, AppConfigName)) &&
+                    Directory.Exists(Path.Combine(monoPath, AppConfigName)))
+                    path = monoPath;
             }
             else
             {
