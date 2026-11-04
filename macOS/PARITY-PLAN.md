@@ -6,6 +6,37 @@ el port de macOS. Para cada función que depende del sistema operativo indica qu
 Windows, qué hacía el port, qué se corrigió y qué falta, con las alternativas
 posibles y la recomendada. `PARITY.md` tiene los resultados medidos en CI.
 
+## 0. La app nativa (sin Mono ni XQuartz)
+
+Además del port X11 (secciones 1 y 2), ahora hay una **app nativa de macOS**
+(`macOS/native/`, workflow `macos-native.yml`). Compila el mismo código de
+Mission Planner para .NET 10 de macOS (CoreCLR arm64, dentro del `.app`) con el
+Windows Forms de eM Client que dibuja con Cocoa (`ExtLibs/mac-playground`, MIT) y
+System.Drawing sobre CoreGraphics:
+
+- Ventanas `NSWindow`/`NSView` reales, nitidez Retina, barra de menús de macOS
+  (Cmd+C/V/X/A/Z, Cmd+Q, Ocultar, Minimizar), icono en el Dock.
+- No hace falta instalar Mono ni XQuartz. Van incluidos SDL2/SDL3 (joystick), libusb
+  (DFU), SimpleBLE (Bluetooth) y los simuladores SITL. GStreamer (video) es opcional, de Homebrew.
+- Abrir un `.tlog`, `.bin` o `.log` desde Finder (o arrastrarlo al Dock) lo abre en
+  Mission Planner, como las asociaciones de archivos de Windows.
+- Los permisos de Bluetooth, cámara y red local se piden a nombre de Mission Planner.
+
+Con esto quedan resueltos los puntos 2.1 (interfaz X11), 2.5 (abrir archivos desde
+Finder) y 2.7 (Mono y XQuartz como requisitos). Siguen pendientes 2.2 (OpenGL: el HUD
+dibuja con CoreGraphics, como la opción GDI+ de Windows, y las vistas 3D están
+desactivadas), 2.3 (GStreamer por Homebrew), 2.4 (actualizador), 2.6 (Log Analyzer)
+y 2.8 (notarización).
+
+Correcciones que necesitó la biblioteca Cocoa para Mission Planner (detalle en
+`ExtLibs/mac-playground/README.md`): identidades de ensamblado compatibles con .NET
+Framework, barras de herramientas y menú principal dibujados, botones con tema
+(`MyButton`) pintados por su código, diálogos cerrados desde temporizadores,
+`Graphics.FromImage` independientes (el HUD salía invertido), y acceso a `Visible`
+desde otros hilos.
+
+Resultado en CI (Mac M-series de GitHub, macOS 26): ver `RESULTADOS-NATIVO` abajo.
+
 ## Cómo se hizo la comparación
 
 El port ejecuta el mismo `MissionPlanner.exe` (código C# idéntico salvo los

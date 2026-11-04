@@ -461,7 +461,17 @@ namespace System.Windows.Forms
 
 			public override string StringFor(NSObject value)
 			{
-				return owner.FormatterPreprocessText(value?.ToString() ?? null);
+				var text = value?.ToString();
+				// AppKit may still format the field's value while its control is being
+				// disposed (a screen switched away): show the text as it is then
+				try
+				{
+					return owner?.FormatterPreprocessText(text) ?? text ?? String.Empty;
+				}
+				catch (NullReferenceException)
+				{
+					return text ?? String.Empty;
+				}
 			}
 
 			public override bool GetObjectValue(out NSObject obj, string str, out NSString error)

@@ -313,5 +313,19 @@ namespace MissionPlanner.plugins
             var span = new ReadOnlySpan<byte>(buf, off, len);
             _udpclient.Send(span.ToArray(), span.Length);
         }
+
+        // BouncyCastle's builds for .NET (not .NET Framework) also have these in DatagramTransport
+        public int Receive(Span<byte> buffer, int waitMillis)
+        {
+            var buf = new byte[buffer.Length];
+            var len = Receive(buf, 0, buf.Length, waitMillis);
+            new Span<byte>(buf, 0, len).CopyTo(buffer);
+            return len;
+        }
+
+        public void Send(ReadOnlySpan<byte> buffer)
+        {
+            _udpclient.Send(buffer.ToArray(), buffer.Length);
+        }
     }
 }

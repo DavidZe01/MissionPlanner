@@ -1447,6 +1447,9 @@ namespace System.Drawing {
 		public void Clear (Color color)
 		{
 			context.SaveState ();
+			// GDI+ replaces the pixels, alpha included: Clear(Color.Transparent) empties a back
+			// buffer (Mission Planner's HUD every frame). Filled over them, it changed nothing.
+			context.SetBlendMode (CGBlendMode.Copy);
 			context.SetFillColor(color);
 			context.FillRect(context.GetClipBoundingBox());
 			context.RestoreState ();

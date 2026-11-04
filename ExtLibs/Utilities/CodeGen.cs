@@ -59,7 +59,9 @@ namespace MissionPlanner
             var refFiles = refs.Where(a =>
                     !a.IsDynamic && !a.FullName.Contains("MissionPlanner.Drawing"))
                 .Select(a => a.Location);
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            // Mono on macOS (the X11 app) keeps MissionPlanner.Drawing; on .NET (the native app)
+            // its types would clash with System.Drawing's, as on Windows
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Type.GetType("Mono.Runtime") != null)
                 refFiles = refs.Where(a => !a.IsDynamic).Select(a => a.Location);
             // Mono's mscorlib already defines Span<T>, MemoryExtensions, ArrayPool<T>...
             // which the System.Memory/System.Buffers packages also define: referencing
@@ -174,7 +176,7 @@ namespace MissionPlanner
             var refFiles = refs.Where(a => !a.IsDynamic && !a.FullName.Contains("mscorlib") && !a.FullName.Contains("MissionPlanner.Drawing"))
                 .Select(a => a.Location);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && Type.GetType("Mono.Runtime") != null)
                 refFiles = refs.Where(a => !a.IsDynamic && !a.FullName.Contains("mscorlib")).Select(a => a.Location);
 
             //add compiler parameters and assembly references

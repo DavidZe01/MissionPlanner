@@ -344,6 +344,8 @@ class ScreenTour
                 host.Controls.Add(control);
                 ThemeManager.ApplyThemeTo(control);
                 (control as IActivate)?.Activate();
+                // in front for the screenshot (a closed dialog may have activated the main window)
+                host.Activate();
                 Wait(1200);
                 Screenshot("page-" + type.Name);
                 (control as IDeactivate)?.Deactivate();
@@ -409,6 +411,16 @@ class ScreenTour
             }
             PlatformChecks();
             ShowMain("FlightData", m.MenuFlightData, 3000);
+            // the HUD's back buffer itself (GDI+ drawing), to tell it from what the window shows
+            Step("feature:hud-back-buffer", () =>
+            {
+                var hud = MissionPlanner.GCSViews.FlightData.myhud;
+                var bitmap = hud.objBitmap;
+                Console.WriteLine("TOUR hud opengl=" + hud.opengl + " bgimage=" + (hud.bgimage != null) + " bitmap=" + bitmap.Size + " control=" + hud.Size);
+                foreach (var f in new[] { 0.3f, 0.5f, 0.7f, 0.9f })
+                    Console.WriteLine("TOUR hud pixel y=" + f + " " + bitmap.GetPixel(bitmap.Width / 2, (int)(bitmap.Height * f)));
+                bitmap.Save(Path.Combine(outDir, "hud-back-buffer.png"), System.Drawing.Imaging.ImageFormat.Png);
+            });
             // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
             // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
             var tabControl = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();

@@ -1134,8 +1134,11 @@ namespace MissionPlanner.Controls
         private HUD graphicsObject;
         internal IGraphics graphicsObjectGDIP;
 
-        // set while doPaint draws straight into the paint Graphics instead of objBitmap (LIB only)
+        // set while doPaint draws straight into the paint Graphics instead of objBitmap (LIB, and
+        // the native macOS app with MISSIONPLANNER_HUD_DIRECT=1)
         bool directPaint;
+
+        static readonly bool HudDirectPaint = Environment.GetEnvironmentVariable("MISSIONPLANNER_HUD_DIRECT") == "1";
 
         private DateTime starttime = DateTime.MinValue;
 
@@ -1408,16 +1411,26 @@ namespace MissionPlanner.Controls
 
                 }
 
+#if LIB || MACNATIVE
 #if LIB
                 // The Skia WinForms driver paints each window into its own retained surface and only
                 // shows it once the paint has finished, so draw straight into it instead of rendering
                 // into objBitmap and copying the whole frame. objBitmap is still used while it feeds
                 // the MJPEG stream (and for the first frame, which initialises streamjpg).
                 var direct = !opengl && !streamjpgenable && streamjpg != null;
+#else
+                // the native macOS app can do the same into the view's CoreGraphics context
+                // (MISSIONPLANNER_HUD_DIRECT=1, while it is compared with the back buffer)
+                var direct = HudDirectPaint && !opengl && !streamjpgenable && streamjpg != null;
+#endif
                 IGraphics buffered = graphicsObjectGDIP;
                 if (direct)
                 {
+#if LIB
                     graphicsObjectGDIP = e.Graphics;
+#else
+                    graphicsObjectGDIP = new GdiGraphics(e.Graphics);
+#endif
                     directPaint = true;
                 }
 

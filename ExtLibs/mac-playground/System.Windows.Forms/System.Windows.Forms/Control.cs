@@ -3518,7 +3518,10 @@ namespace System.Windows.Forms
 				return;
 			}
 
-			if (is_disposing) {
+			// also disposed: a form that closes itself while it is being shown (from an event
+			// its children raise as they are created) goes on showing its disposed children.
+			// .NET Framework does not create them either (a disposed control is not visible).
+			if (is_disposing || is_disposed) {
 				return;
 			}
 

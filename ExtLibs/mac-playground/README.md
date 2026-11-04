@@ -19,6 +19,8 @@ Changes for Mission Planner:
   libraries (OpenTK, ObjectListView, ...) load against these assemblies;
 - ToolStrip: only drop downs are native menus (`native_rendering`); tool strips,
   menu strips and status strips on a form lay out and draw their items;
+- Button: a subclass that overrides OnPaint (a themed button) paints itself instead
+  of being an NSButton;
 - timers: a tick wakes a modal loop (as WM_TIMER does on Windows), so a dialog
   closed from a timer returns from ShowDialog;
 - `Control.Visible` read from a worker thread (XplatUICocoa.IsVisible) does not
@@ -27,6 +29,14 @@ Changes for Mission Planner:
   bitmap's memory (two Graphics of one bitmap no longer share transform, clip and
   saved states: the second drew upside down), and what is drawn shows in the
   bitmap's image while the Graphics lives;
+- `Graphics.Clear` replaces the pixels (alpha included) as in GDI+, instead of
+  drawing over them: `Clear(Color.Transparent)` empties a back buffer;
+- `new Bitmap(width, height, stride, format, scan0)` (video frames for the HUD):
+  a copy of the pixels in the internal layout;
+- `Control.CreateControl` does nothing for a disposed control (a form that closes
+  itself while it is shown);
+- a text field's formatter does not throw when AppKit calls it while its control is
+  being disposed;
 - small API gaps: SaveFileDialog.OverwritePrompt/CreatePrompt,
   ImageAttributes.SetRemapTable (no-op); clipper's top-level types internal.
 

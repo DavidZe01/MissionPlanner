@@ -9,8 +9,32 @@ namespace System.Windows.Forms
 	{
 		NSButton button;
 
+		// A Button subclass that paints itself (OnPaint overridden, such as Mission Planner's
+		// themed MyButton) is drawn by its own code, as on Windows: an NSButton would ignore it.
+		bool? paintsItself;
+		bool PaintsItself
+		{
+			get
+			{
+				if (paintsItself == null)
+				{
+					var onPaint = GetType().GetMethod("OnPaint", Reflection.BindingFlags.Instance | Reflection.BindingFlags.NonPublic | Reflection.BindingFlags.Public,
+						null, new[] { typeof(PaintEventArgs) }, null);
+					// an override of Control.OnPaint (not a 'new' method) below Button
+					var declaring = onPaint?.DeclaringType;
+					paintsItself = declaring != null && onPaint.GetBaseDefinition().DeclaringType == typeof(Control)
+						&& declaring != typeof(Button) && declaring != typeof(ButtonBase) && declaring != typeof(Control);
+				}
+				return paintsItself.Value;
+			}
+		}
+
 		public NSView CreateView()
 		{
+			// null: a Windows Forms view (MonoView) that the control paints
+			if (PaintsItself)
+				return null;
+
 			var i = Image;
 
 			button = new NSButton();
@@ -98,7 +122,7 @@ namespace System.Windows.Forms
 		{
 			get
 			{
-				if (button == null)
+				if (button == null && !PaintsItself)
 					CreateView();
 				return button;
 			}

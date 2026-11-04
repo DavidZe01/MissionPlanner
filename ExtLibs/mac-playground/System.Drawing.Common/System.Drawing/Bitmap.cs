@@ -280,9 +280,40 @@ namespace System.Drawing {
 			if (premultiplied) { } // make compiler happy
 		}
 
+		// Pixels in GDI+'s layout (B, G, R[, A] in memory) at scan0. GDI+ draws from that memory
+		// in place; this takes a copy in the internal layout (premultiplied RGBA), since the
+		// owner of scan0 (a video frame, say) may free or reuse it right after.
 		public Bitmap (int width, int height, int stride, PixelFormat format, IntPtr scan0)
+			: this (width, height, format)
 		{
-			throw new NotImplementedException ();
+			if (scan0 == IntPtr.Zero)
+				return;
+			var bitsPerPixel = GetBitsPerPixel (format);
+			var bytesPerRow = (int)NativeCGImage.BytesPerRow;
+			var rowBytes = Math.Min (Math.Abs (stride), bytesPerRow);
+			unsafe {
+				for (int y = 0; y < height; y++)
+					Buffer.MemoryCopy ((byte*)scan0 + (long)y * stride, (byte*)bitmapBlock + (long)y * bytesPerRow, bytesPerRow, rowBytes);
+
+				byte* row = (byte*)bitmapBlock;
+				if (bitsPerPixel == 32 && format == PixelFormat.Format32bppArgb) {
+					if (!ConversionHelpers.sTablesInitialized)
+						ConversionHelpers.CalculateTables ();
+					Convert_BGRA_8888_To_P_RGBA_8888 (bitmapBlock, width, height, bytesPerRow);
+				} else if (bitsPerPixel == 32 || bitsPerPixel == 24) {
+					// premultiplied or without alpha: only red and blue change places
+					var pixelBytes = bitsPerPixel / 8;
+					for (int y = 0; y < height; y++, row += bytesPerRow)
+						for (int x = 0; x < width * pixelBytes; x += pixelBytes) {
+							var blue = row [x];
+							row [x] = row [x + 2];
+							row [x + 2] = blue;
+							if (format == PixelFormat.Format32bppRgb)
+								row [x + 3] = 255;
+						}
+				}
+			}
+			dirty = true;
 		}
 
 		private Bitmap (SerializationInfo info, StreamingContext context)
