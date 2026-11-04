@@ -35,7 +35,19 @@ Framework, barras de herramientas y menú principal dibujados, botones con tema
 `Graphics.FromImage` independientes (el HUD salía invertido), y acceso a `Visible`
 desde otros hilos.
 
-Resultado en CI (Mac M-series de GitHub, macOS 26): ver `RESULTADOS-NATIVO` abajo.
+Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41817188461):
+
+| Prueba | Resultado |
+| --- | --- |
+| Arranque nativo arm64 (sin Mono ni XQuartz) | Sigue en marcha a los 90 s; ventana, menú y Dock de macOS |
+| Recorrido de pantallas sin vehículo | 145/148 (98,0 %): las 21 pantallas y las 14 pestañas de Flight Data, 77 de 80 páginas de Setup/Config, los 38 formularios, 9/9 funciones (puertos USB/serie, joystick SDL2, voz, cámaras, GStreamer con video en el HUD, SITL incluido, búfer del HUD) |
+| Conectado al SITL ArduCopter incluido (TCP) | 38/38 (100 %): 1370 parámetros, escritura y lectura de un parámetro, subida y bajada de una misión, listado MAVFTP, logs a bordo, armar y despegar (5,6 m) |
+| Abrir un `.tlog` desde Finder (LaunchServices) | Se abre y se reproduce en Flight Data |
+| Permisos | Bluetooth y red local se piden a nombre de "Mission Planner" |
+
+Los 3 fallos: las dos vistas OpenGL de prueba (`OpenGLtest`, `OpenGLtest2`, solo
+accesibles desde el formulario de depuración; punto 2.2) y `ConfigHWCompass2`, que
+falla igual en Windows y Linux cuando no hay vehículo conectado.
 
 ## Cómo se hizo la comparación
 
@@ -230,6 +242,17 @@ apartado 4):
 
 ## 4. Cómo verificar en tu Mac
 
+**App nativa (recomendada):**
+1. GitHub → Actions → "macOS native (Cocoa)" → la ejecución más reciente → Artifacts →
+   `MissionPlanner-macos-native-arm64`. Descomprime (dentro hay otro `.zip` con
+   `Mission Planner.app`).
+2. Quita la cuarentena (la app va firmada ad hoc, sin notarizar) y muévela a Aplicaciones:
+   `xattr -dr com.apple.quarantine "Mission Planner.app"`.
+3. Ábrela desde Finder. No hace falta Mono ni XQuartz. Para video: `brew install gstreamer`.
+4. Los pasos 2 a 5 de la lista siguiente valen igual (Bluetooth, firmware, video, joystick).
+   El log queda en `~/Library/Logs/Mission Planner/MissionPlanner.log`.
+
+**App X11 (Mono + XQuartz):**
 1. Descarga el `.app` del build (Actions → ejecución → Artifacts → `MissionPlanner-macos-ARM64`), descomprime, quita la cuarentena (`xattr -dr com.apple.quarantine "Mission Planner.app"`) y ábrelo desde Finder.
 2. Bluetooth: al abrir, macOS pide permiso de Bluetooth. Acéptalo y abre el desplegable de puertos: los dispositivos BLE aparecen como `BLE_…`.
 3. Firmware: conecta la placa y usa Setup → Install Firmware. Con "Load custom firmware" ya no debería preguntar el tipo de placa.

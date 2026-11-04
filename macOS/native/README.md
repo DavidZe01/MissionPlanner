@@ -60,6 +60,13 @@ public keys only) and have version 10.0.0.0:
 - Name clashes: macOS framework namespaces (`Speech`, `Symbols`) and newer .NET types
   (`System.Reflection.MethodInvoker`, `System.IO.UnixFileMode`) get aliases.
 
+## Installing
+
+Download the `MissionPlanner-macos-native-arm64` artifact of a `macos-native.yml` run,
+unzip it (it holds `MissionPlanner-macos-native-arm64.zip`, made with `ditto`), then
+`xattr -dr com.apple.quarantine "Mission Planner.app"` (the bundle is signed ad hoc, not
+notarized) and open it from Finder. GStreamer (video) comes from `brew install gstreamer`.
+
 ## CI
 
 `.github/workflows/macos-native.yml` builds and starts the app on an Apple Silicon

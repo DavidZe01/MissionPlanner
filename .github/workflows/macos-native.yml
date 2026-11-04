@@ -240,7 +240,8 @@ jobs:
         # JPEG instead of PNG keeps the results (and the ci-native branch) small
         if: always()
         run: |
-          find out -name '*.png' | while IFS= read -r f; do
+          # (the HUD's back buffer stays PNG: JPEG blurs the colour of thin text)
+          find out -name '*.png' ! -name 'hud-back-buffer.png' | while IFS= read -r f; do
               sips -s format jpeg -s formatOptions 60 "$f" --out "${f%.png}.jpg" > /dev/null 2>&1 && rm -f "$f"
           done
           du -sh out
