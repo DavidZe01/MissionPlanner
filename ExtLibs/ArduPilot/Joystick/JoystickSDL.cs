@@ -179,7 +179,7 @@ namespace MissionPlanner.Joystick
             {
                 try
                 {
-#if NETCOREAPP
+#if __MACOS__
                     // Split "stuck loading the library" from "stuck inside the first call":
                     // this resolves the native library (dlopen on macOS) without calling into it.
                     Trace("> NativeLibrary.TryLoad");
