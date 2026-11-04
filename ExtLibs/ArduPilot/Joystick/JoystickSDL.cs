@@ -179,6 +179,13 @@ namespace MissionPlanner.Joystick
             {
                 try
                 {
+#if NETCOREAPP
+                    // Split "stuck loading the library" from "stuck inside the first call":
+                    // this resolves the native library (dlopen on macOS) without calling into it.
+                    Trace("> NativeLibrary.TryLoad");
+                    var loaded = NativeLibrary.TryLoad("SDL2", out var libHandle);
+                    Trace("< NativeLibrary.TryLoad = " + loaded);
+#endif
                     Trace("> SDL_SetHint");
                     Native.SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
                     Trace("< SDL_SetHint");
