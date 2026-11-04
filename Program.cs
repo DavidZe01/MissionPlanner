@@ -248,7 +248,15 @@ namespace MissionPlanner
             log.Info("******************* Logging Configured *******************");
 
             ServicePointManager.DefaultConnectionLimit = 10;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+            try
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+            }
+            catch (NotSupportedException)
+            {
+                // .NET (Core) has no SSL 3
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | (SecurityProtocolType)12288; // Tls13
+            }
 
             System.Windows.Forms.Application.ThreadException += Application_ThreadException;
 

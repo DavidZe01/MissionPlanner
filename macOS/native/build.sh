@@ -30,6 +30,10 @@ app=$(find "$out_dir" -maxdepth 1 -name '*.app' | head -1)
 [[ -n $app && -f $app/Contents/Info.plist && -d $app/Contents/MacOS ]] || { echo "no app bundle in $out_dir" >&2; exit 1; }
 bundle="$app/Contents/MonoBundle"
 rsync -a --ignore-existing --exclude '*.app' --exclude 'runtimes/' --exclude '*.pdb' "$out_dir/" "$bundle/"
+# The configuration file without .NET Framework-only sections: on .NET an unknown section
+# (system.web, from a Windows Forms template) makes ConfigurationManager reject the whole
+# file, and log4net and the update settings with it. system.diagnostics traces to /ProgramData.
+perl -0pi -e 's{\s*<system\.(web|diagnostics)>.*?</system\.\1>}{}gs' "$bundle/MissionPlanner.dll.config"
 # native libraries the code loads by name (see MacNative.cs)
 arch=$(uname -m)
 cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \

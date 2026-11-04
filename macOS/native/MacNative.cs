@@ -39,6 +39,11 @@ namespace MissionPlanner
                 return;
             initialised = true;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
+            // log4net writes to ${ALLUSERSPROFILE}/Mission Planner/MissionPlanner.log (app.config):
+            // on macOS that is ~/Library/Logs/Mission Planner/MissionPlanner.log
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ALLUSERSPROFILE")))
+                Environment.SetEnvironmentVariable("ALLUSERSPROFILE",
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs"));
         }
 
         static IntPtr ResolveUnmanagedDll(Assembly assembly, string name)
