@@ -21,8 +21,19 @@ namespace MissionPlanner.Utilities
     public class ThemeColor
     {
         public String strColorItemName { get; set; }
-        
-        [XmlElement(Type = typeof(XmlColor))]
+
+        // Serialized through XmlColor under the same element name. [XmlElement(Type =
+        // typeof(XmlColor))] on the Color property relied on the implicit conversion, which
+        // .NET's (not .NET Framework's or Mono's) XmlSerializer cannot generate.
+        [XmlElement("clrColor")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public XmlColor clrColorXml
+        {
+            get { return clrColor; }
+            set { clrColor = value ?? new XmlColor(); }
+        }
+
+        [XmlIgnore]
         public Color clrColor { get; set; }
         public String strVariableName { get; set; }
     }
