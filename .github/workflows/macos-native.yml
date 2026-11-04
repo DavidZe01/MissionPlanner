@@ -1,0 +1,88 @@
+name: macOS native (Cocoa)
+
+# Mission Planner on .NET for macOS with the Cocoa Windows Forms backend
+# (ExtLibs/mac-playground): no Mono, no XQuartz. Runs only on request, when a
+# push to macos-arm64 changes .github/macos-native-request (ordinary pushes
+# start nothing), or from the Actions "Run workflow" button.
+on:
+  push:
+    branches: [macos-arm64]
+    paths: ['.github/macos-native-request']
+  workflow_dispatch:
+
+concurrency:
+  group: macos-native-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  native:
+    name: Build and run on macOS
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - name: Tools
+        timeout-minutes: 15
+        run: |
+          mkdir -p out
+          { sw_vers; uname -m; xcodebuild -version; xcode-select -p; ls -d /Applications/Xcode*; dotnet --version; } 2>&1 | tee out/environment.txt
+          dotnet workload install macos 2>&1 | tail -3 | tee -a out/environment.txt
+      - name: Build the Windows Forms test app
+        timeout-minutes: 15
+        run: |
+          dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release 2>&1 | tee out/build-formstest.log | tail -15
+          find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' | tee out/apps.txt
+      - name: Run the test app
+        timeout-minutes: 5
+        run: |
+          app=$(head -1 out/apps.txt)
+          exe="$app/Contents/MacOS/$(defaults read "$PWD/$app/Contents/Info" CFBundleExecutable)"
+          file "$exe" | tee -a out/environment.txt
+          "$exe" > out/formstest-run.log 2>&1 &
+          pid=$!
+          sleep 20
+          screencapture -x out/formstest.png || true
+          if kill -0 "$pid" 2>/dev/null; then echo "FORMSTEST running after 20 s" | tee -a out/result.txt; else echo "FORMSTEST exited: $(wait "$pid"; echo $?)" | tee -a out/result.txt; fi
+          kill "$pid" 2>/dev/null || true
+          tail -20 out/formstest-run.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-native
+          path: out
+
+  results:
+    # Logs and screenshots on the ci-native branch, readable with git.
+    name: Publish results
+    needs: [native]
+    if: always()
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: results-native
+          path: results
+      - name: Push results branch
+        env:
+          SHA: ${{ github.sha }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          OUTCOME: ${{ needs.native.result }}
+        run: |
+          cd results
+          echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt
+          git init -q -b ci-native
+          git add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $SHA ($OUTCOME)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-native
