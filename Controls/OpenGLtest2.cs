@@ -338,9 +338,13 @@ namespace MissionPlanner.Controls
             GMaps.Instance.CacheOnIdleRead = false;
             GMaps.Instance.BoostCacheEngine = true;
             // shared context
+            // (the native macOS app has no OpenTK windows: the textures are made in this
+            // control's context, which tileInfo makes current here under textureSemaphore)
+#if !MACNATIVE
             var win = new OpenTK.GameWindow(640, 480, Context.GraphicsMode);
             win.Visible = false;
             IMGContext = win.Context;
+#endif
             core.Zoom = 20;
 
             while (!this.IsDisposed)

@@ -76,6 +76,41 @@ if [[ -f $simpleble_build/out/libsimplecble.dylib ]]; then
     done
 fi
 
+# GStreamer (video in the HUD, cameras, OSD video) inside the app, from Homebrew's gstreamer,
+# with the plugins Mission Planner's pipelines use: RTP/UDP/TCP/RTSP, decodebin, H.264/H.265
+# parsing, VideoToolbox decoding and AVFoundation cameras (applemedia), JPEG/MJPEG, MP4.
+# dylibbundler copies their libraries next to them and points every reference at
+# @loader_path, so nothing outside the app is needed. MacNative.Init sets the plugin path.
+gst_prefix=$(brew --prefix gstreamer 2>/dev/null || true)
+if [[ -n $gst_prefix && -d $gst_prefix/lib/gstreamer-1.0 ]] && command -v dylibbundler >/dev/null; then
+    gst="$bundle/gstreamer"
+    rm -rf -- "$gst" && mkdir -p -- "$gst/lib" "$gst/plugins" "$source_dir/bin/macos-native-work"
+    for plugin in coreelements app videotestsrc videoconvertscale videoconvert videoscale videorate \
+                  videofilter udp tcp rtp rtpmanager rtsp playback typefindfunctions videoparsersbad \
+                  applemedia jpeg multipart isomp4 autodetect; do
+        if [[ -f $gst_prefix/lib/gstreamer-1.0/libgst$plugin.dylib ]]; then
+            cp -L "$gst_prefix/lib/gstreamer-1.0/libgst$plugin.dylib" "$gst/plugins/"
+        fi
+    done
+    # the libraries GStreamer.cs calls (P/Invoke)
+    for lib in gstreamer-1.0.0 gstapp-1.0.0 gstvideo-1.0.0 gstbase-1.0.0; do
+        cp -L "$gst_prefix/lib/lib$lib.dylib" "$gst/lib/"
+    done
+    chmod -R u+w "$gst"
+    fix=()
+    for f in "$gst"/plugins/*.dylib "$gst"/lib/*.dylib; do fix+=(-x "$f"); done
+    dylibbundler -of -b "${fix[@]}" -d "$gst/lib" -p '@loader_path/../lib/' -s "$(brew --prefix)/lib" \
+        > "$source_dir/bin/macos-native-work/gstreamer-dylibbundler.log" 2>&1 \
+        || { echo "GStreamer bundling failed" >&2; tail -20 "$source_dir/bin/macos-native-work/gstreamer-dylibbundler.log" >&2; }
+    codesign --force --sign - "$gst"/lib/*.dylib "$gst"/plugins/*.dylib
+    if otool -L "$gst"/lib/*.dylib "$gst"/plugins/*.dylib | grep -E '^\s+/(opt|usr/local)/' >&2; then
+        echo "GStreamer: references outside the app remain (above)" >&2
+    fi
+    echo "GStreamer: $(ls "$gst/plugins" | wc -l | tr -d ' ') plugins, $(ls "$gst/lib" | wc -l | tr -d ' ') libraries, $(du -sh "$gst" | cut -f1)"
+else
+    echo "GStreamer not bundled (brew install gstreamer dylibbundler)" >&2
+fi
+
 # Optional native SITL simulators (MP_SITL_DIR with ArduCopter, ArduPlane, ...; the
 # macos-arm64.yml "sitl" job builds them), found by MacNative.Init in Contents/Resources/sitl
 if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then

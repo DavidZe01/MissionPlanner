@@ -23,8 +23,12 @@ namespace MissionPlanner
     {
         static readonly string bundleDir = AppContext.BaseDirectory;
 
+        // GStreamer inside the app (build.sh), before a Homebrew or framework one
+        static readonly string bundledGStreamer = Path.Combine(AppContext.BaseDirectory, "gstreamer");
+
         static readonly string[] libraryDirs =
         {
+            Path.Combine(AppContext.BaseDirectory, "gstreamer", "lib"),
             AppContext.BaseDirectory,
             "/opt/homebrew/lib",
             "/usr/local/lib",
@@ -40,6 +44,8 @@ namespace MissionPlanner
                 return;
             initialised = true;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
+            // before anything else uses OpenTK, so that it never sets up its own Cocoa layer
+            OpenTK.GLControl.InitToolkit();
             // diagnostics: every distinct exception, also the ones Mission Planner handles
             if (Environment.GetEnvironmentVariable("MISSIONPLANNER_FIRSTCHANCE") == "1")
             {
@@ -82,11 +88,39 @@ namespace MissionPlanner
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ALLUSERSPROFILE")))
                 Environment.SetEnvironmentVariable("ALLUSERSPROFILE",
                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs"));
+            // the GStreamer inside the app: its plugins only, a registry of its own, and plugins
+            // scanned in this process (the plugin scanner helper is not bundled). Read by gst_init.
+            if (Directory.Exists(Path.Combine(bundledGStreamer, "plugins")))
+            {
+                SetNativeEnvironment("GST_PLUGIN_SYSTEM_PATH", Path.Combine(bundledGStreamer, "plugins"));
+                SetNativeEnvironment("GST_PLUGIN_PATH", null);
+                SetNativeEnvironment("GST_REGISTRY_FORK", "no");
+                var cache = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Caches", "Mission Planner");
+                Directory.CreateDirectory(cache);
+                SetNativeEnvironment("GST_REGISTRY", Path.Combine(cache, "gstreamer-1.0-registry.bin"));
+            }
             // the simulators bundled by build.sh (MP_SITL_DIR): Contents/Resources/sitl, read by
             // GCSViews.SITL.BundledPath (the X11 app's launcher.sh sets the same variable)
             var sitl = Path.GetFullPath(Path.Combine(bundleDir, "..", "Resources", "sitl"));
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MISSIONPLANNER_SITL_DIR")) && File.Exists(Path.Combine(sitl, "ArduCopter")))
                 Environment.SetEnvironmentVariable("MISSIONPLANNER_SITL_DIR", sitl);
+        }
+
+        [DllImport("libc", EntryPoint = "setenv")]
+        static extern int setenv(string name, string value, int overwrite);
+
+        [DllImport("libc", EntryPoint = "unsetenv")]
+        static extern int unsetenv(string name);
+
+        // .NET keeps its own copy of the environment on Unix: native libraries (GStreamer's
+        // g_getenv) read the process environment, so set both
+        static void SetNativeEnvironment(string name, string value)
+        {
+            Environment.SetEnvironmentVariable(name, value);
+            if (value == null)
+                unsetenv(name);
+            else
+                setenv(name, value, 1);
         }
 
         static IntPtr ResolveUnmanagedDll(Assembly assembly, string name)

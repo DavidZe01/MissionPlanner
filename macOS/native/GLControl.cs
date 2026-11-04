@@ -1,14 +1,24 @@
-// OpenTK's GLControl for the Cocoa Windows Forms backend (ExtLibs/mac-playground).
+// OpenTK's GLControl for the Cocoa Windows Forms backend (ExtLibs/mac-playground):
+// OpenGL on the control's NSView through an NSOpenGLContext.
 //
 // The OpenTK.GLControl package is built against .NET Framework's Windows Forms and, on
-// macOS, drives a Carbon AGL context, which 64-bit macOS does not have. This control has
-// the same members without an OpenGL context: Mission Planner then draws the HUD with
-// GDI+ (HUD.OpenGLUsable is false) and the OpenGL 3D views report that OpenGL is not
-// available, as in the X11 build. An NSOpenGLContext on the control's NSView can be
-// added here later.
+// macOS, drives a Carbon AGL context, which 64-bit macOS does not have. OpenTK's own
+// Cocoa layer cannot be used either: setting it up (MacOSFactory) discards every pending
+// event of the application, which is where Windows Forms keeps its posted messages.
+//
+// So OpenTK is set up without a platform (InitToolkit: it only loads the OpenGL entry
+// points), the context is AppKit's, registered with OpenTK as an external context
+// (GraphicsContext(handle, getAddress, getCurrent)), and the calls that may come from
+// other threads (make current, swap) go through CGL, which is thread safe.
+// Legacy (2.1) profile, as the HUD and the 3D views use the fixed-function pipeline.
 using System;
 using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using AppKit;
+using Foundation;
 using OpenTK.Graphics;
 using OpenTK.Platform;
 
@@ -16,6 +26,35 @@ namespace OpenTK
 {
     public class GLControl : UserControl
     {
+        const string OpenGLFramework = "/System/Library/Frameworks/OpenGL.framework/OpenGL";
+
+        [DllImport(OpenGLFramework)]
+        static extern int CGLSetCurrentContext(IntPtr context);
+
+        [DllImport(OpenGLFramework)]
+        static extern IntPtr CGLGetCurrentContext();
+
+        [DllImport(OpenGLFramework)]
+        static extern int CGLFlushDrawable(IntPtr context);
+
+        [DllImport(OpenGLFramework)]
+        static extern int CGLSetParameter(IntPtr context, int parameter, ref int value);
+
+        const int kCGLCPSwapInterval = 222;
+
+        static readonly object initLock = new object();
+        static bool toolkitReady;
+        static IntPtr openGL;
+        static bool? contextAvailable;
+
+        NSOpenGLContext nsContext;
+        IntPtr cglContext;
+        GraphicsContext openTKContext;
+        CocoaGLContext context;
+        readonly ViewInfo windowInfo;
+        bool viewAttached;
+        bool? initialVSync;
+
         public GLControl() : this(null)
         {
         }
@@ -26,36 +65,322 @@ namespace OpenTK
 
         public GLControl(GraphicsMode mode, int major, int minor, GraphicsContextFlags flags)
         {
-            // GraphicsMode.Default would initialise OpenTK's platform layer: keep what was given
+            // GraphicsMode.Default would ask OpenTK's platform layer: keep what was given
             GraphicsMode = mode;
-            DoubleBuffered = true;
+            SetStyle(ControlStyles.Opaque, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            DoubleBuffered = false;
+            windowInfo = new ViewInfo(this);
         }
 
-        /// <summary>false: there is no OpenGL context on this platform yet.</summary>
-        public static bool ContextAvailable => false;
+        /// <summary>
+        /// OpenTK without a platform layer: describe a platform it has no window system for and
+        /// mark the detection done, as Program.UseOpenTKX11OnMacOS does for X11. Called before
+        /// anything else uses OpenTK (MacNative.Init).
+        /// </summary>
+        public static void InitToolkit()
+        {
+            lock (initLock)
+            {
+                if (toolkitReady)
+                    return;
+                toolkitReady = true;
+                try
+                {
+                    var cfg = typeof(Configuration);
+                    var flags = BindingFlags.Static | BindingFlags.NonPublic;
+                    cfg.GetField("runningOnUnix", flags).SetValue(null, true);
+                    cfg.GetField("runningOnLinux", flags).SetValue(null, false);
+                    cfg.GetField("runningOnMacOS", flags).SetValue(null, false);
+                    cfg.GetField("<RunningOnWindows>k__BackingField", flags).SetValue(null, false);
+                    cfg.GetField("<RunningOnSdl2>k__BackingField", flags).SetValue(null, false);
+                    cfg.GetField("<RunningOnX11>k__BackingField", flags).SetValue(null, false);
+                    cfg.GetField("<RunningOnMono>k__BackingField", flags).SetValue(null, false);
+                    cfg.GetField("initialized", flags).SetValue(null, true);
+                    Toolkit.Init(new ToolkitOptions { Backend = PlatformBackend.PreferNative });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("OpenTK setup: " + ex);
+                }
+            }
+        }
+
+        static IntPtr GetAddress(string function)
+        {
+            if (openGL == IntPtr.Zero)
+                openGL = NativeLibrary.Load(OpenGLFramework);
+            return NativeLibrary.TryGetExport(openGL, function, out var address) ? address : IntPtr.Zero;
+        }
+
+        static NSOpenGLPixelFormat CreatePixelFormat()
+        {
+            return new NSOpenGLPixelFormat(new[]
+            {
+                NSOpenGLPixelFormatAttribute.DoubleBuffer,
+                NSOpenGLPixelFormatAttribute.Accelerated,
+                NSOpenGLPixelFormatAttribute.ColorSize, (NSOpenGLPixelFormatAttribute)24,
+                NSOpenGLPixelFormatAttribute.AlphaSize, (NSOpenGLPixelFormatAttribute)8,
+                NSOpenGLPixelFormatAttribute.DepthSize, (NSOpenGLPixelFormatAttribute)24,
+                NSOpenGLPixelFormatAttribute.StencilSize, (NSOpenGLPixelFormatAttribute)8,
+                (NSOpenGLPixelFormatAttribute)0,
+            });
+        }
+
+        /// <summary>Whether an accelerated OpenGL context can be made (MISSIONPLANNER_NO_OPENGL: no).</summary>
+        public static bool ContextAvailable
+        {
+            get
+            {
+                if (contextAvailable == null)
+                {
+                    try
+                    {
+                        using (var format = CreatePixelFormat())
+                            contextAvailable = format != null && format.Handle != IntPtr.Zero;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("OpenGL pixel format: " + ex.Message);
+                        contextAvailable = false;
+                    }
+                }
+                return contextAvailable.Value && Environment.GetEnvironmentVariable("MISSIONPLANNER_NO_OPENGL") == null;
+            }
+        }
+
+        public bool HasValidContext => context != null;
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            DestroyContext();
+            try
+            {
+                InitToolkit();
+                using (var format = CreatePixelFormat())
+                    nsContext = new NSOpenGLContext(format, null);
+                cglContext = nsContext.CGLContext.Handle;
+                CGLSetCurrentContext(cglContext);
+                // OpenTK loads the entry points of the current context
+                openTKContext = new GraphicsContext(new ContextHandle(cglContext), GetAddress,
+                    () => new ContextHandle(CGLGetCurrentContext()));
+                context = new CocoaGLContext(this);
+                if (initialVSync.HasValue)
+                {
+                    context.SwapInterval = initialVSync.Value ? 1 : 0;
+                    initialVSync = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("OpenGL context: " + ex);
+                DestroyContext();
+            }
+            base.OnHandleCreated(e);
+            // the view is in its window once the control is shown
+            if (context != null)
+                BeginInvoke((Action)AttachView);
+        }
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            base.OnHandleDestroyed(e);
+            DestroyContext();
+        }
+
+        void DestroyContext()
+        {
+            if (cglContext != IntPtr.Zero && CGLGetCurrentContext() == cglContext)
+                CGLSetCurrentContext(IntPtr.Zero);
+            openTKContext?.Dispose();
+            openTKContext = null;
+            if (nsContext != null)
+            {
+                if (viewAttached)
+                    nsContext.ClearDrawable();
+                nsContext.Dispose();
+                nsContext = null;
+            }
+            cglContext = IntPtr.Zero;
+            viewAttached = false;
+            context = null;
+        }
+
+        // The drawable is the control's NSView, once that is in a window (main thread only).
+        void AttachView()
+        {
+            if (viewAttached || nsContext == null || !IsHandleCreated || !NSThread.IsMain)
+                return;
+            var view = ObjCRuntime.Runtime.GetNSObject<NSView>(Handle);
+            if (view?.Window == null)
+                return;
+            nsContext.View = view;
+            viewAttached = true;
+            nsContext.Update();
+        }
+
+        void UpdateDrawable()
+        {
+            if (nsContext == null || !NSThread.IsMain)
+                return;
+            if (!viewAttached)
+                AttachView();
+            else
+                nsContext.Update();
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            // after the native view has its new frame
+            if (IsHandleCreated)
+                BeginInvoke((Action)UpdateDrawable);
+            base.OnResize(e);
+        }
+
+        protected override void OnParentChanged(EventArgs e)
+        {
+            UpdateDrawable();
+            base.OnParentChanged(e);
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            UpdateDrawable();
+            base.OnVisibleChanged(e);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            AttachView();
+            base.OnPaint(e);
+        }
+
+        public void MakeCurrent()
+        {
+            if (context == null)
+                throw new GraphicsContextException("No OpenGL context for " + GetType().Name);
+            AttachView();
+            CGLSetCurrentContext(cglContext);
+        }
+
+        public void SwapBuffers()
+        {
+            if (cglContext == IntPtr.Zero)
+                return;
+            AttachView();
+            CGLFlushDrawable(cglContext);
+        }
 
         [Browsable(false)]
         public GraphicsMode GraphicsMode { get; }
 
         [Browsable(false)]
-        public IGraphicsContext Context => null;
+        public IGraphicsContext Context => context;
 
         [Browsable(false)]
-        public IWindowInfo WindowInfo => null;
+        public IWindowInfo WindowInfo => windowInfo;
 
         [Browsable(false)]
-        public bool VSync { get; set; }
+        public bool VSync
+        {
+            get => context != null ? context.SwapInterval != 0 : initialVSync ?? true;
+            set
+            {
+                if (context != null)
+                    context.SwapInterval = value ? 1 : 0;
+                else
+                    initialVSync = value;
+            }
+        }
 
         [Browsable(false)]
         public bool IsIdle => true;
 
-        public void MakeCurrent()
+        [Browsable(false)]
+        public float AspectRatio => ClientSize.Width / (float)Math.Max(1, ClientSize.Height);
+
+        // The control's view as OpenTK's window information
+        sealed class ViewInfo : IWindowInfo
         {
-            throw new NotSupportedException("OpenGL is not available on this display");
+            readonly GLControl owner;
+
+            public ViewInfo(GLControl owner)
+            {
+                this.owner = owner;
+            }
+
+            public IntPtr Handle => owner.IsHandleCreated ? owner.Handle : IntPtr.Zero;
+
+            public void Dispose()
+            {
+            }
         }
 
-        public void SwapBuffers()
+        // What Mission Planner calls on GLControl.Context, on the CGL context
+        sealed class CocoaGLContext : IGraphicsContext, IGraphicsContextInternal
         {
+            readonly GLControl owner;
+            int swapInterval = 1;
+
+            public CocoaGLContext(GLControl owner)
+            {
+                this.owner = owner;
+            }
+
+            IntPtr Cgl => owner.cglContext;
+
+            public void SwapBuffers() => owner.SwapBuffers();
+
+            public void MakeCurrent(IWindowInfo window)
+            {
+                if (window == null)
+                {
+                    if (Cgl != IntPtr.Zero && CGLGetCurrentContext() == Cgl)
+                        CGLSetCurrentContext(IntPtr.Zero);
+                    return;
+                }
+                owner.AttachView();
+                CGLSetCurrentContext(Cgl);
+            }
+
+            public bool IsCurrent => Cgl != IntPtr.Zero && CGLGetCurrentContext() == Cgl;
+
+            public bool IsDisposed => Cgl == IntPtr.Zero;
+
+            public int SwapInterval
+            {
+                get => swapInterval;
+                set
+                {
+                    swapInterval = value;
+                    if (Cgl != IntPtr.Zero)
+                        CGLSetParameter(Cgl, kCGLCPSwapInterval, ref value);
+                }
+            }
+
+            public void Update(IWindowInfo window) => owner.UpdateDrawable();
+
+            public GraphicsMode GraphicsMode => owner.GraphicsMode;
+
+            public bool ErrorChecking { get; set; }
+
+            public void LoadAll()
+            {
+                owner.openTKContext?.LoadAll();
+            }
+
+            public IGraphicsContext Implementation => this;
+
+            public ContextHandle Context => new ContextHandle(Cgl);
+
+            public IntPtr GetAddress(string function) => GLControl.GetAddress(function);
+
+            public IntPtr GetAddress(IntPtr function) => GLControl.GetAddress(Marshal.PtrToStringAnsi(function));
+
+            public void Dispose()
+            {
+            }
         }
     }
 }

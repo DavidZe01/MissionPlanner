@@ -1117,17 +1117,33 @@ namespace System.Drawing {
 				if (NativeCGImage.BitsPerPixel == 32 && (PixelFormat & PixelFormat.Indexed) == 0) {
 					if (!ConversionHelpers.sTablesInitialized)
 						ConversionHelpers.CalculateTables ();
+					// Reading only (an OpenGL texture, say): GDI+ leaves the bitmap as it is,
+					// so convert a copy; converted in place, the bitmap kept GDI+'s layout
+					// and showed wrong colours afterwards. UnlockBits frees the copy.
+					if (flags == ImageLockMode.ReadOnly) {
+						var size = bitmapData.Stride * bitmapData.Height;
+						var copy = Marshal.AllocHGlobal (size);
+						unsafe {
+							Buffer.MemoryCopy ((void*)bitmapBlock, (void*)copy, size, size);
+						}
+						bitmapData.Scan0 = copy;
+					}
 					Convert_P_RGBA_8888_To_BGRA_8888 (bitmapData.Scan0, bitmapData.Width, bitmapData.Height, bitmapData.Stride);
 				}
 			}
-				
+
 			return bitmapData;
 		}
 
 		public void UnlockBits (BitmapData data)
 		{
-			if ((ImageLockMode)data.Reserved == ImageLockMode.ReadOnly)
+			if ((ImageLockMode)data.Reserved == ImageLockMode.ReadOnly) {
+				if (data.Scan0 != bitmapBlock && data.Scan0 != IntPtr.Zero) {
+					Marshal.FreeHGlobal (data.Scan0);
+					data.Scan0 = IntPtr.Zero;
+				}
 				return;
+			}
 			
 			if (NativeCGImage.BitsPerPixel == 32  && (PixelFormat & PixelFormat.Indexed) == 0) {
 				if (!ConversionHelpers.sTablesInitialized)

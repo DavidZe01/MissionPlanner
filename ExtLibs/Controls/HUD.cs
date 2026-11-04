@@ -207,6 +207,12 @@ namespace MissionPlanner.Controls
                 }
                 if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     return true;
+#if MACNATIVE
+                // the native macOS app: an NSOpenGLContext on the HUD's view (macOS/native/GLControl.cs)
+                _openGLUsable = OpenTK.GLControl.ContextAvailable;
+                log.Info("HUD OpenGL (NSOpenGLContext): " + _openGLUsable);
+                return _openGLUsable.Value;
+#endif
                 // XQuartz places the GLX surface of a child window at the wrong place (the
                 // HUD appears vertically mirrored within the main window, leaving a white box),
                 // so on macOS draw with GDI+ unless asked to try OpenGL.

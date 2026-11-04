@@ -1437,6 +1437,9 @@ namespace MissionPlanner.Utilities
             if (Environment.OSVersion.Platform == PlatformID.Unix &&
                 (gstdir.StartsWith("/usr/") || gstdir.StartsWith("/opt/") || gstdir.StartsWith("/Library/")))
                 return;
+            // the native macOS app has set the plugin path of the GStreamer in its bundle
+            if (Environment.GetEnvironmentVariable("GST_PLUGIN_SYSTEM_PATH") != null)
+                return;
 
             gstdir = Path.GetDirectoryName(gstdir);
             gstdir = Path.GetDirectoryName(gstdir);
@@ -1488,6 +1491,8 @@ namespace MissionPlanner.Utilities
         {
             List<string> dirs = new List<string>
             {
+                // the native macOS app: GStreamer inside the bundle (Contents/MonoBundle/gstreamer)
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "", "gstreamer", "lib"),
                 // linux
                 "/usr/lib/x86_64-linux-gnu",
                 // linux arm64

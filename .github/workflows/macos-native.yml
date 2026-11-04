@@ -64,9 +64,9 @@ jobs:
           dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
           # .NET stacks of a hung screen-tour step (macOS/native/tour-hang.sh)
           dotnet tool install --global dotnet-stack 2>&1 | tail -1 || true
-          # native libraries bundled into the app (joysticks, DFU flashing); GStreamer (video)
-          # is used from Homebrew, as by the X11 app
-          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb gstreamer 2>&1 | tail -2
+          # native libraries bundled into the app: joysticks (SDL), DFU flashing (libusb) and
+          # GStreamer with its plugins (relocated into the app by dylibbundler, see build.sh)
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb gstreamer dylibbundler 2>&1 | tail -2
       - name: Build the Windows Forms test app
         # validated on macOS 26: only when the request commit asks for [formstest]
         if: contains(github.event.head_commit.message, '[formstest]')
@@ -114,7 +114,9 @@ jobs:
           iconutil -c icns "$iconset" -o macOS/native/obj/MissionPlanner.icns
           [[ -f sitl-bin/ArduCopter ]] && export MP_SITL_DIR=$PWD/sitl-bin && cat sitl-bin/VERSION.txt
           ./macOS/native/build.sh > out/build-missionplanner.log 2>&1 || echo "BUILD FAILED" | tee -a out/result.txt
-          grep -E ' error |Build succeeded|Time Elapsed' out/build-missionplanner.log | sort -u | head -30
+          grep -E ' error |Build succeeded|Time Elapsed|^GStreamer' out/build-missionplanner.log | sort -u | head -30
+          # the app must not need Homebrew's GStreamer: remove it before the tests
+          HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gstreamer 2>&1 | tail -1 || true
           find bin/Release/net461 -maxdepth 1 -name '*.app' | tee out/mp-app.txt
           app=$(head -1 out/mp-app.txt)
           if [[ -n $app ]]; then
@@ -171,7 +173,10 @@ jobs:
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump' out/tour.log | cut -c1-220 | head -120
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120
+          # OpenGL (NSOpenGLContext) and the bundled GStreamer
+          grep -E 'HUD OpenGL|OpenGL context|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
+          cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
           python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
           # where each hung step was stuck: the thread running the tour, then the native main thread
           for f in out/tour/hang-*-managed.txt; do
@@ -211,7 +216,7 @@ jobs:
           kill -0 "$sitl_pid" 2>/dev/null || { echo "SITL: did not start"; tail -20 out/sitl.log; exit 0; }
           mkdir -p out/tour-connected
           MISSIONPLANNER_TOUR=1 TOUR_OUT="$PWD/out/tour-connected" TOUR_XWD=/usr/sbin/screencapture \
-              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 MISSIONPLANNER_HUD_DIRECT=1 \
+              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 \
               TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
               "$app/Contents/MacOS/MissionPlanner" > out/tour-connected.log 2>&1 &
           pid=$!
