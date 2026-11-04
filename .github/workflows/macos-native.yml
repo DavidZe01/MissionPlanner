@@ -199,6 +199,8 @@ jobs:
               [[ -f $f ]] || continue
               echo "=== $f"
               grep -A30 'com.apple.main-thread' "$f" | cut -c1-200 | head -32
+              # the other threads and where they wait (OpenGL, locks)
+              grep -E 'Thread_[0-9]+|libGL|GLEngine|libGPUSupport|CGL|__psynch|semaphore_wait|WaitHandle|Monitor' "$f" | cut -c1-180 | head -60
           done
           true
       - name: Connected tour

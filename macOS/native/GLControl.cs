@@ -48,6 +48,12 @@ namespace OpenTK
 
         const int kCGLCPSwapInterval = 222;
 
+        // the context a worker thread made its own (CreateSharedContext): releasing another
+        // context on that thread goes back to it, as no context at all would crash the next
+        // OpenGL call there (on Windows such a call does nothing)
+        [ThreadStatic]
+        static IntPtr threadContext;
+
         static readonly object initLock = new object();
         static bool toolkitReady;
         static IntPtr openGL;
@@ -311,10 +317,13 @@ namespace OpenTK
             {
                 if (window == null)
                 {
+                    if (threadContext == cgl)
+                        threadContext = IntPtr.Zero;
                     if (cgl != IntPtr.Zero && CGLGetCurrentContext() == cgl)
                         CGLSetCurrentContext(IntPtr.Zero);
                     return;
                 }
+                threadContext = cgl;
                 CGLSetCurrentContext(cgl);
             }
 
@@ -346,6 +355,8 @@ namespace OpenTK
             {
                 if (cgl == IntPtr.Zero)
                     return;
+                if (threadContext == cgl)
+                    threadContext = IntPtr.Zero;
                 if (CGLGetCurrentContext() == cgl)
                     CGLSetCurrentContext(IntPtr.Zero);
                 registered?.Dispose();
@@ -524,7 +535,7 @@ namespace OpenTK
                 if (window == null)
                 {
                     if (Cgl != IntPtr.Zero && CGLGetCurrentContext() == Cgl)
-                        CGLSetCurrentContext(IntPtr.Zero);
+                        CGLSetCurrentContext(threadContext);
                     return;
                 }
                 owner.AttachView();

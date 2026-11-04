@@ -1445,6 +1445,19 @@ namespace System.Windows.Forms {
 		}
 		
 		internal override void Invalidate(IntPtr handle, Rectangle rc, bool clear) {
+			// Windows lets any thread invalidate a window (Mission Planner's Flight Data loop
+			// does); AppKit's setNeedsDisplay is for the main thread: pass it there
+			if (!NSThread.IsMain) {
+				NSApplication.SharedApplication.BeginInvokeOnMainThread(() => {
+					try {
+						if (handle.ToNSView() != null)
+							Invalidate(handle, rc, clear);
+					} catch (Exception e) {
+						Debug.WriteLine("Invalidate from another thread: " + e.Message);
+					}
+				});
+				return;
+			}
 			NSView vuWrap = handle.ToNSView();
 			if (vuWrap is IClientView)
 			{
@@ -1456,6 +1469,12 @@ namespace System.Windows.Forms {
 
 		internal override void InvalidateNC(IntPtr handle)
 		{
+			if (!NSThread.IsMain) {
+				NSApplication.SharedApplication.BeginInvokeOnMainThread(() => {
+					try { InvalidateNC(handle); } catch (Exception e) { Debug.WriteLine("InvalidateNC from another thread: " + e.Message); }
+				});
+				return;
+			}
 			MonoView vuWrap = handle.AsMonoView();
             if (vuWrap != null && !vuWrap.Hidden && vuWrap.ClientBounds != vuWrap.Bounds)
 				vuWrap.NeedsDisplay = true;

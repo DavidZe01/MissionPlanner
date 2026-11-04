@@ -24,7 +24,8 @@ Changes for Mission Planner:
 - timers: a tick wakes a modal loop (as WM_TIMER does on Windows), so a dialog
   closed from a timer returns from ShowDialog;
 - `Control.Visible` read from a worker thread (XplatUICocoa.IsVisible) does not
-  call AppKit off the main thread;
+  call AppKit off the main thread, and `Invalidate` from a worker thread is passed to
+  the main thread (Windows allows both);
 - `Graphics.FromImage`: each Graphics draws through a context of its own on the
   bitmap's memory (two Graphics of one bitmap no longer share transform, clip and
   saved states: the second drew upside down), and what is drawn shows in the
@@ -32,7 +33,8 @@ Changes for Mission Planner:
 - `Graphics.Clear` replaces the pixels (alpha included) as in GDI+, instead of
   drawing over them: `Clear(Color.Transparent)` empties a back buffer;
 - `new Bitmap(width, height, stride, format, scan0)` (video frames for the HUD):
-  a copy of the pixels in the internal layout;
+  a copy of the pixels in the internal layout; `LockBits(ReadOnly)` hands out a
+  converted copy and leaves the bitmap as it is (OpenGL textures);
 - `Control.CreateControl` does nothing for a disposed control (a form that closes
   itself while it is shown);
 - a text field's formatter does not throw when AppKit calls it while its control is
