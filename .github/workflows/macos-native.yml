@@ -95,7 +95,7 @@ jobs:
               echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
               build || true
           fi
-          grep -E 'error|warning MT|Build succeeded' out/build-formstest.log | sort -u | head -20
+          grep -E 'error|warning MT|Build succeeded' out/build-formstest.log | sort -u | head -20 || true
           find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' -path '*arm64*' | tee out/apps.txt
       - name: Run the test app
         # validated on macOS 26: only when the request commit asks for [formstest]
@@ -128,7 +128,7 @@ jobs:
           iconutil -c icns "$iconset" -o macOS/native/obj/MissionPlanner.icns
           [[ -f sitl-bin/ArduCopter ]] && export MP_SITL_DIR=$PWD/sitl-bin && cat sitl-bin/VERSION.txt
           ./macOS/native/build.sh > out/build-missionplanner.log 2>&1 || echo "BUILD FAILED" | tee -a out/result.txt
-          grep -E ' error |Build succeeded|Time Elapsed|^GStreamer' out/build-missionplanner.log | sort -u | head -30
+          grep -E ' error |Build succeeded|Time Elapsed|^GStreamer' out/build-missionplanner.log | sort -u | head -30 || true
           # the app must not need Homebrew's GStreamer: remove it before the tests
           HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall --ignore-dependencies gstreamer 2>&1 | tail -1 || true
           find bin/Release/net461 -maxdepth 1 -name '*.app' | tee out/mp-app.txt
@@ -195,9 +195,9 @@ jobs:
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120 || true
           # OpenGL (NSOpenGLContext) and the bundled GStreamer
-          grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12
+          grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12 || true
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
           python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
           # libraries loaded by the app (GStreamer, SDL, libusb, SimpleBLE...): none from Homebrew
@@ -221,9 +221,9 @@ jobs:
           for f in out/tour/hang-*-native.txt; do
               [[ -f $f ]] || continue
               echo "=== $f"
-              grep -A30 'com.apple.main-thread' "$f" | cut -c1-200 | head -32
+              grep -A30 'com.apple.main-thread' "$f" | cut -c1-200 | head -32 || true
               # the other threads and where they wait (OpenGL, locks)
-              grep -E 'Thread_[0-9]+|libGL|GLEngine|libGPUSupport|CGL|__psynch|semaphore_wait|WaitHandle|Monitor' "$f" | cut -c1-180 | head -60
+              grep -E 'Thread_[0-9]+|libGL|GLEngine|libGPUSupport|CGL|__psynch|semaphore_wait|WaitHandle|Monitor' "$f" | cut -c1-180 | head -60 || true
           done
           true
       - name: Connected tour
@@ -252,7 +252,7 @@ jobs:
           for _ in $(seq 1 900); do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
           kill -9 "$pid" 2>/dev/null || true
           kill "$sitl_pid" 2>/dev/null || true
-          grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-connected.log | cut -c1-220
+          grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-connected.log | cut -c1-220 || true
           python3 macOS/summarize-tour.py out/tour-connected/tour-report.tsv | tail -30 || true
       - name: Open a telemetry log from Finder
         # LaunchServices hands the file to the app as an Apple event (Info.plist document types)
@@ -306,7 +306,7 @@ jobs:
               sleep 3
               screencapture -x -m "out/hidpi-$mode.png" || true
               echo "RETINA $mode: $(sips -g pixelWidth -g pixelHeight "out/hidpi-$mode.png" 2>/dev/null | awk '/pixel/ {printf "%s ", $2}')"
-              grep -E 'OpenGL view attached|OpenGL backing scale|HUD OpenGL' "out/hidpi-$mode.log" | sort -u | head -5
+              grep -E 'OpenGL view attached|OpenGL backing scale|HUD OpenGL' "out/hidpi-$mode.log" | sort -u | head -5 || true
               if kill -0 "$pid" 2>/dev/null; then echo "RETINA $mode: running"; else echo "RETINA $mode: exited"; fi
               kill "$pid" 2>/dev/null; sleep 2; kill -9 "$pid" 2>/dev/null || true
           done
@@ -360,6 +360,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # a leftover MissionPlanner process from an earlier step (e.g. the Retina one,
+          # continue-on-error) would make install.sh refuse to run (it assumes that is the
+          # user's own session and asks them to quit it first): here, in CI, it is only ever
+          # CI's own test cruft, so clear it before calling install.sh
+          pkill -f 'Contents/MacOS/MissionPlanner' 2>/dev/null && sleep 2 || true
           MP_RUN=${{ github.run_id }} MP_REPO=${{ github.repository }} MP_APPLICATIONS="$HOME/Applications" MP_NO_OPEN=1 \
               ./macOS/native/install.sh
           app="$HOME/Applications/Mission Planner.app"
