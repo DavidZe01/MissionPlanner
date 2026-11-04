@@ -36,3 +36,4 @@
 2026-11-04 native: also patch SupportedOSPlatformVersion for the newer workload
 2026-11-04 native: let the SDK derive LSMinimumSystemVersion
 2026-11-04 native: fix the open-document step after full data-dir isolation
+2026-11-04 native: fix grep-no-matches aborts and stray-process cleanup
