@@ -29,8 +29,11 @@
 		<string>arm64</string>
 		<string>x86_64</string>
 	</array>
-	<key>LSMinimumSystemVersion</key>
-	<string>12.0</string>
+	<!-- no LSMinimumSystemVersion here: the SDK's app-manifest detection fills it in from
+	     the project's SupportedOSPlatformVersion at build time, so it always matches
+	     whichever value that build resolved to (macOS/native/Build.targets normally, or a
+	     higher one build.sh patches in for a newer Xcode/workload) instead of a value fixed
+	     here getting out of step and failing the build. -->
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
