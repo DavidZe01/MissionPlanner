@@ -1,3 +1,4 @@
 # Changing this file in a push to macos-arm64 runs one build of the native
 # macOS app (.github/workflows/macos-native.yml). Add a line per request.
 2026-11-04 validate the Cocoa Windows Forms test app on macOS 26
+2026-11-04 retry: workload pinned to 26.5 [validate]
