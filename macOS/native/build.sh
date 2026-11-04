@@ -18,26 +18,52 @@ cd -- "$source_dir"
 build_args=(dotnet build MissionPlanner.csproj -c Release
     "-p:DirectoryBuildTargetsPath=$native_dir/Build.targets" -p:MissionPlannerMacNative=true
     -p:MissionPlannerLinuxBuild=true)
-build_log=$(mktemp)
-if ! "${build_args[@]}" ${extra[@]+"${extra[@]}"} "$@" 2>&1 | tee "$build_log"; then
-    # The .NET for macOS workload refuses an installed Xcode that is a later point release
-    # than the exact one it expects ("requires Xcode 27.1. The current version of Xcode is
-    # 27.2."), even within the same major version, where it is almost always compatible
-    # (https://github.com/dotnet/macios troubleshooting: -p:ValidateXcodeVersion=false).
-    # Retry past just that check, but only for a same-major mismatch: a real major-version
-    # gap (a brand new Xcode the workload has never seen) can fail to compile or link instead.
-    required=$(grep -oE 'requires Xcode [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $3}')
-    installed=$(grep -oE 'current version of Xcode is [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $NF}')
-    rm -f "$build_log"
-    if [[ -n $required && -n $installed && ${required%%.*} == "${installed%%.*}" ]]; then
-        echo "Xcode $installed vs. the workload's $required (same major version): retrying with -p:ValidateXcodeVersion=false" >&2
-        "${build_args[@]}" ${extra[@]+"${extra[@]}"} "$@" -p:ValidateXcodeVersion=false
-    else
-        exit 1
+# A newer .NET for macOS workload (matching a newer Xcode on the machine building this) can
+# reject the build for two reasons that are safe to patch around automatically, rather than
+# failing outright; $patches collects the -p: overrides found to be needed, one per retry.
+patches=""
+build_succeeded=0
+for attempt in 1 2 3; do
+    build_log=$(mktemp)
+    if "${build_args[@]}" ${extra[@]+"${extra[@]}"} $patches "$@" 2>&1 | tee "$build_log"; then
+        rm -f "$build_log"
+        build_succeeded=1
+        break
     fi
-else
+    new_patch=""
+    # The workload refuses an installed Xcode that is a later point release than the exact
+    # one it expects ("requires Xcode 27.1. The current version of Xcode is 27.2."), even
+    # within the same major version, where it is almost always compatible
+    # (https://github.com/dotnet/macios troubleshooting: -p:ValidateXcodeVersion=false). A
+    # real major-version gap (a brand new Xcode the workload has never seen) is left to fail
+    # outright instead, since that can fail to compile or link.
+    if [[ $patches != *ValidateXcodeVersion* ]] \
+            && grep -qE 'requires Xcode [0-9]+\.[0-9]+\. The current version of Xcode is [0-9]+\.[0-9]+' "$build_log"; then
+        required=$(grep -oE 'requires Xcode [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $3}')
+        installed=$(grep -oE 'current version of Xcode is [0-9]+\.[0-9]+' "$build_log" | tail -1 | awk '{print $NF}')
+        if [[ -n $required && -n $installed && ${required%%.*} == "${installed%%.*}" ]]; then
+            echo "Xcode $installed vs. the workload's $required (same major version): past the version check (-p:ValidateXcodeVersion=false)" >&2
+            new_patch="-p:ValidateXcodeVersion=false"
+        fi
+    fi
+    # That newer workload's bundled SDK can also raise the minimum macOS it can target
+    # ("SupportedOSPlatformVersion value '12.0' ... is lower than the minimum value
+    # '14.0'"): an Xcode that drops the older SDK genuinely cannot produce a binary for it,
+    # so raise it to what the SDK reports as its floor (only for this build: the project
+    # file still asks for 12.0, which an older Xcode/workload can still build for).
+    if [[ -z $new_patch && $patches != *SupportedOSPlatformVersion* ]] \
+            && grep -qE "SupportedOSPlatformVersion value '[0-9.]+' in the project file is lower than the minimum value '[0-9.]+'" "$build_log"; then
+        minimum=$(grep -oE "lower than the minimum value '[0-9.]+'" "$build_log" | tail -1 | grep -oE '[0-9.]+')
+        if [[ -n $minimum ]]; then
+            echo "the installed workload's SDK needs at least macOS $minimum: raising SupportedOSPlatformVersion to match (-p:SupportedOSPlatformVersion=$minimum)" >&2
+            new_patch="-p:SupportedOSPlatformVersion=$minimum"
+        fi
+    fi
     rm -f "$build_log"
-fi
+    [[ -n $new_patch ]] || exit 1
+    patches="$patches $new_patch"
+done
+[[ $build_succeeded == 1 ]] || exit 1
 
 [[ $(uname -s) == Darwin ]] || exit 0
 
