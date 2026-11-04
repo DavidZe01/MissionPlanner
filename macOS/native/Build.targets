@@ -112,6 +112,15 @@
     <AssetTargetFallback>$(AssetTargetFallback);net45;net451;net452;net40;net403;net35;net20</AssetTargetFallback>
   </PropertyGroup>
 
+  <!-- OpenTK 3 has OpenGL ES bindings for iOS next to the desktop ones: their P/Invokes make
+       the SDK link with OpenGLES, which macOS does not have. -->
+  <Target Name="MissionPlannerMacNoOpenGLES" AfterTargets="_LoadLinkerOutput" BeforeTargets="_ComputeLinkNativeExecutableInputs"
+          Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
+    <ItemGroup>
+      <_LinkerFrameworks Remove="OpenGLES" />
+    </ItemGroup>
+  </Target>
+
   <!-- As in the net472 builds, MissionPlanner.Drawing (a Skia System.Drawing for Android)
        is only visible under an alias, so its types do not clash with System.Drawing's. -->
   <Target Name="MissionPlannerMacAliasDrawing" AfterTargets="ResolveAssemblyReferences"
