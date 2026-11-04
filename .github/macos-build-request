@@ -1,3 +1,4 @@
 # Changing this file in a push to macos-arm64 runs one smoke build of the
 # macOS app (.github/workflows/macos-arm64.yml). Add a line per request.
 2026-11-03 app with the GDI+ HUD default
+2026-11-04 probe: mono-host, Bluetooth/camera permissions, board detection, libusb [tests=probe]
