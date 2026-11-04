@@ -39,3 +39,4 @@
 2026-11-04 native: fix grep-no-matches aborts and stray-process cleanup
 2026-11-04 native: trace SDL joystick calls to diagnose the enumeration hang
 2026-11-04 native: tell apart a stuck SDL2 library load from a stuck first call
+2026-11-04 native: fix the SDL2 NativeLibrary trace guard (__MACOS__)
