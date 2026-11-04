@@ -43,6 +43,12 @@ namespace MissionPlanner
             if (initialised)
                 return;
             initialised = true;
+            // a sandboxed data directory (CI on a self-hosted runner that is also someone's
+            // everyday Mac: a direct run, outside the screen tour, would otherwise read and
+            // write the real ~/Library/Application Support/Mission Planner)
+            var dataDir = Environment.GetEnvironmentVariable("MISSIONPLANNER_DATA_DIR");
+            if (!string.IsNullOrEmpty(dataDir))
+                MissionPlanner.Utilities.Settings.CustomUserDataDirectory = dataDir;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
             // before anything else uses OpenTK, so that it never sets up its own Cocoa layer
             OpenTK.GLControl.InitToolkit();

@@ -131,7 +131,12 @@ jobs:
         run: |
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || { echo "no app"; exit 1; }
-          MISSIONPLANNER_FIRSTCHANCE=1 "$app/Contents/MacOS/MissionPlanner" > out/mp-run.log 2>&1 &
+          # a data/log directory of its own: a self-hosted runner may be someone's everyday Mac,
+          # and a direct run (outside the screen tour) must not touch the real
+          # ~/Library/Application Support/Mission Planner or ~/Library/Logs/Mission Planner
+          data_dir="$RUNNER_TEMP/mp-data-run"
+          MISSIONPLANNER_FIRSTCHANCE=1 MISSIONPLANNER_DATA_DIR="$data_dir" ALLUSERSPROFILE="$data_dir-logs" \
+              "$app/Contents/MacOS/MissionPlanner" > out/mp-run.log 2>&1 &
           pid=$!
           for t in 15 45 90; do
               sleep $(( t == 15 ? 15 : 30 ))
@@ -149,9 +154,7 @@ jobs:
           sleep 2; kill -9 "$pid" 2>/dev/null || true
           tail -40 out/mp-run.log
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports 2>/dev/null || true
-          for d in "$HOME/Documents/Mission Planner" "$HOME/.local/share/Mission Planner" "$HOME/Library/Application Support/Mission Planner"; do
-              [[ -f $d/MissionPlanner.log ]] && cp "$d/MissionPlanner.log" out/MissionPlanner.log
-          done
+          [[ -f "$data_dir-logs/Mission Planner/MissionPlanner.log" ]] && cp "$data_dir-logs/Mission Planner/MissionPlanner.log" out/MissionPlanner.log
           true
       - name: Screen tour
         # macOS/ScreenTour.cs inside the app: every screen, page and window, with screenshots
@@ -246,6 +249,7 @@ jobs:
           tlog=$(find "${TMPDIR:-/tmp}" "$HOME/Library/Application Support/Mission Planner" -name '*.tlog' -size +10k 2>/dev/null | head -1)
           [[ -n $app && -n $tlog ]] || { echo "no app or no telemetry log from the connected tour"; exit 0; }
           ls -la "$tlog"
+          export MISSIONPLANNER_DATA_DIR="$RUNNER_TEMP/mp-data-open" ALLUSERSPROFILE="$RUNNER_TEMP/mp-data-open-logs"
           open -a "$PWD/$app" --stdout "$PWD/out/open-document.log" --stderr "$PWD/out/open-document.log" "$tlog"
           sleep 50
           perl -e 'alarm 15; exec @ARGV' osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
@@ -268,8 +272,9 @@ jobs:
           sleep 6
           cat out/hidpi-display.log
           grep -q 'main=yes' out/hidpi-display.log || { echo "RETINA: no HiDPI main display"; kill "$display_pid" 2>/dev/null; exit 0; }
-          # (a saved window position may be on the other display)
-          rm -f "$HOME/Library/Application Support/Mission Planner/config.xml"
+          # its own, brand new data/log directory: nothing to carry a stale window position from,
+          # and (self-hosted) the real ~/Library/Application Support/Mission Planner stays untouched
+          export MISSIONPLANNER_DATA_DIR="$RUNNER_TEMP/mp-data-hidpi" ALLUSERSPROFILE="$RUNNER_TEMP/mp-data-hidpi-logs"
           for mode in opengl gdi; do
               if [[ $mode == gdi ]]; then export MISSIONPLANNER_NO_OPENGL=1; fi
               "$app/Contents/MacOS/MissionPlanner" > "out/hidpi-$mode.log" 2>&1 &
@@ -337,6 +342,7 @@ jobs:
               ./macOS/native/install.sh
           app="$HOME/Applications/Mission Planner.app"
           if xattr "$app" | grep -q com.apple.quarantine; then echo "INSTALL: quarantined"; else echo "INSTALL: no quarantine attribute"; fi
+          export MISSIONPLANNER_DATA_DIR="$RUNNER_TEMP/mp-data-install" ALLUSERSPROFILE="$RUNNER_TEMP/mp-data-install-logs"
           open "$app"
           sleep 45
           if pgrep -f "$app/Contents/MacOS/MissionPlanner" >/dev/null; then echo "INSTALLED APP: running"; else echo "INSTALLED APP: not running"; fi
