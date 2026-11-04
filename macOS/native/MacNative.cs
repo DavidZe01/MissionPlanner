@@ -73,7 +73,8 @@ namespace MissionPlanner
         {
             foreach (var candidate in Candidates(name))
             {
-                if (File.Exists(candidate) && NativeLibrary.TryLoad(candidate, out var handle))
+                // no File.Exists: system libraries (/usr/lib) live only in the dyld shared cache
+                if (NativeLibrary.TryLoad(candidate, out var handle))
                     return handle;
             }
             return IntPtr.Zero;

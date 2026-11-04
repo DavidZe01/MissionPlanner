@@ -1072,7 +1072,14 @@ namespace MissionPlanner
             }
 #if !NETSTANDARD2_0
 #if !NETCOREAPP2_0
-            Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            try
+            {
+                Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // .NET has SystemEvents on Windows only
+            }
 
             // make sure new enough .net framework is installed
             if (!MONO)
