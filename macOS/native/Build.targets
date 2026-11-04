@@ -103,6 +103,10 @@
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(MissionPlannerMacCompileOnly)' != 'true'">osx-arm64</RuntimeIdentifier>
     <AppBundleManifest>$(MSBuildThisFileDirectory)Info.plist</AppBundleManifest>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    <!-- .NET for macOS turns these off by default: Windows Forms resources need custom
+         resource readers (as eM Client's test app), and exception messages are clearer -->
+    <CustomResourceTypesSupport>true</CustomResourceTypesSupport>
+    <UseSystemResourceKeys>false</UseSystemResourceKeys>
     <!-- the static registrar (as eM Client's test app) -->
     <MonoBundlingExtraArgs>--registrar:static</MonoBundlingExtraArgs>
   </PropertyGroup>
