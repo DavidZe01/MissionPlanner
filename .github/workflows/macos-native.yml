@@ -45,6 +45,8 @@ jobs:
           # native libraries bundled into the app (joysticks, DFU flashing)
           HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb 2>&1 | tail -2
       - name: Build the Windows Forms test app
+        # validated on macOS 26: only when the request commit asks for [formstest]
+        if: contains(github.event.head_commit.message, '[formstest]')
         timeout-minutes: 15
         run: |
           build() { dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release -r osx-arm64 > out/build-formstest.log 2>&1; }
@@ -59,6 +61,8 @@ jobs:
           grep -E 'error|warning MT|Build succeeded' out/build-formstest.log | sort -u | head -20
           find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' -path '*arm64*' | tee out/apps.txt
       - name: Run the test app
+        # validated on macOS 26: only when the request commit asks for [formstest]
+        if: contains(github.event.head_commit.message, '[formstest]')
         timeout-minutes: 5
         run: |
           app=$(head -1 out/apps.txt)

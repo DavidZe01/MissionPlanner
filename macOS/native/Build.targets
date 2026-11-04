@@ -14,6 +14,13 @@
     <IsMissionPlannerMacProject Condition="$(MissionPlannerMacProjects.Contains(';$(MSBuildProjectName);'))">true</IsMissionPlannerMacProject>
   </PropertyGroup>
 
+  <!-- Only Mission Planner itself is an app: solo, WebAPIs and others declare Exe, and an
+       app bundle (self-contained) cannot reference non-self-contained executables. -->
+  <PropertyGroup Condition="'$(IsMacPlaygroundProject)' != 'true' And '$(MSBuildProjectName)' != 'MissionPlanner'">
+    <OutputType>Library</OutputType>
+    <StartupObject></StartupObject>
+  </PropertyGroup>
+
   <!-- the mac-playground projects keep their own settings -->
   <Import Project="$(MacPlaygroundDir)Directory.Build.targets" Condition="'$(IsMacPlaygroundProject)' == 'true'" />
 
@@ -30,9 +37,6 @@
     <Nullable>disable</Nullable>
     <!-- C# 12 (global usings, ref to in arguments) without the C# 13/14 changes (field, ...) -->
     <LangVersion>12.0</LangVersion>
-    <!-- only Mission Planner itself is an app (solo and others declare Exe) -->
-    <OutputType Condition="'$(MSBuildProjectName)' != 'MissionPlanner'">Library</OutputType>
-    <StartupObject Condition="'$(OutputType)' == 'Library'"></StartupObject>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsMissionPlannerMacProject)' == 'true'">
