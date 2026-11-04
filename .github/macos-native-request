@@ -14,3 +14,4 @@
 2026-11-04 native: icons
 2026-11-04 native: SystemEvents, dyld cache
 2026-11-04 native: bundle data, version.txt, screen tour
+2026-11-04 native: bitmap graphics, Visible, SDL3; screen tour
