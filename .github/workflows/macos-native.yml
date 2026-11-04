@@ -192,6 +192,7 @@ jobs:
               # DYLD_PRINT_LIBRARIES: every library the process loads, to check where they come from
               MISSIONPLANNER_TOUR=1 MISSIONPLANNER_FIRSTCHANCE=1 TOUR_OUT="$PWD/out/tour" TOUR_XWD=/usr/sbin/screencapture \
                   TOUR_STEP_TIMEOUT=90 TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" DYLD_PRINT_LIBRARIES=1 \
+                  MISSIONPLANNER_SDL_TRACE=1 \
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done

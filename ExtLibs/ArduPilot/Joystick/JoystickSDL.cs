@@ -160,19 +160,44 @@ namespace MissionPlanner.Joystick
                 }
             }
 
+            // MISSIONPLANNER_SDL_TRACE=1: a marker before/after each native SDL call on this
+            // thread, so a hang (none of these calls has a timeout; EnsureThread's and
+            // Invoke's waits only give up on THIS thread, which stays stuck in whichever call
+            // it was in) shows exactly where in the next run's log - the last "> " with no
+            // matching "< " right after it.
+            private static readonly bool trace = Environment.GetEnvironmentVariable("MISSIONPLANNER_SDL_TRACE") == "1";
+
+            private static void Trace(string where)
+            {
+                if (!trace)
+                    return;
+                Console.WriteLine("SDL " + where + " " + DateTime.Now.ToString("HH:mm:ss.fff"));
+                Console.Out.Flush();
+            }
+
             private static void Run(ref bool ok, ManualResetEventSlim ready)
             {
                 try
                 {
+                    Trace("> SDL_SetHint");
                     Native.SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
-                    if (Native.SDL_Init(Native.SDL_INIT_JOYSTICK) != 0)
+                    Trace("< SDL_SetHint");
+                    Trace("> SDL_Init");
+                    var initResult = Native.SDL_Init(Native.SDL_INIT_JOYSTICK);
+                    Trace("< SDL_Init");
+                    if (initResult != 0)
                     {
                         log.Error("SDL_Init failed: " + Native.GetError());
                         ready.Set();
                         return;
                     }
+                    Trace("> SDL_JoystickEventState");
                     Native.SDL_JoystickEventState(0); // polled with SDL_JoystickUpdate
-                    log.Info("SDL joystick started, " + Native.SDL_NumJoysticks() + " devices");
+                    Trace("< SDL_JoystickEventState");
+                    Trace("> SDL_NumJoysticks (startup)");
+                    var count = Native.SDL_NumJoysticks();
+                    Trace("< SDL_NumJoysticks (startup)");
+                    log.Info("SDL joystick started, " + count + " devices");
                     ok = true;
                 }
                 catch (Exception ex)
@@ -250,12 +275,18 @@ namespace MissionPlanner.Joystick
 
             private static List<string> ListNames()
             {
+                Trace("> SDL_JoystickUpdate");
                 Native.SDL_JoystickUpdate();
+                Trace("< SDL_JoystickUpdate");
                 var names = new List<string>();
+                Trace("> SDL_NumJoysticks");
                 int n = Native.SDL_NumJoysticks();
+                Trace("< SDL_NumJoysticks = " + n);
                 for (int i = 0; i < n; i++)
                 {
+                    Trace("> NameForIndex " + i);
                     var baseName = Native.NameForIndex(i);
+                    Trace("< NameForIndex " + i + " = " + baseName);
                     var unique = baseName;
                     for (int dup = 2; names.Contains(unique); dup++)
                         unique = baseName + " #" + dup;
