@@ -24,7 +24,7 @@ project:
   Their .NET Framework / NuGet Windows Forms and System.Drawing references are removed.
   The other libraries stay `netstandard2.0`, which .NET runs unchanged.
 - `MissionPlanner` itself becomes the app bundle (`org.ardupilot.missionplanner`,
-  `Info.plist` here, output `bin/macos-native/`).
+  `Info.plist` here; the bundle is `bin/Release/net461/Mission Planner.app`).
 - On Linux the build compiles everything but cannot bundle (`MissionPlannerMacCompileOnly`):
   it is the quick way to check the code compiles.
 

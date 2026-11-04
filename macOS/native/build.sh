@@ -24,7 +24,8 @@ dotnet build MissionPlanner.csproj -c Release \
 
 # Complete the app bundle: Mission Planner looks for its data files (Scripts, plugins,
 # graphs, NoFly, XML, ...) next to its assembly, which in the bundle is Contents/MonoBundle.
-out_dir="$source_dir/bin/macos-native"
+# MissionPlanner.csproj's output directory (OutDir is fixed before Build.targets is read)
+out_dir="$source_dir/bin/Release/net461"
 # named after ApplicationTitle: "Mission Planner.app"
 app=$(find "$out_dir" -maxdepth 1 -name '*.app' | head -1)
 [[ -n $app && -f $app/Contents/Info.plist && -d $app/Contents/MacOS ]] || { echo "no app bundle in $out_dir" >&2; exit 1; }

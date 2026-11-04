@@ -25,7 +25,7 @@ jobs:
   native:
     name: Build and run on macOS
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v5
@@ -91,12 +91,12 @@ jobs:
           iconutil -c icns "$iconset" -o macOS/native/obj/MissionPlanner.icns
           ./macOS/native/build.sh > out/build-missionplanner.log 2>&1 || echo "BUILD FAILED" | tee -a out/result.txt
           grep -E ' error |Build succeeded|Time Elapsed' out/build-missionplanner.log | sort -u | head -30
-          find bin/macos-native -maxdepth 3 -name '*.app' | tee out/mp-app.txt
+          find bin/Release/net461 -maxdepth 1 -name '*.app' | tee out/mp-app.txt
           app=$(head -1 out/mp-app.txt)
           if [[ -n $app ]]; then
               du -sh "$app" | tee -a out/result.txt
               (cd "$app/Contents" && find . -maxdepth 2 | sort | head -80) > out/mp-app-contents.txt
-              ls bin/macos-native | head -100 > out/mp-output-dir.txt
+              ls bin/Release/net461 | head -100 > out/mp-output-dir.txt
           fi
       - name: Run Mission Planner
         timeout-minutes: 6
@@ -121,6 +121,31 @@ jobs:
               [[ -f $d/MissionPlanner.log ]] && cp "$d/MissionPlanner.log" out/MissionPlanner.log
           done
           true
+      - name: Screen tour
+        # macOS/ScreenTour.cs inside the app: every screen, page and window, with screenshots
+        timeout-minutes: 40
+        run: |
+          app=$(head -1 out/mp-app.txt)
+          [[ -n $app ]] || exit 0
+          exe="$app/Contents/MacOS/MissionPlanner"
+          mkdir -p out/tour
+          run_limited() { # seconds command...
+              local limit=$1; shift
+              "$@" & local pid=$! elapsed=0
+              while kill -0 "$pid" 2>/dev/null; do
+                  if (( elapsed >= limit )); then kill -QUIT "$pid" 2>/dev/null; sleep 5; kill -KILL "$pid" 2>/dev/null; wait "$pid" 2>/dev/null; return 124; fi
+                  sleep 1; elapsed=$((elapsed + 1))
+              done
+              wait "$pid"
+          }
+          # a step that hangs ends the run (TOUR HANG); the next run resumes after it
+          for attempt in 1 2 3 4; do
+              MISSIONPLANNER_TOUR=1 MISSIONPLANNER_FIRSTCHANCE=1 TOUR_OUT="$PWD/out/tour" TOUR_XWD=/usr/sbin/screencapture \
+                  run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
+              grep -q '^TOUR_DONE' out/tour.log && break
+          done
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL' out/tour.log | cut -c1-220 | head -80
+          python3 macOS/summarize-tour.py out/tour.log | tail -40 || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -95,8 +95,6 @@
 
   <!-- the app bundle -->
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
-    <!-- not bin/Release/net461, which the Windows and Linux builds use -->
-    <OutputPath>bin/macos-native/</OutputPath>
     <ApplicationId>org.ardupilot.missionplanner</ApplicationId>
     <ApplicationTitle>Mission Planner</ApplicationTitle>
     <AssemblyName>MissionPlanner</AssemblyName>
@@ -115,6 +113,16 @@
     <!-- packages that only have .NET Framework builds (GDAL, SSH.NET, zlib.net, ...) -->
     <AssetTargetFallback>$(AssetTargetFallback);net45;net451;net452;net40;net403;net35;net20</AssetTargetFallback>
   </PropertyGroup>
+
+  <!-- version.txt next to the assembly, as Linux/build.sh and the Windows build write it
+       (version.exe): the update check compares it with the published version. -->
+  <Target Name="MissionPlannerMacVersionFile" AfterTargets="CopyFilesToOutputDirectory"
+          Condition="'$(MSBuildProjectName)' == 'MissionPlanner'">
+    <GetAssemblyIdentity AssemblyFiles="@(IntermediateAssembly)">
+      <Output TaskParameter="Assemblies" ItemName="_MissionPlannerIdentity" />
+    </GetAssemblyIdentity>
+    <WriteLinesToFile File="$(OutDir)version.txt" Lines="%(_MissionPlannerIdentity.Version)" Overwrite="true" />
+  </Target>
 
   <!-- OpenTK 3 has OpenGL ES bindings for iOS next to the desktop ones: their P/Invokes make
        the SDK link with OpenGLES, which macOS does not have. -->

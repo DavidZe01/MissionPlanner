@@ -55,7 +55,21 @@ namespace MissionPlanner
                             if (seen.Count > 300 || !seen.Add(key))
                                 return;
                         }
-                        Console.Error.WriteLine("FIRSTCHANCE " + key);
+                        // where it came from: the calling frames (a first-chance exception has
+                        // only the throwing frame yet), Mission Planner's first
+                        var callers = new System.Diagnostics.StackTrace(1, false).GetFrames() ?? new System.Diagnostics.StackFrame[0];
+                        var where = new List<string>();
+                        foreach (var f in callers)
+                        {
+                            var m = f.GetMethod();
+                            var type = m?.DeclaringType?.FullName ?? "";
+                            if (type.StartsWith("MissionPlanner.MacNative") || type.StartsWith("System.Runtime") || type.StartsWith("System.Diagnostics"))
+                                continue;
+                            where.Add(type + "." + m?.Name);
+                            if (where.Count == 8)
+                                break;
+                        }
+                        Console.Error.WriteLine("FIRSTCHANCE " + key + " | " + string.Join(" < ", where));
                     }
                     catch
                     {

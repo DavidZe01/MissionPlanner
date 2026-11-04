@@ -41,11 +41,10 @@ namespace MissionPlanner.Utilities
             var page = ConfigurationManager.AppSettings["MacOSUpdatePage"];
             if (string.IsNullOrEmpty(page))
                 page = "https://github.com/DavidZe01/MissionPlanner/blob/macos-arm64/macOS/README.md";
-            var text = changelog == null
-                ? ""
-                : "A newer Mission Planner is available [link;" + changelog + ";ChangeLog].\n\n";
-            CustomMessageBox.Show(text + "On macOS, update by installing a new build of Mission Planner.app [link;" +
-                                  page + ";macOS app]. The Windows updater would replace the macOS version.",
+            // CustomMessageBox shows one link
+            var text = changelog == null ? "" : "A newer Mission Planner is available.\n\n";
+            CustomMessageBox.Show(text + "On macOS, update by installing a new build of Mission Planner.app (the Windows " +
+                                  "updater would replace the macOS version). [link;" + page + ";How to get the macOS app]",
                 "Update");
         }
 
