@@ -968,8 +968,15 @@ namespace MissionPlanner
         }
 
         //kill -QUIT pid
+#if !MACNATIVE
+        // Mono's runtime only: a .NET for macOS app must link every __Internal symbol
         [DllImport("__Internal")]
         public static extern void mono_threads_request_thread_dump();
+#else
+        public static void mono_threads_request_thread_dump()
+        {
+        }
+#endif
 
     }
 }

@@ -8,7 +8,12 @@ native_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source_dir=$(cd -- "$native_dir/../.." && pwd)
 extra=()
 # Linux can compile the code but not bundle a macOS app
-[[ $(uname -s) == Darwin ]] || extra+=(-p:MissionPlannerMacCompileOnly=true -p:OutputType=Library -p:IsMacEnabled=false -p:BundleOriginalResources=false -p:AppManifestDetectionEnabled=false -p:StartupObject=)
+if [[ $(uname -s) == Darwin ]]; then
+    # the SDK would pick osx-x64 (Rosetta) before Build.targets can choose
+    extra+=(-r "osx-$(uname -m | sed 's/x86_64/x64/')")
+else
+    extra+=(-p:MissionPlannerMacCompileOnly=true -p:OutputType=Library -p:IsMacEnabled=false -p:BundleOriginalResources=false -p:AppManifestDetectionEnabled=false -p:StartupObject=)
+fi
 cd -- "$source_dir"
 dotnet build MissionPlanner.csproj -c Release \
     "-p:DirectoryBuildTargetsPath=$native_dir/Build.targets" -p:MissionPlannerMacNative=true \
