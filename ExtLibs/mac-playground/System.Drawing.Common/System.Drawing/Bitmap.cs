@@ -1095,11 +1095,11 @@ namespace System.Drawing {
 
 		public BitmapData LockBits (Rectangle rect, ImageLockMode flags, PixelFormat pixelFormat, BitmapData bitmapData)
 		{
-			// We don't support conversion
-			if (PixelFormat != pixelFormat)
-				throw new ArgumentException ("", "pixelFormat");
 			if (rect != new RectangleF (new PointF (0, 0), physicalDimension)) 
 				throw new NotImplementedException("Sub rectangles of bitmaps not supported yet.");
+			// another format: a converted copy, as GDI+ gives (a JPEG map tile read as 32bpp ARGB)
+			if (PixelFormat != pixelFormat)
+				return LockBitsConverted (rect, flags, pixelFormat, bitmapData);
 
 			// Bitmap created from external data, convert it
 			if (bitmapBlock == IntPtr.Zero)
@@ -1135,8 +1135,111 @@ namespace System.Drawing {
 			return bitmapData;
 		}
 
+		// BitmapData.Reserved of a converted copy (LockBitsConverted)
+		const int ConvertedCopy = 0x10000;
+
+		BitmapData LockBitsConverted (Rectangle rect, ImageLockMode flags, PixelFormat format, BitmapData bitmapData)
+		{
+			if (format != PixelFormat.Format32bppArgb && format != PixelFormat.Format32bppPArgb &&
+			    format != PixelFormat.Format32bppRgb && format != PixelFormat.Format24bppRgb)
+				throw new ArgumentException ("Conversion to " + format + " is not supported", "pixelFormat");
+			int width = rect.Width, height = rect.Height;
+			int bytesPerPixel = GetBitsPerPixel (format) / 8;
+			int stride = (width * bytesPerPixel + 3) & ~3;
+			var buffer = Marshal.AllocHGlobal (stride * height);
+			if (flags != ImageLockMode.WriteOnly) {
+				// CoreGraphics draws the image as premultiplied BGRA (GDI+'s byte order)
+				int bgraStride = width * 4;
+				var bgra = bytesPerPixel == 4 ? buffer : Marshal.AllocHGlobal (bgraStride * height);
+				try {
+					using (var colorSpace = CGColorSpace.CreateDeviceRGB ())
+					using (var context = new CGBitmapContext (bgra, width, height, 8, bytesPerPixel == 4 ? stride : bgraStride, colorSpace,
+						CGBitmapFlags.ByteOrder32Little | CGBitmapFlags.PremultipliedFirst)) {
+						context.ClearRect (new CGRect (0, 0, width, height));
+						context.DrawImage (new CGRect (0, 0, width, height), NativeCGImage);
+					}
+					unsafe {
+						for (int y = 0; y < height; y++) {
+							byte* src = (byte*)bgra + (long)y * (bytesPerPixel == 4 ? stride : bgraStride);
+							byte* dst = (byte*)buffer + (long)y * stride;
+							for (int x = 0; x < width; x++, src += 4) {
+								byte a = src [3];
+								if (format == PixelFormat.Format32bppArgb && a != 0 && a != 255) {
+									src [0] = (byte)Math.Min (255, src [0] * 255 / a);
+									src [1] = (byte)Math.Min (255, src [1] * 255 / a);
+									src [2] = (byte)Math.Min (255, src [2] * 255 / a);
+								} else if (format == PixelFormat.Format32bppRgb) {
+									src [3] = 255;
+								} else if (bytesPerPixel == 3) {
+									dst [x * 3] = src [0];
+									dst [x * 3 + 1] = src [1];
+									dst [x * 3 + 2] = src [2];
+								}
+							}
+						}
+					}
+				} finally {
+					if (bgra != buffer)
+						Marshal.FreeHGlobal (bgra);
+				}
+			}
+			bitmapData.Scan0 = buffer;
+			bitmapData.Width = width;
+			bitmapData.Height = height;
+			bitmapData.PixelFormat = format;
+			bitmapData.Stride = stride;
+			bitmapData.Reserved = (int)flags | ConvertedCopy;
+			return bitmapData;
+		}
+
+		// what was written into a converted copy goes back into the bitmap
+		void UnlockConverted (BitmapData data)
+		{
+			int width = data.Width, height = data.Height;
+			int bytesPerPixel = GetBitsPerPixel (data.PixelFormat) / 8;
+			int bgraStride = width * 4;
+			var bgra = Marshal.AllocHGlobal (bgraStride * height);
+			try {
+				unsafe {
+					for (int y = 0; y < height; y++) {
+						byte* src = (byte*)data.Scan0 + (long)y * data.Stride;
+						byte* dst = (byte*)bgra + (long)y * bgraStride;
+						for (int x = 0; x < width; x++, src += bytesPerPixel, dst += 4) {
+							byte a = bytesPerPixel == 4 && data.PixelFormat != PixelFormat.Format32bppRgb ? src [3] : (byte)255;
+							bool premultiply = data.PixelFormat == PixelFormat.Format32bppArgb && a != 255;
+							dst [0] = premultiply ? (byte)(src [0] * a / 255) : src [0];
+							dst [1] = premultiply ? (byte)(src [1] * a / 255) : src [1];
+							dst [2] = premultiply ? (byte)(src [2] * a / 255) : src [2];
+							dst [3] = a;
+						}
+					}
+				}
+				using (var colorSpace = CGColorSpace.CreateDeviceRGB ())
+				using (var provider = new CGDataProvider (bgra, bgraStride * height, false))
+				using (var image = new CGImage (width, height, 8, 32, bgraStride, colorSpace,
+					CGBitmapFlags.ByteOrder32Little | CGBitmapFlags.PremultipliedFirst, provider, null, false, CGColorRenderingIntent.Default)) {
+					var context = GetRenderableContext ();
+					context.SaveState ();
+					context.ConcatCTM (context.GetCTM ().Invert ());
+					context.SetBlendMode (CGBlendMode.Copy);
+					context.DrawImage (new CGRect (0, 0, width, height), image);
+					context.RestoreState ();
+				}
+			} finally {
+				Marshal.FreeHGlobal (bgra);
+			}
+			dirty = true;
+		}
+
 		public void UnlockBits (BitmapData data)
 		{
+			if ((data.Reserved & ConvertedCopy) != 0) {
+				if ((ImageLockMode)(data.Reserved & ~ConvertedCopy) != ImageLockMode.ReadOnly)
+					UnlockConverted (data);
+				Marshal.FreeHGlobal (data.Scan0);
+				data.Scan0 = IntPtr.Zero;
+				return;
+			}
 			if ((ImageLockMode)data.Reserved == ImageLockMode.ReadOnly) {
 				if (data.Scan0 != bitmapBlock && data.Scan0 != IntPtr.Zero) {
 					Marshal.FreeHGlobal (data.Scan0);

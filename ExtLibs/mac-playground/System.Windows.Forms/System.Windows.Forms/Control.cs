@@ -3778,6 +3778,20 @@ namespace System.Windows.Forms
 			if (!IsHandleCreated)
 				return;
 
+#if MAC
+			// Windows lets any thread invalidate (Mission Planner's Flight Data loop does); the
+			// bounds of the children and AppKit's setNeedsDisplay are for the main thread
+			if (!Foundation.NSThread.IsMain) {
+				var invalid = rc;
+				var children = invalidateChildren;
+				AppKit.NSApplication.SharedApplication.BeginInvokeOnMainThread (() => {
+					if (!IsDisposed && IsHandleCreated)
+						Invalidate (invalid, children);
+				});
+				return;
+			}
+#endif
+
 			if (rc.IsEmpty)
 				rc = ClientRectangle;
 				

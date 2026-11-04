@@ -34,7 +34,8 @@ Changes for Mission Planner:
   drawing over them: `Clear(Color.Transparent)` empties a back buffer;
 - `new Bitmap(width, height, stride, format, scan0)` (video frames for the HUD):
   a copy of the pixels in the internal layout; `LockBits(ReadOnly)` hands out a
-  converted copy and leaves the bitmap as it is (OpenGL textures);
+  converted copy and leaves the bitmap as it is (OpenGL textures), and `LockBits` to
+  another format (32bpp ARGB/PARGB/RGB, 24bpp RGB) converts, as GDI+ does;
 - `Control.CreateControl` does nothing for a disposed control (a form that closes
   itself while it is shown);
 - a text field's formatter does not throw when AppKit calls it while its control is

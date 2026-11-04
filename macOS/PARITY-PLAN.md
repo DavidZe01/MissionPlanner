@@ -16,24 +16,30 @@ System.Drawing sobre CoreGraphics:
 
 - Ventanas `NSWindow`/`NSView` reales, nitidez Retina, barra de menús de macOS
   (Cmd+C/V/X/A/Z, Cmd+Q, Ocultar, Minimizar), icono en el Dock.
-- No hace falta instalar Mono ni XQuartz. Van incluidos SDL2/SDL3 (joystick), libusb
-  (DFU), SimpleBLE (Bluetooth) y los simuladores SITL. GStreamer (video) es opcional, de Homebrew.
+- No hace falta instalar nada: van dentro del `.app` SDL2/SDL3 (joystick), libusb (DFU),
+  SimpleBLE (Bluetooth), los simuladores SITL y **GStreamer** con los plugins que usa Mission
+  Planner (RTP/UDP/TCP/RTSP, H.264/H.265 decodificado por VideoToolbox, cámaras AVFoundation,
+  MJPEG, MP4; 20 MB). En CI se desinstala el GStreamer de Homebrew antes de las pruebas.
+- **OpenGL nativo**: el HUD y las vistas 3D dibujan con un `NSOpenGLContext` sobre la vista,
+  como en Windows con WGL (GDI+ sigue disponible como opción del HUD).
 - Abrir un `.tlog`, `.bin` o `.log` desde Finder (o arrastrarlo al Dock) lo abre en
   Mission Planner, como las asociaciones de archivos de Windows.
 - Los permisos de Bluetooth, cámara y red local se piden a nombre de Mission Planner.
 
-Con esto quedan resueltos los puntos 2.1 (interfaz X11), 2.5 (abrir archivos desde
-Finder) y 2.7 (Mono y XQuartz como requisitos). Siguen pendientes 2.2 (OpenGL: el HUD
-dibuja con CoreGraphics, como la opción GDI+ de Windows, y las vistas 3D están
-desactivadas), 2.3 (GStreamer por Homebrew), 2.4 (actualizador), 2.6 (Log Analyzer)
-y 2.8 (notarización).
+Con esto quedan resueltos los puntos 2.1 (interfaz X11), 2.2 (OpenGL), 2.3 (GStreamer),
+2.5 (abrir archivos desde Finder) y 2.7 (Mono y XQuartz como requisitos). El punto 2.8
+(firma Developer ID y notarización) está preparado en el workflow (`sign-notarize.sh`) y
+se activa al añadir al repositorio los secretos de una cuenta del Apple Developer Program;
+sin ella la app va firmada ad hoc. Siguen pendientes 2.4 (actualizador) y 2.6 (Log Analyzer).
 
 Correcciones que necesitó la biblioteca Cocoa para Mission Planner (detalle en
 `ExtLibs/mac-playground/README.md`): identidades de ensamblado compatibles con .NET
 Framework, barras de herramientas y menú principal dibujados, botones con tema
 (`MyButton`) pintados por su código, diálogos cerrados desde temporizadores,
-`Graphics.FromImage` independientes (el HUD salía invertido), y acceso a `Visible`
-desde otros hilos.
+`Graphics.FromImage` independientes (el HUD salía invertido), `Graphics.Clear` como en
+GDI+, `LockBits` de solo lectura sin alterar el bitmap, y `Visible`/`Invalidate` desde
+otros hilos. OpenTK se usa sin su capa Cocoa (que descarta los eventos pendientes de la
+aplicación): solo carga las funciones OpenGL del contexto de AppKit.
 
 Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41817188461):
 

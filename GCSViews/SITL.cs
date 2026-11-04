@@ -657,7 +657,7 @@ namespace MissionPlanner.GCSViews
 
             string path = Environment.GetEnvironmentVariable("PATH");
 
-            Environment.SetEnvironmentVariable("PATH", sitldirectory + ";" + simdir + ";" + path, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("PATH", sitldirectory + Path.PathSeparator + simdir + Path.PathSeparator + path, EnvironmentVariableTarget.Process);
 
             Environment.SetEnvironmentVariable("HOME", simdir, EnvironmentVariableTarget.Process);
 
@@ -915,7 +915,7 @@ SIM_DRIFT_TIME=0
 
                 string path = Environment.GetEnvironmentVariable("PATH");
 
-                Environment.SetEnvironmentVariable("PATH", sitldirectory + ";" + simdir + ";" + path,
+                Environment.SetEnvironmentVariable("PATH", sitldirectory + Path.PathSeparator + simdir + Path.PathSeparator + path,
                     EnvironmentVariableTarget.Process);
 
                 Environment.SetEnvironmentVariable("HOME", simdir, EnvironmentVariableTarget.Process);
@@ -1064,7 +1064,7 @@ SIM_DRIFT_TIME=0
 
                 string path = Environment.GetEnvironmentVariable("PATH");
 
-                Environment.SetEnvironmentVariable("PATH", sitldirectory + ";" + simdir + ";" + path,
+                Environment.SetEnvironmentVariable("PATH", sitldirectory + Path.PathSeparator + simdir + Path.PathSeparator + path,
                     EnvironmentVariableTarget.Process);
 
                 Environment.SetEnvironmentVariable("HOME", simdir, EnvironmentVariableTarget.Process);

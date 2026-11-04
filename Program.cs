@@ -469,7 +469,13 @@ namespace MissionPlanner
 
             Console.WriteLine("Setup check gdal dir");
             // optionally add gdal support
+            // (the native macOS app: the gdal folder holds Windows libraries, and its setup
+            // replaces PATH; the command line tools below are the way there)
+#if MACNATIVE
+            if (false)
+#else
             if (Directory.Exists(Application.StartupPath + Path.DirectorySeparatorChar + "gdal"))
+#endif
             {
                 Console.WriteLine("Setup gdal");
 #if !LIB
