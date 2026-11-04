@@ -1,0 +1,12 @@
+probe boards pid 28924 runner mono-host
+fmuv2 -> px4v2
+PROBE OK   board fmuv2 (143 ms)
+fmuv3-BL -> px4v3
+PROBE OK   board fmuv3-BL (0 ms)
+CubeOrange-BL -> chbootloader CubeOrange
+PROBE OK   board CubeOrange-BL (4 ms)
+MatekH743 -> chbootloader MatekH743
+PROBE OK   board MatekH743 (0 ms)
+PX4 FMU v4.x -> px4v4
+PROBE OK   board PX4 FMU v4.x (0 ms)
+PROBE_PASS

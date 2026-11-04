@@ -1,0 +1,16 @@
+Making install in src
+ .././install-sh -c -d '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib'
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c   libgdiplus.la '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib'
+libtool: install: /usr/bin/install -c .libs/libgdiplus.0.dylib /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/libgdiplus.0.dylib
+libtool: install: (cd /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib && { ln -s -f libgdiplus.0.dylib libgdiplus.dylib || { rm -f libgdiplus.dylib && ln -s libgdiplus.0.dylib libgdiplus.dylib; }; })
+libtool: install: /usr/bin/install -c .libs/libgdiplus.lai /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/libgdiplus.la
+libtool: install: /usr/bin/install -c .libs/libgdiplus.a /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/libgdiplus.a
+libtool: install: chmod 644 /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/libgdiplus.a
+libtool: install: ranlib /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/libgdiplus.a
+make[2]: Nothing to be done for `install-data-am'.
+Making install in tests
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Nothing to be done for `install-exec-am'.
+ ./install-sh -c -d '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/pkgconfig'
+ /usr/bin/install -c -m 644 libgdiplus.pc '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix/lib/pkgconfig'

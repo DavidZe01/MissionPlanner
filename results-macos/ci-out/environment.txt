@@ -1,0 +1,76 @@
+uname -m: arm64
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+mono: arm64
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib:    Mach-O 64-bit dynamically linked shared library arm64
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/libSkiaSharp.dylib: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit dynamically linked shared library x86_64] [arm64]
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/libSkiaSharp.dylib (for architecture x86_64):	Mach-O 64-bit dynamically linked shared library x86_64
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/libSkiaSharp.dylib (for architecture arm64):	Mach-O 64-bit dynamically linked shared library arm64
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib:
+	@loader_path/libgdiplus.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	@loader_path/libpangocairo-1.0.0.dylib (compatibility version 5801.0.0, current version 5801.2.0)
+	@loader_path/libpango-1.0.0.dylib (compatibility version 5801.0.0, current version 5801.2.0)
+	@loader_path/libcairo.2.dylib (compatibility version 1.0.0, current version 1.18.6)
+	@loader_path/libharfbuzz.0.dylib (compatibility version 61500.0.0, current version 61500.0.0)
+	@loader_path/libgobject-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)
+	@loader_path/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)
+	@loader_path/libintl.8.dylib (compatibility version 13.0.0, current version 13.6.0)
+	@loader_path/libfreetype.6.dylib (compatibility version 27.0.0, current version 27.7.0)
+	@loader_path/libjpeg.8.3.2.dylib (compatibility version 8.0.0, current version 8.3.2)
+	@loader_path/libtiff.6.dylib (compatibility version 10.0.0, current version 10.0.0)
+	@loader_path/libgif.7.2.0.dylib (compatibility version 0.0.0, current version 7.2.0)
+	@loader_path/libpng16.16.dylib (compatibility version 76.0.0, current version 76.0.0)
+	/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)
+	/opt/X11/lib/libX11.6.dylib (compatibility version 11.0.0, current version 11.0.0)
+	@loader_path/libexif.12.dylib (compatibility version 16.0.0, current version 16.4.0)
+	@loader_path/libfontconfig.1.dylib (compatibility version 18.0.0, current version 18.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+total 33096
+drwxr-xr-x  44 runner  staff     1408 Nov  4 05:30 .
+drwxr-xr-x   7 runner  staff      224 Nov  4 05:30 ..
+-rw-r--r--   1 runner  staff   167264 Nov  4 05:30 libbrotlicommon.1.2.1.dylib
+-rw-r--r--   1 runner  staff    87728 Nov  4 05:30 libbrotlidec.1.2.1.dylib
+-rw-r--r--   1 runner  staff  1179904 Nov  4 05:30 libcairo.2.dylib
+-rw-r--r--   1 runner  staff    73968 Nov  4 05:30 libdatrie.1.dylib
+-rw-r--r--   1 runner  staff   261776 Nov  4 05:30 libexif.12.dylib
+-rw-r--r--   1 runner  staff   471328 Nov  4 05:30 libfontconfig.1.dylib
+-rw-r--r--   1 runner  staff   675408 Nov  4 05:30 libfreetype.6.dylib
+-rw-r--r--   1 runner  staff   171200 Nov  4 05:30 libfribidi.0.dylib
+-rwxr-xr-x   1 runner  staff   638368 Nov  4 05:30 libgdiplus.0.dylib
+-rw-r--r--   1 runner  staff    72656 Nov  4 05:30 libgif.7.2.0.dylib
+-rw-r--r--   1 runner  staff  2045184 Nov  4 05:30 libgio-2.0.0.dylib
+-rw-r--r--   1 runner  staff  1372848 Nov  4 05:30 libglib-2.0.0.dylib
+-rw-r--r--   1 runner  staff    71344 Nov  4 05:30 libgmodule-2.0.0.dylib
+-rw-r--r--   1 runner  staff   415344 Nov  4 05:30 libgobject-2.0.0.dylib
+-rw-r--r--   1 runner  staff   142560 Nov  4 05:30 libgraphite2.3.3.1.dylib
+-rw-r--r--   1 runner  staff  1437360 Nov  4 05:30 libharfbuzz.0.dylib
+-rw-r--r--   1 runner  staff   228832 Nov  4 05:30 libintl.8.dylib
+-rw-r--r--   1 runner  staff   472240 Nov  4 05:30 libjpeg.8.3.2.dylib
+-rw-r--r--   1 runner  staff   184560 Nov  4 05:30 liblzma.5.dylib
+-rw-r--r--   1 runner  staff   455616 Nov  4 05:30 libpango-1.0.0.dylib
+-rw-r--r--   1 runner  staff   161632 Nov  4 05:30 libpangocairo-1.0.0.dylib
+-rw-r--r--   1 runner  staff   142080 Nov  4 05:30 libpangoft2-1.0.0.dylib
+-rw-r--r--   1 runner  staff   588784 Nov  4 05:30 libpcre2-8.0.dylib
+-rw-r--r--   1 runner  staff   629984 Nov  4 05:30 libpixman-1.0.dylib
+-rw-r--r--   1 runner  staff   208272 Nov  4 05:30 libpng16.16.dylib
+-rw-r--r--   1 runner  staff   538848 Nov  4 05:30 libSDL2-2.0.0.dylib
+-rw-r--r--   1 runner  staff    69568 Nov  4 05:30 libsharpyuv.0.1.2.dylib
+-rwxr-xr-x   1 runner  staff   460768 Nov  4 05:30 libsimpleble.0.9.1.dylib
+-rwxr-xr-x   1 runner  staff   460768 Nov  4 05:30 libsimpleble.0.dylib
+-rwxr-xr-x   1 runner  staff   460816 Nov  4 05:30 libsimpleble.dylib
+-rwxr-xr-x   1 runner  staff   100416 Nov  4 05:30 libsimplecble.0.9.1.dylib
+-rwxr-xr-x   1 runner  staff   100416 Nov  4 05:30 libsimplecble.0.dylib
+-rwxr-xr-x   1 runner  staff   100464 Nov  4 05:30 libsimplecble.dylib
+-rw-r--r--   1 runner  staff    90272 Nov  4 05:30 libthai.0.dylib
+-rw-r--r--   1 runner  staff   543488 Nov  4 05:30 libtiff.6.dylib
+-rw-r--r--   1 runner  staff   179808 Nov  4 05:30 libusb-1.0.0.dylib
+-rwxr-xr-x   1 runner  staff    35824 Nov  4 05:30 libuser32stub.dylib
+-rw-r--r--   1 runner  staff   352256 Nov  4 05:30 libwebp.7.2.0.dylib
+-rw-r--r--   1 runner  staff   104928 Nov  4 05:30 libxcb-render.0.0.0.dylib
+-rw-r--r--   1 runner  staff    70144 Nov  4 05:30 libxcb-shm.0.0.0.dylib
+-rw-r--r--   1 runner  staff   193744 Nov  4 05:30 libxcb.1.1.0.dylib
+-rw-r--r--   1 runner  staff   649648 Nov  4 05:30 libzstd.1.5.7.dylib
+ls: /opt/X11/etc/fonts: No such file or directory
+ls: /opt/X11/lib/X11/fontconfig: No such file or directory
+/opt/homebrew/etc/fonts

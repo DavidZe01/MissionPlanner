@@ -1,0 +1,571 @@
+* Collecting dependencies................................................................................................................................................................................................................................................................................
+
+ * libpangocairo-1.0.0.dylib from /opt/homebrew/Cellar/pango/1.58.2/lib/
+     symlink --> /opt/homebrew/opt/pango/lib/libpangocairo-1.0.0.dylib
+
+ * libpango-1.0.0.dylib from /opt/homebrew/Cellar/pango/1.58.2/lib/
+     symlink --> /opt/homebrew/opt/pango/lib/libpango-1.0.0.dylib
+
+ * libcairo.2.dylib from /opt/homebrew/Cellar/cairo/1.18.6/lib/
+     symlink --> /opt/homebrew/opt/cairo/lib/libcairo.2.dylib
+
+ * libharfbuzz.0.dylib from /opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/
+     symlink --> /opt/homebrew/opt/harfbuzz/lib/libharfbuzz.0.dylib
+
+ * libgobject-2.0.0.dylib from /opt/homebrew/Cellar/glib/2.90.1/lib/
+     symlink --> /opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib
+
+ * libglib-2.0.0.dylib from /opt/homebrew/Cellar/glib/2.90.1/lib/
+     symlink --> /opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib
+
+ * libintl.8.dylib from /opt/homebrew/Cellar/gettext/1.0/lib/
+     symlink --> /opt/homebrew/opt/gettext/lib/libintl.8.dylib
+
+ * libfreetype.6.dylib from /opt/homebrew/Cellar/freetype/2.15.0/lib/
+     symlink --> /opt/homebrew/opt/freetype/lib/libfreetype.6.dylib
+
+ * libjpeg.8.3.2.dylib from /opt/homebrew/Cellar/jpeg-turbo/3.2.0/lib/
+     symlink --> /opt/homebrew/opt/jpeg-turbo/lib/libjpeg.8.dylib
+
+ * libtiff.6.dylib from /opt/homebrew/Cellar/libtiff/4.7.2/lib/
+     symlink --> /opt/homebrew/opt/libtiff/lib/libtiff.6.dylib
+
+ * libgif.7.2.0.dylib from /opt/homebrew/Cellar/giflib/6.1.3/lib/
+     symlink --> /opt/homebrew/opt/giflib/lib/libgif.dylib
+
+ * libpng16.16.dylib from /opt/homebrew/Cellar/libpng/1.6.59/lib/
+     symlink --> /opt/homebrew/opt/libpng/lib/libpng16.16.dylib
+
+ * libX11.6.dylib from /opt/homebrew/Cellar/libx11/1.8.14/lib/
+     symlink --> /opt/homebrew/opt/libx11/lib/libX11.6.dylib
+
+ * libexif.12.dylib from /opt/homebrew/Cellar/libexif/0.6.26/lib/
+     symlink --> /opt/homebrew/opt/libexif/lib/libexif.12.dylib
+
+ * libfontconfig.1.dylib from /opt/homebrew/Cellar/fontconfig/2.18.3/lib/
+     symlink --> /opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib
+
+ * libpangoft2-1.0.0.dylib from /opt/homebrew/Cellar/pango/1.58.2/lib/
+
+ * libgio-2.0.0.dylib from /opt/homebrew/Cellar/glib/2.90.1/lib/
+     symlink --> /opt/homebrew/opt/glib/lib/libgio-2.0.0.dylib
+
+ * libfribidi.0.dylib from /opt/homebrew/Cellar/fribidi/1.0.17/lib/
+     symlink --> /opt/homebrew/opt/fribidi/lib/libfribidi.0.dylib
+
+ * libthai.0.dylib from /opt/homebrew/Cellar/libthai/0.1.30/lib/
+     symlink --> /opt/homebrew/opt/libthai/lib/libthai.0.dylib
+
+ * libXext.6.dylib from /opt/homebrew/Cellar/libxext/1.3.7/lib/
+     symlink --> /opt/homebrew/opt/libxext/lib/libXext.6.dylib
+
+ * libXrender.1.dylib from /opt/homebrew/Cellar/libxrender/0.9.13/lib/
+     symlink --> /opt/homebrew/opt/libxrender/lib/libXrender.1.dylib
+
+ * libxcb.1.1.0.dylib from /opt/homebrew/Cellar/libxcb/1.17.0/lib/
+     symlink --> /opt/homebrew/opt/libxcb/lib/libxcb.1.dylib
+     symlink --> /opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.dylib
+
+ * libxcb-render.0.0.0.dylib from /opt/homebrew/Cellar/libxcb/1.17.0/lib/
+     symlink --> /opt/homebrew/opt/libxcb/lib/libxcb-render.0.dylib
+
+ * libxcb-shm.0.0.0.dylib from /opt/homebrew/Cellar/libxcb/1.17.0/lib/
+     symlink --> /opt/homebrew/opt/libxcb/lib/libxcb-shm.0.dylib
+
+ * libpixman-1.0.dylib from /opt/homebrew/Cellar/pixman/0.46.4/lib/
+     symlink --> /opt/homebrew/opt/pixman/lib/libpixman-1.0.dylib
+
+ * libgraphite2.3.3.1.dylib from /opt/homebrew/Cellar/graphite2/1.3.15/lib/
+     symlink --> /opt/homebrew/opt/graphite2/lib/libgraphite2.3.dylib
+
+ * libpcre2-8.0.dylib from /opt/homebrew/Cellar/pcre2/10.49/lib/
+     symlink --> /opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib
+
+ * libbrotlidec.1.2.1.dylib from /opt/homebrew/Cellar/brotli/1.2.1/lib/
+     symlink --> /opt/homebrew/opt/brotli/lib/libbrotlidec.1.dylib
+
+ * libwebp.7.2.0.dylib from /opt/homebrew/Cellar/webp/1.6.0/lib/
+     symlink --> /opt/homebrew/opt/webp/lib/libwebp.7.dylib
+
+ * libzstd.1.5.7.dylib from /opt/homebrew/Cellar/zstd/1.5.7_1/lib/
+     symlink --> /opt/homebrew/opt/zstd/lib/libzstd.1.dylib
+
+ * liblzma.5.dylib from /opt/homebrew/Cellar/xz/5.8.4/lib/
+     symlink --> /opt/homebrew/opt/xz/lib/liblzma.5.dylib
+
+ * libgmodule-2.0.0.dylib from /opt/homebrew/Cellar/glib/2.90.1/lib/
+
+ * libdatrie.1.dylib from /opt/homebrew/Cellar/libdatrie/0.2.14/lib/
+     symlink --> /opt/homebrew/opt/libdatrie/lib/libdatrie.1.dylib
+
+ * libXau.6.dylib from /opt/homebrew/Cellar/libxau/1.0.12/lib/
+     symlink --> /opt/homebrew/opt/libxau/lib/libXau.6.dylib
+
+ * libXdmcp.6.dylib from /opt/homebrew/Cellar/libxdmcp/1.1.5/lib/
+     symlink --> /opt/homebrew/opt/libxdmcp/lib/libXdmcp.6.dylib
+
+ * libbrotlicommon.1.2.1.dylib from /opt/homebrew/Cellar/brotli/1.2.1/lib/
+     symlink --> @rpath/libbrotlicommon.1.dylib
+
+ * libsharpyuv.0.1.2.dylib from /opt/homebrew/Cellar/webp/1.6.0/lib/
+     symlink --> @rpath/libsharpyuv.0.dylib
+
+* Checking output directory /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib
+    cp -f "/opt/homebrew/Cellar/webp/1.6.0/lib/libsharpyuv.0.1.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib"
+    install_name_tool -id "@loader_path/libsharpyuv.0.1.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib
+    cp -f "/opt/homebrew/Cellar/brotli/1.2.1/lib/libbrotlicommon.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib"
+    install_name_tool -id "@loader_path/libbrotlicommon.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib
+    cp -f "/opt/homebrew/Cellar/libxdmcp/1.1.5/lib/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib"
+    install_name_tool -id "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib
+    cp -f "/opt/homebrew/Cellar/libxau/1.0.12/lib/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib"
+    install_name_tool -id "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib
+    cp -f "/opt/homebrew/Cellar/libdatrie/0.2.14/lib/libdatrie.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib"
+    install_name_tool -id "@loader_path/libdatrie.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/glib/2.90.1/lib/libgmodule-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib"
+    install_name_tool -id "@loader_path/libgmodule-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib
+    cp -f "/opt/homebrew/Cellar/xz/5.8.4/lib/liblzma.5.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib"
+    install_name_tool -id "@loader_path/liblzma.5.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib
+    cp -f "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib"
+    install_name_tool -id "@loader_path/libzstd.1.5.7.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+    cp -f "/opt/homebrew/Cellar/webp/1.6.0/lib/libwebp.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    install_name_tool -id "@loader_path/libwebp.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/webp/1.6.0/lib/libsharpyuv.0.1.2.dylib" "@loader_path/libsharpyuv.0.1.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    install_name_tool -change "@rpath/libsharpyuv.0.dylib" "@loader_path/libsharpyuv.0.1.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+    cp -f "/opt/homebrew/Cellar/brotli/1.2.1/lib/libbrotlidec.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    install_name_tool -id "@loader_path/libbrotlidec.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/brotli/1.2.1/lib/libbrotlicommon.1.2.1.dylib" "@loader_path/libbrotlicommon.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    install_name_tool -change "@rpath/libbrotlicommon.1.dylib" "@loader_path/libbrotlicommon.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib
+    cp -f "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib"
+    install_name_tool -id "@loader_path/libpcre2-8.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib
+    cp -f "/opt/homebrew/Cellar/graphite2/1.3.15/lib/libgraphite2.3.3.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib"
+    install_name_tool -id "@loader_path/libgraphite2.3.3.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib
+    install_name_tool -rpath "@loader_path/../lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib
+    cp -f "/opt/homebrew/Cellar/pixman/0.46.4/lib/libpixman-1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib"
+    install_name_tool -id "@loader_path/libpixman-1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb-shm.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -id "@loader_path/libxcb-shm.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    .....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.1.0.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxau/1.0.12/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxau/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxdmcp/1.1.5/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxdmcp/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb-render.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -id "@loader_path/libxcb-render.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    .....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.1.0.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxau/1.0.12/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxau/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxdmcp/1.1.5/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxdmcp/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+    cp -f "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    install_name_tool -id "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    ....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libxau/1.0.12/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxau/lib/libXau.6.dylib" "@loader_path/libXau.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxdmcp/1.1.5/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxdmcp/lib/libXdmcp.6.dylib" "@loader_path/libXdmcp.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+    cp -f "/opt/homebrew/Cellar/libxrender/0.9.13/lib/libXrender.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+    install_name_tool -id "@loader_path/libXrender.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libx11/1.8.14/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libx11/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+    cp -f "/opt/homebrew/Cellar/libxext/1.3.7/lib/libXext.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+    install_name_tool -id "@loader_path/libXext.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libx11/1.8.14/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libx11/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib
+    cp -f "/opt/homebrew/Cellar/libthai/0.1.30/lib/libthai.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+    install_name_tool -id "@loader_path/libthai.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libdatrie/0.2.14/lib/libdatrie.1.dylib" "@loader_path/libdatrie.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libdatrie/lib/libdatrie.1.dylib" "@loader_path/libdatrie.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib
+    cp -f "/opt/homebrew/Cellar/fribidi/1.0.17/lib/libfribidi.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib"
+    install_name_tool -id "@loader_path/libfribidi.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/glib/2.90.1/lib/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    install_name_tool -id "@loader_path/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    .............
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgmodule-2.0.0.dylib" "@loader_path/libgmodule-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/gettext/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/pango/1.58.2/lib/libpangoft2-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -id "@loader_path/libpangoft2-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    .........
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/pango/1.58.2/lib/libpango-1.0.0.dylib" "@loader_path/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgio-2.0.0.dylib" "@loader_path/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgio-2.0.0.dylib" "@loader_path/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/harfbuzz/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/fontconfig/2.18.3/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/freetype/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+    cp -f "/opt/homebrew/Cellar/fontconfig/2.18.3/lib/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    install_name_tool -id "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    .....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    install_name_tool -change "/opt/homebrew/opt/freetype/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    install_name_tool -change "/opt/homebrew/opt/gettext/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib
+    cp -f "/opt/homebrew/Cellar/libexif/0.6.26/lib/libexif.12.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+    install_name_tool -id "@loader_path/libexif.12.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+    ....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+    install_name_tool -change "/opt/homebrew/opt/gettext/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+    cp -f "/opt/homebrew/Cellar/libx11/1.8.14/lib/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+    install_name_tool -id "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.1.0.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxcb/lib/libxcb.1.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib
+    cp -f "/opt/homebrew/Cellar/libpng/1.6.59/lib/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib"
+    install_name_tool -id "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib"
+    ...
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib
+    cp -f "/opt/homebrew/Cellar/giflib/6.1.3/lib/libgif.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib"
+    install_name_tool -id "@loader_path/libgif.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+    cp -f "/opt/homebrew/Cellar/libtiff/4.7.2/lib/libtiff.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -id "@loader_path/libtiff.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    .......
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/webp/1.6.0/lib/libwebp.7.2.0.dylib" "@loader_path/libwebp.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/webp/lib/libwebp.7.dylib" "@loader_path/libwebp.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/zstd/1.5.7_1/lib/libzstd.1.5.7.dylib" "@loader_path/libzstd.1.5.7.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/zstd/lib/libzstd.1.dylib" "@loader_path/libzstd.1.5.7.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/xz/5.8.4/lib/liblzma.5.dylib" "@loader_path/liblzma.5.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/xz/lib/liblzma.5.dylib" "@loader_path/liblzma.5.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/jpeg-turbo/3.2.0/lib/libjpeg.8.3.2.dylib" "@loader_path/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/jpeg-turbo/lib/libjpeg.8.dylib" "@loader_path/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib
+    cp -f "/opt/homebrew/Cellar/jpeg-turbo/3.2.0/lib/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib"
+    install_name_tool -id "@loader_path/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib"
+    ..
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib
+    install_name_tool -rpath "/opt/homebrew/Cellar/jpeg-turbo/3.2.0/lib" "@loader_path/" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+    cp -f "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    install_name_tool -id "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    .......
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libpng/1.6.59/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libpng/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/brotli/1.2.1/lib/libbrotlidec.1.2.1.dylib" "@loader_path/libbrotlidec.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    install_name_tool -change "/opt/homebrew/opt/brotli/lib/libbrotlidec.1.dylib" "@loader_path/libbrotlidec.1.2.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib
+    cp -f "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib"
+    install_name_tool -id "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib"
+    .....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    install_name_tool -id "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    ........
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/gettext/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/pcre2/10.49/lib/libpcre2-8.0.dylib" "@loader_path/libpcre2-8.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/pcre2/lib/libpcre2-8.0.dylib" "@loader_path/libpcre2-8.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib"
+    install_name_tool -id "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib"
+    ....
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+    cp -f "/opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -id "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    ........
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/freetype/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/graphite2/1.3.15/lib/libgraphite2.3.3.1.dylib" "@loader_path/libgraphite2.3.3.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/graphite2/lib/libgraphite2.3.dylib" "@loader_path/libgraphite2.3.3.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+    cp -f "/opt/homebrew/Cellar/cairo/1.18.6/lib/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -id "@loader_path/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    .................
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/libpng/1.6.59/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libpng/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/fontconfig/2.18.3/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/freetype/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libx11/1.8.14/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libx11/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxext/1.3.7/lib/libXext.6.dylib" "@loader_path/libXext.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxext/lib/libXext.6.dylib" "@loader_path/libXext.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxrender/0.9.13/lib/libXrender.1.dylib" "@loader_path/libXrender.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxrender/lib/libXrender.1.dylib" "@loader_path/libXrender.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb.1.1.0.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxcb/lib/libxcb.1.dylib" "@loader_path/libxcb.1.1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb-render.0.0.0.dylib" "@loader_path/libxcb-render.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxcb/lib/libxcb-render.0.dylib" "@loader_path/libxcb-render.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libxcb/1.17.0/lib/libxcb-shm.0.0.0.dylib" "@loader_path/libxcb-shm.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libxcb/lib/libxcb-shm.0.dylib" "@loader_path/libxcb-shm.0.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/pixman/0.46.4/lib/libpixman-1.0.dylib" "@loader_path/libpixman-1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    install_name_tool -change "/opt/homebrew/opt/pixman/lib/libpixman-1.0.dylib" "@loader_path/libpixman-1.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/pango/1.58.2/lib/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -id "@loader_path/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    .........
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgio-2.0.0.dylib" "@loader_path/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgio-2.0.0.dylib" "@loader_path/libgio-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/fribidi/1.0.17/lib/libfribidi.0.dylib" "@loader_path/libfribidi.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/fribidi/lib/libfribidi.0.dylib" "@loader_path/libfribidi.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libthai/0.1.30/lib/libthai.0.dylib" "@loader_path/libthai.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libthai/lib/libthai.0.dylib" "@loader_path/libthai.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/harfbuzz/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib"
+
+* Processing dependency /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+    cp -f "/opt/homebrew/Cellar/pango/1.58.2/lib/libpangocairo-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -id "@loader_path/libpangocairo-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    ...........
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/pango/1.58.2/lib/libpango-1.0.0.dylib" "@loader_path/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/pango/1.58.2/lib/libpangoft2-1.0.0.dylib" "@loader_path/libpangoft2-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/harfbuzz/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/fontconfig/2.18.3/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/cairo/1.18.6/lib/libcairo.2.dylib" "@loader_path/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/cairo/lib/libcairo.2.dylib" "@loader_path/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib"
+
+* Processing /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib
+    chmod +w "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+  * Fixing dependencies on /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib
+    install_name_tool -change "/opt/homebrew/Cellar/pango/1.58.2/lib/libpangocairo-1.0.0.dylib" "@loader_path/libpangocairo-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/pango/lib/libpangocairo-1.0.0.dylib" "@loader_path/libpangocairo-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/pango/1.58.2/lib/libpango-1.0.0.dylib" "@loader_path/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/pango/lib/libpango-1.0.0.dylib" "@loader_path/libpango-1.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/cairo/1.18.6/lib/libcairo.2.dylib" "@loader_path/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/cairo/lib/libcairo.2.dylib" "@loader_path/libcairo.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/harfbuzz/15.0.0_1/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/harfbuzz/lib/libharfbuzz.0.dylib" "@loader_path/libharfbuzz.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libgobject-2.0.0.dylib" "@loader_path/libgobject-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/glib/2.90.1/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/glib/lib/libglib-2.0.0.dylib" "@loader_path/libglib-2.0.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/gettext/1.0/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/gettext/lib/libintl.8.dylib" "@loader_path/libintl.8.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/freetype/2.15.0/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/freetype/lib/libfreetype.6.dylib" "@loader_path/libfreetype.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/jpeg-turbo/3.2.0/lib/libjpeg.8.3.2.dylib" "@loader_path/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/jpeg-turbo/lib/libjpeg.8.dylib" "@loader_path/libjpeg.8.3.2.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libtiff/4.7.2/lib/libtiff.6.dylib" "@loader_path/libtiff.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libtiff/lib/libtiff.6.dylib" "@loader_path/libtiff.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/giflib/6.1.3/lib/libgif.7.2.0.dylib" "@loader_path/libgif.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/giflib/lib/libgif.dylib" "@loader_path/libgif.7.2.0.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libpng/1.6.59/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libpng/lib/libpng16.16.dylib" "@loader_path/libpng16.16.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libx11/1.8.14/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libx11/lib/libX11.6.dylib" "@loader_path/libX11.6.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/libexif/0.6.26/lib/libexif.12.dylib" "@loader_path/libexif.12.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/libexif/lib/libexif.12.dylib" "@loader_path/libexif.12.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/Cellar/fontconfig/2.18.3/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    install_name_tool -change "/opt/homebrew/opt/fontconfig/lib/libfontconfig.1.dylib" "@loader_path/libfontconfig.1.dylib" "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"
+    codesign --force --deep --preserve-metadata=entitlements,requirements,flags,runtime --sign - "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib"

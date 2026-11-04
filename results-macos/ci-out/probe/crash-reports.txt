@@ -1,0 +1,5 @@
+total 24
+drwxrwx---   4 runner  _analyticsusers    128 Nov  4 05:31 .
+drwx------+ 16 runner  staff              512 Nov  4 05:31 ..
+-rw-------@  1 runner  _analyticsusers  11695 Nov  4 05:31 glxinfo-2026-11-04-053149.ips
+drwxrwx---   2 runner  _analyticsusers     64 Oct 26 16:08 Retired

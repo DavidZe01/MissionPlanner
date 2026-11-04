@@ -1,0 +1,9 @@
+Source revision: 82be97b2f28f5f77f7e5e2b629becd51d0b1686f
+Working tree modified: true
+Source: https://github.com/DavidZe01/MissionPlanner/tree/82be97b2f28f5f77f7e5e2b629becd51d0b1686f
+Built UTC: 2026-11-04T05:24:36Z
+Architecture: x86_64 (linux-x64)
+SDK: 10.0.403
+Mono JIT compiler version 6.12.0.200 (tarball Tue Jul 11 21:37:50 UTC 2023)
+macOS bundle built on 26.6.2 arm64
+libgdiplus 6.2 (X11), SkiaSharp native 3.119.4

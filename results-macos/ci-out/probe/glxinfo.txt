@@ -1,0 +1,2 @@
+CGLChoosePixelFormat error: invalid pixel format
+name of display: :0

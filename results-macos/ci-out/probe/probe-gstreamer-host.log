@@ -1,0 +1,7 @@
+probe gstreamer avfvideosrc device-index=0 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink pid 31144 runner mono-host
+gstreamer at /opt/homebrew/lib/libgstreamer-1.0.0.dylib
+frames: 0
+PROBE FAIL gstreamer-frames: System.Exception: only 0 frames
+  at Probe+<Main>c__AnonStorey1.<>m__0 () [0x000fb] in <ef2951743e98489d86f7695ec83997b1>:0 
+  at Probe+<Run>c__AnonStorey0.<>m__0 () [0x00000] in <ef2951743e98489d86f7695ec83997b1>:0 
+PROBE_FAIL

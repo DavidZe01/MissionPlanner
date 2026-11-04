@@ -1,0 +1,587 @@
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2.tar.gz: OK
+configure: WARNING: *** GIF loader will not be built (ungiflibrary not found) ***
+graphics.c:2647:30: warning: implicit conversion from 'int' to 'REAL' (aka 'float') changes value from 1000000032 to 1.0E+9 [-Wimplicit-const-int-float-conversion]
+ 2647 |         if (scale <= 0.0 || scale > 1000000032)
+      |                                   ~ ^~~~~~~~~~
+1 warning generated.
+metafile.c:1183:15: warning: variable 'obj' set but not used [-Wunused-but-set-variable]
+ 1183 |                 MetaObject *obj = context->objects;
+      |                             ^
+1 warning generated.
+text-pango.c:239:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  239 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:34: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                   ^
+text-pango.c:239:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  239 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:58: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                           ^
+text-pango.c:239:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  239 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:111: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                ^
+text-pango.c:239:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  239 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:163: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                                                                    ^
+text-pango.c:240:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  240 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:34: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                   ^
+text-pango.c:240:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  240 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:58: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                           ^
+text-pango.c:240:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  240 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:111: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                ^
+text-pango.c:240:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  240 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:163: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                                                                    ^
+text-pango.c:244:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  244 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:34: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                   ^
+text-pango.c:244:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  244 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:58: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                           ^
+text-pango.c:244:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  244 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:111: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                ^
+text-pango.c:244:37: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  244 |                 FrameWidth = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Width));
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:163: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                                                                    ^
+text-pango.c:245:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  245 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:34: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                   ^
+text-pango.c:245:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  245 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:58: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                           ^
+text-pango.c:245:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  245 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:111: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                ^
+text-pango.c:245:38: warning: implicit conversion from 'gint32' (aka 'int') to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  245 |                 FrameHeight = MAKE_SAFE_FOR_PANGO (SAFE_FLOAT_TO_UINT32 (rc->Height));
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./general-private.h:78:69: note: expanded from macro 'SAFE_FLOAT_TO_UINT32'
+   78 | #define SAFE_FLOAT_TO_UINT32(value)    ((value < 0) ? 0 : (value >= G_MAXINT32) ? G_MAXINT32 : (((int)value) < 0 ? G_MAXINT32 : (int)value))
+      |                                                                  ~~ ^~~~~~~~~~
+/opt/homebrew/Cellar/glib/2.90.1/include/glib-2.0/glib/gtypes.h:97:21: note: expanded from macro 'G_MAXINT32'
+   97 | #define G_MAXINT32      ((gint32)  0x7fffffff)
+      |                          ^~~~~~~~~~~~~~~~~~~~
+./text-pango-private.h:40:163: note: expanded from macro 'MAKE_SAFE_FOR_PANGO'
+   40 | #define MAKE_SAFE_FOR_PANGO(x)  ((x) == G_MAXINT32 ? 0 :((x) > G_MAXINT/PANGO_SCALE ? G_MAXINT/PANGO_SCALE : ((x) < G_MININT/PANGO_SCALE ? G_MININT/PANGO_SCALE : (x))))
+      |                                                                                                                                                                    ^
+16 warnings generated.
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+testmetafile.c:192:62: warning: variable 'wmfPlaceableFileHeader' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+  192 |     status = GdipCreateMetafileFromWmf (hEmfMetafile, TRUE, &wmfPlaceableFileHeader, &metafile);
+      |                                                              ^~~~~~~~~~~~~~~~~~~~~~
+testmetafile.c:235:59: warning: variable 'wmfPlaceableFileHeader' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+  235 |     status = GdipGetMetafileHeaderFromWmf (hWmfMetafile, &wmfPlaceableFileHeader, &header);
+      |                                                           ^~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+gtest.cpp:9:9: warning: 'M_PI' macro redefined [-Wmacro-redefined]
+    9 | #define M_PI 3.14159265358979323846
+      |         ^
+/Applications/Xcode_26.6.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/math.h:741:9: note: previous definition is here
+  741 | #define M_PI        3.14159265358979323846264338327950288   /* pi             */
+      |         ^
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+1 warning generated.
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+CMake Warning:
+  Ignoring extra path from command line:
+
+   "/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/gtest_build"
+
+
+CMake Warning:
+  Ignoring extra path from command line:
+
+   "."
+
+
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+CMake Warning (deprecated) at CMakeLists.txt:4 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+CMake Warning (deprecated) at googlemock/CMakeLists.txt:39 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+CMake Warning (deprecated) at googletest/CMakeLists.txt:49 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+to suppress it.
+
+ld: warning: -bind_at_load is deprecated on macOS
+ld: warning: search path '/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/work/libgdiplus-6.2-arm64/prefix' not found
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib: replacing existing signature
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib
+	@loader_path/libsimplecble.dylib (compatibility version 0.0.0, current version 0.9.1)
+	@loader_path/libsimpleble.0.dylib (compatibility version 0.0.0, current version 0.9.1)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5026.5.4)
+	/System/Library/Frameworks/CoreBluetooth.framework/Versions/A/CoreBluetooth (compatibility version 1.0.0, current version 195.7.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 2100.43.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libSDL2-2.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libusb-1.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libX11.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXau.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXdmcp.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXext.6.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool: warning: changes being made to the file will invalidate the code signature in: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libXrender.1.dylib
+Some X11 libraries could not be mapped to XQuartz:
+	@loader_path/libxcb.1.1.0.dylib (compatibility version 3.0.0, current version 3.0.0)
+	@loader_path/libxcb-render.0.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	@loader_path/libxcb-shm.0.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	@loader_path/libxcb-render.0.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	@loader_path/libxcb.1.1.0.dylib (compatibility version 3.0.0, current version 3.0.0)
+	@loader_path/libxcb-shm.0.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	@loader_path/libxcb.1.1.0.dylib (compatibility version 3.0.0, current version 3.0.0)
+	@loader_path/libxcb.1.1.0.dylib (compatibility version 3.0.0, current version 3.0.0)
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlicommon.1.2.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libbrotlidec.1.2.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libcairo.2.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libdatrie.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libexif.12.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfontconfig.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfreetype.6.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libfribidi.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgdiplus.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgif.7.2.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgio-2.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libglib-2.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgmodule-2.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgobject-2.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libgraphite2.3.3.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libharfbuzz.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libintl.8.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libjpeg.8.3.2.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/liblzma.5.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpango-1.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangocairo-1.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpangoft2-1.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpcre2-8.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpixman-1.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libpng16.16.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libSDL2-2.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsharpyuv.0.1.2.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimpleble.0.9.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimpleble.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimpleble.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimplecble.0.9.1.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimplecble.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libsimplecble.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libthai.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libtiff.6.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libusb-1.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libuser32stub.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libwebp.7.2.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-render.0.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb-shm.0.0.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libxcb.1.1.0.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Frameworks/libzstd.1.5.7.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/app/libSkiaSharp.dylib: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/sitl/ArduCopter: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/sitl/ArduHeli: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/sitl/ArduPlane: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/Resources/sitl/ArduRover: replacing existing signature
+/Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app/Contents/MacOS/mono-host: replacing existing signature
+Signature: valid
+App: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/Mission Planner.app
+Package: /Users/runner/work/MissionPlanner/MissionPlanner/bin/macos/MissionPlanner-macos-arm64.zip

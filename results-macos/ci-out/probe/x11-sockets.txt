@@ -1,0 +1,4 @@
+total 0
+drwxrwxrwt  3 root    wheel   96 Nov  4 05:31 .
+drwxrwxrwt  6 root    wheel  192 Nov  4 05:31 ..
+srwxrwxrwx  1 runner  wheel    0 Nov  4 05:31 X0
