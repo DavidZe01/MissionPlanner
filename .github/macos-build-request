@@ -2,3 +2,4 @@
 # macOS app (.github/workflows/macos-arm64.yml). Add a line per request.
 2026-11-03 app with the GDI+ HUD default
 2026-11-04 probe: mono-host, Bluetooth/camera permissions, board detection, libusb [tests=probe]
+2026-11-04 probe again: mono-host with absolute preflight paths [tests=probe]
