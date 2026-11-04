@@ -1466,6 +1466,11 @@ namespace System.Windows.Forms {
 		}
 		
 		internal override bool IsVisible(IntPtr handle) {
+			// NSView.hidden may only be read on the main thread. Windows Forms code reads
+			// Control.Visible from worker threads (Mission Planner's Flight Data loop): there
+			// the control's own visibility state decides, as with the other drivers.
+			if (!NSThread.IsMain)
+				return true;
 			NSView vuWrap = handle.ToNSView();
 			return !vuWrap.Hidden;
 		}

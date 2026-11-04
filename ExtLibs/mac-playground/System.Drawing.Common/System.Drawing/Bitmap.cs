@@ -570,9 +570,19 @@ namespace System.Drawing {
 			cachedContext = bitmap;
 		}
 
+		// Graphics made by Graphics.FromImage that are not disposed yet: they draw into the
+		// bitmap's context at any time (Mission Planner's HUD keeps one for its back buffer),
+		// so the image is taken from the context on every use while there are any.
+		internal int liveGraphics;
+
+		internal void MarkDirty ()
+		{
+			dirty = true;
+		}
+
 		internal override CGImage NativeCGImage {
 			get {
-				if (dirty) {
+				if (dirty || liveGraphics > 0) {
 					dirty = false;
 					base.NativeCGImage = GetRenderableContext().ToImage();
 				}

@@ -212,6 +212,11 @@ namespace System.Drawing {
 
 		internal void Dispose (bool disposing)
 		{
+			var bitmap = System.Threading.Interlocked.Exchange (ref targetBitmap, null);
+			if (bitmap != null) {
+				System.Threading.Interlocked.Decrement (ref bitmap.liveGraphics);
+				bitmap.MarkDirty ();
+			}
 			if (disposing) {
 				if (context != null)
 				{
@@ -1047,8 +1052,16 @@ namespace System.Drawing {
 
 			var bitmapContext = b.GetRenderableContext ();
 
-			return new Graphics (bitmapContext, false);
+			// what is drawn shows in the bitmap's image (see Bitmap.liveGraphics)
+			var graphics = new Graphics (bitmapContext, false);
+			graphics.targetBitmap = b;
+			System.Threading.Interlocked.Increment (ref b.liveGraphics);
+			b.MarkDirty ();
+			return graphics;
 		}
+
+		// the bitmap this Graphics draws into (Graphics.FromImage)
+		Bitmap targetBitmap;
 		
 		public void SetClip (RectangleF rect)
 		{

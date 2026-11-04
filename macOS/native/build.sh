@@ -39,10 +39,11 @@ perl -0pi -e 's{\s*<system\.(web|diagnostics)>.*?</system\.\1>}{}gs' "$bundle/Mi
 arch=$(uname -m)
 cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \
     -o "$bundle/libuser32stub.dylib" "$native_dir/../user32stub.c"
-for lib in sdl2:libSDL2-2.0.0.dylib libusb:libusb-1.0.0.dylib; do
+# (Homebrew's sdl2 is sdl2-compat, which loads @loader_path/libSDL3.dylib)
+for lib in sdl2:libSDL2-2.0.0.dylib sdl3:libSDL3.dylib libusb:libusb-1.0.0.dylib; do
     src="$(brew --prefix "${lib%%:*}" 2>/dev/null)/lib/${lib#*:}"
     if [[ -f $src ]]; then
-        cp -- "$src" "$bundle/" && chmod u+w "$bundle/${lib#*:}"
+        cp -L -- "$src" "$bundle/${lib#*:}" && chmod u+w "$bundle/${lib#*:}"
         install_name_tool -id "@loader_path/${lib#*:}" "$bundle/${lib#*:}"
     else
         echo "${lib%%:*} not found (brew install ${lib%%:*}): $src" >&2

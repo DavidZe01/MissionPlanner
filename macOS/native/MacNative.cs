@@ -105,6 +105,9 @@ namespace MissionPlanner
                     yield return "/usr/lib/libSystem.B.dylib";
                     yield break;
                 case "sdl2":
+                    // Homebrew's SDL2 is sdl2-compat: it loads @loader_path/libSDL3.dylib (bundled
+                    // next to it) and, when that fails, shows an alert from whatever thread loaded
+                    // it, which aborts the app
                     foreach (var dir in libraryDirs) yield return Path.Combine(dir, "libSDL2-2.0.0.dylib");
                     yield break;
                 case "simpleble-c.dll":
