@@ -24,3 +24,4 @@
 2026-11-04 native: shared GL context for the 3D map
 2026-11-04 native: Invalidate from worker threads, GL thread contexts
 2026-11-04 native: LockBits conversion, Invalidate threads, PATH
+2026-11-04 native: Retina OpenGL, direct GDI+ HUD, installer
