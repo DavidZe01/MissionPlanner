@@ -55,11 +55,40 @@ Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41847250419
 | Permisos | Bluetooth y red local se piden a nombre de "Mission Planner" |
 
 El único fallo, `ConfigHWCompass2`, falla igual en Windows y Linux cuando no hay vehículo
-conectado. La máquina virtual de CI no tiene aceleración OpenGL: allí se usa el renderizador
-por software de Apple; en un Mac el contexto es acelerado por la GPU (mismo código, solo
-cambia el formato de píxel elegido). En pantallas Retina, OpenGL dibuja a la resolución de
-la pantalla (las llamadas que Mission Planner hace en puntos se escalan) y el HUD GDI+ dibuja
-directo en la vista, también a resolución Retina.
+conectado.
+
+### Confirmado en tu propio Mac (hardware real, no una VM de CI)
+
+El workflow corre como runner autoalojado en tu MacBook (`runs-on: [self-hosted, macOS,
+ARM64]`) además de en los runners de GitHub, lo que además evita la cola de espera por
+Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 41919317597):
+
+| Prueba | Resultado |
+| --- | --- |
+| OpenGL con GPU real (no el renderizador por software de la VM de CI) | `Vendor: Apple`, `Version: 2.1 Metal - 91.7` — Metal de verdad, confirmado por log |
+| Recorrido de pantallas sin vehículo | 146/148 (98,6 %) |
+| Conectado al SITL incluido | 9/9 (100 %) |
+| Bibliotecas que carga la app en tiempo de ejecución | 1432 en total, 0 desde Homebrew o `/usr/local` (63 del propio `.app`, 46 del GStreamer incluido) — confirma que no depende de nada instalado aparte |
+| Pantalla Retina virtual (2x), HUD por OpenGL y por GDI+ | Ambos modos arrancan y quedan en marcha; `OpenGL view attached: HUD, backing scale 2` confirma que OpenGL se adjuntó a resolución Retina |
+| Abrir un `.tlog` desde Finder | OK |
+| Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha |
+
+Dos hallazgos reales de hardware, ninguno bloqueante:
+- **Capturas de pantalla**: `screencapture` falla en este runner ("could not create image
+  from display") porque el proceso del runner, al correr como servicio en segundo plano, no
+  tiene el permiso "Grabación de pantalla" de Ajustes del Sistema. No afecta a la app en sí
+  (arranca, dibuja, todo funciona); solo faltan imágenes de las pruebas automáticas. Para
+  arreglarlo: Ajustes del Sistema → Privacidad y seguridad → Grabación de pantalla → dale
+  permiso al proceso del runner (`Runner.Worker`) o ábrelo una vez desde Terminal para que
+  pida el permiso.
+- **`feature:joystick-enumeration` se cuelga** (SDL2) de forma repetible en tu Mac, hasta que
+  el vigilante lo corta. Probablemente algún dispositivo HID o Bluetooth conectado que SDL2
+  se queda esperando al enumerar; no es arreglable sin saber cuál es ese periférico.
+
+En la máquina virtual de CI de GitHub (sin aceleración OpenGL) el mismo código usa el
+renderizador por software de Apple en vez de la GPU; en Retina, OpenGL dibuja a la resolución
+de la pantalla (las llamadas que Mission Planner hace en puntos se escalan) y el HUD GDI+
+dibuja directo en la vista, también a resolución Retina.
 
 ## Cómo se hizo la comparación
 
