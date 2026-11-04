@@ -179,13 +179,21 @@ namespace MissionPlanner.Joystick
             {
                 try
                 {
-#if __MACOS__
                     // Split "stuck loading the library" from "stuck inside the first call":
-                    // this resolves the native library (dlopen on macOS) without calling into it.
-                    Trace("> NativeLibrary.TryLoad");
-                    var loaded = NativeLibrary.TryLoad("SDL2", out var libHandle);
-                    Trace("< NativeLibrary.TryLoad = " + loaded);
-#endif
+                    // dlopen the bundled copy directly (by the same path the SDL2 P/Invoke
+                    // resolves to, the assembly's own directory) without calling into it.
+                    // A runtime check, not #if: this file builds into the ArduPilot library,
+                    // which targets netstandard2.0 even in the macOS native build, so none of
+                    // that build's own preprocessor symbols (__MACOS__, MACNATIVE, NET...) are
+                    // defined here - confirmed by a previous trace attempt gated on them
+                    // silently compiling to nothing.
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        var path = System.IO.Path.Combine(AppContext.BaseDirectory, "libSDL2-2.0.0.dylib");
+                        Trace("> dlopen " + path);
+                        var handle = Native.dlopen(path, Native.RTLD_NOW);
+                        Trace("< dlopen = " + handle + (handle == IntPtr.Zero ? " (" + Marshal.PtrToStringAnsi(Native.dlerror()) + ")" : ""));
+                    }
                     Trace("> SDL_SetHint");
                     Native.SDL_SetHint("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1");
                     Trace("< SDL_SetHint");
@@ -368,6 +376,13 @@ namespace MissionPlanner.Joystick
             // app bundle maps it to its bundled copy), libSDL2.so elsewhere.
             private const string lib = "SDL2";
             public const uint SDL_INIT_JOYSTICK = 0x00000200;
+
+            // for the dlopen diagnostic only (see Run()); not used by SDL calls themselves
+            public const int RTLD_NOW = 2;
+            [DllImport("libdl.dylib")]
+            public static extern IntPtr dlopen(string path, int mode);
+            [DllImport("libdl.dylib")]
+            public static extern IntPtr dlerror();
 
             [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
             public static extern int SDL_Init(uint flags);
