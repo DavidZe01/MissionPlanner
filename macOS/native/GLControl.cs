@@ -264,6 +264,7 @@ namespace OpenTK
                 return;
             nsContext.View = view;
             viewAttached = true;
+            paintRequested = true;
             nsContext.Update();
         }
 
@@ -286,8 +287,35 @@ namespace OpenTK
                 nsContext.Update();
         }
 
+        const int WM_PAINT = 0x000F;
+
+        // set by Invalidate (OnInvalidated), a resize or a new drawable
+        volatile bool paintRequested = true;
+
+        protected override void OnInvalidated(InvalidateEventArgs e)
+        {
+            paintRequested = true;
+            base.OnInvalidated(e);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            // Presenting the OpenGL surface makes AppKit draw the view again (drawRect:, which
+            // sends WM_PAINT): paint only what Windows Forms asked for, or each frame asks for
+            // the next and the main thread never leaves the drawing. The surface keeps showing
+            // the last frame meanwhile.
+            if (m.Msg == WM_PAINT && viewAttached)
+            {
+                if (!paintRequested)
+                    return;
+                paintRequested = false;
+            }
+            base.WndProc(ref m);
+        }
+
         protected override void OnResize(EventArgs e)
         {
+            paintRequested = true;
             // after the native view has its new frame
             if (IsHandleCreated)
                 BeginInvoke((Action)UpdateDrawable);

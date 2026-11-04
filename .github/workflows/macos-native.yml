@@ -127,7 +127,7 @@ jobs:
               ls bin/Release/net461 | head -100 > out/mp-output-dir.txt
           fi
       - name: Run Mission Planner
-        timeout-minutes: 6
+        timeout-minutes: 9
         run: |
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || { echo "no app"; exit 1; }
@@ -135,7 +135,11 @@ jobs:
           pid=$!
           for t in 15 45 90; do
               sleep $(( t == 15 ? 15 : 30 ))
-              osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
+              # (an app that does not answer Apple events would hold osascript for minutes)
+              if ! perl -e 'alarm 15; exec @ARGV' osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1; then
+                  echo "no answer to an Apple event after ${t} s" | tee -a out/result.txt
+                  TOUR_PID=$pid TOUR_ITEM="startup-${t}s" TOUR_OUT="$PWD/out" ./macOS/native/tour-hang.sh
+              fi
               sleep 1
               screencapture -x "out/mp-${t}s.png" || true
               kill -0 "$pid" 2>/dev/null || break
@@ -236,7 +240,7 @@ jobs:
           ls -la "$tlog"
           open -a "$PWD/$app" --stdout "$PWD/out/open-document.log" --stderr "$PWD/out/open-document.log" "$tlog"
           sleep 50
-          osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
+          perl -e 'alarm 15; exec @ARGV' osascript -e 'tell application id "org.ardupilot.missionplanner" to activate' > /dev/null 2>&1 || true
           sleep 5
           screencapture -x out/open-document.png || true
           grep -m1 MACOS_OPEN_DOCUMENT out/open-document.log && echo "OPEN DOCUMENT: OK" || echo "OPEN DOCUMENT: not received"
