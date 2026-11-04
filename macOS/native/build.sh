@@ -76,6 +76,16 @@ if [[ -f $simpleble_build/out/libsimplecble.dylib ]]; then
     done
 fi
 
+# Optional native SITL simulators (MP_SITL_DIR with ArduCopter, ArduPlane, ...; the
+# macos-arm64.yml "sitl" job builds them), found by MacNative.Init in Contents/Resources/sitl
+if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
+    mkdir -p -- "$app/Contents/Resources/sitl"
+    cp -- "$MP_SITL_DIR"/Ardu* "$app/Contents/Resources/sitl/"
+    cp -- "$MP_SITL_DIR"/VERSION.txt "$MP_SITL_DIR"/*.parm "$app/Contents/Resources/sitl/" 2>/dev/null || true
+    chmod +x "$app/Contents/Resources/sitl"/Ardu*
+    codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
+fi
+
 # the bundle changed after the SDK signed it
 codesign --force --deep --sign - "$app"
 codesign --verify --strict "$app" && echo "Signature: valid"

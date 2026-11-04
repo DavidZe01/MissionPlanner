@@ -63,4 +63,7 @@ public keys only) and have version 10.0.0.0:
 `.github/workflows/macos-native.yml` builds and starts the app on an Apple Silicon
 runner, only when `.github/macos-native-request` changes in a push (or from the
 Actions "Run workflow" button), and publishes logs and screenshots to the `ci-native`
-branch.
+branch. It bundles the ArduPilot simulators of the newest `macos-arm64.yml` run
+(`MP_SITL_DIR` for `build.sh`; the app finds them in `Contents/Resources/sitl`), runs the
+screen tour (`macOS/ScreenTour.cs`; a hung step records its stacks with `tour-hang.sh`) and
+a short tour connected to the simulator.

@@ -59,6 +59,9 @@ namespace System.Windows.Forms
 		#region Public Constructor
 		public ToolStripDropDown () : base ()
 		{
+#if MAC
+			native_rendering = true;
+#endif
 			SetStyle (ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
 			SetStyle (ControlStyles.ResizeRedraw, true);
 

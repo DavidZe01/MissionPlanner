@@ -81,6 +81,11 @@ namespace MissionPlanner
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ALLUSERSPROFILE")))
                 Environment.SetEnvironmentVariable("ALLUSERSPROFILE",
                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs"));
+            // the simulators bundled by build.sh (MP_SITL_DIR): Contents/Resources/sitl, read by
+            // GCSViews.SITL.BundledPath (the X11 app's launcher.sh sets the same variable)
+            var sitl = Path.GetFullPath(Path.Combine(bundleDir, "..", "Resources", "sitl"));
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MISSIONPLANNER_SITL_DIR")) && File.Exists(Path.Combine(sitl, "ArduCopter")))
+                Environment.SetEnvironmentVariable("MISSIONPLANNER_SITL_DIR", sitl);
         }
 
         static IntPtr ResolveUnmanagedDll(Assembly assembly, string name)

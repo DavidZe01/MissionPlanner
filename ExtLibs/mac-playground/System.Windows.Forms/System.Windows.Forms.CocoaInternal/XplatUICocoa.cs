@@ -1936,8 +1936,14 @@ namespace System.Windows.Forms {
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine("Unhadled exception in Timer.FireTick(): " + e.ToString()); 
+				Debug.WriteLine("Unhadled exception in Timer.FireTick(): " + e.ToString());
 			}
+
+			// A tick is not a message here (it is WM_TIMER on Windows and X11): wake the modal
+			// loop, which waits for the next event, so that a dialog closed by the tick returns
+			// from ShowDialog without waiting for a mouse move
+			if (ModalSessions.Count > 0)
+				PostMessage(IntPtr.Zero, Msg.WM_NULL, IntPtr.Zero, IntPtr.Zero);
 		}
 
 		internal override bool SetTopmost (IntPtr hWnd, bool Enabled)

@@ -85,11 +85,9 @@ namespace System.Windows.Forms
 
 		private List<ToolStripDropDown> activeDropDowns = new List<ToolStripDropDown>();
 
-#if MAC
-		internal bool native_rendering = true;
-#else
+		// MAC: drop downs are native menus (NSMenu, set in ToolStripDropDown); a tool strip,
+		// menu strip or status strip on a form lays out and draws its items like elsewhere
 		internal bool native_rendering = false;
-#endif
 		#endregion
 
 		#region Public Constructors

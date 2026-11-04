@@ -12,7 +12,20 @@ System.Drawing.Common, MacApi, Mono.WebBrowser and FormsTest (its test app).
 Changes for Mission Planner:
 - target net10.0-macos instead of net8.0-macos (and no iOS/Windows targets);
 - nuget.org only, and without the Microsoft.DotNet.ApiCompat build check,
-  which comes from Microsoft's internal package feeds.
+  which comes from Microsoft's internal package feeds;
+- assembly identities of .NET Framework's System.Windows.Forms and System.Drawing
+  (public signing with their public keys, `keys/`), and a System.Drawing facade
+  (`System.Drawing.Facade`) forwarding every type, so that .NET Framework
+  libraries (OpenTK, ObjectListView, ...) load against these assemblies;
+- ToolStrip: only drop downs are native menus (`native_rendering`); tool strips,
+  menu strips and status strips on a form lay out and draw their items;
+- timers: a tick wakes a modal loop (as WM_TIMER does on Windows), so a dialog
+  closed from a timer returns from ShowDialog;
+- `Control.Visible` read from a worker thread (XplatUICocoa.IsVisible) does not
+  call AppKit off the main thread;
+- `Graphics.FromImage`: what is drawn shows in the bitmap while the Graphics lives;
+- small API gaps: SaveFileDialog.OverwritePrompt/CreatePrompt,
+  ImageAttributes.SetRemapTable (no-op); clipper's top-level types internal.
 
 MIT X11 License: Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation files (the

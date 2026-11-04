@@ -25,9 +25,29 @@ jobs:
   native:
     name: Build and run on macOS
     runs-on: macos-26
-    timeout-minutes: 90
+    timeout-minutes: 100
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
+      - id: sitl
+        # the ArduPilot simulators of the newest macos-arm64.yml run (its "sitl" job), bundled into the app
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          run=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=sitl&per_page=50" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | last | .workflow_run.id // empty' || true)
+          echo "sitl artifact: run ${run:-none}"
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+      - if: steps.sitl.outputs.run != ''
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: sitl
+          path: sitl-bin
+          run-id: ${{ steps.sitl.outputs.run }}
+          github-token: ${{ github.token }}
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
@@ -42,6 +62,8 @@ jobs:
           dotnet workload config --update-mode manifests
           dotnet workload install macos --from-rollback-file rollback.json 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
           dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          # .NET stacks of a hung screen-tour step (macOS/native/tour-hang.sh)
+          dotnet tool install --global dotnet-stack 2>&1 | tail -1 || true
           # native libraries bundled into the app (joysticks, DFU flashing)
           HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb 2>&1 | tail -2
       - name: Build the Windows Forms test app
@@ -89,6 +111,7 @@ jobs:
               sips -z $((size * 2)) $((size * 2)) mpdesktop150.png --out "$iconset/icon_${size}x${size}@2x.png" >/dev/null
           done
           iconutil -c icns "$iconset" -o macOS/native/obj/MissionPlanner.icns
+          [[ -f sitl-bin/ArduCopter ]] && export MP_SITL_DIR=$PWD/sitl-bin && cat sitl-bin/VERSION.txt
           ./macOS/native/build.sh > out/build-missionplanner.log 2>&1 || echo "BUILD FAILED" | tee -a out/result.txt
           grep -E ' error |Build succeeded|Time Elapsed' out/build-missionplanner.log | sort -u | head -30
           find bin/Release/net461 -maxdepth 1 -name '*.app' | tee out/mp-app.txt
@@ -138,14 +161,68 @@ jobs:
               done
               wait "$pid"
           }
-          # a step that hangs ends the run (TOUR HANG); the next run resumes after it
-          for attempt in 1 2 3 4; do
+          # a step that hangs ends the run (TOUR HANG, stacks from tour-hang.sh); the next run resumes after it
+          for attempt in 1 2 3 4 5 6; do
               MISSIONPLANNER_TOUR=1 MISSIONPLANNER_FIRSTCHANCE=1 TOUR_OUT="$PWD/out/tour" TOUR_XWD=/usr/sbin/screencapture \
+                  TOUR_STEP_TIMEOUT=90 TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL' out/tour.log | cut -c1-220 | head -80
-          python3 macOS/summarize-tour.py out/tour.log | tail -40 || true
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump' out/tour.log | cut -c1-220 | head -120
+          python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
+          # where each hung step was stuck: the thread running the tour, then the native main thread
+          for f in out/tour/hang-*-managed.txt; do
+              [[ -f $f ]] || continue
+              echo "=== $f"
+              python3 - "$f" <<'EOF'
+          import re, sys
+          text = open(sys.argv[1], errors="replace").read()
+          blocks = re.split(r"\n(?=\s*Thread \()", text)
+          main = [b for b in blocks if "ScreenTour" in b or "Application.Run" in b]
+          for b in (main or blocks[:2]):
+              print("\n".join(line[:200] for line in b.splitlines()[:45]))
+          EOF
+          done
+          for f in out/tour/hang-*-native.txt; do
+              [[ -f $f ]] || continue
+              echo "=== $f"
+              grep -A30 'com.apple.main-thread' "$f" | cut -c1-200 | head -32
+          done
+          true
+      - name: Connected tour
+        # the bundled ArduCopter simulator: connect over TCP, parameters, mission upload and
+        # download, MAVFTP, onboard logs, arm and take off, the main screens and one page
+        timeout-minutes: 20
+        run: |
+          app=$(head -1 out/mp-app.txt)
+          [[ -n $app ]] || exit 0
+          sitl_dir="$app/Contents/Resources/sitl"
+          [[ -x $sitl_dir/ArduCopter ]] || { echo "SITL: not bundled"; exit 0; }
+          simdir=$(mktemp -d) sitl_log=$PWD/out/sitl.log
+          (cd "$simdir" && exec "$sitl_dir/ArduCopter" -Mquad -O-35.363261,149.165230,584,353 -s1 \
+              --serial0 tcp:0 --defaults "$sitl_dir/copter.parm" > "$sitl_log" 2>&1) &
+          sitl_pid=$!
+          sleep 8
+          kill -0 "$sitl_pid" 2>/dev/null || { echo "SITL: did not start"; tail -20 out/sitl.log; exit 0; }
+          mkdir -p out/tour-connected
+          MISSIONPLANNER_TOUR=1 TOUR_OUT="$PWD/out/tour-connected" TOUR_XWD=/usr/sbin/screencapture \
+              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 \
+              TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
+              "$app/Contents/MacOS/MissionPlanner" > out/tour-connected.log 2>&1 &
+          pid=$!
+          for _ in $(seq 1 900); do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
+          kill -9 "$pid" 2>/dev/null || true
+          kill "$sitl_pid" 2>/dev/null || true
+          grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-connected.log | cut -c1-220
+          python3 macOS/summarize-tour.py out/tour-connected/tour-report.tsv | tail -30 || true
+      - name: Smaller screenshots
+        # JPEG instead of PNG keeps the results (and the ci-native branch) small
+        if: always()
+        run: |
+          find out -name '*.png' | while IFS= read -r f; do
+              sips -s format jpeg -s formatOptions 60 "$f" --out "${f%.png}.jpg" > /dev/null 2>&1 && rm -f "$f"
+          done
+          du -sh out
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -176,4 +253,8 @@ jobs:
           git init -q -b ci-native
           git add -A
           git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $SHA ($OUTCOME)"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-native
+          for attempt in 1 2 3; do
+              git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-native && exit 0
+              sleep $((attempt * 15))
+          done
+          exit 1

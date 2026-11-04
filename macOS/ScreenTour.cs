@@ -115,7 +115,56 @@ class ScreenTour
                 report.WriteLine(name + "\tFAIL\t" + currentTime.ElapsedMilliseconds + "\tHANG: did not finish within " + limit / 1000 + " s");
                 report.Flush();
             }
+            DumpHang(name);
             Finish(3);
+        }
+    }
+
+    // TOUR_HANG_CMD: a program (script) that records where the process is stuck (dotnet-stack,
+    // sample), with TOUR_PID and TOUR_ITEM in its environment; a screenshot first
+    private static void DumpHang(string name)
+    {
+        var cmd = Environment.GetEnvironmentVariable("TOUR_HANG_CMD");
+        if (string.IsNullOrEmpty(cmd))
+            return;
+        try
+        {
+            if (!string.IsNullOrEmpty(xwd))
+            {
+                var mac = Path.GetFileName(xwd) == "screencapture";
+                var file = Path.Combine(outDir, "hang-" + Sanitize(name) + (mac ? ".png" : ".xwd"));
+                var shotProcess = Process.Start(new ProcessStartInfo(xwd, mac ? "-x \"" + file + "\"" : "-root -silent -out \"" + file + "\"") { UseShellExecute = false });
+                if (!shotProcess.WaitForExit(15000))
+                    shotProcess.Kill();
+            }
+            var psi = new ProcessStartInfo(cmd) { UseShellExecute = false };
+            psi.EnvironmentVariables["TOUR_PID"] = Process.GetCurrentProcess().Id.ToString();
+            psi.EnvironmentVariables["TOUR_ITEM"] = Sanitize(name);
+            var p = Process.Start(psi);
+            if (!p.WaitForExit(120000))
+                p.Kill();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("TOUR hang dump failed: " + ex.Message);
+        }
+    }
+
+    // where the main menu's buttons are (they must be laid out and visible)
+    private static void DescribeMainMenu()
+    {
+        try
+        {
+            var menu = MainV2.instance.MainMenu;
+            Console.WriteLine("TOUR mainmenu size=" + menu.Size + " visible=" + menu.Visible + " parentVisible=" + (menu.Parent != null && menu.Parent.Visible) +
+                              " displayed=" + menu.Items.Cast<ToolStripItem>().Count(i => i.Placement == ToolStripItemPlacement.Main));
+            foreach (ToolStripItem item in menu.Items)
+                Console.WriteLine("TOUR mainmenu item " + item.Name + " '" + item.Text + "' bounds=" + item.Bounds + " visible=" + item.Visible +
+                                  " placement=" + item.Placement + " image=" + (item.Image == null ? "none" : item.Image.Size.ToString()));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("TOUR mainmenu: " + ex.Message);
         }
     }
 
@@ -314,6 +363,7 @@ class ScreenTour
                 return;
             }
             Screenshot("startup");
+            DescribeMainMenu();
             var m = MainV2.instance;
             var connect = Environment.GetEnvironmentVariable("TOUR_CONNECT");
             if (!string.IsNullOrEmpty(connect))
