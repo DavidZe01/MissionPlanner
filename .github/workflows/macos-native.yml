@@ -36,11 +36,25 @@ jobs:
         run: |
           mkdir -p out
           { sw_vers; uname -m; xcodebuild -version; xcode-select -p; ls -d /Applications/Xcode*; dotnet --version; } 2>&1 | tee out/environment.txt
-          dotnet workload install macos 2>&1 | tail -3 | tee -a out/environment.txt
+          # .NET for macOS 26.5, for the runner's Xcode 26 (the newest workload, 27.x, is for the macOS 27 SDK)
+          cd "$RUNNER_TEMP"
+          echo '{"microsoft.net.sdk.macos": "26.5.10318/10.0.100"}' > rollback.json
+          dotnet workload config --update-mode manifests
+          dotnet workload install macos --from-rollback-file rollback.json 2>&1 | tail -3 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
+          dotnet workload list 2>&1 | tee -a "$GITHUB_WORKSPACE/out/environment.txt"
       - name: Build the Windows Forms test app
         timeout-minutes: 15
         run: |
-          dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release 2>&1 | tee out/build-formstest.log | tail -15
+          build() { dotnet build ExtLibs/mac-playground/FormsTest/FormsTest.csproj -c Release > out/build-formstest.log 2>&1; }
+          if ! build && grep -q -i 'xcode' out/build-formstest.log; then
+              # the workload may want the Xcode it was built with
+              echo "retrying with Xcode 26.5" | tee -a out/environment.txt
+              cp out/build-formstest.log out/build-formstest-xcode-default.log
+              export DEVELOPER_DIR=/Applications/Xcode_26.5.app/Contents/Developer
+              echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
+              build || true
+          fi
+          grep -E 'error|warning MT|Build succeeded' out/build-formstest.log | sort -u | head -20
           find ExtLibs/mac-playground/FormsTest/bin -maxdepth 4 -name '*.app' | tee out/apps.txt
       - name: Run the test app
         timeout-minutes: 5
