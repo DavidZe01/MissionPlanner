@@ -259,8 +259,16 @@ jobs:
         timeout-minutes: 5
         run: |
           app=$(head -1 out/mp-app.txt)
-          # the connected tour's log (its data directory is under $TMPDIR)
-          tlog=$(find "${TMPDIR:-/tmp}" "$HOME/Library/Application Support/Mission Planner" -name '*.tlog' -size +10k 2>/dev/null | head -1)
+          # the connected tour's log (its data directory is under $TMPDIR; the real
+          # ~/Library/Application Support/Mission Planner may not even exist, since every
+          # direct run in this workflow isolates to its own MISSIONPLANNER_DATA_DIR now -
+          # find on a missing root exits non-zero and (-e -o pipefail) would abort the step)
+          roots=()
+          for d in "${TMPDIR:-/tmp}" "$HOME/Library/Application Support/Mission Planner"; do
+              [[ -d $d ]] && roots+=("$d")
+          done
+          tlog=""
+          [[ ${#roots[@]} -gt 0 ]] && tlog=$(find "${roots[@]}" -name '*.tlog' -size +10k 2>/dev/null | head -1)
           [[ -n $app && -n $tlog ]] || { echo "no app or no telemetry log from the connected tour"; exit 0; }
           ls -la "$tlog"
           export MISSIONPLANNER_DATA_DIR="$RUNNER_TEMP/mp-data-open" ALLUSERSPROFILE="$RUNNER_TEMP/mp-data-open-logs"
