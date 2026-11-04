@@ -68,10 +68,17 @@ public keys only) and have version 10.0.0.0:
 
 ## Installing
 
-Download the `MissionPlanner-macos-native-arm64` artifact of a `macos-native.yml` run,
-unzip it (it holds `MissionPlanner-macos-native-arm64.zip`, made with `ditto`), then
-`xattr -dr com.apple.quarantine "Mission Planner.app"` (the bundle is signed ad hoc, not
-notarized) and open it from Finder. GStreamer (video) comes from `brew install gstreamer`.
+```bash
+brew install gh && gh auth login     # once
+curl -fsSL https://raw.githubusercontent.com/DavidZe01/MissionPlanner/macos-arm64/macOS/native/install.sh | bash
+```
+
+`install.sh` downloads the newest successful build of `macos-native.yml` with the GitHub
+CLI and installs it into /Applications. Downloaded that way the app has no quarantine
+attribute, so macOS opens it from Finder although its signature is ad hoc. (Downloaded
+from the Actions page in a browser instead, the `MissionPlanner-macos-native-arm64`
+artifact holds a zip made with `ditto`; then `xattr -dr com.apple.quarantine "Mission
+Planner.app"` before opening it.)
 
 ## Signing
 

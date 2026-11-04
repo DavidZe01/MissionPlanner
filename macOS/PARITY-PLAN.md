@@ -54,8 +54,10 @@ Resultado en CI (Mac Apple Silicon de GitHub, macOS 26.6, ejecución 41839088400
 
 El único fallo, `ConfigHWCompass2`, falla igual en Windows y Linux cuando no hay vehículo
 conectado. La máquina virtual de CI no tiene aceleración OpenGL: allí se usa el renderizador
-por software de Apple; en un Mac el contexto es acelerado por la GPU. La superficie OpenGL
-es de 1x (en pantallas Retina se escala, como el búfer GDI+ del HUD).
+por software de Apple; en un Mac el contexto es acelerado por la GPU (mismo código, solo
+cambia el formato de píxel elegido). En pantallas Retina, OpenGL dibuja a la resolución de
+la pantalla (las llamadas que Mission Planner hace en puntos se escalan) y el HUD GDI+ dibuja
+directo en la vista, también a resolución Retina.
 
 ## Cómo se hizo la comparación
 
@@ -251,12 +253,12 @@ apartado 4):
 ## 4. Cómo verificar en tu Mac
 
 **App nativa (recomendada):**
-1. GitHub → Actions → "macOS native (Cocoa)" → la ejecución más reciente → Artifacts →
-   `MissionPlanner-macos-native-arm64`. Descomprime (dentro hay otro `.zip` con
-   `Mission Planner.app`).
-2. Quita la cuarentena (la app va firmada ad hoc, sin notarizar) y muévela a Aplicaciones:
-   `xattr -dr com.apple.quarantine "Mission Planner.app"`.
-3. Ábrela desde Finder. No hace falta Mono ni XQuartz. Para video: `brew install gstreamer`.
+1. Una vez: `brew install gh && gh auth login` (la CLI de GitHub, con tu cuenta).
+2. En Terminal:
+   `curl -fsSL https://raw.githubusercontent.com/DavidZe01/MissionPlanner/macos-arm64/macOS/native/install.sh | bash`.
+   Descarga la última compilación correcta, la instala en Aplicaciones y la abre. Así no lleva
+   el atributo de cuarentena y se abre desde Finder sin pasos extra, aunque la firma sea ad hoc.
+3. No hace falta Mono, XQuartz ni Homebrew para usarla (GStreamer va dentro).
 4. Los pasos 2 a 5 de la lista siguiente valen igual (Bluetooth, firmware, video, joystick).
    El log queda en `~/Library/Logs/Mission Planner/MissionPlanner.log`.
 

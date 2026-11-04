@@ -570,7 +570,23 @@ class ScreenTour
                 Screenshot("gstreamer-hud");
                 if (hud.bgimage == null)
                     throw new Exception("no video frame reached the HUD");
-                Console.WriteLine("TOUR gstreamer frame: " + hud.bgimage.Width + "x" + hud.bgimage.Height);
+                // each frame replaces (and disposes) the previous one from the video thread:
+                // read the size of one frame, retrying if it went in between
+                string size = null;
+                for (int i = 0; i < 20 && size == null; i++)
+                {
+                    try
+                    {
+                        var frame = hud.bgimage;
+                        if (frame != null)
+                            size = frame.Width + "x" + frame.Height;
+                    }
+                    catch (Exception)
+                    {
+                        Wait(50);
+                    }
+                }
+                Console.WriteLine("TOUR gstreamer frame: " + (size ?? "?"));
             }
             finally
             {
