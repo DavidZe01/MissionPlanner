@@ -140,6 +140,25 @@ jobs:
               (cd "$app/Contents" && find . -maxdepth 2 | sort | head -80) > out/mp-app-contents.txt
               ls bin/Release/net461 | head -100 > out/mp-output-dir.txt
           fi
+      - name: Probe the SDL2 dlopen hang in isolation
+        timeout-minutes: 2
+        run: |
+          # feature:joystick-enumeration hangs with the trace showing a single
+          # "SDL > dlopen ..." and no matching return: dlopen of the bundled
+          # SDL2 (really SDL2-compat -> SDL3) dylib itself never returns, from
+          # JoystickSDL's dedicated background thread. Isolate whether that is
+          # specific to calling from a non-main thread (two separate processes,
+          # not two threads in one: dyld serializes loading the same image, so
+          # two in-process attempts would make a main-thread-only hang look
+          # like both are stuck) or a general dlopen-level stall either way.
+          app=$(head -1 out/mp-app.txt)
+          [[ -n $app ]] || { echo "no app"; exit 1; }
+          dylib="$app/Contents/MonoBundle/libSDL2-2.0.0.dylib"
+          cc -O0 -o out/dlopen-probe macOS/native/dlopen-probe.c
+          for mode in main thread; do
+              echo "--- $mode ---"
+              perl -e 'alarm 20; exec @ARGV' out/dlopen-probe "$dylib" "$mode" || echo "$mode: killed after 20s (still blocked in dlopen)"
+          done
       - name: Run Mission Planner
         timeout-minutes: 9
         run: |
