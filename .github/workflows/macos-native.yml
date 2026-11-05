@@ -154,11 +154,21 @@ jobs:
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || { echo "no app"; exit 1; }
           dylib="$app/Contents/MonoBundle/libSDL2-2.0.0.dylib"
+          echo "--- codesign -dvvv ---"
+          codesign -dvvv "$dylib" 2>&1 || true
+          echo "--- codesign --verify --verbose=4 ---"
+          codesign --verify --verbose=4 "$dylib" 2>&1 || true
+          echo "--- spctl -a -t exec -vv ---"
+          spctl -a -t exec -vv "$dylib" 2>&1 || true
           cc -O0 -o out/dlopen-probe macOS/native/dlopen-probe.c
           for mode in main thread; do
               echo "--- $mode ---"
               perl -e 'alarm 20; exec @ARGV' out/dlopen-probe "$dylib" "$mode" || echo "$mode: killed after 20s (still blocked in dlopen)"
           done
+          echo "--- unified log, last 2 minutes (kernel/amfid/syspolicyd denials) ---"
+          log show --style compact --last 2m \
+              --predicate 'eventMessage contains "libSDL2" OR eventMessage contains "dlopen-probe" OR eventMessage contains "deny" OR eventMessage contains "cs_invalid" OR subsystem == "com.apple.securityd"' \
+              2>&1 | tail -120 || true
       - name: Run Mission Planner
         timeout-minutes: 9
         run: |
