@@ -44,3 +44,4 @@
 2026-11-04 native: trace the SDL2 dlopen itself (runtime OS check)
 2026-11-05 native: isolated dlopen probe for the SDL2 hang
 2026-11-05 native: capture the kernel's SIGKILL reason for the SDL2 dylib
+2026-11-06 native: map blend mode and bundled library signatures
