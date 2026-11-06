@@ -1,0 +1,2372 @@
+2026-11-06 16:33:53.888 MissionPlanner[85033:3641685] Could not find `System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `ObjectListView, Version=2.5.1.30870, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4`.
+2026-11-06 16:33:53.888 MissionPlanner[85033:3641685] Could not find `System.Data.SqlClient, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+2026-11-06 16:33:53.888 MissionPlanner[85033:3641685] Could not find `System.Data.Odbc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+TOUR_RUNTIME process=Arm64 os=macOS 27.0.1
+If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 
+
+
+Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe
+To fix any filename case issues under mono use    export MONO_IOMAP=drive:case
+for pinvoke      MONO_LOG_LEVEL=debug MONO_LOG_MASK=dll mono MissionPlanner.exe
+watch -n 1 ls -l /proc/$(pidof mono)/fd
+watch -n 1 lsof -p $(pidof mono)
+Data Dir /var/folders/ll/3xdc30fx1038v207349zkpb40000gn/T/missionplanner-tour-40600705-74c9-488e-a4e3-ba4d55bb9aa3/Mission Planner/
+Log Dir /var/folders/ll/3xdc30fx1038v207349zkpb40000gn/T/missionplanner-tour-40600705-74c9-488e-a4e3-ba4d55bb9aa3/Mission Planner/logs
+Running Dir /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/
+User Data Dir /var/folders/ll/3xdc30fx1038v207349zkpb40000gn/T/missionplanner-tour-40600705-74c9-488e-a4e3-ba4d55bb9aa3/Mission Planner/
+PlacesRecentDocuments Dir 
+PlacesDesktop Dir /Users/david/Desktop
+PlacesPersonal Dir /Users/david/Documents
+PlacesMyComputer Dir 
+INFO MissionPlanner.Program - ******************* Logging Configured *******************
+INFO MissionPlanner.Program - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/arm64/libSkiaSharp
+INFO MissionPlanner.Program - Skia Error 
+ERROR MissionPlanner.Program - System.DllNotFoundException: Unable to load shared library 'kernel32.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/kernel32.dll.dylib, 0x0001): tried: '/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll.dylib' (no such file), '/kernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file)
+dlopen(kernel32.dll.dylib, 0x0001): tried: 'kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/usr/lib/kernel32.dll.dylib' (no such file, not in dyld cache), 'kernel32.dll.dylib' (no such file)
+dlopen(/libkernel32.dll.dylib, 0x0001): tried: '/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll.dylib' (no such file), '/libkernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file)
+dlopen(libkernel32.dll.dylib, 0x0001): tried: 'libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/usr/lib/libkernel32.dll.dylib' (no such file, not in dyld cache), 'libkernel32.dll.dylib' (no such file)
+dlopen(/kernel32.dll, 0x0001): tried: '/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll' (no such file), '/kernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file)
+dlopen(kernel32.dll, 0x0001): tried: 'kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/usr/lib/kernel32.dll' (no such file, not in dyld cache), 'kernel32.dll' (no such file)
+dlopen(/libkernel32.dll, 0x0001): tried: '/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll' (no such file), '/libkernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file)
+dlopen(libkernel32.dll, 0x0001): tried: 'libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/usr/lib/libkernel32.dll' (no such file, not in dyld cache), 'libkernel32.dll' (no such file)
+
+   at MissionPlanner.Utilities.NativeLibrary.LoadLibrary(String dllToLoad)
+   at MissionPlanner.Program.Start(String[] args)
+10.0.0.0
+Splash .ctor
+IconFile
+Splash.Show()
+ShowWindow:Mission Planner 1.3.83 build 1.3.9806.29608, activate=True
+Debugger.IsAttached False
+Application.DoEvents
+Application.DoEvents
+Setup GMaps 1
+Setup GMaps 2
+Setup GoogleMapProvider API
+Setup Tracking.productName
+Setup Tracking.primaryScreenBitsPerPixel
+Setup Settings.Instance.UserAgent
+Setup check gdal dir
+Setup gdal (command line tools)
+Setup proxy
+Setup proxy
+Setup CleanupFiles
+INFO MissionPlanner.Program - 64bit os True, 64bit process True, OS Arch Arm64, OS Desc macOS 27.0.1, FW Desc .NET 10.0.14
+INFO MissionPlanner.Program - Runtime Version v4.0.30319
+Application.Run(new MainV2())
+INFO MissionPlanner.MainV2 - Mainv2 ctor
+INFO MissionPlanner.MainV2 - Loading config
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1748 in file:line:column <filename unknown>:0:0
+ adsb_UpdatePlanePosition MainV2 System.EventHandler`1[MissionPlanner.Utilities.adsb+PointLatLngAltHdg]
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1832 in file:line:column <filename unknown>:0:0
+ <.ctor>b__106_0 MainV2 System.EventHandler`1[System.ValueTuple`2[System.String,MAVLink+MAV_COLLISION_THREAT_LEVEL]]
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+BurntKermit.mpsystheme theme is loading
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+INFO MissionPlanner.Utilities.srtm - .cctor
+INFO MissionPlanner.Utilities.srtm - requestRunner start
+INFO MissionPlanner.Utilities.srtm - /var/folders/ll/3xdc30fx1038v207349zkpb40000gn/T/missionplanner-tour-40600705-74c9-488e-a4e3-ba4d55bb9aa3/Mission Planner/srtm
+INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True
+INFO MissionPlanner.MainV2 - Create FD
+INFO MissionPlanner.GCSViews.FlightData - Ctor Start
+INFO MissionPlanner.Controls.HUD - Static HUD ctor
+INFO MissionPlanner.Controls.HUD - Instance HUD ctor
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz
+Using backup param data
+INFO MissionPlanner.GCSViews.FlightData - Components Done
+INFO MissionPlanner.GCSViews.FlightData - Tunning Graph Settings
+INFO MissionPlanner.GCSViews.FlightData - HUD Settings
+INFO MissionPlanner.GCSViews.FlightData - Graph Setup
+INFO MissionPlanner.GCSViews.FlightData - Map Setup
+INFO MissionPlanner.MainV2 - Create FP
+INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params
+INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 30
+INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - updateMapType invoke req? False
+INFO MissionPlanner.MainV2 - Create SIM
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.MainV2 - myview width 944 height 840
+INFO MissionPlanner.MainV2 - this   width 944 height 900
+INFO MissionPlanner.MainV2 - myview width 1280 height 840
+INFO MissionPlanner.MainV2 - this   width 1280 height 900
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 17496 in file:line:column <filename unknown>:0:0
+ comPort_MavChanged MainV2 System.EventHandler
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - myview width 1280 height 840
+INFO MissionPlanner.MainV2 - this   width 1280 height 868
+INFO MissionPlanner.MainV2 - myview width 1280 height 840
+INFO MissionPlanner.MainV2 - this   width 1280 height 900
+INFO MissionPlanner.MainV2 - Load Pluggins
+INFO MissionPlanner.Plugin.PluginLoader - Plugin path: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Grid 1.3.9806.29608 by Michael Oborne
+INFO MissionPlanner.MainV2 - Load Pluggins... Done
+INFO MissionPlanner.MainV2 - show FlightData
+Open MissionPlanner.GCSViews.FlightData FlightData
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnHandleCreated Start
+INFO MissionPlanner.Controls.HUD - OnLoad Start
+INFO MissionPlanner.Controls.HUD - OnLoad Done
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 397
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - show FlightData... Done
+INFO MissionPlanner.MainV2 - start http
+INFO MissionPlanner.MainV2 - start joystick
+INFO MissionPlanner.Utilities.httpserver - Listening for client
+INFO MissionPlanner.MainV2 - start serialreader
+INFO MissionPlanner.MainV2 - start adsbsender
+INFO MissionPlanner.MainV2 - start plugin thread
+INFO MissionPlanner.MainV2 - start AutoConnect
+INFO MissionPlanner.ArduPilot.APFirmware - https://firmware.oborne.me/manifest.json.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz
+INFO MissionPlanner.MainV2 - appload time
+INFO MissionPlanner.MainV2 - Loaded 4855 airports
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 11505617.97752809 bps 1024 8.9E-05s 0.5167333% of 198168     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 1.6030809% of 63877     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 170666666.66666666 bps 1024 6E-06s 0.83448106% of 122711     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 0.46830907% of 218659     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 0.61216927% of 167274     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.9917963% of 103247     
+INFO MissionPlanner.Utilities.Download - 1024000000 bps 1024 1E-06s 0.9973702% of 102670     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 1024000000 bps 1024 1E-06s 0.91165656% of 112323     
+HUD 3 hz drawtime 17 gl False
+INFO MissionPlanner.Utilities.Download - 108930.3118908382 bps 8941 0.08208s 7.2862253% of 122711     
+INFO MissionPlanner.Utilities.Download - 109705.52147239263 bps 8941 0.0815s 5.3451223% of 167274     
+INFO MissionPlanner.Utilities.Download - 108343.53003888881 bps 8943 0.082543s 14.000344% of 63877     
+INFO MissionPlanner.Utilities.Download - 109308.52364418798 bps 8941 0.081796s 4.0890155% of 218659     
+INFO MissionPlanner.Utilities.Download - 107554.43281607122 bps 8941 0.08313s 4.5118284% of 198168     
+INFO MissionPlanner.Utilities.Download - 105428.86116548357 bps 8941 0.084806s 8.659816% of 103247     
+INFO MissionPlanner.Utilities.Download - 105609.43055243854 bps 8941 0.084661s 8.708484% of 102670     
+INFO MissionPlanner.Utilities.Download - 102759.4846510131 bps 8941 0.087009s 7.9600797% of 112323     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 2.5666735% of 39896     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz 63877
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz 39896
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz 122711
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.4774992% of 41332     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz 41332
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz 167274
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz 198168
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz 102670
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz 103247
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.6887932% of 38084     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz 38084
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz 112323
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.7312493% of 37492     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.5960142% of 171808     
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Small stuff 0.10 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz 218659
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz 37492
+INFO MissionPlanner.Utilities.KIndex - K-Index is 2
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz 171808
+HUD 2 hz drawtime 0 gl False
+HUD 1 hz drawtime 0 gl False
+INFO MissionPlanner.ArduPilot.APFirmware - 103270
+INFO MissionPlanner.ArduPilot.APFirmware - https://raw.githubusercontent.com/CubePilot/periph-manifest/main/manifest.json
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+INFO MissionPlanner.ArduPilot.APFirmware - 103272
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Button change 0.1 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 1 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Camera Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.Airports - getAirports - regen list
+INFO MissionPlanner.Utilities.Airports - getAirports done 0.000704 sec
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init LED Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 1 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN Log Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+HUD 1 hz drawtime 0 gl False
+HUD 1 hz drawtime 3 gl False
+could not create image from display
+TOUR mainmenu size={Width=1280, Height=47} visible=True parentVisible=True displayed=9
+TOUR mainmenu item MenuFlightData 'DATA' bounds={X=0,Y=0,Width=49,Height=47} visible=True placement=Main image={Width=49, Height=45}
+TOUR mainmenu item MenuFlightPlanner 'PLAN' bounds={X=49,Y=0,Width=49,Height=47} visible=True placement=Main image={Width=49, Height=45}
+TOUR mainmenu item MenuInitConfig 'SETUP' bounds={X=98,Y=0,Width=49,Height=47} visible=True placement=Main image={Width=52, Height=45}
+TOUR mainmenu item MenuConfigTune 'CONFIG' bounds={X=147,Y=0,Width=51,Height=47} visible=True placement=Main image={Width=52, Height=45}
+TOUR mainmenu item MenuSimulation 'SIMULATION' bounds={X=198,Y=0,Width=76,Height=47} visible=True placement=Main image={Width=64, Height=45}
+TOUR mainmenu item MenuHelp 'HELP' bounds={X=274,Y=0,Width=49,Height=47} visible=True placement=Main image={Width=54, Height=45}
+TOUR mainmenu item MenuConnect 'CONNECT' bounds={X=1217,Y=0,Width=63,Height=47} visible=True placement=Main image={Width=62, Height=45}
+TOUR mainmenu item toolStripConnectionControl '' bounds={X=976,Y=0,Width=241,Height=47} visible=True placement=Main image=none
+TOUR mainmenu item MenuArduPilot '' bounds={X=776,Y=0,Width=200,Height=47} visible=True placement=Main image={Width=200, Height=31}
+TOUR START connect:tcp:127.0.0.1:5760
+INFO MissionPlanner.MainV2 - We are connecting to preset 115200
+INFO MissionPlanner.MainV2 - Reset connection stats
+INFO MissionPlanner.MainV2 - Set Portname
+INFO MissionPlanner.MainV2 - Set Baudrate
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MainV2 - About to do dtr if needed
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current True new False
+INFO MissionPlanner.MainV2 - creating logfile 2026-11-06 16-34-09.tlog
+INFO MissionPlanner.MAVLinkInterface+NoUIReporter - -1% Mavlink Connecting...
+INFO MissionPlanner.MAVLinkInterface+NoUIReporter - DoWork
+INFO MissionPlanner.MAVLinkInterface+NoUIReporter - -1% Mavlink Connecting...
+INFO MissionPlanner.Utilities.TerrainFollow - OnPacketReceived to packets
+INFO MissionPlanner.MAVLinkInterface - Open port with TCP5760 115200
+INFO MissionPlanner.Comms.TcpSerial - TCP Open 127.0.0.1 5760
+INFO MissionPlanner.Comms.TcpSerial - TcpSerial DiscardInBuffer 0
+INFO MissionPlanner.MAVLinkInterface - 642 Start connect loop 
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+bps 0 loss 0 left 181 mem 220.3134765625 mav2 False sign False mav1 0 mav2 0 signed 0      
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType DISTANCE_SENSOR System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType OBSTACLE_DISTANCE System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.Utilities.Proximity - created for 1 - 1
+INFO MissionPlanner.MainV2 - Mav Changed 1
+INFO MissionPlanner.MAVLinkInterface - ID sys 1 comp 1 ver3 type QUADROTOR name ARDUPILOTMEGA
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - 715 Start connect loop 
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - ID sys 1 comp 1 ver3 type QUADROTOR name ARDUPILOTMEGA
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - ID sys 1 comp 1 ver3 type QUADROTOR name ARDUPILOTMEGA
+INFO MissionPlanner.MAVLinkInterface - HB Selection 1-1 seen 2
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - mav 1-1 seqno 3 exp 2 pkts lost 1
+INFO MissionPlanner.MAVLinkInterface - Request stream EXTENDED_STATUS at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream POSITION at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream EXTRA1 at 4 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream EXTRA2 at 4 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream EXTRA3 at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream RAW_SENSORS at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - Request stream RC_CHANNELS at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 280 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init HUD 0.2 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+bps 228 loss 1 left 436 mem 231.3857421875 mav2 True sign False mav1 0 mav2 7 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.374769 149.1548424 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769 149.1548424 space 100 bit 0
+INFO MissionPlanner.Utilities.srtm - Getting S36E149.hgt
+INFO MissionPlanner.Utilities.srtm - S36E149.hgt
+INFO MissionPlanner.Utilities.srtm - srtm1sec 1
+INFO MissionPlanner.Utilities.srtm - srtm req https://terrain.ardupilot.org/SRTM3/
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768920000264 149.15924926500782 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868000103 149.16365612999817 space 100 bit 2
+bps 1637 loss 1 left 182 mem 231.744140625 mav2 True sign False mav1 0 mav2 43 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768280002314 149.16806299495357 space 100 bit 3
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772000412 149.17246985985653 space 100 bit 4
+INFO MissionPlanner.Utilities.srtm - srtm1esc+3sec 11
+INFO MissionPlanner.Utilities.srtm - srtm req https://terrain.ardupilot.org/SRTM1/
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700000645 149.17687672468958 space 100 bit 5
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476612000932 149.18128358943528 space 100 bit 6
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476508001272 149.18569045407614 space 100 bit 7
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175718018655 149.1548424 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117563802482 149.15924906879613 space 100 bit 9
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175398043356 149.16365573757477 space 100 bit 10
+INFO MissionPlanner.MAVLinkInterface - ID sys 1 comp 1 ver3 type QUADROTOR name ARDUPILOTMEGA
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 148 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_AUTOPILOT_CAPABILITIES 0 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType AUTOPILOT_VERSION System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+MISSION_FLOAT, PARAM_FLOAT, MISSION_INT, COMMAND_INT, FTP, SET_ATTITUDE_TARGET, SET_POSITION_TARGET_LOCAL_NED, SET_POSITION_TARGET_GLOBAL_INT, TERRAIN, FLIGHT_TERMINATION, COMPASS_CALIBRATION, MAVLINK2, MISSION_FENCE, MISSION_RALLY
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117499807422 149.16806240631846 space 100 bit 11
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd DO_SEND_BANNER 0 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface+NoUIReporter - 100% Done
+INFO MissionPlanner.MAVLinkInterface - Done open 1 1
+INFO MissionPlanner.MAVLinkInterface+NoUIReporter - DoWork Done
+INFO MissionPlanner.MAVLinkInterface - getParamList 1 1
+INFO MissionPlanner.Controls.ProgressReporterDialogue - RunBackgroundOperation
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 ArduCopter V4.7.2 (fb773567)
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 MacBook-Air-de-David.local
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 Frame: QUAD/PLUS
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117443811745 149.17246907500976 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117371817303 149.17687574363114 space 100 bit 13
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 1 hz drawtime 4 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Controls.ProgressReporterDialogue - Focus ctl 
+INFO MissionPlanner.Controls.ProgressReporterDialogue - in focus invoke
+INFO MissionPlanner.Controls.ProgressReporterDialogue - DoWork
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType STATUSTEXT System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd DO_SEND_BANNER 0 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport ProgressReporterDialogue Background thread current False new False
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - GetFile 1-1 @PARAM/param.pck?withdefaults=1
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - get kCmdResetSessions
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType FILE_TRANSFER_PROTOCOL System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - kCmdResetSessions
+INFO MissionPlanner.ArduPilot.RetryTimeout - Retry kCmdResetSessions 0 - 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371172838240994 149.18128241216516 space 100 bit 14
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 ArduCopter V4.7.2 (fb773567)
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 MacBook-Air-de-David.local
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:11 p.m. 6 Frame: QUAD/PLUS
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - kRspAck kCmdResetSessions 0
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2653 loss 0 left 182 mem 225.9482421875 mav2 True sign False mav1 0 mav2 73 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117179832133 149.1856890805944 space 100 bit 15
+HUD 1 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.srtm - Get https://terrain.ardupilot.org/SRTM1/S36E149.hgt.zip
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - get kCmdOpenFileRO @PARAM/param.pck?withdefaults=1
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType FILE_TRANSFER_PROTOCOL System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.ArduPilot.RetryTimeout - Retry kCmdOpenFileRO 0 - 1
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - kCmdOpenFileRO @PARAM/param.pck?withdefaults=1 16440
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:12 p.m. 6 ArduCopter V4.7.2 (fb773567)
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:12 p.m. 6 MacBook-Air-de-David.local
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:12 p.m. 6 Frame: QUAD/PLUS
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758243603731 149.1548424 space 100 bit 16
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - get kCmdBurstReadFile @PARAM/param.pck?withdefaults=1 16440
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType FILE_TRANSFER_PROTOCOL System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.ArduPilot.RetryTimeout - Retry kCmdBurstReadFile 0 - 1
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - Done 1 15297 
+ERROR MissionPlanner.ArduPilot.Mavlink.MAVFtp - kCmdBurstReadFile kErrEOF
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582356049404 149.15924887261343 space 100 bit 17
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582116085664 149.1636553452094 space 100 bit 18
+TOUR dialog closed: ProgressReporterDialogue 'Getting Params 1'
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758171614612 149.16806181777042 space 100 bit 19
+INFO MissionPlanner.Controls.ProgressReporterDialogue - DoWork Done
+could not create image from display
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.Airports - getAirports - regen list
+INFO MissionPlanner.Utilities.Airports - getAirports done 0.000361 sec
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758115623076 149.17246829027906 space 100 bit 20
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367580436339594 149.1768747627178 space 100 bit 21
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36757955647264 149.18128123506924 space 100 bit 22
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367578516629884 149.18568770731585 space 100 bit 23
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.srtm - Got https://terrain.ardupilot.org/SRTM1/S36E149.hgt.zip 9387360
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989154055965 149.1548424 space 100 bit 24
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989074073956 149.15924867645978 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398883412799 149.16365495290208 space 100 bit 26
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398843421802 149.16806122930944 space 100 bit 27
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398787434407 149.17246750566446 space 100 bit 28
+bps 19450 loss 0 left 879 mem 243.2392578125 mav2 True sign False mav1 0 mav2 151 signed 0      
+HUD 1 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398715450615 149.17687378194958 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398627470426 149.1812800581474 space 100 bit 30
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398523493842 149.18568633424042 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039587207461 149.1548424 space 100 bit 32
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039579209854 149.15924848033515 space 100 bit 33
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360395552170296 149.1636545606528 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039515228991 149.16806064093552 space 100 bit 35
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360394592457375 149.17246672116588 space 100 bit 36
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360393872672674 149.1768728013264 space 100 bit 37
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039299293585 149.18127888139963 space 100 bit 38
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Link Forward  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360391953246896 149.1856849613681 space 100 bit 39
+bps 2267 loss 0 left 851 mem 283.748046875 mav2 True sign False mav1 0 mav2 62 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680259009327 149.1548424 space 100 bit 40
+HUD 4 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3568025101231 149.15924828423948 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356802270212604 149.1636541684615 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680187036179 149.16806005264863 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680131057064 149.17246593678337 space 100 bit 44
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 280 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 259 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680059083919 149.1768718208483 space 100 bit 45
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp REQUEST_MESSAGE - ACCEPTED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 269 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356799711167426 149.18127770482593 space 100 bit 46
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35679867155535 149.18568358869885 space 100 bit 47
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320930811192 149.1548424 space 100 bit 48
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320922814766 149.15924808817286 space 100 bit 49
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898825492 149.16365377632823 space 100 bit 50
+bps 2305 loss 0 left 880 mem 277.8115234375 mav2 True sign False mav1 0 mav2 64 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858843366 149.16805946444873 space 100 bit 51
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208028683916 149.17246515251688 space 100 bit 52
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320730900568 149.1768708405152 space 100 bit 53
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353206429398966 149.18127652842625 space 100 bit 54
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320538986377 149.1856822162326 space 100 bit 55
+TOUR connected params=1370 fw=ArduCopter2
+could not create image from display
+TOUR OK   connect:tcp:127.0.0.1:5760
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DeviceProgramming
+INFO MissionPlanner.Plugin.PluginLoader - Try load log4net
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:parameters
+TOUR parameters: 1370
+TOUR OK   feature:parameters
+bps 2268 loss 0 left 851 mem 290.2958984375 mav2 True sign False mav1 0 mav2 62 signed 0      
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CubeLan 8 port Switch 0.1 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:parameter-write
+INFO MissionPlanner.MAVLinkInterface - GetParam name: 'WP_SPD' or index: -1 1:1
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - 556 got param 65535 of 1370 name: WP_SPD
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType PARAM_VALUE System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.MAVLinkInterface - setParam 'WP_SPD' = '110' sysid 1 compid 1
+INFO MissionPlanner.MAVLinkInterface - setParam gotback WP_SPD : 110
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - GetParam name: 'WP_SPD' or index: -1 1:1
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - 658 got param 65535 of 1370 name: WP_SPD
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType PARAM_VALUE System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.MAVLinkInterface - setParam 'WP_SPD' = '10' sysid 1 compid 1
+INFO MissionPlanner.MAVLinkInterface - setParam gotback WP_SPD : 10
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+TOUR parameter WP_SPD: 10 -> 110 -> 10
+TOUR OK   feature:parameter-write
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:mission-upload-download
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPTotal req MISSION_COUNT {"count":5,"target_system":1,"target_component":1,"mission_type":0}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPint req MISSION_ITEM_INT {"param1":0.0,"param2":0.0,"param3":0.0,"param4":0.0,"x":-353632610,"y":1491652299,"z":0.0,"seq":0,"command":16,"target_system":1,"target_component":1,"frame":3,"current":0,"autocontinue":1,"mission_type":0}
+bps 2440 loss 0 left 0 mem 295.84375 mav2 True sign False mav1 0 mav2 67 signed 0      
+INFO MissionPlanner.MAVLinkInterface - setWPint resp MISSION_REQUEST{"buffer":"/QQAABEBASgAAAEA/76flA==","rxtime":"2026-11-06T21:34:17.015998Z","header":253,"payloadlength":4,"incompat_flags":0,"compat_flags":0,"seq":17,"sysid":1,"compid":1,"headerlength":10,"target_system":null,"msgid":40,"ismavlink2":true,"msgtypename":"MISSION_REQUEST","data":{"seq":1,"target_system":255,"target_component":190,"mission_type":0},"crc16":38047,"sig":null,"sigLinkid":0,"sigTimestamp":0,"Length":16}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPint req MISSION_ITEM_INT {"param1":0.0,"param2":0.0,"param3":0.0,"param4":0.0,"x":-353632610,"y":1491652299,"z":20.0,"seq":1,"command":22,"target_system":1,"target_component":1,"frame":3,"current":0,"autocontinue":1,"mission_type":0}
+INFO MissionPlanner.MAVLinkInterface - setWPint resp MISSION_REQUEST{"buffer":"/QQAABIBASgAAAIA/77gdw==","rxtime":"2026-11-06T21:34:17.039788Z","header":253,"payloadlength":4,"incompat_flags":0,"compat_flags":0,"seq":18,"sysid":1,"compid":1,"headerlength":10,"target_system":null,"msgid":40,"ismavlink2":true,"msgtypename":"MISSION_REQUEST","data":{"seq":2,"target_system":255,"target_component":190,"mission_type":0},"crc16":30688,"sig":null,"sigLinkid":0,"sigTimestamp":0,"Length":16}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPint req MISSION_ITEM_INT {"param1":0.0,"param2":0.0,"param3":0.0,"param4":0.0,"x":-353627610,"y":1491652299,"z":30.0,"seq":2,"command":16,"target_system":1,"target_component":1,"frame":3,"current":0,"autocontinue":1,"mission_type":0}
+INFO MissionPlanner.MAVLinkInterface - setWPint resp MISSION_REQUEST{"buffer":"/QQAABQBASgAAAMA/77TiQ==","rxtime":"2026-11-06T21:34:17.055423Z","header":253,"payloadlength":4,"incompat_flags":0,"compat_flags":0,"seq":20,"sysid":1,"compid":1,"headerlength":10,"target_system":null,"msgid":40,"ismavlink2":true,"msgtypename":"MISSION_REQUEST","data":{"seq":3,"target_system":255,"target_component":190,"mission_type":0},"crc16":35283,"sig":null,"sigLinkid":0,"sigTimestamp":0,"Length":16}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPint req MISSION_ITEM_INT {"param1":0.0,"param2":0.0,"param3":0.0,"param4":0.0,"x":-353627610,"y":1491657299,"z":30.0,"seq":3,"command":16,"target_system":1,"target_component":1,"frame":3,"current":0,"autocontinue":1,"mission_type":0}
+INFO MissionPlanner.MAVLinkInterface - setWPint resp MISSION_REQUEST{"buffer":"/QQAABYBASgAAAQA/74tEg==","rxtime":"2026-11-06T21:34:17.071873Z","header":253,"payloadlength":4,"incompat_flags":0,"compat_flags":0,"seq":22,"sysid":1,"compid":1,"headerlength":10,"target_system":null,"msgid":40,"ismavlink2":true,"msgtypename":"MISSION_REQUEST","data":{"seq":4,"target_system":255,"target_component":190,"mission_type":0},"crc16":4653,"sig":null,"sigLinkid":0,"sigTimestamp":0,"Length":16}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - setWPint req MISSION_ITEM_INT {"param1":0.0,"param2":0.0,"param3":0.0,"param4":0.0,"x":0,"y":0,"z":0.0,"seq":4,"command":20,"target_system":1,"target_component":1,"frame":3,"current":0,"autocontinue":1,"mission_type":0}
+INFO MissionPlanner.MAVLinkInterface - setWPint resp MISSION_ACK {"buffer":"/QIAABgBAS8AAP++gtQ=","rxtime":"2026-11-06T21:34:17.088199Z","header":253,"payloadlength":2,"incompat_flags":0,"compat_flags":0,"seq":24,"sysid":1,"compid":1,"headerlength":10,"target_system":null,"msgid":47,"ismavlink2":true,"msgtypename":"MISSION_ACK","data":{"target_system":255,"target_component":190,"type":0,"mission_type":0},"crc16":54402,"sig":null,"sigLinkid":0,"sigTimestamp":0,"Length":14}
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP # MISSION
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:17 p.m. 6 Flight plan received
+INFO MissionPlanner.MAVLinkInterface - wpcount: 5
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 16 0 584.08997 -35.363261 149.1652299 opt 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP1
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 22 0 20 -35.363261 149.1652299 opt 3
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP2
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 16 0 30 -35.362761 149.1652299 opt 3
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP3
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 16 0 30 -35.362761 149.1657299 opt 3
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Getting WP4
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 20 0 0 0 0 opt 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.ArduPilot.mav_mission - Done MISSION
+TOUR mission items: 5
+TOUR OK   feature:mission-upload-download
+HUD 3 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.374769 149.1548424 space 100 1111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769 149.1548424 space 100 bit 0
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768920000264 149.15924926500782 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868000103 149.16365612999817 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768280002314 149.16806299495357 space 100 bit 3
+TOUR START feature:mavftp-list
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - get kCmdListDirectoryWithTime /
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType FILE_TRANSFER_PROTOCOL System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.ArduPilot.RetryTimeout - Retry kCmdListDirectory 0 - 1
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:17 p.m. 7 Unsupported FTP: 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772000412 149.17246985985653 space 100 bit 4
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - ListDirectoryWithTime unsupported, falling back to ListDirectory
+INFO MissionPlanner.ArduPilot.Mavlink.MAVFtp - get kCmdListDirectory /
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType FILE_TRANSFER_PROTOCOL System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 1 1
+INFO MissionPlanner.ArduPilot.RetryTimeout - Retry kCmdListDirectory 0 - 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700000645 149.17687672468958 space 100 bit 5
+ERROR MissionPlanner.ArduPilot.Mavlink.MAVFtp - kCmdListDirectory kErrEOF
+TOUR mavftp /: ., .., terrain, @ROMFS, @SYS
+TOUR OK   feature:mavftp-list
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476612000932 149.18128358943528 space 100 bit 6
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476508001272 149.18569045407614 space 100 bit 7
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175718018655 149.1548424 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117563802482 149.15924906879613 space 100 bit 9
+TOUR START feature:log-list
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - GetLogEntry 0-65535
+bps 1831 loss 0 left 0 mem 243.541015625 mav2 True sign False mav1 0 mav2 52 signed 0      
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+TOUR onboard logs: 0
+TOUR OK   feature:log-list
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175398043356 149.16365573757477 space 100 bit 10
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117499807422 149.16806240631846 space 100 bit 11
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117443811745 149.17246907500976 space 100 bit 12
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117371817303 149.17687574363114 space 100 bit 13
+TOUR START feature:arm-takeoff
+INFO MissionPlanner.MAVLinkInterface - setMode GUIDED (4)
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd DO_SET_MODE 1 4 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd COMPONENT_ARM_DISARM 1 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp COMPONENT_ARM_DISARM - FAILED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+HUD 3 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371172838240994 149.18128241216516 space 100 bit 14
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:18 p.m. 2 Arm: Need Position Estimate
+INFO MissionPlanner.CurrentState - messageHigh Arm: Need Position Estimate
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117179832133 149.1856890805944 space 100 bit 15
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758243603731 149.1548424 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582356049404 149.15924887261343 space 100 bit 17
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582116085664 149.1636553452094 space 100 bit 18
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758171614612 149.16806181777042 space 100 bit 19
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758115623076 149.17246829027906 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367580436339594 149.1768747627178 space 100 bit 21
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36757955647264 149.18128123506924 space 100 bit 22
+bps 1248 loss 0 left 851 mem 252.5849609375 mav2 True sign False mav1 0 mav2 36 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367578516629884 149.18568770731585 space 100 bit 23
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989154055965 149.1548424 space 100 bit 24
+HUD 3 hz drawtime 4 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989074073956 149.15924867645978 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398883412799 149.16365495290208 space 100 bit 26
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398843421802 149.16806122930944 space 100 bit 27
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398787434407 149.17246750566446 space 100 bit 28
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398715450615 149.17687378194958 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398627470426 149.1812800581474 space 100 bit 30
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2293 loss 0 left 851 mem 244.4970703125 mav2 True sign False mav1 0 mav2 63 signed 0      
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2239 loss 0 left 851 mem 259.6884765625 mav2 True sign False mav1 0 mav2 61 signed 0      
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:21 p.m. 2 PreArm: Need Position Estimate
+INFO MissionPlanner.CurrentState - messageHigh PreArm: Need Position Estimate
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd COMPONENT_ARM_DISARM 1 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp COMPONENT_ARM_DISARM - FAILED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:21 p.m. 2 Arm: Need Position Estimate
+INFO MissionPlanner.CurrentState - messageHigh Arm: Need Position Estimate
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.CurrentState - messageHigh PreArm: Need Position Estimate
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3963287 149.1238906 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963287 149.1238906 space 100 bit 0
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632861993647 149.12829864299235 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396328379745874 149.13270668596718 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396327979428214 149.13711472890697 space 100 bit 3
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963274189835 149.14152277179429 space 100 bit 4
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396326698411734 149.14593081461155 space 100 bit 5
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632581771292 149.15033885734127 space 100 bit 6
+bps 2373 loss 0 left 851 mem 256.67578125 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396324776887084 149.15474689996594 space 100 bit 7
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392735418018646 149.1238906 space 100 bit 8
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273533796105 149.1282984465717 space 100 bit 9
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273509778821 149.1327062931259 space 100 bit 10
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392734697500174 149.13711413964506 space 100 bit 11
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273413709692 149.14152198611174 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273341657845 149.14592983250841 space 100 bit 13
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3927325359448 149.15033767881752 space 100 bit 14
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273149519595 149.15474552502164 space 100 bit 15
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3891421360373 149.1238906 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389142055985616 149.1282982501801 space 100 bit 17
+bps 2239 loss 0 left 851 mem 258.9921875 mav2 True sign False mav1 0 mav2 61 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389141815830556 149.1327059003427 space 100 bit 18
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914141557212 149.13711355047033 space 100 bit 19
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914085521032 149.14152120054544 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914013474517 149.14592885055055 space 100 bit 21
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389139254176655 149.15033650046814 space 100 bit 22
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38913821350479 149.15474415028078 space 100 bit 23
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554885405595 149.1238906 space 100 bit 24
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554877401019 149.1282980538176 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554853387289 149.13270550761766 space 100 bit 26
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.385548133644065 149.13711296138274 space 100 bit 27
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554757332372 149.14152041509536 space 100 bit 28
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554685291186 149.14592786873797 space 100 bit 29
+bps 2239 loss 0 left 880 mem 261.17578125 mav2 True sign False mav1 0 mav2 61 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554597240848 149.1503353222931 space 100 bit 30
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3855449318136 149.15474277574327 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195557207461 149.1238906 space 100 bit 32
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd COMPONENT_ARM_DISARM 1 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.381955492034756 149.1282978574841 space 100 bit 33
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp COMPONENT_ARM_DISARM - FAILED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195525191524 149.1327051149507 space 100 bit 34
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:24 p.m. 2 Arm: Need Position Estimate
+INFO MissionPlanner.CurrentState - messageHigh Arm: Need Position Estimate
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195485171601 149.13711237238235 space 100 bit 35
+INFO MissionPlanner.CurrentState - messageHigh PreArm: Need Position Estimate
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195429143711 149.14151962976146 space 100 bit 36
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195357107853 149.14592688707066 space 100 bit 37
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195269064027 149.15033414429237 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195165012237 149.15474140140913 space 100 bit 39
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836229009326 149.1238906 space 100 bit 40
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836221005933 149.1282976611797 space 100 bit 41
+bps 2330 loss 0 left 851 mem 257.1708984375 mav2 True sign False mav1 0 mav2 64 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836196995756 149.13270472234186 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836156978794 149.137111783469 space 100 bit 43
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836100955048 149.14151884454375 space 100 bit 44
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836028924518 149.14592590554852 space 100 bit 45
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37835940887205 149.15033296646587 space 100 bit 46
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3783583684311 149.15474002727828 space 100 bit 47
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769008111905 149.1238906 space 100 bit 48
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476892808391 149.12829746490428 space 100 bit 49
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868799989 149.13270432979104 space 100 bit 50
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476828785987 149.13711119464287 space 100 bit 51
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772766384 149.1415180594422 space 100 bit 52
+HUD 3 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700741182 149.14592492417162 space 100 bit 53
+bps 2239 loss 0 left 880 mem 259.02734375 mav2 True sign False mav1 0 mav2 61 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747661271038 149.15033178881362 space 100 bit 54
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747650867398 149.1547386533507 space 100 bit 55
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd PREFLIGHT_STORAGE 1 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2290 loss 0 left 851 mem 272.5703125 mav2 True sign False mav1 0 mav2 63 signed 0      
+HUD 5 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd COMPONENT_ARM_DISARM 1 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:27 p.m. 6 EKF3 IMU0 is using GPS
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:27 p.m. 6 EKF3 IMU1 is using GPS
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp COMPONENT_ARM_DISARM - ACCEPTED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd TAKEOFF 0 0 0 0 0 0 10
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new True
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:27 p.m. 6 Arming motors
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp TAKEOFF - ACCEPTED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport Arm State change current False new True
+INFO MissionPlanner.MAVLinkInterface - getWPint 16 0 584.08 -35.363261 149.1652299 opt 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 3 hz drawtime 2 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2581 loss 0 left 937 mem 271.91015625 mav2 True sign False mav1 0 mav2 71 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3963287 149.1548633 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963287 149.1548633 space 100 bit 0
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632861993647 149.15927134299235 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396328379745874 149.16367938596716 space 100 bit 2
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396327979428214 149.16808742890697 space 100 bit 3
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963274189835 149.17249547179426 space 100 bit 4
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396326698411734 149.17690351461152 space 100 bit 5
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632581771292 149.18131155734125 space 100 bit 6
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396324776887084 149.18571959996592 space 100 bit 7
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392735418018646 149.1548633 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273533796105 149.15927114657168 space 100 bit 9
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273509778821 149.16367899312587 space 100 bit 10
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392734697500174 149.16808683964507 space 100 bit 11
+bps 2382 loss 0 left 908 mem 274.302734375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273413709692 149.17249468611172 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273341657845 149.1769025325084 space 100 bit 13
+HUD 5 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3927325359448 149.18131037881753 space 100 bit 14
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273149519595 149.18571822502162 space 100 bit 15
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3891421360373 149.1548633 space 100 bit 16
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389142055985616 149.1592709501801 space 100 bit 17
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389141815830556 149.1636786003427 space 100 bit 18
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914141557212 149.1680862504703 space 100 bit 19
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914085521032 149.17249390054542 space 100 bit 20
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914013474517 149.17690155055053 space 100 bit 21
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389139254176655 149.18130920046815 space 100 bit 22
+HUD 3 hz drawtime 2 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38913821350479 149.18571685028076 space 100 bit 23
+bps 2378 loss 0 left 938 mem 276.2021484375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554885405595 149.1548633 space 100 bit 24
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554877401019 149.15927075381757 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554853387289 149.16367820761766 space 100 bit 26
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.385548133644065 149.16808566138272 space 100 bit 27
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554757332372 149.17249311509534 space 100 bit 28
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554685291186 149.17690056873795 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554597240848 149.18130802229308 space 100 bit 30
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3855449318136 149.18571547574325 space 100 bit 31
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195557207461 149.1548633 space 100 bit 32
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.381955492034756 149.1592705574841 space 100 bit 33
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195525191524 149.1636778149507 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195485171601 149.16808507238233 space 100 bit 35
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2386 loss 0 left 909 mem 278.4794921875 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195429143711 149.17249232976144 space 100 bit 36
+HUD 5 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195357107853 149.17689958707064 space 100 bit 37
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195269064027 149.18130684429235 space 100 bit 38
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195165012237 149.1857141014091 space 100 bit 39
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836229009326 149.1548633 space 100 bit 40
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836221005933 149.15927036117967 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836196995756 149.16367742234183 space 100 bit 42
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836156978794 149.16808448346902 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836100955048 149.17249154454373 space 100 bit 44
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836028924518 149.1768986055485 space 100 bit 45
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37835940887205 149.18130566646585 space 100 bit 46
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3783583684311 149.1857127272783 space 100 bit 47
+bps 2357 loss 0 left 938 mem 280.4814453125 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769008111905 149.1548633 space 100 bit 48
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476892808391 149.15927016490426 space 100 bit 49
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868799989 149.16367702979102 space 100 bit 50
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476828785987 149.16808389464285 space 100 bit 51
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772766384 149.17249075944218 space 100 bit 52
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700741182 149.17689762417163 space 100 bit 53
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init tracemp 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747661271038 149.1813044888136 space 100 bit 54
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747650867398 149.18571135335068 space 100 bit 55
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 7 hz drawtime 1 gl False
+bps 2386 loss 0 left 1009 mem 251.4296875 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:33 p.m. 6 EKF3 IMU0 MAG0 in-flight yaw alignment complete
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:33 p.m. 6 EKF3 IMU1 MAG0 in-flight yaw alignment complete
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 6 hz drawtime 1 gl False
+bps 2477 loss 0 left 938 mem 253.666015625 mav2 True sign False mav1 0 mav2 67 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3963287 149.185836 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963287 149.185836 space 100 bit 0
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632861993647 149.19024404299236 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396328379745874 149.19465208596716 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396327979428214 149.19906012890698 space 100 bit 3
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3963274189835 149.20346817179427 space 100 bit 4
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396326698411734 149.20787621461153 space 100 bit 5
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+TOUR altitude: 6.607
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39632581771292 149.21228425734125 space 100 bit 6
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 296 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 296 222
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 5
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 23
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init mass Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.396324776887084 149.21669229996593 space 100 bit 7
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+INFO MissionPlanner.MainV2 - Saving config
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392735418018646 149.185836 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273533796105 149.1902438465717 space 100 bit 9
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273509778821 149.1946516931259 space 100 bit 10
+HUD 7 hz drawtime 5 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.392734697500174 149.19905953964508 space 100 bit 11
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2386 loss 0 left 909 mem 247.7939453125 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273413709692 149.20346738611173 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273341657845 149.2078752325084 space 100 bit 13
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3927325359448 149.21228307881753 space 100 bit 14
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.39273149519595 149.21669092502162 space 100 bit 15
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3891421360373 149.185836 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389142055985616 149.19024365018012 space 100 bit 17
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389141815830556 149.1946513003427 space 100 bit 18
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914141557212 149.19905895047032 space 100 bit 19
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914085521032 149.20346660054543 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38914013474517 149.20787425055053 space 100 bit 21
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.389139254176655 149.21228190046816 space 100 bit 22
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 7 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38913821350479 149.21668955028076 space 100 bit 23
+bps 2357 loss 0 left 909 mem 250.0458984375 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554885405595 149.185836 space 100 bit 24
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554877401019 149.19024345381757 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554853387289 149.19465090761767 space 100 bit 26
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.385548133644065 149.19905836138273 space 100 bit 27
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554757332372 149.20346581509534 space 100 bit 28
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554685291186 149.20787326873796 space 100 bit 29
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38554597240848 149.2122807222931 space 100 bit 30
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3855449318136 149.21668817574326 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195557207461 149.185836 space 100 bit 32
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.381955492034756 149.1902432574841 space 100 bit 33
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195525191524 149.1946505149507 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195485171601 149.19905777238233 space 100 bit 35
+HUD 7 hz drawtime 1 gl False
+bps 2386 loss 0 left 909 mem 252.267578125 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195429143711 149.20346502976147 space 100 bit 36
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195357107853 149.20787228707064 space 100 bit 37
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195269064027 149.21227954429236 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.38195165012237 149.21668680140914 space 100 bit 39
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836229009326 149.185836 space 100 bit 40
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836221005933 149.19024306117967 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836196995756 149.19465012234184 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836156978794 149.19905718346902 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836100955048 149.20346424454377 space 100 bit 44
+could not create image from display
+INFO MissionPlanner.MAVLinkInterface - setMode LAND (9)
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd DO_SET_MODE 1 9 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport Base Thread current False new False
+TOUR OK   feature:arm-takeoff
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37836028924518 149.2078713055485 space 100 bit 45
+HUD 6 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37835940887205 149.21227836646585 space 100 bit 46
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3783583684311 149.2166854272783 space 100 bit 47
+bps 2400 loss 0 left 909 mem 254.5751953125 mav2 True sign False mav1 0 mav2 67 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769008111905 149.185836 space 100 bit 48
+TOUR START feature:usb-device-enumeration
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476892808391 149.19024286490426 space 100 bit 49
+TOUR usb devices: 0
+TOUR OK   feature:usb-device-enumeration
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868799989 149.19464972979102 space 100 bit 50
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476828785987 149.19905659464285 space 100 bit 51
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772766384 149.2034634594422 space 100 bit 52
+TOUR START feature:serial-port-list
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700741182 149.20787032417164 space 100 bit 53
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+TOUR serial ports: /dev/tty,/dev/tty.debug-console,/dev/tty.Bluetooth-Incoming-Port,/dev/cu.debug-console,/dev/cu.Bluetooth-Incoming-Port
+TOUR OK   feature:serial-port-list
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init FenceDist 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747661271038 149.2122771888136 space 100 bit 54
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3747650867398 149.2166840533507 space 100 bit 55
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:joystick-enumeration
+INFO MissionPlanner.Joystick.JoystickBase - SDL joystick started, 0 devices
+TOUR joysticks: 0
+TOUR OK   feature:joystick-enumeration
+HUD 8 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2386 loss 0 left 909 mem 196.0546875 mav2 True sign False mav1 0 mav2 66 signed 0      
+TOUR START feature:speech
+INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True
+INFO MissionPlanner.Utilities.Speech - TTS: say Mission Planner test
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2382 loss 0 left 909 mem 198.1982421875 mav2 True sign False mav1 0 mav2 66 signed 0      
+HUD 7 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.374769 149.1238739 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769 149.1238739 space 100 bit 0
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768920000264 149.12828076500782 space 100 bit 1
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868000103 149.13268762999817 space 100 bit 2
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN RTCM Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768280002314 149.13709449495357 space 100 bit 3
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772000412 149.14150135985653 space 100 bit 4
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700000645 149.14590822468958 space 100 bit 5
+bps 2386 loss 0 left 909 mem 205.8486328125 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476612000932 149.15031508943528 space 100 bit 6
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476508001272 149.15472195407614 space 100 bit 7
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175718018655 149.1238739 space 100 bit 8
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117563802482 149.12828056879613 space 100 bit 9
+TOUR OK   feature:speech
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175398043356 149.13268723757477 space 100 bit 10
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117499807422 149.13709390631846 space 100 bit 11
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117443811745 149.14150057500976 space 100 bit 12
+TOUR START feature:local-camera-enumeration
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117371817303 149.14590724363114 space 100 bit 13
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371172838240994 149.15031391216516 space 100 bit 14
+TOUR cameras: 2
+TOUR OK   feature:local-camera-enumeration
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117179832133 149.15472058059441 space 100 bit 15
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758243603731 149.1238739 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582356049404 149.12828037261343 space 100 bit 17
+bps 2357 loss 0 left 909 mem 207.9501953125 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582116085664 149.1326868452094 space 100 bit 18
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:gstreamer-discovery
+INFO MissionPlanner.Utilities.GStreamer - look in dir /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/gstreamer/lib
+INFO MissionPlanner.Utilities.GStreamer - Found gstreamer /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/gstreamer/lib/libgstreamer-1.0.0.dylib
+INFO MissionPlanner.Utilities.GStreamer - GStreamer 1.28.8.0
+TOUR gstreamer: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/gstreamer/lib/libgstreamer-1.0.0.dylib
+TOUR OK   feature:gstreamer-discovery
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758171614612 149.13709331777042 space 100 bit 19
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758115623076 149.14149979027906 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367580436339594 149.14590626271783 space 100 bit 21
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36757955647264 149.15031273506924 space 100 bit 22
+TOUR START feature:gstreamer-hud-video
+INFO MissionPlanner.Utilities.GStreamer - look in dir /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/gstreamer/lib
+INFO MissionPlanner.Utilities.GStreamer - Found gstreamer /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/gstreamer/lib/libgstreamer-1.0.0.dylib
+INFO MissionPlanner.Utilities.GStreamer - GStreamer 1.28.8.0
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 3
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 5
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 23
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367578516629884 149.15471920731585 space 100 bit 23
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+INFO MissionPlanner.MainV2 - Saving config
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.GStreamer - GStreamer 1.28.8.0
+INFO MissionPlanner.Utilities.GStreamer - GStreamer parse videotestsrc pattern=ball ! video/x-raw,width=640,height=480 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink
+INFO MissionPlanner.Utilities.GStreamer - graphviz of pipeline is at /var/folders/ll/3xdc30fx1038v207349zkpb40000gn/T/pipeline.dot
+INFO MissionPlanner.Utilities.GStreamer - got appsink 
+INFO MissionPlanner.Utilities.GStreamer - set appsink params 
+INFO MissionPlanner.Utilities.GStreamer - set playing 
+INFO MissionPlanner.Utilities.GStreamer - start frame loop gst_app_sink_is_eos
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989154055965 149.1238739 space 100 bit 24
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989074073956 149.12828017645978 space 100 bit 25
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398883412799 149.13268645290208 space 100 bit 26
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init multiple positions  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398843421802 149.13709272930944 space 100 bit 27
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 14 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398787434407 149.14149900566446 space 100 bit 28
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2386 loss 0 left 909 mem 210.3974609375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398715450615 149.14590528194958 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398627470426 149.1503115581474 space 100 bit 30
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398523493842 149.15471783424042 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039587207461 149.1238739 space 100 bit 32
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039579209854 149.12827998033515 space 100 bit 33
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360395552170296 149.1326860606528 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039515228991 149.13709214093552 space 100 bit 35
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360394592457375 149.14149822116588 space 100 bit 36
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360393872672674 149.1459043013264 space 100 bit 37
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039299293585 149.15031038139963 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360391953246896 149.1547164613681 space 100 bit 39
+HUD 31 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680259009327 149.1238739 space 100 bit 40
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2358 loss 0 left 910 mem 213.62890625 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3568025101231 149.12827978423948 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356802270212604 149.13268566846153 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680187036179 149.13709155264863 space 100 bit 43
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680131057064 149.14149743678337 space 100 bit 44
+could not create image from display
+TOUR gstreamer frame: 640x480
+INFO MissionPlanner.Utilities.GStreamer - Gstreamer Exit
+TOUR OK   feature:gstreamer-hud-video
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680059083919 149.1459033208483 space 100 bit 45
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356799711167426 149.15030920482593 space 100 bit 46
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35679867155535 149.15471508869885 space 100 bit 47
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320930811192 149.1238739 space 100 bit 48
+TOUR START feature:sitl-bundled
+TOUR OK   feature:sitl-bundled
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320922814766 149.12827958817286 space 100 bit 49
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init MapIconDesc 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898825492 149.13268527632823 space 100 bit 50
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858843366 149.13709096444873 space 100 bit 51
+bps 2388 loss 0 left 910 mem 224.146484375 mav2 True sign False mav1 0 mav2 66 signed 0      
+HUD 15 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208028683916 149.14149665251688 space 100 bit 52
+TOUR START screen:FlightData
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 3
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 5
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 23
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+INFO MissionPlanner.MainV2 - Saving config
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320730900568 149.1459023405152 space 100 bit 53
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353206429398966 149.15030802842625 space 100 bit 54
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320538986377 149.1547137162326 space 100 bit 55
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2359 loss 0 left 910 mem 218.8173828125 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 6 hz drawtime 2 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.374769 149.1858108 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374769 149.1858108 space 100 bit 0
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768920000264 149.19021766500782 space 100 bit 1
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476868000103 149.19462452999815 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.374768280002314 149.19903139495355 space 100 bit 3
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476772000412 149.2034382598565 space 100 bit 4
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Anonymize Binlog 1.0 by MissionPlanner
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476700000645 149.20784512468958 space 100 bit 5
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2388 loss 0 left 910 mem 233.5068359375 mav2 True sign False mav1 0 mav2 66 signed 0      
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476612000932 149.21225198943526 space 100 bit 6
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37476508001272 149.21665885407612 space 100 bit 7
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175718018655 149.1858108 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117563802482 149.19021746879613 space 100 bit 9
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371175398043356 149.19462413757475 space 100 bit 10
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117499807422 149.19903080631846 space 100 bit 11
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117443811745 149.20343747500974 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117371817303 149.20784414363112 space 100 bit 13
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - Request stream RC_CHANNELS at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 259 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 280 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd SET_MESSAGE_INTERVAL 271 500000 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.371172838240994 149.21225081216517 space 100 bit 14
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp REQUEST_MESSAGE - ACCEPTED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 269 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.37117179832133 149.2166574805944 space 100 bit 15
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758243603731 149.1858108 space 100 bit 16
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582356049404 149.19021727261344 space 100 bit 17
+bps 2595 loss 0 left 910 mem 231.978515625 mav2 True sign False mav1 0 mav2 73 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367582116085664 149.1946237452094 space 100 bit 18
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758171614612 149.19903021777043 space 100 bit 19
+could not create image from display
+TOUR OK   screen:FlightData
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36758115623076 149.20343669027903 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367580436339594 149.2078431627178 space 100 bit 21
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36757955647264 149.21224963506924 space 100 bit 22
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:hud-back-buffer
+TOUR hud opengl=False bgimage=False bitmap={Width=1024, Height=1024} control={Width=446, Height=332}
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.367578516629884 149.21665610731586 space 100 bit 23
+TOUR hud pixel y=0.3 Color [A=0, R=0, G=0, B=0]
+TOUR hud pixel y=0.5 Color [A=0, R=0, G=0, B=0]
+TOUR hud pixel y=0.7 Color [A=0, R=0, G=0, B=0]
+TOUR hud pixel y=0.9 Color [A=0, R=0, G=0, B=0]
+TOUR OK   feature:hud-back-buffer
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989154055965 149.1858108 space 100 bit 24
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.363989074073956 149.19021707645976 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398883412799 149.19462335290208 space 100 bit 26
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START feature:map-compositing
+TOUR map compositing navy over whitesmoke: Color [A=255, R=0, G=0, B=128]
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398843421802 149.19902962930945 space 100 bit 27
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398787434407 149.20343590566443 space 100 bit 28
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init generator 0.11 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs
+bps 2359 loss 0 left 939 mem 253.8642578125 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398715450615 149.2078421819496 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398627470426 149.2122484581474 space 100 bit 30
+TOUR map render zoom=17 provider=GoogleSatelliteMap size={Width=816, Height=785} near-white=0/96 mean=(139,133,116)
+TOUR OK   feature:map-compositing
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36398523493842 149.21665473424042 space 100 bit 31
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 4 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039587207461 149.1858108 space 100 bit 32
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039579209854 149.19021688033513 space 100 bit 33
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360395552170296 149.1946229606528 space 100 bit 34
+TOUR START screen:FlightData-tabQuick
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039515228991 149.19902904093553 space 100 bit 35
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360394592457375 149.20343512116588 space 100 bit 36
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360393872672674 149.2078412013264 space 100 bit 37
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.36039299293585 149.21224728139964 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.360391953246896 149.21665336136812 space 100 bit 39
+HUD 3 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680259009327 149.1858108 space 100 bit 40
+bps 2413 loss 0 left 910 mem 238.9189453125 mav2 True sign False mav1 0 mav2 67 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3568025101231 149.1902166842395 space 100 bit 41
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356802270212604 149.1946225684615 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680187036179 149.19902845264863 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680131057064 149.20343433678337 space 100 bit 44
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35680059083919 149.20784022084828 space 100 bit 45
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.356799711167426 149.21224610482594 space 100 bit 46
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35679867155535 149.21665198869886 space 100 bit 47
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320930811192 149.1858108 space 100 bit 48
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320922814766 149.19021648817287 space 100 bit 49
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898825492 149.19462217632824 space 100 bit 50
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858843366 149.19902786444874 space 100 bit 51
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208028683916 149.20343355251686 space 100 bit 52
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs
+bps 2359 loss 0 left 939 mem 241.7412109375 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320730900568 149.20783924051517 space 100 bit 53
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs
+could not create image from display
+TOUR OK   screen:FlightData-tabQuick
+HUD 5 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353206429398966 149.21224492842626 space 100 bit 54
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320538986377 149.2166506162326 space 100 bit 55
+TOUR START screen:FlightData-tabActions
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2389 loss 0 left 911 mem 259.5654296875 mav2 True sign False mav1 0 mav2 66 signed 0      
+HUD 4 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 3 hz drawtime 1 gl False
+bps 2361 loss 0 left 940 mem 261.06640625 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3532093 149.1238571 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532093 149.1238571 space 100 bit 0
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353209220064024 149.1282627882764 space 100 bit 1
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load MissionPlanner.WebAPIs
+could not create image from display
+TOUR OK   screen:FlightData-tabActions
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898025605 149.13266847653531 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858057611 149.13707416475935 space 100 bit 3
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208021024194 149.14147985293107 space 100 bit 4
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START screen:FlightData-tabPagemessages
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353207301600314 149.145885541033 space 100 bit 5
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320642230448 149.15029122904772 space 100 bit 6
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532053831367 149.15469691695785 space 100 bit 7
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961601801866 149.1238571 space 100 bit 8
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961593808858 149.1282625922734 space 100 bit 9
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.349615698298344 149.13266808452934 space 100 bit 10
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961529864797 149.1370735767504 space 100 bit 11
+bps 2390 loss 0 left 911 mem 258.619140625 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961473913743 149.14147906891915 space 100 bit 12
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 5 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961401976676 149.14588456101814 space 100 bit 13
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961314053595 149.15029005302992 space 100 bit 14
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961210144502 149.1546955449371 space 100 bit 15
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022736037305 149.1238571 space 100 bit 16
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602265611314 149.1282623962994 space 100 bit 17
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022416340645 149.13266769258135 space 100 bit 18
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022016719814 149.1370729888284 space 100 bit 19
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602145725066 149.1414782850232 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602073793319 149.1458835811482 space 100 bit 21
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3460198587674 149.15028887718606 space 100 bit 22
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34601881975331 149.15469417311934 space 100 bit 23
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2361 loss 0 left 940 mem 261.2822265625 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242945405595 149.1238571 space 100 bit 24
+could not create image from display
+TOUR OK   screen:FlightData-tabPagemessages
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242937413771 149.12826220035436 space 100 bit 25
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Donate 0.10 by Example
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242913438294 149.1326673006913 space 100 bit 26
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242873479166 149.1370724009934 space 100 bit 27
+TOUR START screen:FlightData-tabActionsSimple
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242817536388 149.14147750124314 space 100 bit 28
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.342427456099585 149.1458826014232 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242657699882 149.1502877015161 space 100 bit 30
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242553806156 149.1546928015044 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338836172074615 149.1238571 space 100 bit 32
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883609216227 149.12826200443834 space 100 bit 33
+HUD 3 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883585242523 149.13266690885925 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883545286349 149.13707181324529 space 100 bit 35
+bps 2390 loss 0 left 911 mem 200.9541015625 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834893477085 149.14147671757905 space 100 bit 36
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834174265976 149.1458816218431 space 100 bit 37
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338833295230195 149.15028652602004 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883225636976 149.15469143009238 space 100 bit 39
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524289009327 149.1238571 space 100 bit 40
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242810186834 149.1282618085513 space 100 bit 41
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524257046752 149.1326665170851 space 100 bit 42
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242170935324 149.1370712255841 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524161159027 149.1414759340308 space 100 bit 44
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524089243235 149.14588064240786 space 100 bit 45
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335240013461565 149.15028535069777 space 100 bit 46
+bps 2361 loss 0 left 940 mem 202.19140625 mav2 True sign False mav1 0 mav2 65 signed 0      
+could not create image from display
+TOUR OK   screen:FlightData-tabActionsSimple
+HUD 5 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33523897467794 149.15469005888315 space 100 bit 47
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649608111924 149.1238571 space 100 bit 48
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164952821139 149.12826161269317 space 100 bit 49
+TOUR START screen:FlightData-tabPagePreFlight
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649288509794 149.1326661253689 space 100 bit 50
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164888900715 149.13707063800985 space 100 bit 51
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164832970345 149.14147515059847 space 100 bit 52
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3316476105987 149.14587966311743 space 100 bit 53
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164673169291 149.1502841755493 space 100 bit 54
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164569298608 149.15468868787667 space 100 bit 55
+bps 2390 loss 0 left 911 mem 208.087890625 mav2 True sign False mav1 0 mav2 66 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 4 hz drawtime 1 gl False
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:34:58 p.m. 6 SIM Hit ground at 0.499112 m/s
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tabPagePreFlight
+HUD 4 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2403 loss 0 left 939 mem 212.2734375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3532093 149.1548214 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532093 149.1548214 space 100 bit 0
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353209220064024 149.15922708827637 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898025605 149.1636327765353 space 100 bit 2
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load BouncyCastle.Cryptography
+TOUR START screen:FlightData-tabGauges
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858057611 149.16803846475935 space 100 bit 3
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init External API  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208021024194 149.17244415293104 space 100 bit 4
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353207301600314 149.176849841033 space 100 bit 5
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320642230448 149.18125552904772 space 100 bit 6
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532053831367 149.1856612169578 space 100 bit 7
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961601801866 149.1548214 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961593808858 149.15922689227338 space 100 bit 9
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.349615698298344 149.16363238452934 space 100 bit 10
+HUD 6 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961529864797 149.1680378767504 space 100 bit 11
+bps 2522 loss 0 left 910 mem 217.0615234375 mav2 True sign False mav1 0 mav2 70 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961473913743 149.17244336891912 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961401976676 149.17684886101813 space 100 bit 13
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961314053595 149.1812543530299 space 100 bit 14
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.MAVLinkInterface - 06/11/2026 4:35:00 p.m. 6 Disarming motors
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961210144502 149.18565984493708 space 100 bit 15
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022736037305 149.1548214 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602265611314 149.15922669629938 space 100 bit 17
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022416340645 149.16363199258134 space 100 bit 18
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022016719814 149.1680372888284 space 100 bit 19
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602145725066 149.1724425850232 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602073793319 149.1768478811482 space 100 bit 21
+could not create image from display
+TOUR OK   screen:FlightData-tabGauges
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3460198587674 149.18125317718605 space 100 bit 22
+bps 2423 loss 0 left 910 mem 219.3369140625 mav2 True sign False mav1 0 mav2 67 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34601881975331 149.18565847311933 space 100 bit 23
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242945405595 149.1548214 space 100 bit 24
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START screen:FlightData-tabTransponder
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242937413771 149.15922650035435 space 100 bit 25
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242913438294 149.1636316006913 space 100 bit 26
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242873479166 149.16803670099335 space 100 bit 27
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242817536388 149.17244180124314 space 100 bit 28
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.342427456099585 149.1768469014232 space 100 bit 29
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242657699882 149.1812520015161 space 100 bit 30
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242553806156 149.1856571015044 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338836172074615 149.1548214 space 100 bit 32
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883609216227 149.1592263044383 space 100 bit 33
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883585242523 149.16363120885924 space 100 bit 34
+bps 2386 loss 0 left 910 mem 218.072265625 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883545286349 149.16803611324528 space 100 bit 35
+HUD 5 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834893477085 149.17244101757905 space 100 bit 36
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834174265976 149.1768459218431 space 100 bit 37
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338833295230195 149.18125082602 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883225636976 149.18565573009235 space 100 bit 39
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524289009327 149.1548214 space 100 bit 40
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242810186834 149.15922610855125 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524257046752 149.1636308170851 space 100 bit 42
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242170935324 149.1680355255841 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524161159027 149.1724402340308 space 100 bit 44
+could not create image from display
+TOUR OK   screen:FlightData-tabTransponder
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524089243235 149.17684494240785 space 100 bit 45
+bps 2357 loss 0 left 910 mem 219.775390625 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335240013461565 149.18124965069777 space 100 bit 46
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33523897467794 149.18565435888314 space 100 bit 47
+TOUR START screen:FlightData-tabStatus
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649608111924 149.1548214 space 100 bit 48
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164952821139 149.15922591269316 space 100 bit 49
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649288509794 149.1636304253689 space 100 bit 50
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164888900715 149.1680349380098 space 100 bit 51
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164832970345 149.17243945059846 space 100 bit 52
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3316476105987 149.17684396311742 space 100 bit 53
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164673169291 149.1812484755493 space 100 bit 54
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164569298608 149.18565298787667 space 100 bit 55
+INFO MissionPlanner.MAVLinkInterface - SubscribeToPacketType GENERATOR_STATUS System.Func`2[MAVLink+MAVLinkMessage,System.Boolean] False 0 0
+HUD 3 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2386 loss 0 left 910 mem 218.099609375 mav2 True sign False mav1 0 mav2 66 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tabStatus
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 222.869140625 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 5 hz drawtime 0 gl False
+TOUR START screen:FlightData-tabServo
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - received TERRAIN_REQUEST -35.3532093 149.1857857 space 100 11111111111111111111111111111111111111111111111111111111
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532093 149.1857857 space 100 bit 0
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353209220064024 149.19019138827636 space 100 bit 1
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320898025605 149.19459707653527 space 100 bit 2
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320858057611 149.19900276475934 space 100 bit 3
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353208021024194 149.20340845293103 space 100 bit 4
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.353207301600314 149.207814141033 space 100 bit 5
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.35320642230448 149.2122198290477 space 100 bit 6
+bps 2386 loss 0 left 910 mem 213.58984375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3532053831367 149.2166255169578 space 100 bit 7
+HUD 4 hz drawtime 3 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961601801866 149.1857857 space 100 bit 8
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961593808858 149.19019119227335 space 100 bit 9
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.349615698298344 149.19459668452933 space 100 bit 10
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961529864797 149.19900217675038 space 100 bit 11
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961473913743 149.2034076689191 space 100 bit 12
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961401976676 149.20781316101812 space 100 bit 13
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961314053595 149.2122186530299 space 100 bit 14
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34961210144502 149.21662414493707 space 100 bit 15
+could not create image from display
+TOUR OK   screen:FlightData-tabServo
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022736037305 149.1857857 space 100 bit 16
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602265611314 149.19019099629935 space 100 bit 17
+bps 2357 loss 0 left 910 mem 215.599609375 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022416340645 149.19459629258134 space 100 bit 18
+HUD 4 hz drawtime 1 gl False
+TOUR START screen:FlightData-tabAuxFunction
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.346022016719814 149.19900158882837 space 100 bit 19
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602145725066 149.20340688502316 space 100 bit 20
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34602073793319 149.2078121811482 space 100 bit 21
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3460198587674 149.21221747718604 space 100 bit 22
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34601881975331 149.21662277311933 space 100 bit 23
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242945405595 149.1857857 space 100 bit 24
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242937413771 149.19019080035434 space 100 bit 25
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242913438294 149.1945959006913 space 100 bit 26
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242873479166 149.19900100099335 space 100 bit 27
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242817536388 149.20340610124313 space 100 bit 28
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.342427456099585 149.20781120142317 space 100 bit 29
+bps 2386 loss 0 left 910 mem 216.9677734375 mav2 True sign False mav1 0 mav2 66 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242657699882 149.2122163015161 space 100 bit 30
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.34242553806156 149.2166214015044 space 100 bit 31
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338836172074615 149.1857857 space 100 bit 32
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883609216227 149.1901906044383 space 100 bit 33
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883585242523 149.1945955088592 space 100 bit 34
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883545286349 149.19900041324527 space 100 bit 35
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834893477085 149.20340531757904 space 100 bit 36
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338834174265976 149.2078102218431 space 100 bit 37
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.338833295230195 149.21221512602 space 100 bit 38
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33883225636976 149.21662003009234 space 100 bit 39
+could not create image from display
+TOUR OK   screen:FlightData-tabAuxFunction
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524289009327 149.1857857 space 100 bit 40
+bps 2357 loss 0 left 910 mem 218.671875 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 4 hz drawtime 0 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242810186834 149.19019040855125 space 100 bit 41
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524257046752 149.19459511708507 space 100 bit 42
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START screen:FlightData-tabScripts
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335242170935324 149.19899982558408 space 100 bit 43
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524161159027 149.2034045340308 space 100 bit 44
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33524089243235 149.20780924240782 space 100 bit 45
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.335240013461565 149.21221395069776 space 100 bit 46
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33523897467794 149.2166186588831 space 100 bit 47
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649608111924 149.1857857 space 100 bit 48
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164952821139 149.19019021269315 space 100 bit 49
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.331649288509794 149.1945947253689 space 100 bit 50
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 3 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164888900715 149.1989992380098 space 100 bit 51
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164832970345 149.20340375059843 space 100 bit 52
+bps 2411 loss 0 left 910 mem 215.1240234375 mav2 True sign False mav1 0 mav2 67 signed 0      
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.3316476105987 149.2078082631174 space 100 bit 53
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164673169291 149.2122127755493 space 100 bit 54
+INFO MissionPlanner.Utilities.TerrainFollow - SendGrid -35.33164569298608 149.21661728787666 space 100 bit 55
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tabScripts
+HUD 4 hz drawtime 1 gl False
+bps 2357 loss 0 left 910 mem 217.0166015625 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START screen:FlightData-tabPayload
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 4 hz drawtime 1 gl False
+bps 2357 loss 0 left 910 mem 219.9443359375 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tabPayload
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 221.8388671875 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 5 hz drawtime 1 gl False
+TOUR START screen:FlightData-tabTLogs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 215.6904296875 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tabTLogs
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 217.19921875 mav2 True sign False mav1 0 mav2 65 signed 0      
+HUD 4 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START screen:FlightData-tablogbrowse
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 3 hz drawtime 1 gl False
+bps 2357 loss 0 left 910 mem 220.158203125 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   screen:FlightData-tablogbrowse
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 215.58984375 mav2 True sign False mav1 0 mav2 65 signed 0      
+TOUR START screen:FlightPlanner
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 3
+HUD 5 hz drawtime 2 gl False
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 5 5
+Open MissionPlanner.GCSViews.FlightPlanner FlightPlanner
+INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params
+INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 2.00
+INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduCopter2
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 53
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduCopter2
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 53
+INFO MissionPlanner.MainV2 - Saving config
+bps 2357 loss 0 left 910 mem 222.423828125 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 219.625 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2382 loss 0 left 910 mem 220.1572265625 mav2 True sign False mav1 0 mav2 66 signed 0      
+bps 2357 loss 0 left 910 mem 220.7978515625 mav2 True sign False mav1 0 mav2 65 signed 0      
+could not create image from display
+TOUR OK   screen:FlightPlanner
+TOUR START screen:InitialSetup
+Open MissionPlanner.GCSViews.InitialSetup HWConfig
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.InitialSetup - TotalReceived 1370 TotalReported 1370
+bps 2357 loss 0 left 910 mem 223.9638671875 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 224.5947265625 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 225.1513671875 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 225.9853515625 mav2 True sign False mav1 0 mav2 65 signed 0      
+INFO MissionPlanner.MAVLinkInterface - Request stream RC_CHANNELS at 2 hz for 1:1
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 280 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd SET_MESSAGE_INTERVAL 271 500000 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 259 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new True
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd resp REQUEST_MESSAGE - ACCEPTED
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current True new False
+INFO MissionPlanner.MAVLinkInterface - doCommand cmd REQUEST_MESSAGE 269 0 0 0 0 0 0
+INFO MissionPlanner.MAVLinkInterface - set giveComport .NET TP Worker current False new False
+could not create image from display
+TOUR OK   screen:InitialSetup
+bps 2379 loss 0 left 44 mem 219.375 mav2 True sign False mav1 0 mav2 66 signed 0      
+TOUR START screen:ConfigTune
+Open MissionPlanner.GCSViews.SoftwareConfig SWConfig
+INFO MissionPlanner.GCSViews.SoftwareConfig - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.SoftwareConfig - TotalReceived 1370 TotalReported 1370
+INFO MissionPlanner.GCSViews.SoftwareConfig - TotalReceived 1370 TotalReported 1370
+Open MissionPlanner.GCSViews.ConfigurationView.ConfigSimplePids Basic Tuning
+bps 2423 loss 0 left 910 mem 182.7666015625 mav2 True sign False mav1 0 mav2 68 signed 0      
+bps 2357 loss 0 left 910 mem 183.326171875 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 183.9658203125 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2382 loss 0 left 910 mem 184.5380859375 mav2 True sign False mav1 0 mav2 66 signed 0      
+could not create image from display
+TOUR OK   screen:ConfigTune
+TOUR START screen:Simulation
+Open MissionPlanner.GCSViews.SITL Simulation
+bps 2394 loss 0 left 910 mem 178.369140625 mav2 True sign False mav1 0 mav2 66 signed 0      
+bps 2357 loss 0 left 910 mem 179.03515625 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 179.7578125 mav2 True sign False mav1 0 mav2 65 signed 0      
+could not create image from display
+TOUR OK   screen:Simulation
+bps 2357 loss 0 left 910 mem 180.3876953125 mav2 True sign False mav1 0 mav2 65 signed 0      
+TOUR START screen:Help
+Open MissionPlanner.GCSViews.Help Help
+bps 2357 loss 0 left 910 mem 182.361328125 mav2 True sign False mav1 0 mav2 65 signed 0      
+bps 2357 loss 0 left 910 mem 183.04296875 mav2 True sign False mav1 0 mav2 65 signed 0      
+could not create image from display
+TOUR OK   screen:Help
+TOUR START screen:FlightData-again
+Open MissionPlanner.GCSViews.FlightData FlightData
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+HUD 1 hz drawtime 6 gl False
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 23
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 334
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 446 332
+HUD 2 hz drawtime 5 gl False
+INFO MissionPlanner.MainV2 - Saving config
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 181.357421875 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 183.0546875 mav2 True sign False mav1 0 mav2 65 signed 0      
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 6 hz drawtime 1 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+HUD 3 hz drawtime 1 gl False
+bps 2357 loss 0 left 910 mem 177.8642578125 mav2 True sign False mav1 0 mav2 65 signed 0      
+could not create image from display
+TOUR OK   screen:FlightData-again
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+TOUR START page:MissionPlanner.GCSViews.ConfigurationView.ConfigFlightModes
+ShowWindow:Page host, activate=True
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2382 loss 0 left 910 mem 182.654296875 mav2 True sign False mav1 0 mav2 66 signed 0      
+HUD 5 hz drawtime 0 gl False
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+could not create image from display
+TOUR OK   page:MissionPlanner.GCSViews.ConfigurationView.ConfigFlightModes
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 1105
+route OnRender Large Graphics Path 415
+bps 2357 loss 0 left 910 mem 184.296875 mav2 True sign False mav1 0 mav2 65 signed 0      
+TOUR_DONE pass=39 fail=0

@@ -1,0 +1,114 @@
+{"app_name":"dlopen-probe","timestamp":"2026-11-04 19:22:25.00 -0500","app_version":"","slice_uuid":"7513e959-f73b-4323-8e29-8aea5a268fae","build_version":"","platform":1,"share_with_app_devs":0,"is_first_party":1,"bug_type":"309","os_version":"macOS 27.0.1 (26A434)","roots_installed":0,"incident_id":"21B0F352-C2F2-437C-B4B4-19AFCA9443AE","name":"dlopen-probe"}
+{
+  "uptime" : 110000,
+  "procRole" : "Unspecified",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac16,12",
+  "coalitionID" : 24098,
+  "osVersion" : {
+    "train" : "macOS 27.0.1",
+    "build" : "26A434",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-11-04 19:22:25.3285 -0500",
+  "codeSigningMonitor" : 2,
+  "incident" : "21B0F352-C2F2-437C-B4B4-19AFCA9443AE",
+  "pid" : 66791,
+  "translated" : false,
+  "cpuType" : "ARM-64",
+  "procLaunch" : "2026-11-04 19:22:25.1403 -0500",
+  "procStartAbsTime" : 2754083060587,
+  "procExitAbsTime" : 2754085863296,
+  "procName" : "dlopen-probe",
+  "procPath" : "\/Users\/USER\/*\/dlopen-probe",
+  "parentProc" : "bash",
+  "parentPid" : 66783,
+  "coalitionName" : "com.apple.Terminal",
+  "crashReporterKey" : "0966C7F7-E296-70A8-1052-D1265DA81D19",
+  "chargingStatus" : {"externalSourceConnected":true,"chargeMode":"chargingWired"},
+  "developerMode" : 1,
+  "responsiblePid" : 7703,
+  "responsibleProc" : "Terminal",
+  "codeSigningID" : "dlopen-probe",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 587334144,
+  "codeSigningValidationCategory" : 0,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "instructionByteStream" : {"beforePC":"9lcGqfRPB6n9ewip\/QMCkfUDAar0AwCq8wMIqulZn1Kp3b9y\/\/8AOQ==","atPC":"CABAuR8BCWvgAABUyVmfUqndv3IfAQlroQYAVIgDgFICAAAUCASAUg=="},
+  "bootSessionUUID" : "37D2BA69-79D2-4B3A-B40F-5DEF41D55714",
+  "wakeTime" : 5309,
+  "sleepWakeUUID" : "C3FE8600-1F34-426B-A2EB-F1E808D4366A",
+  "sip" : "enabled",
+  "vmRegionInfo" : "0x104904000 is in 0x104904000-0x104984000;  bytes after start: 0  bytes before end: 524287\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      shared memory               1048fc000-104904000    [   32K] r--\/r-- SM=SHM  \n--->  mapped file                 104904000-104984000    [  512K] r--\/rwx SM=COW  Object_id=dc82bda8\n      GAP OF 0x174000 BYTES\n      mapped file                 104af8000-104b6c000    [  464K] ---\/--- SM=COW  Object_id=b3591564",
+  "exception" : {"codes":"0x0000000000000032, 0x0000000104904000","rawCodes":[50,4371529728],"type":"EXC_BAD_ACCESS","signal":"SIGKILL (Code Signature Invalid)","subtype":"UNKNOWN_0x32 at 0x0000000104904000"},
+  "termination" : {"flags":0,"code":2,"namespace":"CODESIGNING","indicator":"Invalid Page"},
+  "vmregioninfo" : "0x104904000 is in 0x104904000-0x104984000;  bytes after start: 0  bytes before end: 524287\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      shared memory               1048fc000-104904000    [   32K] r--\/r-- SM=SHM  \n--->  mapped file                 104904000-104984000    [  512K] r--\/rwx SM=COW  Object_id=dc82bda8\n      GAP OF 0x174000 BYTES\n      mapped file                 104af8000-104b6c000    [  464K] ---\/--- SM=COW  Object_id=b3591564",
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"warnings":0},
+  "faultingThread" : 0,
+  "threads" : [{"triggered":true,"id":3355164,"threadState":{"x":[{"value":4371529728},{"value":6095470392},{"value":1},{"value":262146},{"value":3},{"value":0},{"value":0},{"value":0},{"value":6095470472},{"value":4277009103},{"value":6591184896,"symbolLocation":120,"symbol":"lsl::MemoryManager::vm_allocate_bytes(unsigned long long, bool) (.cold.1)"},{"value":65},{"value":62},{"value":61},{"value":0},{"value":1},{"value":6591163300,"symbolLocation":0,"symbol":"invocation function for block in mach_o::UnsafeHeader::forEachSegment(void (mach_o::UnsafeHeader::SegmentInfo const&, bool&) block_pointer) const"},{"value":7701436843875729208},{"value":0},{"value":6095470472},{"value":4371529728},{"value":6095470392},{"value":0},{"value":6095477976},{"value":0},{"value":6095482073},{"value":4371529728},{"value":1},{"value":6095471280}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6591162332},"cpsr":{"value":0},"fp":{"value":6095470368},"sp":{"value":6095470240},"esr":{"value":2449473543,"description":"(Data Abort) byte read Translation fault"},"pc":{"value":6591151208,"matchesCrashFrame":1},"far":{"value":4371529728}},"queue":"com.apple.main-thread","frames":[{"imageOffset":646248,"symbol":"mach_o::UnsafeHeader::forEachLoadCommand(void (load_command const*, bool&) block_pointer) const","symbolLocation":56,"imageIndex":1},{"imageOffset":657372,"symbol":"mach_o::UnsafeHeader::forEachSegment(void (mach_o::UnsafeHeader::SegmentInfo const&, bool&) block_pointer) const","symbolLocation":128,"imageIndex":1},{"imageOffset":654360,"symbol":"mach_o::UnsafeHeader::preferredLoadAddress() const","symbolLocation":124,"imageIndex":1},{"imageOffset":355980,"symbol":"dyld4::JustInTimeLoader::withRegions(mach_o::UnsafeHeader const*, void (std::__1::span<dyld4::Loader::Region const, 18446744073709551615ul>) block_pointer)","symbolLocation":52,"imageIndex":1},{"imageOffset":358620,"symbol":"dyld4::JustInTimeLoader::makeJustInTimeLoaderDisk(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool, unsigned int)","symbolLocation":1532,"imageIndex":1},{"imageOffset":364928,"symbol":"dyld4::Loader::makeDiskLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool, unsigned int)","symbolLocation":188,"imageIndex":1},{"imageOffset":372348,"symbol":"invocation function for block in dyld4::Loader::getLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool)","symbolLocation":3248,"imageIndex":1},{"imageOffset":366868,"symbol":"dyld4::Loader::forEachResolvedAtPathVar(dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, dyld4::ProcessConfig::PathOverrides::Type, bool&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer)","symbolLocation":800,"imageIndex":1},{"imageOffset":241852,"symbol":"dyld4::ProcessConfig::PathOverrides::forEachPathVariant(CString, mach_o::Platform, bool, bool, bool&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer) const","symbolLocation":1700,"imageIndex":1},{"imageOffset":365612,"symbol":"dyld4::Loader::forEachPath(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer)","symbolLocation":332,"imageIndex":1},{"imageOffset":368048,"symbol":"dyld4::Loader::getLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool)","symbolLocation":1116,"imageIndex":1},{"imageOffset":174320,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'()::operator()() const","symbolLocation":312,"imageIndex":1},{"imageOffset":173900,"symbol":"void dyld4::RuntimeLocks::withLoadersWriteLockAndProtectedStack<dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'()>(dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'())::'lambda'()::operator()() const","symbolLocation":184,"imageIndex":1},{"imageOffset":170828,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const","symbolLocation":264,"imageIndex":1},{"imageOffset":123612,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)","symbolLocation":588,"imageIndex":1},{"imageOffset":122860,"symbol":"dyld4::APIs::dlopen(char const*, int)","symbolLocation":120,"imageIndex":1},{"imageOffset":1596,"symbol":"probe","symbolLocation":80,"imageIndex":0},{"imageOffset":1452,"symbol":"main","symbolLocation":180,"imageIndex":0},{"imageOffset":204416,"symbol":"start","symbolLocation":6688,"imageIndex":1}]}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4371398656,
+    "size" : 16384,
+    "uuid" : "7513e959-f73b-4323-8e29-8aea5a268fae",
+    "path" : "\/Users\/USER\/*\/dlopen-probe",
+    "name" : "dlopen-probe"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6590504960,
+    "size" : 784100,
+    "uuid" : "d341ddcb-7969-3a9c-8e03-0cf4751398a9",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  }
+],
+  "sharedCache" : {
+  "base" : 6585761792,
+  "size" : 7410368512,
+  "uuid" : "c284a291-b68b-3d0d-a1a0-3f866f87efdc"
+},
+  "vmSummary" : "ReadOnly portion of Libraries: Total=1.6G resident=0K(0%) swapped_out_or_unallocated=1.6G(100%)\nWritable regions: Total=89.7M written=256K(0%) resident=256K(0%) swapped_out=0K(0%) unallocated=89.4M(100%)\n\n                                VIRTUAL   REGION \nREGION TYPE                        SIZE    COUNT (non-coalesced) \n===========                     =======  ======= \nDeferred Reclaim                  64.0M        1 \nGuard                            385.0G        1 \nMalloc                            17.4M       10 \nMalloc Guard Page                 3136K        4 \nOS Alloc Once                       32K        1 \nStack                             8176K        1 \nStack Guard                       56.0M        1 \n__AUTH                              39K       12 \n__AUTH_CONST                       221K       40 \n__DATA                             211K       68 \n__DATA_CONST                       109K       39 \n__DATA_DIRTY                       136K       34 \n__LINKEDIT                         1.6G        2 \n__OBJC_RO                        118.0M        1 \n__OBJC_RW                         2735K        1 \n__TEXT                            6392K       82 \n__TPRO_CONST                       132K        4 \nmapped file                        512K        1 \npage table in kernel               256K        1 \nshared memory                       32K        1 \n===========                     =======  ======= \nTOTAL                            386.8G      305 \n",
+  "legacyInfo" : {
+  "threadTriggered" : {
+    "queue" : "com.apple.main-thread"
+  }
+},
+  "logWritingSignature" : "94cf56beb34dfcbdb9c25b018b6186490c7409bb",
+  "roots_installed" : 0,
+  "bug_type" : "309",
+  "trmStatus" : 1,
+  "trialInfo" : {
+  "rollouts" : [
+    {
+      "rolloutId" : "64628732bf2f5257dedc8988",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000001
+    },
+    {
+      "rolloutId" : "645eb1d0417dab722a215927",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000005
+    }
+  ],
+  "experiments" : [
+
+  ]
+}
+}

@@ -1,0 +1,2 @@
+422M	bin/Release/net461/Mission Planner.app
+MISSIONPLANNER running after 90 s

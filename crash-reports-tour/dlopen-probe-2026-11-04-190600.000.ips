@@ -1,0 +1,140 @@
+{"app_name":"dlopen-probe","timestamp":"2026-11-04 19:06:00.00 -0500","app_version":"","slice_uuid":"10c3dbe2-19dc-4916-a180-d7f4c1c96b51","build_version":"","platform":1,"share_with_app_devs":0,"is_first_party":1,"bug_type":"309","os_version":"macOS 27.0.1 (26A434)","roots_installed":0,"incident_id":"6D6A9F4C-39E9-4A5A-B87D-50F838DEFEDC","name":"dlopen-probe"}
+{
+  "uptime" : 110000,
+  "procRole" : "Unspecified",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac16,12",
+  "coalitionID" : 24098,
+  "osVersion" : {
+    "train" : "macOS 27.0.1",
+    "build" : "26A434",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-11-04 19:06:00.3671 -0500",
+  "codeSigningMonitor" : 2,
+  "incident" : "6D6A9F4C-39E9-4A5A-B87D-50F838DEFEDC",
+  "pid" : 62421,
+  "translated" : false,
+  "cpuType" : "ARM-64",
+  "procLaunch" : "2026-11-04 19:06:00.2922 -0500",
+  "procStartAbsTime" : 2730446767374,
+  "procExitAbsTime" : 2730447066595,
+  "procName" : "dlopen-probe",
+  "procPath" : "\/Users\/USER\/*\/dlopen-probe",
+  "parentProc" : "Exited process",
+  "parentPid" : 62415,
+  "coalitionName" : "com.apple.Terminal",
+  "crashReporterKey" : "0966C7F7-E296-70A8-1052-D1265DA81D19",
+  "developerMode" : 1,
+  "responsiblePid" : 7703,
+  "responsibleProc" : "Terminal",
+  "codeSigningID" : "dlopen-probe",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 587334144,
+  "codeSigningValidationCategory" : 0,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "instructionByteStream" : {"beforePC":"YQAAVAkIQPkpAAD5HwUAceAXnxrAA1\/WPyAA8WIAAFQAAIDSwANf1g==","atPC":"CABAuQh5BxJJ2Z9SSde3ch8BCWsAAJ+awANf1n8jA9X8b7up+F8BqQ=="},
+  "bootSessionUUID" : "37D2BA69-79D2-4B3A-B40F-5DEF41D55714",
+  "wakeTime" : 4324,
+  "sleepWakeUUID" : "C3FE8600-1F34-426B-A2EB-F1E808D4366A",
+  "sip" : "enabled",
+  "vmRegionInfo" : "0x104e28000 is in 0x104e28000-0x104ea8000;  bytes after start: 0  bytes before end: 524287\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      Malloc Metadata             104da8000-104e28000    [  512K] rw-\/rwx SM=PRV  \n--->  mapped file                 104e28000-104ea8000    [  512K] r--\/rwx SM=COW  Object_id=ec17d089\n      GAP OF 0x19758000 BYTES\n      Malloc Metadata             11e600000-11e604000    [   16K] rw-\/rwx SM=PRV  ",
+  "exception" : {"codes":"0x0000000000000032, 0x0000000104e28000","rawCodes":[50,4376920064],"type":"EXC_BAD_ACCESS","signal":"SIGKILL (Code Signature Invalid)","subtype":"UNKNOWN_0x32 at 0x0000000104e28000"},
+  "termination" : {"flags":0,"code":2,"namespace":"CODESIGNING","indicator":"Invalid Page"},
+  "vmregioninfo" : "0x104e28000 is in 0x104e28000-0x104ea8000;  bytes after start: 0  bytes before end: 524287\n      REGION TYPE                    START - END         [ VSIZE] PRT\/MAX SHRMOD  REGION DETAIL\n      Malloc Metadata             104da8000-104e28000    [  512K] rw-\/rwx SM=PRV  \n--->  mapped file                 104e28000-104ea8000    [  512K] r--\/rwx SM=COW  Object_id=ec17d089\n      GAP OF 0x19758000 BYTES\n      Malloc Metadata             11e600000-11e604000    [   16K] rw-\/rwx SM=PRV  ",
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"warnings":0},
+  "faultingThread" : 1,
+  "threads" : [{"id":3320666,"threadState":{"x":[{"value":18446744073709551612},{"value":0},{"value":2563},{"value":0},{"value":150997247},{"value":3},{"value":0},{"value":0},{"value":2563},{"value":16908290},{"value":17},{"value":6594750192,"symbolLocation":8,"symbol":"_pthread_attr_default"},{"value":6167265280},{"value":8300984720,"symbolLocation":0,"symbol":"vm_page_size"},{"value":0},{"value":6594425088,"symbolLocation":0,"symbol":"$_0::operator()() const::'lambda'(unsigned long, std::__type_descriptor_t, std::nothrow_t const&)::__invoke(unsigned long, std::__type_descriptor_t, std::nothrow_t const&)"},{"value":515},{"value":8330540472},{"value":0},{"value":6167801856},{"value":2},{"value":6167801908},{"value":16908290},{"value":8300937312,"symbolLocation":224,"symbol":"_main_thread"},{"value":8301002860,"symbolLocation":0,"symbol":"_pthread_list_lock"},{"value":17},{"value":1},{"value":65535},{"value":4304568320}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6594740284},"cpsr":{"value":1073741824},"fp":{"value":6167241312},"sp":{"value":6167241216},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6594456308},"far":{"value":0}},"queue":"com.apple.main-thread","frames":[{"imageOffset":10996,"symbol":"__ulock_wait","symbolLocation":8,"imageIndex":1},{"imageOffset":36924,"symbol":"_pthread_join","symbolLocation":620,"imageIndex":2},{"imageOffset":1444,"symbol":"main","symbolLocation":172,"imageIndex":0},{"imageOffset":204416,"symbol":"start","symbolLocation":6688,"imageIndex":3}]},{"triggered":true,"id":3320667,"threadState":{"x":[{"value":4376920064},{"value":523840},{"value":523840},{"value":6167793632},{"value":3},{"value":0},{"value":6167794104},{"value":6167798512},{"value":6167793464},{"value":6167793096},{"value":16777234},{"value":1},{"value":6},{"value":14},{"value":26},{"value":425984},{"value":92},{"value":6590522284,"symbolLocation":56,"symbol":"fcntl"},{"value":0},{"value":6167793464},{"value":8198620312,"symbolLocation":0,"symbol":"mach_o::GradedArchitectures::load_arm64e_keysOff"},{"value":6167793632},{"value":523840},{"value":4376920064},{"value":0},{"value":6167243993},{"value":6167795424},{"value":8297960024,"symbolLocation":4248,"symbol":"lsl::sPoolBytes"},{"value":6167793648}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6591070324},"cpsr":{"value":536870912},"fp":{"value":6167793312},"sp":{"value":6167792592},"esr":{"value":2449473543,"description":"(Data Abort) byte read Translation fault"},"pc":{"value":6591138528,"matchesCrashFrame":1},"far":{"value":4376920064}},"frames":[{"imageOffset":633568,"symbol":"mach_o::Universal::isUniversal(std::__1::span<unsigned char const, 18446744073709551615ul>)","symbolLocation":16,"imageIndex":3},{"imageOffset":565364,"symbol":"mach_o::GradedArchitectures::bestSlice(std::__1::span<unsigned char const, 18446744073709551615ul>, std::__1::span<unsigned char const, 18446744073709551615ul>&) const","symbolLocation":72,"imageIndex":3},{"imageOffset":357280,"symbol":"dyld4::JustInTimeLoader::makeJustInTimeLoaderDisk(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool, unsigned int)","symbolLocation":192,"imageIndex":3},{"imageOffset":364928,"symbol":"dyld4::Loader::makeDiskLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool, unsigned int)","symbolLocation":188,"imageIndex":3},{"imageOffset":372348,"symbol":"invocation function for block in dyld4::Loader::getLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool)","symbolLocation":3248,"imageIndex":3},{"imageOffset":366868,"symbol":"dyld4::Loader::forEachResolvedAtPathVar(dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, dyld4::ProcessConfig::PathOverrides::Type, bool&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer)","symbolLocation":800,"imageIndex":3},{"imageOffset":241852,"symbol":"dyld4::ProcessConfig::PathOverrides::forEachPathVariant(CString, mach_o::Platform, bool, bool, bool&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer) const","symbolLocation":1700,"imageIndex":3},{"imageOffset":365612,"symbol":"dyld4::Loader::forEachPath(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, void (char const*, dyld4::ProcessConfig::PathOverrides::Type, bool&) block_pointer)","symbolLocation":332,"imageIndex":3},{"imageOffset":368048,"symbol":"dyld4::Loader::getLoader(Diagnostics&, dyld4::RuntimeState&, char const*, dyld4::Loader::LoadOptions const&, bool)","symbolLocation":1116,"imageIndex":3},{"imageOffset":174320,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'()::operator()() const","symbolLocation":312,"imageIndex":3},{"imageOffset":173900,"symbol":"void dyld4::RuntimeLocks::withLoadersWriteLockAndProtectedStack<dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'()>(dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const::'lambda'())::'lambda'()::operator()() const","symbolLocation":184,"imageIndex":3},{"imageOffset":170828,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)::$_0::operator()() const","symbolLocation":264,"imageIndex":3},{"imageOffset":123612,"symbol":"dyld4::APIs::dlopen_from(char const*, int, void*)","symbolLocation":588,"imageIndex":3},{"imageOffset":122860,"symbol":"dyld4::APIs::dlopen(char const*, int)","symbolLocation":120,"imageIndex":3},{"imageOffset":1596,"symbol":"probe","symbolLocation":80,"imageIndex":0},{"imageOffset":1500,"symbol":"worker","symbolLocation":20,"imageIndex":0},{"imageOffset":27904,"symbol":"_pthread_start","symbolLocation":136,"imageIndex":2},{"imageOffset":7404,"symbol":"thread_start","symbolLocation":8,"imageIndex":2}]}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "arm64",
+    "base" : 4299636736,
+    "size" : 16384,
+    "uuid" : "10c3dbe2-19dc-4916-a180-d7f4c1c96b51",
+    "path" : "\/Users\/USER\/*\/dlopen-probe",
+    "name" : "dlopen-probe"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6594445312,
+    "size" : 256428,
+    "uuid" : "f63bf418-8f75-34a4-aaf1-8caf2b9b6a05",
+    "path" : "\/usr\/lib\/system\/libsystem_kernel.dylib",
+    "name" : "libsystem_kernel.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6594703360,
+    "size" : 51484,
+    "uuid" : "5a1828c3-cbc2-3b85-bd07-c8ed10021a41",
+    "path" : "\/usr\/lib\/system\/libsystem_pthread.dylib",
+    "name" : "libsystem_pthread.dylib"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6590504960,
+    "size" : 784100,
+    "uuid" : "d341ddcb-7969-3a9c-8e03-0cf4751398a9",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  },
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6594338816,
+    "size" : 106240,
+    "uuid" : "a21743ee-6e1c-3e74-97ea-7af793de4bdf",
+    "path" : "\/usr\/lib\/libc++abi.dylib",
+    "name" : "libc++abi.dylib"
+  }
+],
+  "sharedCache" : {
+  "base" : 6585761792,
+  "size" : 7410368512,
+  "uuid" : "c284a291-b68b-3d0d-a1a0-3f866f87efdc"
+},
+  "vmSummary" : "ReadOnly portion of Libraries: Total=1.6G resident=0K(0%) swapped_out_or_unallocated=1.6G(100%)\nWritable regions: Total=90.2M written=256K(0%) resident=256K(0%) swapped_out=0K(0%) unallocated=89.9M(100%)\n\n                                VIRTUAL   REGION \nREGION TYPE                        SIZE    COUNT (non-coalesced) \n===========                     =======  ======= \nDeferred Reclaim                  64.0M        1 \nGuard                            385.0G        1 \nMalloc                            17.4M       10 \nMalloc Guard Page                 3296K        4 \nOS Alloc Once                       32K        1 \nStack                             8720K        2 \nStack Guard                       56.0M        2 \n__AUTH                              39K       12 \n__AUTH_CONST                       221K       40 \n__DATA                             211K       68 \n__DATA_CONST                       109K       39 \n__DATA_DIRTY                       136K       34 \n__LINKEDIT                         1.6G        2 \n__OBJC_RO                        118.0M        1 \n__OBJC_RW                         2735K        1 \n__TEXT                            6392K       82 \n__TPRO_CONST                       132K        4 \nmapped file                        512K        1 \npage table in kernel               256K        1 \nshared memory                       32K        1 \n===========                     =======  ======= \nTOTAL                            386.8G      307 \n",
+  "legacyInfo" : {
+  "threadTriggered" : {
+
+  }
+},
+  "logWritingSignature" : "f31076f86dfef77e63dba0a9dcbbca5b6b47e48d",
+  "roots_installed" : 0,
+  "bug_type" : "309",
+  "trmStatus" : 1,
+  "trialInfo" : {
+  "rollouts" : [
+    {
+      "rolloutId" : "64628732bf2f5257dedc8988",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000001
+    },
+    {
+      "rolloutId" : "645eb1d0417dab722a215927",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000005
+    }
+  ],
+  "experiments" : [
+
+  ]
+}
+}

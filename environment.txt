@@ -1,0 +1,24 @@
+ProductName:		macOS
+ProductVersion:		27.0.1
+BuildVersion:		26A434
+arm64
+Xcode 27.2
+Build version 27B52
+/Applications/Xcode.app/Contents/Developer
+/Applications/Xcode.app
+10.0.403
+Escribiendo el registro de instalación de paquete de carga de trabajo para Microsoft.NET.Runtime.MonoTargets.Sdk versión 9.0.22...
+Recolección de elementos no utilizados para bandas de características de SDK 10.0.400...
+
+La(s) carga(s) de trabajo se ha(n) actualizado correctamente: macos
+
+
+Se ha(n) instalado correctamente la(s) carga(s) de trabajo .
+
+
+Id. de carga de trabajo instalada      Versión del manifiesto      Origen de la instalación
+-------------------------------------------------------------------------------------------
+macos                                  27.0.10742/10.0.100         SDK 10.0.400            
+
+Use "dotnet workload search" para buscar cargas de trabajo adicionales para instalar.
+

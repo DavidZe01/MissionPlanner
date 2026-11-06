@@ -1,0 +1,1486 @@
+2026-11-06 16:27:30,040  INFO MissionPlanner.Program - ******************* Logging Configured ******************* (:0) [1]
+2026-11-06 16:27:30,044 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Requests (:0) [1]
+System.NotSupportedException: The requested security protocol is not supported.
+   at System.Net.ServicePointManager.ValidateSecurityProtocol(SecurityProtocolType value)
+2026-11-06 16:27:30,045 DEBUG MissionPlanner.Program - Loaded: System.Resources.Extensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51 from /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/System.Resources.Extensions.dll (:0) [1]
+2026-11-06 16:27:30,059 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null (:0) [1]
+2026-11-06 16:27:30,062 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.ArduPilot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [1]
+2026-11-06 16:27:30,064 DEBUG MissionPlanner.MAVLinkInterface - UnSubscribed set_parent at offset 232 in file:line:column <filename unknown>:0:0
+ Parent_OnPacketReceived CurrentState System.EventHandler`1[MAVLink+MAVLinkMessage] (:0) [1]
+2026-11-06 16:27:30,064 DEBUG MissionPlanner.MAVLinkInterface - Subscribed set_parent at offset 356 in file:line:column <filename unknown>:0:0
+ Parent_OnPacketReceived CurrentState System.EventHandler`1[MAVLink+MAVLinkMessage] (:0) [1]
+2026-11-06 16:27:30,064 DEBUG MissionPlanner.MAVLinkInterface - Subscribed Start at offset 308 in file:line:column <filename unknown>:0:0
+ <Start>b__8_0 <>c System.EventHandler`1[MAVLink+MAVLinkMessage] (:0) [1]
+2026-11-06 16:27:30,064 DEBUG MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1536 in file:line:column <filename unknown>:0:0
+ OnMAVDetected MAVLinkInterface System.EventHandler`1[System.ValueTuple`2[System.UInt32,System.Byte]] (:0) [1]
+2026-11-06 16:27:30,064  INFO MissionPlanner.Program - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/arm64/libSkiaSharp (:0) [1]
+2026-11-06 16:27:30,067  INFO MissionPlanner.Program - Skia Error  (:0) [1]
+2026-11-06 16:27:30,068 DEBUG MissionPlanner.Program - FirstChanceException in: MissionPlanner (:0) [1]
+System.DllNotFoundException: Unable to load shared library 'kernel32.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/kernel32.dll.dylib, 0x0001): tried: '/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll.dylib' (no such file), '/kernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file)
+dlopen(kernel32.dll.dylib, 0x0001): tried: 'kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/usr/lib/kernel32.dll.dylib' (no such file, not in dyld cache), 'kernel32.dll.dylib' (no such file)
+dlopen(/libkernel32.dll.dylib, 0x0001): tried: '/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll.dylib' (no such file), '/libkernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file)
+dlopen(libkernel32.dll.dylib, 0x0001): tried: 'libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/usr/lib/libkernel32.dll.dylib' (no such file, not in dyld cache), 'libkernel32.dll.dylib' (no such file)
+dlopen(/kernel32.dll, 0x0001): tried: '/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll' (no such file), '/kernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file)
+dlopen(kernel32.dll, 0x0001): tried: 'kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/usr/lib/kernel32.dll' (no such file, not in dyld cache), 'kernel32.dll' (no such file)
+dlopen(/libkernel32.dll, 0x0001): tried: '/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll' (no such file), '/libkernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file)
+dlopen(libkernel32.dll, 0x0001): tried: 'libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/usr/lib/libkernel32.dll' (no such file, not in dyld cache), 'libkernel32.dll' (no such file)
+
+   at MissionPlanner.Utilities.NativeLibrary.LoadLibrary(String dllToLoad)
+   at MissionPlanner.Program.Start(String[] args)
+2026-11-06 16:27:30,068 ERROR MissionPlanner.Program - System.DllNotFoundException: Unable to load shared library 'kernel32.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/kernel32.dll.dylib, 0x0001): tried: '/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll.dylib' (no such file), '/kernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file)
+dlopen(kernel32.dll.dylib, 0x0001): tried: 'kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/usr/lib/kernel32.dll.dylib' (no such file, not in dyld cache), 'kernel32.dll.dylib' (no such file)
+dlopen(/libkernel32.dll.dylib, 0x0001): tried: '/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll.dylib' (no such file), '/libkernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file)
+dlopen(libkernel32.dll.dylib, 0x0001): tried: 'libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/usr/lib/libkernel32.dll.dylib' (no such file, not in dyld cache), 'libkernel32.dll.dylib' (no such file)
+dlopen(/kernel32.dll, 0x0001): tried: '/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll' (no such file), '/kernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file)
+dlopen(kernel32.dll, 0x0001): tried: 'kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/usr/lib/kernel32.dll' (no such file, not in dyld cache), 'kernel32.dll' (no such file)
+dlopen(/libkernel32.dll, 0x0001): tried: '/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll' (no such file), '/libkernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file)
+dlopen(libkernel32.dll, 0x0001): tried: 'libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/usr/lib/libkernel32.dll' (no such file, not in dyld cache), 'libkernel32.dll' (no such file)
+
+   at MissionPlanner.Utilities.NativeLibrary.LoadLibrary(String dllToLoad)
+   at MissionPlanner.Program.Start(String[] args) (:0) [1]
+2026-11-06 16:27:30,126 DEBUG MissionPlanner.Program - FirstChanceException in: System.Drawing.Common (:0) [1]
+System.PlatformNotSupportedException: Operation is not supported on this platform.
+   at System.Drawing.Bitmap.GetHicon()
+2026-11-06 16:27:30,273 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [1]
+2026-11-06 16:27:30,300  INFO MissionPlanner.Program - 64bit os True, 64bit process True, OS Arch Arm64, OS Desc macOS 27.0.1, FW Desc .NET 10.0.14 (:0) [1]
+2026-11-06 16:27:30,301  INFO MissionPlanner.Program - Runtime Version v4.0.30319 (:0) [1]
+2026-11-06 16:27:30,301 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null (:0) [1]
+2026-11-06 16:27:30,304  INFO MissionPlanner.MainV2 - Mainv2 ctor (:0) [Base Thread]
+2026-11-06 16:27:30,304  INFO MissionPlanner.MainV2 - Loading config (:0) [Base Thread]
+2026-11-06 16:27:30,304  INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1748 in file:line:column <filename unknown>:0:0
+ adsb_UpdatePlanePosition MainV2 System.EventHandler`1[MissionPlanner.Utilities.adsb+PointLatLngAltHdg] (:0) [Base Thread]
+2026-11-06 16:27:30,304  INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1832 in file:line:column <filename unknown>:0:0
+ <.ctor>b__106_0 MainV2 System.EventHandler`1[System.ValueTuple`2[System.String,MAVLink+MAV_COLLISION_THREAT_LEVEL]] (:0) [Base Thread]
+2026-11-06 16:27:30,343 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,345 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.IO.FileNotFoundException: Could not load file or assembly 'MissionPlanner.XmlSerializers, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null, processorArchitecture=MSIL'. The system cannot find the file specified.
+
+File name: 'MissionPlanner.XmlSerializers, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null, processorArchitecture=MSIL'
+   at System.Reflection.RuntimeAssembly.InternalLoad(AssemblyName assemblyName, StackCrawlMark& stackMark, AssemblyLoadContext assemblyLoadContext, RuntimeAssembly requestingAssembly, Boolean throwOnFileNotFound)
+2026-11-06 16:27:30,345 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.IO.FileNotFoundException: Could not load file or assembly '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MissionPlanner.XmlSerializers.dll'. The system cannot find the file specified.
+File name: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MissionPlanner.XmlSerializers.dll'
+   at System.Reflection.Assembly.LoadFile(String path)
+2026-11-06 16:27:30,347 DEBUG MissionPlanner.Program - Loaded: Microsoft.GeneratedCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,366 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,366  INFO MissionPlanner.Utilities.srtm - .cctor (:0) [Base Thread]
+2026-11-06 16:27:30,368  INFO MissionPlanner.Utilities.srtm - requestRunner start (:0) [Base Thread]
+2026-11-06 16:27:30,368  INFO MissionPlanner.Utilities.srtm - /Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/srtm (:0) [Base Thread]
+2026-11-06 16:27:30,368 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.IO.DirectoryNotFoundException: Could not find a part of the path '/Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/srtm'.
+   at System.IO.Enumeration.FileSystemEnumerator`1.CreateDirectoryHandle(String path, Boolean ignoreNotFound)
+2026-11-06 16:27:30,369 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,369 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner, Version=1.3.9806.29608, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,369  INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True (:0) [Base Thread]
+2026-11-06 16:27:30,447 DEBUG MissionPlanner.Program - Loaded: Anonymously Hosted DynamicMethods Assembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,452 DEBUG MissionPlanner.Program - FirstChanceException in: System.Reflection.Metadata (:0) [Base Thread]
+System.BadImageFormatException: Unknown file format.
+   at System.Reflection.PortableExecutable.PEHeaders..ctor(Stream peStream, Int32 size, Boolean isLoadedImage)
+2026-11-06 16:27:30,454 DEBUG MissionPlanner.MainV2 - [
+  {
+    "ModuleName": "MissionPlanner",
+    "FileName": "/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MacOS/MissionPlanner",
+    "BaseAddress": {
+      "value": 0
+    },
+    "ModuleMemorySize": 0,
+    "EntryPointAddress": {
+      "value": 0
+    },
+    "FileVersionInfo": {
+      "Comments": null,
+      "CompanyName": null,
+      "FileBuildPart": 0,
+      "FileDescription": null,
+      "FileMajorPart": 0,
+      "FileMinorPart": 0,
+      "FileName": "/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MacOS/MissionPlanner",
+      "FilePrivatePart": 0,
+      "FileVersion": null,
+      "InternalName": null,
+      "IsDebug": false,
+      "IsPatched": false,
+      "IsPrivateBuild": false,
+      "IsPreRelease": false,
+      "IsSpecialBuild": false,
+      "Language": null,
+      "LegalCopyright": null,
+      "LegalTrademarks": null,
+      "OriginalFilename": null,
+      "PrivateBuild": null,
+      "ProductBuildPart": 0,
+      "ProductMajorPart": 0,
+      "ProductMinorPart": 0,
+      "ProductName": null,
+      "ProductPrivatePart": 0,
+      "ProductVersion": null,
+      "SpecialBuild": null
+    },
+    "Site": null,
+    "Container": null
+  }
+] (:0) [Base Thread]
+2026-11-06 16:27:30,454  INFO MissionPlanner.MainV2 - Create FD (:0) [Base Thread]
+2026-11-06 16:27:30,456  INFO MissionPlanner.GCSViews.FlightData - Ctor Start (:0) [Base Thread]
+2026-11-06 16:27:30,467  INFO MissionPlanner.Controls.HUD - Static HUD ctor (:0) [Base Thread]
+2026-11-06 16:27:30,473  INFO MissionPlanner.Controls.HUD - Instance HUD ctor (:0) [Base Thread]
+2026-11-06 16:27:30,489  INFO MissionPlanner.Controls.HUD - HUD OpenGL (NSOpenGLContext): True (:0) [Base Thread]
+2026-11-06 16:27:30,546 DEBUG MissionPlanner.Program - Loaded: Microsoft.GeneratedCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,566 DEBUG MissionPlanner.Program - Loaded: ZedGraph.resources, Version=5.1.5.0, Culture=es, PublicKeyToken=null from /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/es/ZedGraph.resources.dll (:0) [Base Thread]
+2026-11-06 16:27:30,579 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from GMap.NET.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,599  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:30,601 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.Reflection.AmbiguousMatchException: Ambiguous match found for 'System.Windows.Forms.TabControl System.Drawing.Point Padding'.
+   at System.RuntimeType.GetPropertyImpl(String name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers)
+2026-11-06 16:27:30,610 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.Reflection.AmbiguousMatchException: Ambiguous match found for 'System.Windows.Forms.CheckedListBox ObjectCollection Items'.
+   at System.RuntimeType.GetPropertyImpl(String name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers)
+2026-11-06 16:27:30,612 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.Reflection.AmbiguousMatchException: Ambiguous match found for 'System.Windows.Forms.CheckedListBox ObjectCollection Items'.
+   at System.RuntimeType.GetPropertyImpl(String name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers)
+2026-11-06 16:27:30,615 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,615 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,616  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,617 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,617 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,617  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,621 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,622  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz (:0) [Base Thread]
+2026-11-06 16:27:30,623 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,623 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,623 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,623 DEBUG MissionPlanner.Utilities.ParameterMetaDataRepositoryAPM - /Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/ParameterMetaData.xml (:0) [Base Thread]
+2026-11-06 16:27:30,623 DEBUG MissionPlanner.Utilities.ParameterMetaDataRepositoryAPM - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle//ParameterMetaDataBackup.xml (:0) [Base Thread]
+2026-11-06 16:27:30,674  INFO MissionPlanner.GCSViews.FlightData - Components Done (:0) [Base Thread]
+2026-11-06 16:27:30,675  INFO MissionPlanner.GCSViews.FlightData - Tunning Graph Settings (:0) [Base Thread]
+2026-11-06 16:27:30,677  INFO MissionPlanner.GCSViews.FlightData - HUD Settings (:0) [Base Thread]
+2026-11-06 16:27:30,678 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,678 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,678 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,678  INFO MissionPlanner.GCSViews.FlightData - Graph Setup (:0) [Base Thread]
+2026-11-06 16:27:30,678  INFO MissionPlanner.GCSViews.FlightData - Map Setup (:0) [Base Thread]
+2026-11-06 16:27:30,678 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,679 DEBUG MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 11636 in file:line:column <filename unknown>:0:0
+ FlightData_ParentChanged FlightData System.EventHandler (:0) [Base Thread]
+2026-11-06 16:27:30,681  INFO MissionPlanner.MainV2 - Create FP (:0) [Base Thread]
+2026-11-06 16:27:30,700 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:30,706  INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params (:0) [Base Thread]
+2026-11-06 16:27:30,706  INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 30 (:0) [Base Thread]
+2026-11-06 16:27:30,706  INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45 (:0) [Base Thread]
+2026-11-06 16:27:30,707  INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane (:0) [Base Thread]
+2026-11-06 16:27:30,708  INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56 (:0) [Base Thread]
+2026-11-06 16:27:30,716  INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane (:0) [Base Thread]
+2026-11-06 16:27:30,716  INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56 (:0) [Base Thread]
+2026-11-06 16:27:30,717  INFO MissionPlanner.GCSViews.FlightPlanner - updateMapType invoke req? False (:0) [Base Thread]
+2026-11-06 16:27:30,719  INFO MissionPlanner.MainV2 - Create SIM (:0) [Base Thread]
+2026-11-06 16:27:30,733  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:30,736 DEBUG MissionPlanner.Program - FirstChanceException in: Microsoft.Win32.SystemEvents (:0) [Base Thread]
+System.PlatformNotSupportedException: SystemEvents is not supported on this platform.
+   at Microsoft.Win32.SystemEvents.add_PowerModeChanged(PowerModeChangedEventHandler value)
+2026-11-06 16:27:30,736 DEBUG MissionPlanner.Program - FirstChanceException in: System.Drawing.Common (:0) [Base Thread]
+System.PlatformNotSupportedException: Operation is not supported on this platform.
+   at System.Drawing.Bitmap.GetHicon()
+2026-11-06 16:27:30,737  INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 17492 in file:line:column <filename unknown>:0:0
+ comPort_MavChanged MainV2 System.EventHandler (:0) [Base Thread]
+2026-11-06 16:27:30,737  INFO MissionPlanner.MainV2 - Saving config (:0) [Base Thread]
+2026-11-06 16:27:30,746  INFO MissionPlanner.MainV2 - myview width 944 height 508 (:0) [Base Thread]
+2026-11-06 16:27:30,746  INFO MissionPlanner.MainV2 - this   width 944 height 536 (:0) [Base Thread]
+2026-11-06 16:27:30,746  INFO MissionPlanner.MainV2 - myview width 944 height 508 (:0) [Base Thread]
+2026-11-06 16:27:30,746  INFO MissionPlanner.MainV2 - this   width 944 height 568 (:0) [Base Thread]
+2026-11-06 16:27:30,749 DEBUG MissionPlanner.Program - FirstChanceException in: MissionPlanner (:0) [Base Thread]
+System.EntryPointNotFoundException: Unable to find an entry point named 'RegisterDeviceNotification' in shared library 'user32.dll'.
+   at MissionPlanner.NativeMethods.RegisterDeviceNotification(IntPtr hRecipient, IntPtr NotificationFilter, Int32 Flags)
+   at MissionPlanner.MainV2.WndProc(Message& m)
+2026-11-06 16:27:30,774  INFO MissionPlanner.MainV2 - Load Pluggins (:0) [Base Thread]
+2026-11-06 16:27:30,774  INFO MissionPlanner.Plugin.PluginLoader - Plugin path: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/ (:0) [Base Thread]
+2026-11-06 16:27:30,775  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:30,777 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:30,782  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Grid 1.3.9806.29608 by Michael Oborne (:0) [Base Thread]
+2026-11-06 16:27:30,782  INFO MissionPlanner.MainV2 - Load Pluggins... Done (:0) [Base Thread]
+2026-11-06 16:27:30,782  INFO MissionPlanner.MainV2 - show FlightData (:0) [Base Thread]
+2026-11-06 16:27:30,783 DEBUG MissionPlanner.Utilities.Tracking - v=1&tid=UA-43098846-1&cid=c6df14d8-f7b1-4f4d-8625-ffdc3a8f609a&t=appview&an=Mission+Planner&av=1.3.83&cd=MissionPlanner.GCSViews.FlightData&dp=MissionPlanner.GCSViews.FlightData&dt=FlightData&sc=start&ul=es-MX&sd=32-bits&sr=1470x956&cd1=Unix+27.0.1&cd4=10&z=974325003 (:0) [.NET TP Worker]
+2026-11-06 16:27:30,783  INFO MissionPlanner.GCSViews.FlightData - Activate Called (:0) [Base Thread]
+2026-11-06 16:27:30,787  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:30,790  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:30,798 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.FormatException: The input string '' was not in a correct format.
+   at System.Number.ThrowFormatException[TChar](ReadOnlySpan`1 value)
+2026-11-06 16:27:30,813 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:30,813 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:30,838  INFO MissionPlanner.Controls.HUD - OnHandleCreated Start (:0) [Base Thread]
+2026-11-06 16:27:31,047  INFO MissionPlanner.Controls.HUD - OnLoad Start (:0) [Base Thread]
+2026-11-06 16:27:31,048  INFO MissionPlanner.Controls.HUD - Vendor: Apple (:0) [Base Thread]
+2026-11-06 16:27:31,048  INFO MissionPlanner.Controls.HUD - Version: 2.1 Metal - 91.7 (:0) [Base Thread]
+2026-11-06 16:27:31,048  INFO MissionPlanner.Controls.HUD - Device: Apple M4 (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - GetInteger (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - MatrixMode (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - LoadIdentity (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - Ortho (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - MatrixMode (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - LoadIdentity (:0) [Base Thread]
+2026-11-06 16:27:31,048 DEBUG MissionPlanner.Controls.HUD - PushAttrib (:0) [Base Thread]
+2026-11-06 16:27:31,049 DEBUG MissionPlanner.Controls.HUD - Disable (:0) [Base Thread]
+2026-11-06 16:27:31,049 DEBUG MissionPlanner.Controls.HUD - BlendFunc (:0) [Base Thread]
+2026-11-06 16:27:31,049 DEBUG MissionPlanner.Controls.HUD - Enable (:0) [Base Thread]
+2026-11-06 16:27:31,049 DEBUG MissionPlanner.Controls.HUD - Hint (:0) [Base Thread]
+2026-11-06 16:27:31,049 DEBUG MissionPlanner.Controls.HUD - Enable (:0) [Base Thread]
+2026-11-06 16:27:31,049  INFO MissionPlanner.Controls.HUD - OnLoad Done (:0) [Base Thread]
+2026-11-06 16:27:31,050 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.IO.FileNotFoundException: Could not find file '/Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/poi.txt'.
+File name: '/Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/poi.txt'
+   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+2026-11-06 16:27:31,050 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.CoreLib (:0) [Base Thread]
+System.IO.FileNotFoundException: Could not find file '/Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/poi.txt'.
+File name: '/Users/david/actions-runner/_work/_temp/mp-data-run/Mission Planner/poi.txt'
+   at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+2026-11-06 16:27:31,050 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,051 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,051 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,051 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,051 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,051 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,054  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:31,055  INFO MissionPlanner.Controls.HUD - OnResize doing (:0) [Base Thread]
+2026-11-06 16:27:31,055  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:31,055  INFO MissionPlanner.Controls.HUD - OnResize doing (:0) [Base Thread]
+2026-11-06 16:27:31,109  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:31,109  INFO MissionPlanner.Controls.HUD - OnResize doing (:0) [Base Thread]
+2026-11-06 16:27:31,120 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [.NET TP Worker]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+2026-11-06 16:27:31,120 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [TileLoader: 0]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:31,142  INFO MissionPlanner.Controls.HUD - OnResize start (:0) [Base Thread]
+2026-11-06 16:27:31,142  INFO MissionPlanner.Controls.HUD - OnResize doing (:0) [Base Thread]
+2026-11-06 16:27:31,189  INFO MissionPlanner.MainV2 - Saving config (:0) [Base Thread]
+2026-11-06 16:27:31,189  INFO MissionPlanner.MainV2 - show FlightData... Done (:0) [Base Thread]
+2026-11-06 16:27:31,194  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,194  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,195  INFO MissionPlanner.Utilities.Download - 17655172.413793102 bps 1024 5.8E-05s 0.5167333% of 198168      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,195  INFO MissionPlanner.Utilities.Download - 10138613.861386139 bps 1024 0.000101s 0.9973702% of 102670      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,196  INFO MissionPlanner.MainV2 - start http (:0) [Base Thread]
+2026-11-06 16:27:31,196  INFO MissionPlanner.MainV2 - start joystick (:0) [Base Thread]
+2026-11-06 16:27:31,196  INFO MissionPlanner.Utilities.httpserver - Listening for client (:0) [motion jpg stream-network kml]
+2026-11-06 16:27:31,197  INFO MissionPlanner.MainV2 - start serialreader (:0) [Base Thread]
+2026-11-06 16:27:31,198 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,199  INFO MissionPlanner.MainV2 - start adsbsender (:0) [Base Thread]
+2026-11-06 16:27:31,199  INFO MissionPlanner.MainV2 - start plugin thread (:0) [Base Thread]
+2026-11-06 16:27:31,199  INFO MissionPlanner.MainV2 - start AutoConnect (:0) [Base Thread]
+2026-11-06 16:27:31,200  INFO MissionPlanner.ArduPilot.APFirmware - https://firmware.oborne.me/manifest.json.gz (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,201  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz (:0) [.NET TP Worker]
+2026-11-06 16:27:31,202 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,202  INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz (:0) [.NET TP Worker]
+2026-11-06 16:27:31,217  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,217  INFO MissionPlanner.Utilities.Download - 204799999.99999997 bps 1024 5E-06s 0.46830907% of 218659      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.83448106% of 122711      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - 1024000000 bps 1024 1E-06s 0.91165656% of 112323      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - 1024000000 bps 1024 1E-06s 0.61216927% of 167274      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,218  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,220  INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.9917963% of 103247      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,221  INFO MissionPlanner.Utilities.Download - 170666666.66666666 bps 1024 6E-06s 1.6030809% of 63877      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,221  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink default port",
+  "Enabled": true,
+  "Port": 14550,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+} (:0) [Base Thread]
+2026-11-06 16:27:31,222  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink alt port",
+  "Enabled": true,
+  "Port": 14551,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+} (:0) [Base Thread]
+2026-11-06 16:27:31,222  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5000 h264",
+  "Enabled": true,
+  "Port": 5000,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5000 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+} (:0) [Base Thread]
+2026-11-06 16:27:31,222  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5100 h264",
+  "Enabled": true,
+  "Port": 5100,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5100 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+} (:0) [Base Thread]
+2026-11-06 16:27:31,222  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5600 h264",
+  "Enabled": true,
+  "Port": 5600,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5600 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+} (:0) [Base Thread]
+2026-11-06 16:27:31,222  INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5601 h265",
+  "Enabled": true,
+  "Port": 5601,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5601 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+} (:0) [Base Thread]
+2026-11-06 16:27:31,240 DEBUG MissionPlanner.Program - FirstChanceException in: Nefarius.Drivers.WinUSB (:0) [Base Thread]
+System.DllNotFoundException: Unable to load shared library 'setupapi.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/setupapi.dll.dylib, 0x0001): tried: '/setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/setupapi.dll.dylib' (no such file), '/setupapi.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file)
+dlopen(setupapi.dll.dylib, 0x0001): tried: 'setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/usr/lib/setupapi.dll.dylib' (no such file, not in dyld cache), 'setupapi.dll.dylib' (no such file)
+dlopen(/libsetupapi.dll.dylib, 0x0001): tried: '/libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsetupapi.dll.dylib' (no such file), '/libsetupapi.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file)
+dlopen(libsetupapi.dll.dylib, 0x0001): tried: 'libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/usr/lib/libsetupapi.dll.dylib' (no such file, not in dyld cache), 'libsetupapi.dll.dylib' (no such file)
+dlopen(/setupapi.dll, 0x0001): tried: '/setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/setupapi.dll' (no such file), '/setupapi.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file)
+dlopen(setupapi.dll, 0x0001): tried: 'setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/usr/lib/setupapi.dll' (no such file, not in dyld cache), 'setupapi.dll' (no such file)
+dlopen(/libsetupapi.dll, 0x0001): tried: '/libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsetupapi.dll' (no such file), '/libsetupapi.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file)
+dlopen(libsetupapi.dll, 0x0001): tried: 'libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/usr/lib/libsetupapi.dll' (no such file, not in dyld cache), 'libsetupapi.dll' (no such file)
+
+   at Nefarius.Drivers.WinUSB.API.DeviceManagement.SetupDiGetClassDevs(Guid& ClassGuid, IntPtr Enumerator, IntPtr hwndParent, Int32 Flags)
+   at Nefarius.Drivers.WinUSB.API.DeviceManagement.FindDevicesFromGuid(Guid guid)
+2026-11-06 16:27:31,242 DEBUG MissionPlanner.Program - FirstChanceException in: Nefarius.Drivers.WinUSB (:0) [Base Thread]
+System.DllNotFoundException: Unable to load shared library 'setupapi.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/setupapi.dll.dylib, 0x0001): tried: '/setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/setupapi.dll.dylib' (no such file), '/setupapi.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file)
+dlopen(setupapi.dll.dylib, 0x0001): tried: 'setupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll.dylib' (no such file), '/usr/lib/setupapi.dll.dylib' (no such file, not in dyld cache), 'setupapi.dll.dylib' (no such file)
+dlopen(/libsetupapi.dll.dylib, 0x0001): tried: '/libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsetupapi.dll.dylib' (no such file), '/libsetupapi.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file)
+dlopen(libsetupapi.dll.dylib, 0x0001): tried: 'libsetupapi.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsetupapi.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll.dylib' (no such file), '/usr/lib/libsetupapi.dll.dylib' (no such file, not in dyld cache), 'libsetupapi.dll.dylib' (no such file)
+dlopen(/setupapi.dll, 0x0001): tried: '/setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/setupapi.dll' (no such file), '/setupapi.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file)
+dlopen(setupapi.dll, 0x0001): tried: 'setupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/setupapi.dll' (no such file), '/usr/lib/setupapi.dll' (no such file, not in dyld cache), 'setupapi.dll' (no such file)
+dlopen(/libsetupapi.dll, 0x0001): tried: '/libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsetupapi.dll' (no such file), '/libsetupapi.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file)
+dlopen(libsetupapi.dll, 0x0001): tried: 'libsetupapi.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsetupapi.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsetupapi.dll' (no such file), '/usr/lib/libsetupapi.dll' (no such file, not in dyld cache), 'libsetupapi.dll' (no such file)
+
+   at Nefarius.Drivers.WinUSB.API.DeviceManagement.SetupDiGetClassDevs(Guid& ClassGuid, IntPtr Enumerator, IntPtr hwndParent, Int32 Flags)
+   at Nefarius.Drivers.WinUSB.API.DeviceManagement.FindDevicesFromGuid(Guid guid)
+2026-11-06 16:27:31,244 DEBUG MissionPlanner.Program - FirstChanceException in: MissionPlanner.Comms (:0) [.NET TP Worker]
+System.DllNotFoundException: Unable to load shared library 'simpleble-c.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/simpleble-c.dll.dylib, 0x0001): tried: '/simpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/simpleble-c.dll.dylib' (no such file), '/simpleble-c.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll.dylib' (no such file)
+dlopen(simpleble-c.dll.dylib, 0x0001): tried: 'simpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSsimpleble-c.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll.dylib' (no such file), '/usr/lib/simpleble-c.dll.dylib' (no such file, not in dyld cache), 'simpleble-c.dll.dylib' (no such file)
+dlopen(/libsimpleble-c.dll.dylib, 0x0001): tried: '/libsimpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsimpleble-c.dll.dylib' (no such file), '/libsimpleble-c.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll.dylib' (no such file)
+dlopen(libsimpleble-c.dll.dylib, 0x0001): tried: 'libsimpleble-c.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsimpleble-c.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll.dylib' (no such file), '/usr/lib/libsimpleble-c.dll.dylib' (no such file, not in dyld cache), 'libsimpleble-c.dll.dylib' (no such file)
+dlopen(/simpleble-c.dll, 0x0001): tried: '/simpleble-c.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/simpleble-c.dll' (no such file), '/simpleble-c.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll' (slice is not valid mach-o file)
+dlopen(simpleble-c.dll, 0x0001): tried: 'simpleble-c.dll' (slice is not valid mach-o file), '/System/Volumes/Preboot/Cryptexes/OSsimpleble-c.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/simpleble-c.dll' (slice is not valid mach-o file), '/usr/lib/simpleble-c.dll' (no such file, not in dyld cache), 'simpleble-c.dll' (slice is not valid mach-o file)
+dlopen(/libsimpleble-c.dll, 0x0001): tried: '/libsimpleble-c.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libsimpleble-c.dll' (no such file), '/libsimpleble-c.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll' (no such file)
+dlopen(libsimpleble-c.dll, 0x0001): tried: 'libsimpleble-c.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibsimpleble-c.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libsimpleble-c.dll' (no such file), '/usr/lib/libsimpleble-c.dll' (no such file, not in dyld cache), 'libsimpleble-c.dll' (no such file)
+
+   at MissionPlanner.Comms.CommsBLE.NativeMethods.simpleble_adapter_is_bluetooth_enabled()
+   at MissionPlanner.Comms.CommsBLE.SerialPort_GetCustomPorts()
+2026-11-06 16:27:31,248  INFO MissionPlanner.MainV2 - appload time (:0) [Base Thread]
+2026-11-06 16:27:31,249 DEBUG MissionPlanner.Utilities.Tracking - v=1&tid=UA-43098846-1&cid=c6df14d8-f7b1-4f4d-8625-ffdc3a8f609a&t=timing&an=Mission+Planner&av=1.3.83&cd=MissionPlanner.GCSViews.FlightData&dp=MissionPlanner.GCSViews.FlightData&utc=AppLoad&utv=Load+Time&utt=1564&utl=&ul=es-MX&sd=32-bits&sr=1470x956&cd1=Unix+27.0.1&cd4=10&z=1270478554 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,249 DEBUG MissionPlanner.Utilities.Update - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/version.txt (:0) [.NET TP Worker]
+2026-11-06 16:27:31,250  INFO MissionPlanner.Utilities.Update - Checking for update at: https://firmware.oborne.me/MissionPlanner/upgrade/version.txt (:0) [.NET TP Worker]
+2026-11-06 16:27:31,265  INFO MissionPlanner.MainV2 - Loaded 4855 airports (:0) [.NET TP Worker]
+2026-11-06 16:27:31,290 DEBUG MissionPlanner.Program - Loaded: example2-menu, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:31,290  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Small stuff 0.10 by EOSBandi (:0) [.NET TP Worker]
+2026-11-06 16:27:31,290  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:31,308  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,309  INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.5666735% of 39896      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,364 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [.NET TP Worker]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+2026-11-06 16:27:31,364 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [TileLoader: 3]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:31,391  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz 63877 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,394  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz 39896 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,401 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [.NET TP Worker]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+2026-11-06 16:27:31,401 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [.NET TP Worker]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+2026-11-06 16:27:31,401 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [TileLoader: 4]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:31,401 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [TileLoader: 1]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:31,408 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [.NET TP Worker]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+2026-11-06 16:27:31,408 DEBUG MissionPlanner.Program - FirstChanceException in: GMap.NET.Core (:0) [TileLoader: 2]
+System.Net.WebException: 404 Not Found
+   at GMap.NET.MapProviders.GMapProvider.<>c__DisplayClass42_0.<<GetTileImageUsingHttp>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:31,437  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz 102670 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,443  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz 198168 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,458  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz 122711 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,461  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz 167274 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,461  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz 112323 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,474  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz 103247 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,479  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,480  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,480  INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 2.4774992% of 41332      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,480  INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.6887932% of 38084      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,480  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz 41332 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,480  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz 38084 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,494 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,520  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,521  INFO MissionPlanner.Utilities.Download - 146285714.2857143 bps 1024 7E-06s 2.7312493% of 37492      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,521  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz 37492 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,522 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,522 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,526  INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,526  INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.5960142% of 171808      (:0) [.NET TP Worker]
+2026-11-06 16:27:31,529  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz 171808 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,529  INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz 218659 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,536 DEBUG MissionPlanner.Program - FirstChanceException in: SharpCompress (:0) [.NET TP Worker]
+SharpCompress.Compressors.Xz.XZIndexMarkerReachedException: Exception of type 'SharpCompress.Compressors.Xz.XZIndexMarkerReachedException' was thrown.
+   at SharpCompress.Compressors.Xz.XZBlock.ReadHeaderSize()
+2026-11-06 16:27:31,537 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,537 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,542 DEBUG MissionPlanner.Program - FirstChanceException in: SharpCompress (:0) [.NET TP Worker]
+SharpCompress.Compressors.Xz.XZIndexMarkerReachedException: Exception of type 'SharpCompress.Compressors.Xz.XZIndexMarkerReachedException' was thrown.
+   at SharpCompress.Compressors.Xz.XZBlock.ReadHeaderSize()
+2026-11-06 16:27:31,542 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,542 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,547 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,548 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,578 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,578 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,579 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,579 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,580 DEBUG MissionPlanner.Program - FirstChanceException in: SharpCompress (:0) [.NET TP Worker]
+SharpCompress.Compressors.Xz.XZIndexMarkerReachedException: Exception of type 'SharpCompress.Compressors.Xz.XZIndexMarkerReachedException' was thrown.
+   at SharpCompress.Compressors.Xz.XZBlock.ReadHeaderSize()
+2026-11-06 16:27:31,581 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,581 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,581 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,581 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,582 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,582 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,584 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,584 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,584 DEBUG MissionPlanner.Program - FirstChanceException in: SharpCompress (:0) [.NET TP Worker]
+SharpCompress.Compressors.Xz.XZIndexMarkerReachedException: Exception of type 'SharpCompress.Compressors.Xz.XZIndexMarkerReachedException' was thrown.
+   at SharpCompress.Compressors.Xz.XZBlock.ReadHeaderSize()
+2026-11-06 16:27:31,585 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,586 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,586 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,587 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,587 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,589 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,589 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [Base Thread]
+2026-11-06 16:27:31,591 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,596 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,603 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,621 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,662 DEBUG MissionPlanner.Utilities.nfz.HK - fl=1012f138
+h=www.cloudflare.com
+ip=186.114.35.178
+ts=1794000451.000
+visit_scheme=https
+uag=
+colo=BOG
+sliver=none
+http=http/1.1
+loc=CO
+tls=TLSv1.2
+sni=plaintext
+warp=off
+gateway=off
+rbi=off
+kex=P-256
+ (:0) [.NET TP Worker]
+2026-11-06 16:27:31,663 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:31,669 DEBUG MissionPlanner.Utilities.Update - Response status: OK (:0) [.NET TP Worker]
+2026-11-06 16:27:31,670  INFO MissionPlanner.Utilities.Update - New file Check: local 1.3.9806.29608 vs Remote 1.3.9384.38258 (:0) [.NET TP Worker]
+2026-11-06 16:27:31,697 DEBUG MissionPlanner.Utilities.nfz.EU - fl=1012f100
+h=www.cloudflare.com
+ip=186.114.35.178
+ts=1794000451.000
+visit_scheme=https
+uag=
+colo=BOG
+sliver=none
+http=http/1.1
+loc=CO
+tls=TLSv1.2
+sni=plaintext
+warp=off
+gateway=off
+rbi=off
+kex=P-256
+ (:0) [.NET TP Worker]
+2026-11-06 16:27:31,837  INFO MissionPlanner.Utilities.KIndex - K-Index is 2 (:0) [.NET TP Worker]
+2026-11-06 16:27:32,702  INFO MissionPlanner.ArduPilot.APFirmware - 103270 (:0) [.NET TP Worker]
+2026-11-06 16:27:32,702  INFO MissionPlanner.ArduPilot.APFirmware - https://raw.githubusercontent.com/CubePilot/periph-manifest/main/manifest.json (:0) [.NET TP Worker]
+2026-11-06 16:27:32,869  INFO MissionPlanner.ArduPilot.APFirmware - 103272 (:0) [.NET TP Worker]
+2026-11-06 16:27:33,242 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:27:33,243 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:33,244 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:33,291  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:33,299 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:33,300 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:33,437 DEBUG MissionPlanner.Program - Loaded: example-watchbutton, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:33,438  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Button change 0.1 by EOSBandi (:0) [.NET TP Worker]
+2026-11-06 16:27:33,438  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:35,439  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:35,460 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:35,461 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:35,681 DEBUG MissionPlanner.Program - Loaded: example4-herelink, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:35,681  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Camera Control 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:27:35,681  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:37,235  INFO MissionPlanner.Utilities.Airports - getAirports - regen list (:0) [FD Mainloop]
+2026-11-06 16:27:37,237  INFO MissionPlanner.Utilities.Airports - getAirports done 0.002876 sec (:0) [FD Mainloop]
+2026-11-06 16:27:37,682  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:37,684 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:37,684 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:37,743 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:37,743  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:39,260 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:27:39,261 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:39,261 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:27:39,745  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:39,761 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:39,762 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:39,846 DEBUG MissionPlanner.Program - Loaded: example8-modechange, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:39,846  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:41,847  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:41,863 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:41,864 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:41,970 DEBUG MissionPlanner.Program - Loaded: example15-leds, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:41,970  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init LED Control 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:27:41,970  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:43,971  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:43,972  INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN (:0) [.NET TP Worker]
+2026-11-06 16:27:43,980 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:43,981 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:44,065 DEBUG MissionPlanner.Program - Loaded: example10-canlogfile, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:44,065  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN Log Extract 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:27:44,065  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:46,066  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:46,074 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:46,074 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:46,138 DEBUG MissionPlanner.Program - Loaded: example9-hudonoff, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:46,138  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init HUD 0.2 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:27:46,138  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:48,139  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:48,141 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:48,141  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:50,143  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:50,146 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:50,146 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:50,226 DEBUG MissionPlanner.Program - Loaded: example19-multiforward, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:50,226  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Link Forward  by  (:0) [.NET TP Worker]
+2026-11-06 16:27:50,226  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:52,227  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:52,229  INFO MissionPlanner.Plugin.PluginLoader - Try load DeviceProgramming (:0) [.NET TP Worker]
+2026-11-06 16:27:52,229  INFO MissionPlanner.Plugin.PluginLoader - Try load log4net (:0) [.NET TP Worker]
+2026-11-06 16:27:52,253 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:52,254 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:52,338 DEBUG MissionPlanner.Program - FirstChanceException in: Microsoft.CodeAnalysis (:0) [.NET TP Worker]
+Microsoft.CodeAnalysis.UnsupportedSignatureContent: Exception of type 'Microsoft.CodeAnalysis.UnsupportedSignatureContent' was thrown.
+   at Microsoft.CodeAnalysis.MetadataDecoder`5.DecodeTypeOrThrow(BlobReader& ppSig, SignatureTypeCode typeCode, Boolean& refersToNoPiaLocalType)
+2026-11-06 16:27:52,353 DEBUG MissionPlanner.Program - Loaded: example23-switch, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:52,353  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CubeLan 8 port Switch 0.1 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:27:52,353  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:54,354  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:54,358 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:54,358 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:54,420 DEBUG MissionPlanner.Program - Loaded: example17-menuremove, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:54,420  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:56,421  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:56,440 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:56,441 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:27:56,498 DEBUG MissionPlanner.Program - FirstChanceException in: System.Private.Xml (:0) [.NET TP Worker]
+System.Xml.XmlException: The ',' character, hexadecimal value 0x2C, cannot be included in a name. Line 32, position 57.
+   at System.Xml.XmlTextReaderImpl.Throw(Exception e)
+2026-11-06 16:27:56,500 DEBUG MissionPlanner.Program - Loaded: Microsoft.CodeAnalysis.CSharp.resources, Version=3.9.0.0, Culture=es, PublicKeyToken=31bf3856ad364e35 from /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/es/Microsoft.CodeAnalysis.CSharp.resources.dll (:0) [.NET TP Worker]
+2026-11-06 16:27:56,501 DEBUG MissionPlanner.Program - Loaded: example22-payloadconfig, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:56,501  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:58,503  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs (:0) [.NET TP Worker]
+2026-11-06 16:27:58,504 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:27:58,504  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:00,505  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:00,506 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:00,507  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:02,508  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:02,511 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:02,512 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:02,574 DEBUG MissionPlanner.Program - Loaded: example13-herelink2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:02,575  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:04,576  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:04,580 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:04,581 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:04,655 DEBUG MissionPlanner.Program - Loaded: example5-latencytracker, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:04,655  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:05,263 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:05,263 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:05,264 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:06,656  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:06,658 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:06,658  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:08,660  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:08,662 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:08,662 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:08,711 DEBUG MissionPlanner.Program - Loaded: example11-trace, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:08,712  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init tracemp 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:08,712  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:10,713  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:10,716 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:10,716 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:10,778 DEBUG MissionPlanner.Program - Loaded: example14-mass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:10,779  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init mass Control 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:10,779  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:11,280 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:11,280 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:11,281 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:12,780  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:12,781 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:12,782  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:14,783  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:14,787 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:14,787 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:14,866 DEBUG MissionPlanner.Program - Loaded: example3-fencedist, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:14,867  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init FenceDist 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:14,867  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:16,868  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:16,883  INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN (:0) [.NET TP Worker]
+2026-11-06 16:28:16,884 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:16,884 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:16,926 DEBUG MissionPlanner.Program - Loaded: example7-canrtcm, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:16,927  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN RTCM Extract 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:16,927  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:18,928  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:18,932 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:18,933 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (:0) [.NET TP Worker]
+2026-11-06 16:28:19,008 DEBUG MissionPlanner.Program - Loaded: example20-multiplepositions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (:0) [.NET TP Worker]
+2026-11-06 16:28:19,008  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init multiple positions  by  (:0) [.NET TP Worker]
+2026-11-06 16:28:19,008  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:21,009  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:21,012 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:21,012 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:21,074 DEBUG MissionPlanner.Program - Loaded: example6-mapicondesc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:21,074  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init MapIconDesc 0.10 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:21,074  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:23,075  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:23,082 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:23,082 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:23,155 DEBUG MissionPlanner.Program - Loaded: AnonymizeBinlogPlugin, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:23,155  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Anonymize Binlog 1.0 by MissionPlanner (:0) [.NET TP Worker]
+2026-11-06 16:28:23,155  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:25,156  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs (:0) [.NET TP Worker]
+2026-11-06 16:28:25,165 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:25,165 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:25,230 DEBUG MissionPlanner.Program - Loaded: generator, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:25,230  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init generator 0.11 by Michael Oborne (:0) [.NET TP Worker]
+2026-11-06 16:28:25,230  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:27,231  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:27,234 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:27,234 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:27,290 DEBUG MissionPlanner.Program - Loaded: example12-forwarding, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:27,290  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,291  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,293  INFO MissionPlanner.Plugin.PluginLoader - Try load MissionPlanner.WebAPIs (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,295 DEBUG MissionPlanner.Program - Loaded: MissionPlanner.WebAPIs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null from /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/MissionPlanner.WebAPIs.dll (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,296 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,296 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,339 DEBUG MissionPlanner.Program - Loaded: example, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:29,340  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:31,341  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:31,343 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:31,344 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:31,400 DEBUG MissionPlanner.Program - Loaded: example16-donate, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:31,401  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Donate 0.10 by Example (:0) [.NET TP Worker]
+2026-11-06 16:28:31,401  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:33,402  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:33,418 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:33,418 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:33,464 DEBUG MissionPlanner.Program - Loaded: example21-persistentsimple, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:33,465  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,466  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,467  INFO MissionPlanner.Plugin.PluginLoader - Try load BouncyCastle.Cryptography (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,474 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,475 DEBUG MissionPlanner.Program - TypeResolve Failed: Mono.Runtime from MissionPlanner.Utilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,534 DEBUG MissionPlanner.Program - FirstChanceException in: Microsoft.CodeAnalysis (:0) [.NET TP Worker]
+Microsoft.CodeAnalysis.UnsupportedSignatureContent: Exception of type 'Microsoft.CodeAnalysis.UnsupportedSignatureContent' was thrown.
+   at Microsoft.CodeAnalysis.MetadataDecoder`5.DecodeTypeOrThrow(BlobReader& ppSig, SignatureTypeCode typeCode, Boolean& refersToNoPiaLocalType)
+2026-11-06 16:28:35,535 DEBUG MissionPlanner.Program - FirstChanceException in: Microsoft.CodeAnalysis (:0) [.NET TP Worker]
+Microsoft.CodeAnalysis.UnsupportedSignatureContent: Exception of type 'Microsoft.CodeAnalysis.UnsupportedSignatureContent' was thrown.
+   at Microsoft.CodeAnalysis.MetadataDecoder`5.DecodeTypeOrThrow(BlobReader& ppSig, SignatureTypeCode typeCode, Boolean& refersToNoPiaLocalType)
+2026-11-06 16:28:35,549 DEBUG MissionPlanner.Program - Loaded: example18-externalapi, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:35,550  INFO MissionPlanner.Plugin.PluginLoader - Plugin Init External API  by  (:0) [.NET TP Worker]
+2026-11-06 16:28:35,550  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:37,280 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:37,281 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:37,281 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:37,551  INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:37,553 DEBUG MissionPlanner.Program - Loaded: example5, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null from  (?:?) [.NET TP Worker]
+2026-11-06 16:28:37,553  INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs (?:?) [.NET TP Worker]
+2026-11-06 16:28:39,557 DEBUG MissionPlanner.MAVLinkInterface - Subscribed Loaded at offset 208 in file:line:column /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs:37:13
+ MavOnOnPacketReceivedHandler ButtonPlugin System.EventHandler`1[MAVLink+MAVLinkMessage] (?:?) [Base Thread]
+2026-11-06 16:28:43,294 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:43,295 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:43,296 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.Net.Sockets.SocketException (89): Operation canceled
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Net.Sockets.SocketReceiveFromResult>.GetResult(Int16 token)
+   at System.Threading.Tasks.ValueTask`1.ValueTaskSourceAsTask.<>c.<.cctor>b__4_0(Object state)
+--- End of stack trace from previous location ---
+   at System.Net.Sockets.UdpClient.<ReceiveAsync>g__WaitAndWrap|61_0(Task`1 task)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,626 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,627 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,627 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,627 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,627 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,628 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,628 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,628 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,628 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,825 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,826 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,827 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,828 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,829 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,830 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,830 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,830 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,830 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,831 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,831 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:45,832 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,832 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,837 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:45,838 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,207 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:46,208 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:46,208 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,209 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:46,209 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,255 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:46,255 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,256 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:46,256 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,506 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+2026-11-06 16:28:46,506 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+2026-11-06 16:28:46,507 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+2026-11-06 16:28:46,507 DEBUG MissionPlanner.Program - FirstChanceException in: System.Net.Sockets (:0) [.NET TP Worker]
+System.IO.IOException: Unable to read data from the transport connection: Operation canceled.
+ ---> System.Net.Sockets.SocketException (89): Operation canceled
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()

@@ -1,0 +1,377 @@
+2026-11-06 16:37:39.195 MissionPlanner[85326:3645473] Could not find `System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `ObjectListView, Version=2.5.1.30870, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4`.
+2026-11-06 16:37:39.195 MissionPlanner[85326:3645473] Could not find `System.Data.SqlClient, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+2026-11-06 16:37:39.195 MissionPlanner[85326:3645473] Could not find `System.Data.Odbc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 
+
+
+Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe
+To fix any filename case issues under mono use    export MONO_IOMAP=drive:case
+for pinvoke      MONO_LOG_LEVEL=debug MONO_LOG_MASK=dll mono MissionPlanner.exe
+watch -n 1 ls -l /proc/$(pidof mono)/fd
+watch -n 1 lsof -p $(pidof mono)
+Data Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/
+Log Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/logs
+Running Dir /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/
+User Data Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/
+PlacesRecentDocuments Dir 
+PlacesDesktop Dir /Users/david/Desktop
+PlacesPersonal Dir /Users/david/Documents
+PlacesMyComputer Dir 
+INFO MissionPlanner.Program - ******************* Logging Configured *******************
+INFO MissionPlanner.Program - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/arm64/libSkiaSharp
+INFO MissionPlanner.Program - Skia Error 
+ERROR MissionPlanner.Program - System.DllNotFoundException: Unable to load shared library 'kernel32.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/kernel32.dll.dylib, 0x0001): tried: '/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll.dylib' (no such file), '/kernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file)
+dlopen(kernel32.dll.dylib, 0x0001): tried: 'kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/usr/lib/kernel32.dll.dylib' (no such file, not in dyld cache), 'kernel32.dll.dylib' (no such file)
+dlopen(/libkernel32.dll.dylib, 0x0001): tried: '/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll.dylib' (no such file), '/libkernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file)
+dlopen(libkernel32.dll.dylib, 0x0001): tried: 'libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/usr/lib/libkernel32.dll.dylib' (no such file, not in dyld cache), 'libkernel32.dll.dylib' (no such file)
+dlopen(/kernel32.dll, 0x0001): tried: '/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll' (no such file), '/kernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file)
+dlopen(kernel32.dll, 0x0001): tried: 'kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/usr/lib/kernel32.dll' (no such file, not in dyld cache), 'kernel32.dll' (no such file)
+dlopen(/libkernel32.dll, 0x0001): tried: '/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll' (no such file), '/libkernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file)
+dlopen(libkernel32.dll, 0x0001): tried: 'libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/usr/lib/libkernel32.dll' (no such file, not in dyld cache), 'libkernel32.dll' (no such file)
+
+   at MissionPlanner.Utilities.NativeLibrary.LoadLibrary(String dllToLoad)
+   at MissionPlanner.Program.Start(String[] args)
+10.0.0.0
+Splash .ctor
+IconFile
+Splash.Show()
+ShowWindow:Mission Planner 1.3.83 build 1.3.9806.29608, activate=True
+Debugger.IsAttached False
+Application.DoEvents
+Application.DoEvents
+Setup GMaps 1
+Setup GMaps 2
+Setup GoogleMapProvider API
+Setup Tracking.productName
+Setup Tracking.primaryScreenBitsPerPixel
+Setup Settings.Instance.UserAgent
+Setup check gdal dir
+Setup gdal (command line tools)
+Setup proxy
+Setup proxy
+Setup CleanupFiles
+INFO MissionPlanner.Program - 64bit os True, 64bit process True, OS Arch Arm64, OS Desc macOS 27.0.1, FW Desc .NET 10.0.14
+INFO MissionPlanner.Program - Runtime Version v4.0.30319
+Application.Run(new MainV2())
+INFO MissionPlanner.MainV2 - Mainv2 ctor
+INFO MissionPlanner.MainV2 - Loading config
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1748 in file:line:column <filename unknown>:0:0
+ adsb_UpdatePlanePosition MainV2 System.EventHandler`1[MissionPlanner.Utilities.adsb+PointLatLngAltHdg]
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1832 in file:line:column <filename unknown>:0:0
+ <.ctor>b__106_0 MainV2 System.EventHandler`1[System.ValueTuple`2[System.String,MAVLink+MAV_COLLISION_THREAT_LEVEL]]
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+BurntKermit.mpsystheme theme is loading
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+INFO MissionPlanner.Utilities.srtm - .cctor
+INFO MissionPlanner.Utilities.srtm - requestRunner start
+INFO MissionPlanner.Utilities.srtm - /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/srtm
+INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True
+INFO MissionPlanner.MainV2 - Create FD
+INFO MissionPlanner.GCSViews.FlightData - Ctor Start
+INFO MissionPlanner.Controls.HUD - Static HUD ctor
+INFO MissionPlanner.Controls.HUD - Instance HUD ctor
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.GCSViews.FlightData - Components Done
+INFO MissionPlanner.GCSViews.FlightData - Tunning Graph Settings
+INFO MissionPlanner.GCSViews.FlightData - HUD Settings
+INFO MissionPlanner.GCSViews.FlightData - Graph Setup
+INFO MissionPlanner.GCSViews.FlightData - Map Setup
+INFO MissionPlanner.MainV2 - Create FP
+INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params
+INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 30
+INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - updateMapType invoke req? False
+INFO MissionPlanner.MainV2 - Create SIM
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 17496 in file:line:column <filename unknown>:0:0
+ comPort_MavChanged MainV2 System.EventHandler
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - myview width 944 height 508
+INFO MissionPlanner.MainV2 - this   width 944 height 536
+INFO MissionPlanner.MainV2 - myview width 944 height 508
+INFO MissionPlanner.MainV2 - this   width 944 height 568
+INFO MissionPlanner.MainV2 - Load Pluggins
+INFO MissionPlanner.Plugin.PluginLoader - Plugin path: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Small stuff 0.10 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Grid 1.3.9806.29608 by Michael Oborne
+INFO MissionPlanner.MainV2 - Load Pluggins... Done
+INFO MissionPlanner.MainV2 - show FlightData
+Open MissionPlanner.GCSViews.FlightData FlightData
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnHandleCreated Start
+INFO MissionPlanner.Controls.HUD - OnLoad Start
+INFO MissionPlanner.Controls.HUD - OnLoad Done
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 333 235
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 333 249
+HUD 1 hz drawtime 22 gl False
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 333 247
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 333 247
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - show FlightData... Done
+INFO MissionPlanner.MainV2 - start http
+INFO MissionPlanner.MainV2 - start joystick
+INFO MissionPlanner.Utilities.httpserver - Listening for client
+INFO MissionPlanner.MainV2 - start serialreader
+INFO MissionPlanner.MainV2 - start adsbsender
+INFO MissionPlanner.MainV2 - start plugin thread
+INFO MissionPlanner.MainV2 - start AutoConnect
+INFO MissionPlanner.ArduPilot.APFirmware - https://firmware.oborne.me/manifest.json.gz
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink default port",
+  "Enabled": true,
+  "Port": 14550,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink alt port",
+  "Enabled": true,
+  "Port": 14551,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5000 h264",
+  "Enabled": true,
+  "Port": 5000,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5000 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5100 h264",
+  "Enabled": true,
+  "Port": 5100,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5100 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5600 h264",
+  "Enabled": true,
+  "Port": 5600,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5600 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5601 h265",
+  "Enabled": true,
+  "Port": 5601,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5601 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.MainV2 - appload time
+INFO MissionPlanner.MainV2 - Loaded 4855 airports
+INFO MissionPlanner.Utilities.Update - Checking for update at: https://firmware.oborne.me/MissionPlanner/upgrade/version.txt
+INFO MissionPlanner.Utilities.Update - New file Check: local 1.3.9806.29608 vs Remote 1.3.9384.38258
+INFO MissionPlanner.Utilities.KIndex - K-Index is 2
+HUD 3 hz drawtime 8 gl False
+INFO MissionPlanner.ArduPilot.APFirmware - 103270
+INFO MissionPlanner.ArduPilot.APFirmware - https://raw.githubusercontent.com/CubePilot/periph-manifest/main/manifest.json
+INFO MissionPlanner.ArduPilot.APFirmware - 103272
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Button change 0.1 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+HUD 1 hz drawtime 1 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Camera Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+HUD 1 hz drawtime 3 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+HUD 1 hz drawtime 1 gl False
+INFO MissionPlanner.Utilities.Airports - getAirports - regen list
+INFO MissionPlanner.Utilities.Airports - getAirports done 0.002377 sec
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+HUD 1 hz drawtime 3 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init LED Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+HUD 1 hz drawtime 3 gl False
+HUD 1 hz drawtime 3 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN Log Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+HUD 1 hz drawtime 3 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init HUD 0.2 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Link Forward  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DeviceProgramming
+INFO MissionPlanner.Plugin.PluginLoader - Try load log4net
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CubeLan 8 port Switch 0.1 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 3 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init tracemp 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init mass Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init FenceDist 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 1 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN RTCM Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init multiple positions  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 2 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init MapIconDesc 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+HUD 1 hz drawtime 2 gl False
+HUD 1 hz drawtime 1 gl False
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Anonymize Binlog 1.0 by MissionPlanner
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+HUD 1 hz drawtime 1 gl False
+HUD 1 hz drawtime 2 gl False
