@@ -46,3 +46,4 @@
 2026-11-05 native: capture the kernel's SIGKILL reason for the SDL2 dylib
 2026-11-06 native: map blend mode and bundled library signatures
 2026-11-06 native: install and publish without the artifact storage
+2026-11-06 native: app upload after freeing the artifact storage; RUN.txt
