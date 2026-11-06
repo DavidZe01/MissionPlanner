@@ -73,7 +73,7 @@ Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 4191931
 | Abrir un `.tlog` desde Finder | OK |
 | Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha |
 
-Dos hallazgos reales de hardware, ninguno bloqueante:
+Hallazgos reales en tu Mac:
 - **Capturas de pantalla**: `screencapture` falla en este runner ("could not create image
   from display") porque el proceso del runner, al correr como servicio en segundo plano, no
   tiene el permiso "Grabación de pantalla" de Ajustes del Sistema. No afecta a la app en sí
@@ -81,9 +81,21 @@ Dos hallazgos reales de hardware, ninguno bloqueante:
   arreglarlo: Ajustes del Sistema → Privacidad y seguridad → Grabación de pantalla → dale
   permiso al proceso del runner (`Runner.Worker`) o ábrelo una vez desde Terminal para que
   pida el permiso.
-- **`feature:joystick-enumeration` se cuelga** (SDL2) de forma repetible en tu Mac, hasta que
-  el vigilante lo corta. Probablemente algún dispositivo HID o Bluetooth conectado que SDL2
-  se queda esperando al enumerar; no es arreglable sin saber cuál es ese periférico.
+- **El joystick cerraba la app** (`feature:joystick-enumeration`). No era un cuelgue ni un
+  periférico: `codesign --verify` daba `invalid signature` para `libSDL2-2.0.0.dylib`, y el
+  kernel mata (SIGKILL) al proceso que la carga, en milisegundos y desde cualquier hilo.
+  `build.sh` copia SDL2, SDL3, libusb y SimpleBLE desde Homebrew y les cambia el nombre de
+  instalación con `install_name_tool`, lo que invalida su firma; `codesign --deep` no las
+  vuelve a firmar porque `Contents/MonoBundle` no es una ubicación de código anidado (las
+  sella como recursos). Lo mismo habría cerrado la app al flashear por DFU (libusb). Ahora
+  `build.sh` firma cada biblioteca y verifica una por una, y el workflow carga cada
+  biblioteca incluida en un proceso aparte.
+- **El mapa se veía casi en blanco.** La biblioteca Cocoa traducía `CompositingMode.SourceOver`
+  al modo de mezcla `Overlay` de CoreGraphics (el "Superponer" de Photoshop) en vez de
+  `Normal`. El mapa lo fija antes de dibujar los tiles, y sobre su fondo WhiteSmoke ese modo
+  da casi blanco para cualquier color (el azul marino del copyright salía lavanda pálido).
+  Afectaba también al HUD en modo GDI+. El recorrido comprueba ahora ese modo de mezcla con
+  un píxel y dibuja el mapa a una imagen (`map-render.png`).
 
 En la máquina virtual de CI de GitHub (sin aceleración OpenGL) el mismo código usa el
 renderizador por software de Apple en vez de la GPU; en Retina, OpenGL dibuja a la resolución

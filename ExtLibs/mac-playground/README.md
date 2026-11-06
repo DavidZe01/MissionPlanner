@@ -32,6 +32,9 @@ Changes for Mission Planner:
   bitmap's image while the Graphics lives;
 - `Graphics.Clear` replaces the pixels (alpha included) as in GDI+, instead of
   drawing over them: `Clear(Color.Transparent)` empties a back buffer;
+- `CompositingMode.SourceOver` is CoreGraphics' Normal blend (Porter-Duff source-over),
+  not Overlay (the Photoshop-style contrast blend): the map sets it before drawing its
+  tiles, and over its light background Overlay left everything nearly white;
 - `new Bitmap(width, height, stride, format, scan0)` (video frames for the HUD):
   a copy of the pixels in the internal layout; `LockBits(ReadOnly)` hands out a
   converted copy and leaves the bitmap as it is (OpenGL textures), and `LockBits` to

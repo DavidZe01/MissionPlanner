@@ -1,8 +1,8 @@
-// Isolated repro for the SDL2 dlopen hang seen from JoystickSDL's background
-// thread: dlopen the same dylib either from this process's main thread or
-// from a pthread, so the two cases run as separate processes (dyld's own
-// per-image load lock would otherwise serialize two in-process attempts and
-// make a main-thread-only hang look like both are stuck).
+// Loads one native library in a process of its own (macos-native.yml, "Load the
+// bundled native libraries"): a library with a broken code signature gets the
+// whole process killed (SIGKILL) inside dlopen, which inside Mission Planner looks
+// like the feature that first loads it crashing. "thread" loads it from a pthread
+// instead of the main thread, for libraries that might need the main thread.
 // Usage: dlopen-probe <path-to-dylib> main|thread
 #include <stdio.h>
 #include <dlfcn.h>

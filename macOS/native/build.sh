@@ -170,7 +170,22 @@ if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
     codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
 fi
 
+# Contents/MonoBundle is not a nested-code location for codesign --deep (Frameworks,
+# PlugIns, MacOS, ...): the libraries there are sealed as the app's resources, never
+# signed themselves. One whose signature install_name_tool broke above (SDL2, SDL3,
+# libusb, SimpleBLE) stays broken under a valid app signature, and the kernel kills the
+# process that loads it (SIGKILL inside dlopen: the joystick and DFU flashing). Sign each.
+while IFS= read -r -d '' lib; do
+    codesign --force --sign - "$lib"
+done < <(find "$bundle" -type f -name '*.dylib' -print0)
 # the bundle changed after the SDK signed it
 codesign --force --deep --sign - "$app"
 codesign --verify --strict "$app" && echo "Signature: valid"
+# and the libraries one by one, which the app's own verification does not do
+invalid=0
+while IFS= read -r -d '' lib; do
+    codesign --verify --strict "$lib" 2>/dev/null || { echo "invalid signature: $lib" >&2; invalid=$((invalid + 1)); }
+done < <(find "$bundle" -type f -name '*.dylib' -print0)
+[[ $invalid == 0 ]] || { echo "$invalid libraries with an invalid signature" >&2; exit 1; }
+echo "Library signatures: valid"
 echo "App: $app"

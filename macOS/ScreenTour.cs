@@ -438,6 +438,48 @@ class ScreenTour
                     Console.WriteLine("TOUR hud pixel y=" + f + " " + bitmap.GetPixel(bitmap.Width / 2, (int)(bitmap.Height * f)));
                 bitmap.Save(Path.Combine(outDir, "hud-back-buffer.png"), System.Drawing.Imaging.ImageFormat.Png);
             });
+            // GMapControl sets SourceOver before drawing its tiles; the Cocoa drawing library
+            // once mapped it to CoreGraphics' Overlay blend, which over the map's WhiteSmoke
+            // background left everything nearly white (Navy came out as (235,235,245))
+            Step("feature:map-compositing", () =>
+            {
+                using (var bitmap = new System.Drawing.Bitmap(8, 8))
+                using (var g = System.Drawing.Graphics.FromImage(bitmap))
+                {
+                    g.Clear(System.Drawing.Color.WhiteSmoke);
+                    g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    g.FillRectangle(System.Drawing.Brushes.Navy, 0, 0, 8, 8);
+                    var c = bitmap.GetPixel(4, 4);
+                    Console.WriteLine("TOUR map compositing navy over whitesmoke: " + c);
+                    if (c.R > 40 || c.G > 40 || c.B < 96 || c.B > 160)
+                        throw new Exception("SourceOver drew " + c + " instead of Navy (0,0,128)");
+                }
+                // the Flight Data map drawn by its own code into a bitmap (tiles depend on the
+                // network, so this only reports): a washed-out map is almost all near-white
+                var map = MissionPlanner.GCSViews.FlightData.mymap;
+                using (var bitmap = new System.Drawing.Bitmap(map.Width, map.Height))
+                {
+                    int samples = 0, nearWhite = 0;
+                    long r = 0, gr = 0, b = 0;
+                    using (var g = System.Drawing.Graphics.FromImage(bitmap))
+                    {
+                        map.doPaint(new SvgNet.SvgGdi.GdiGraphics(g));
+                        for (var y = 1; y < 9; y++)
+                            for (var x = 1; x < 13; x++)
+                            {
+                                var c = bitmap.GetPixel(bitmap.Width * x / 13, bitmap.Height * y / 9);
+                                samples++;
+                                r += c.R; gr += c.G; b += c.B;
+                                if (c.R > 225 && c.G > 225 && c.B > 225)
+                                    nearWhite++;
+                            }
+                    }
+                    Console.WriteLine("TOUR map render zoom=" + map.Zoom + " provider=" + map.MapProvider + " size=" + bitmap.Size +
+                                      " near-white=" + nearWhite + "/" + samples +
+                                      " mean=(" + r / samples + "," + gr / samples + "," + b / samples + ")");
+                    bitmap.Save(Path.Combine(outDir, "map-render.png"), System.Drawing.Imaging.ImageFormat.Png);
+                }
+            });
             // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
             // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
             var tabControl = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();

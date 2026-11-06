@@ -989,7 +989,10 @@ namespace System.Drawing {
 					context.SetBlendMode (CGBlendMode.Copy);
 					break;
 				case CompositingMode.SourceOver:
-					context.SetBlendMode (CGBlendMode.Overlay);
+					// GDI+ SourceOver is Porter-Duff source-over, which is CoreGraphics'
+					// Normal. Overlay is the Photoshop-style contrast blend: over a light
+					// background it turns everything nearly white (the washed-out map).
+					context.SetBlendMode (CGBlendMode.Normal);
 					break;
 				}
 			}
