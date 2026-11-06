@@ -421,7 +421,8 @@ jobs:
           publish=$(mktemp -d)
           cp -R out/. "$publish/"
           cd "$publish"
-          echo "commit=$GITHUB_SHA outcome=$OUTCOME app-artifact=$APP_UPLOAD run=$RUN" > RESULT.txt
+          # (not RESULT.txt: on macOS's case-insensitive file system that is out/result.txt)
+          echo "commit=$GITHUB_SHA outcome=$OUTCOME app-artifact=$APP_UPLOAD run=$RUN" > RUN.txt
           git init -q -b ci-native
           git add -A
           git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $GITHUB_SHA ($OUTCOME)"
