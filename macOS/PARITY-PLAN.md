@@ -61,17 +61,18 @@ conectado.
 
 El workflow corre como runner autoalojado en tu MacBook (`runs-on: [self-hosted, macOS,
 ARM64]`) además de en los runners de GitHub, lo que además evita la cola de espera por
-Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 41919317597):
+Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 42290402509):
 
 | Prueba | Resultado |
 | --- | --- |
 | OpenGL con GPU real (no el renderizador por software de la VM de CI) | `Vendor: Apple`, `Version: 2.1 Metal - 91.7` — Metal de verdad, confirmado por log |
-| Recorrido de pantallas sin vehículo | 146/148 (98,6 %) |
-| Conectado al SITL incluido | 9/9 (100 %) |
+| Recorrido de pantallas sin vehículo | 148/149 (99,3 %): 10/10 funciones (joystick incluido), 21/21 pantallas, 79/80 páginas, 38/38 formularios; el mapa dibujado por la app sale con la imagen satelital (0 de 96 puntos casi blancos) |
+| Conectado al SITL incluido | 39/39 (100 %), 16/16 funciones |
+| Bibliotecas nativas incluidas (SDL2, SDL3, libusb, ...) | Cada una carga en un proceso aparte, con firma válida |
 | Bibliotecas que carga la app en tiempo de ejecución | 1432 en total, 0 desde Homebrew o `/usr/local` (63 del propio `.app`, 46 del GStreamer incluido) — confirma que no depende de nada instalado aparte |
 | Pantalla Retina virtual (2x), HUD por OpenGL y por GDI+ | Ambos modos arrancan y quedan en marcha; `OpenGL view attached: HUD, backing scale 2` confirma que OpenGL se adjuntó a resolución Retina |
 | Abrir un `.tlog` desde Finder | OK |
-| Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha |
+| Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha (desde el zip local: la cuota de artefactos de la cuenta estaba llena) |
 
 Hallazgos reales en tu Mac:
 - **Capturas de pantalla**: `screencapture` falla en este runner ("could not create image
