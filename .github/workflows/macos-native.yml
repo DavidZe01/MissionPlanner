@@ -31,7 +31,8 @@ jobs:
     runs-on: [self-hosted, macOS, ARM64]
     timeout-minutes: 100
     permissions:
-      contents: read
+      # write: the results go to the ci-native branch from here (last step)
+      contents: write
       actions: read
     steps:
       - uses: actions/checkout@v4
@@ -363,15 +364,11 @@ jobs:
           done
           du -sh out
       - uses: actions/upload-artifact@v4
+        id: upload_app
         if: always()
-        with:
-          name: results-native
-          path: out
-          # (published to the ci-native branch right after; and the account's artifact
-          # storage fills up otherwise: about 150 MB of app per run)
-          retention-days: 7
-      - uses: actions/upload-artifact@v4
-        if: always()
+        # a full artifact storage (the account's quota) must not fail the build and tests:
+        # the install step then uses the same zip from disk, and the last step says so
+        continue-on-error: true
         with:
           name: MissionPlanner-macos-native-arm64
           path: MissionPlanner-macos-native-arm64.zip
@@ -386,13 +383,22 @@ jobs:
         timeout-minutes: 10
         env:
           GH_TOKEN: ${{ github.token }}
+          APP_UPLOAD: ${{ steps.upload_app.outcome }}
         run: |
           # a leftover MissionPlanner process from an earlier step (e.g. the Retina one,
           # continue-on-error) would make install.sh refuse to run (it assumes that is the
           # user's own session and asks them to quit it first): here, in CI, it is only ever
           # CI's own test cruft, so clear it before calling install.sh
           pkill -f 'Contents/MacOS/MissionPlanner' 2>/dev/null && sleep 2 || true
-          MP_RUN=${{ github.run_id }} MP_REPO=${{ github.repository }} MP_APPLICATIONS="$HOME/Applications" MP_NO_OPEN=1 \
+          # from this run's artifact with the GitHub CLI, as a user would, or, when the upload
+          # failed (the account's artifact storage full), from the same zip on disk
+          if [[ $APP_UPLOAD == success ]]; then
+              export MP_RUN=${{ github.run_id }}
+          else
+              export MP_ZIP="$PWD/MissionPlanner-macos-native-arm64.zip"
+              echo "INSTALL: from the local zip (artifact upload: $APP_UPLOAD)"
+          fi
+          MP_REPO=${{ github.repository }} MP_APPLICATIONS="$HOME/Applications" MP_NO_OPEN=1 \
               ./macOS/native/install.sh
           app="$HOME/Applications/Mission Planner.app"
           if xattr "$app" | grep -q com.apple.quarantine; then echo "INSTALL: quarantined"; else echo "INSTALL: no quarantine attribute"; fi
@@ -402,32 +408,26 @@ jobs:
           if pgrep -f "$app/Contents/MacOS/MissionPlanner" >/dev/null; then echo "INSTALLED APP: running"; else echo "INSTALLED APP: not running"; fi
           pkill -f 'Contents/MacOS/MissionPlanner' || true
 
-  results:
-    # Logs and screenshots on the ci-native branch, readable with git.
-    name: Publish results
-    needs: [native]
-    if: always()
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: results-native
-          path: results
-      - name: Push results branch
+      - name: Publish results to the ci-native branch
+        # logs and screenshots, readable with git; straight from here rather than through an
+        # artifact, which a full artifact storage (the account's quota) would stop
+        if: always()
         env:
-          SHA: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
+          OUTCOME: ${{ job.status }}
+          APP_UPLOAD: ${{ steps.upload_app.outcome }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          OUTCOME: ${{ needs.native.result }}
         run: |
-          cd results
-          echo "commit=$SHA outcome=$OUTCOME run=$RUN" > RESULT.txt
+          publish=$(mktemp -d)
+          cp -R out/. "$publish/"
+          cd "$publish"
+          echo "commit=$GITHUB_SHA outcome=$OUTCOME app-artifact=$APP_UPLOAD run=$RUN" > RESULT.txt
           git init -q -b ci-native
           git add -A
-          git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $SHA ($OUTCOME)"
+          git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $GITHUB_SHA ($OUTCOME)"
           for attempt in 1 2 3; do
-              git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" ci-native && exit 0
+              git push -q -f "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY" ci-native && break
+              [[ $attempt == 3 ]] && exit 1
               sleep $((attempt * 15))
           done
-          exit 1
+          cd / && rm -rf -- "$publish"
