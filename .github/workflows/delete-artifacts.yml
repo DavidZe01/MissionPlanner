@@ -14,7 +14,9 @@ permissions:
 
 jobs:
   delete:
-    runs-on: ubuntu-22.04
+    # the owner's Mac: GitHub-hosted runners do not start while the account is locked
+    # for billing ("The job was not started because your account is locked")
+    runs-on: [self-hosted, macOS, ARM64]
     steps:
       - name: Delete every artifact but sitl
         env:

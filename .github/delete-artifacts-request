@@ -1,1 +1,2 @@
 2026-11-06 delete every artifact but sitl (storage quota full; asked by the owner)
+2026-11-06 retry on the self-hosted Mac (GitHub-hosted runners blocked by billing)
