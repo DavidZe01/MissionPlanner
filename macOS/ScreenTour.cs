@@ -548,6 +548,13 @@ class ScreenTour
                 // (a comma-separated list: the connected tour opens the pages that need a vehicle)
                 if (!string.IsNullOrEmpty(only) && !only.Split(',').Any(o => o.Trim().Length > 0 && t.FullName.Contains(o.Trim())))
                     continue;
+                // pages Mission Planner only opens with a vehicle's parameters (it reads them on
+                // Activate, as on Windows): the connected tour opens them instead
+                if (string.IsNullOrEmpty(connect) && NeedsVehicle.Contains(t.Name))
+                {
+                    Console.WriteLine("TOUR NEEDS VEHICLE page:" + t.FullName + " (opened by the connected tour)");
+                    continue;
+                }
                 OpenPage(t);
             }
             if (string.IsNullOrEmpty(only) && Environment.GetEnvironmentVariable("TOUR_FORMS") != "0")
@@ -571,6 +578,8 @@ class ScreenTour
         start.Start();
         Program.Main(new string[0]);
     }
+
+    private static readonly HashSet<string> NeedsVehicle = new HashSet<string> { "ConfigHWCompass2" };
 
     private static bool IsMac
     {
