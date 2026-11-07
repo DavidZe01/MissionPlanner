@@ -23,3 +23,8 @@ jobs:
           name: artifact-probe
           path: probe.txt
           retention-days: 1
+  hosted:
+    # whether the account is still locked for billing: a GitHub-hosted job then never starts
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "GitHub-hosted runner started"
