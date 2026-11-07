@@ -48,3 +48,4 @@
 2026-11-06 native: install and publish without the artifact storage
 2026-11-06 native: app upload after freeing the artifact storage; RUN.txt
 2026-11-07 native: deliver on the self-hosted Mac (no artifact upload)
+2026-11-07 native: anchored controls in split panels
