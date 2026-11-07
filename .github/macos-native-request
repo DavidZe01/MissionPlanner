@@ -53,3 +53,4 @@
 2026-11-07 native: compass page with the SITL vehicle
 2026-11-07 native: vehicle-only pages in the connected tour
 2026-11-07 native: SimpleBLE (cmake) on the self-hosted Mac
+2026-11-07 native: Log Analyzer (python3)
