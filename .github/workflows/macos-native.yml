@@ -53,6 +53,29 @@ jobs:
           path: sitl-bin
           run-id: ${{ steps.sitl.outputs.run }}
           github-token: ${{ github.token }}
+      - name: SITL simulators kept on this Mac
+        # a self-hosted runner keeps the simulators between runs, so the app still bundles
+        # them when no "sitl" artifact is left (they expire, and the artifact storage can be
+        # full): the newest artifact, else the copy kept here, else the app the last run
+        # installed (build.sh puts them in Contents/Resources/sitl)
+        if: runner.environment == 'self-hosted'
+        run: |
+          cache="$HOME/Library/Caches/MissionPlanner-native/sitl-bin"
+          installed="$HOME/Applications/Mission Planner.app/Contents/Resources/sitl"
+          mkdir -p "$(dirname "$cache")"
+          if [[ -f sitl-bin/ArduCopter ]]; then
+              rm -rf "$cache" && cp -R sitl-bin "$cache"
+              echo "SITL: from the artifact (kept in $cache)"
+          elif [[ -f $cache/ArduCopter ]]; then
+              rm -rf sitl-bin && cp -R "$cache" sitl-bin
+              echo "SITL: kept on this Mac"
+          elif [[ -f $installed/ArduCopter ]]; then
+              rm -rf sitl-bin "$cache" && cp -R "$installed" "$cache" && cp -R "$cache" sitl-bin
+              echo "SITL: from the app the last run installed"
+          else
+              echo "SITL: none (no artifact and none kept on this Mac)"
+          fi
+          chmod +x sitl-bin/Ardu* 2>/dev/null || true
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
@@ -303,7 +326,8 @@ jobs:
           sleep 5
           screencapture -x out/open-document.png || true
           grep -m1 MACOS_OPEN_DOCUMENT out/open-document.log && echo "OPEN DOCUMENT: OK" || echo "OPEN DOCUMENT: not received"
-          pkill -f 'Contents/MacOS/MissionPlanner' || true
+          # only this copy: on a self-hosted runner the owner may have their own one open
+          pkill -f "$PWD/$app/Contents/MacOS/MissionPlanner" || true
       - name: Retina (HiDPI) display
         # a virtual 2x display (hidpi-display.m) made the main one: the app with the HUD drawn by
         # OpenGL and by GDI+ at Retina resolution
@@ -363,9 +387,19 @@ jobs:
               sips -s format jpeg -s formatOptions 60 "$f" --out "${f%.png}.jpg" > /dev/null 2>&1 && rm -f "$f"
           done
           du -sh out
+      - name: Keep the app on this Mac
+        # a self-hosted runner is the Mac the app is for: it stays here (installed by the
+        # next step, and the zip outside the workspace, which checkout cleans), with no
+        # upload to GitHub's artifact storage
+        if: success() && runner.environment == 'self-hosted'
+        run: |
+          mkdir -p "$HOME/MissionPlanner-native"
+          cp MissionPlanner-macos-native-arm64.zip "$HOME/MissionPlanner-native/"
+          echo "$GITHUB_SHA $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > "$HOME/MissionPlanner-native/BUILD.txt"
+          echo "KEPT: $HOME/MissionPlanner-native/MissionPlanner-macos-native-arm64.zip"
       - uses: actions/upload-artifact@v4
         id: upload_app
-        if: always()
+        if: always() && runner.environment != 'self-hosted'
         # a full artifact storage (the account's quota) must not fail the build and tests:
         # the install step then uses the same zip from disk, and the last step says so
         continue-on-error: true
@@ -377,21 +411,22 @@ jobs:
           retention-days: 3
 
       - name: Install with install.sh
-        # the app just uploaded, installed as a user would (GitHub CLI, no browser), then opened
+        # the app just built, installed as a user would, then opened: from the uploaded
+        # artifact (GitHub CLI, no browser) or, on a self-hosted runner, from the zip here,
+        # where it is the delivered app (so a failure fails the run)
         if: success()
-        continue-on-error: true
+        continue-on-error: ${{ runner.environment != 'self-hosted' }}
         timeout-minutes: 10
         env:
           GH_TOKEN: ${{ github.token }}
           APP_UPLOAD: ${{ steps.upload_app.outcome }}
         run: |
           # a leftover MissionPlanner process from an earlier step (e.g. the Retina one,
-          # continue-on-error) would make install.sh refuse to run (it assumes that is the
-          # user's own session and asks them to quit it first): here, in CI, it is only ever
-          # CI's own test cruft, so clear it before calling install.sh
-          pkill -f 'Contents/MacOS/MissionPlanner' 2>/dev/null && sleep 2 || true
-          # from this run's artifact with the GitHub CLI, as a user would, or, when the upload
-          # failed (the account's artifact storage full), from the same zip on disk
+          # continue-on-error) would make install.sh refuse to run: clear CI's own copies only
+          # (on a self-hosted runner, a Mission Planner the owner has open is theirs to quit,
+          # and install.sh says so)
+          pkill -f "$GITHUB_WORKSPACE/.*Contents/MacOS/MissionPlanner" 2>/dev/null && sleep 2 || true
+          pkill -f "$HOME/Applications/Mission Planner.app/Contents/MacOS/MissionPlanner" 2>/dev/null && sleep 2 || true
           if [[ $APP_UPLOAD == success ]]; then
               export MP_RUN=${{ github.run_id }}
           else
@@ -405,8 +440,10 @@ jobs:
           export MISSIONPLANNER_DATA_DIR="$RUNNER_TEMP/mp-data-install" ALLUSERSPROFILE="$RUNNER_TEMP/mp-data-install-logs"
           open "$app"
           sleep 45
-          if pgrep -f "$app/Contents/MacOS/MissionPlanner" >/dev/null; then echo "INSTALLED APP: running"; else echo "INSTALLED APP: not running"; fi
-          pkill -f 'Contents/MacOS/MissionPlanner' || true
+          running=0
+          if pgrep -f "$app/Contents/MacOS/MissionPlanner" >/dev/null; then running=1; echo "INSTALLED APP: running"; else echo "INSTALLED APP: not running"; fi
+          pkill -f "$app/Contents/MacOS/MissionPlanner" || true
+          [[ $running == 1 ]]
 
       - name: Publish results to the ci-native branch
         # logs and screenshots, readable with git; straight from here rather than through an
@@ -416,13 +453,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OUTCOME: ${{ job.status }}
           APP_UPLOAD: ${{ steps.upload_app.outcome }}
+          RUNNER_ENVIRONMENT: ${{ runner.environment }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           publish=$(mktemp -d)
           cp -R out/. "$publish/"
           cd "$publish"
           # (not RESULT.txt: on macOS's case-insensitive file system that is out/result.txt)
-          echo "commit=$GITHUB_SHA outcome=$OUTCOME app-artifact=$APP_UPLOAD run=$RUN" > RUN.txt
+          echo "commit=$GITHUB_SHA outcome=$OUTCOME app-artifact=$APP_UPLOAD runner=$RUNNER_ENVIRONMENT run=$RUN" > RUN.txt
           git init -q -b ci-native
           git add -A
           git -c user.name=ci -c user.email=ci@localhost commit -q -m "native results for $GITHUB_SHA ($OUTCOME)"

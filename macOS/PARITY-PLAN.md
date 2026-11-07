@@ -72,7 +72,7 @@ Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 4229040
 | Bibliotecas que carga la app en tiempo de ejecución | 1432 en total, 0 desde Homebrew o `/usr/local` (63 del propio `.app`, 46 del GStreamer incluido) — confirma que no depende de nada instalado aparte |
 | Pantalla Retina virtual (2x), HUD por OpenGL y por GDI+ | Ambos modos arrancan y quedan en marcha; `OpenGL view attached: HUD, backing scale 2` confirma que OpenGL se adjuntó a resolución Retina |
 | Abrir un `.tlog` desde Finder | OK |
-| Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha (desde el zip local: la cuota de artefactos de la cuenta estaba llena) |
+| Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha. En tu Mac (runner autoalojado) la app no se sube a GitHub: cada build la deja instalada en `~/Applications/Mission Planner.app` y el zip en `~/MissionPlanner-native/` |
 
 Hallazgos reales en tu Mac:
 - **Capturas de pantalla**: `screencapture` falla en este runner ("could not create image
