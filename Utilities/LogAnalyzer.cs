@@ -23,14 +23,10 @@ namespace MissionPlanner.Utilities
                 return "";
             }
 
-            // the downloaded analyzer (runner.exe) is a Windows program
+            // the downloaded analyzer (runner.exe) is a Windows program; elsewhere, the same
+            // analyzer's Python source bundled with the app (macOS), run with python3
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                CustomMessageBox.Show(
-                    "The Log Analyzer is a Windows program. Open the log in the DataFlash Log browser (Review a Log), or in UAV Log Viewer [link;https://plot.ardupilot.org;plot.ardupilot.org].",
-                    "Log Analyzer");
-                return "";
-            }
+                return CheckLogFilePython(FileName);
 
             var dir = Settings.GetDataDirectory() + "LogAnalyzer" +
                       Path.DirectorySeparatorChar;
@@ -121,6 +117,76 @@ namespace MissionPlanner.Utilities
             Loading.Close();
 
             return FileName + ".xml";
+        }
+
+        static string CheckLogFilePython(string FileName)
+        {
+            var dir = Path.Combine(Settings.GetRunningDirectory(), "LogAnalyzer");
+            var script = Path.Combine(dir, "LogAnalyzer.py");
+            if (!File.Exists(script))
+            {
+                CustomMessageBox.Show(
+                    "The Log Analyzer is not included in this build. Open the log in the DataFlash Log browser (Review a Log), or in UAV Log Viewer [link;https://plot.ardupilot.org;plot.ardupilot.org].",
+                    "Log Analyzer");
+                return "";
+            }
+
+            // Homebrew's python3 first (it may have numpy for the optical flow test), then the
+            // system's (/usr/bin/python3: the Xcode command line tools)
+            string python = null;
+            foreach (var candidate in new[] { "/opt/homebrew/bin/python3", "/usr/local/bin/python3", "/usr/bin/python3" })
+                if (File.Exists(candidate))
+                {
+                    python = candidate;
+                    break;
+                }
+            if (python == null)
+            {
+                CustomMessageBox.Show("The Log Analyzer needs python3 (on macOS: xcode-select --install).", "Log Analyzer");
+                return "";
+            }
+
+            var xmlfile = FileName + ".xml";
+            if (File.Exists(xmlfile))
+                File.Delete(xmlfile);
+
+            var sb = new StringBuilder();
+            var P = new Process();
+            P.StartInfo.FileName = python;
+            // -B: no __pycache__ inside the signed app bundle; -E -s: no PYTHON* variables or
+            // user packages changing what runs
+            string Quote(string s) => "\"" + s.Replace("\"", "\\\"") + "\"";
+            P.StartInfo.Arguments = "-B -E -s " + Quote(script) + " -x " + Quote(xmlfile) + " -s " + Quote(FileName);
+            P.StartInfo.UseShellExecute = false;
+            P.StartInfo.WorkingDirectory = dir;
+            P.StartInfo.RedirectStandardOutput = true;
+            P.StartInfo.RedirectStandardError = true;
+            P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
+            P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+
+            try
+            {
+                Loading.ShowLoading("Running LogAnalyzer");
+                P.Start();
+                P.BeginOutputReadLine();
+                P.BeginErrorReadLine();
+                P.WaitForExit();
+                log.Info(python + ": " + sb);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+            Loading.Close();
+
+            if (!File.Exists(xmlfile))
+            {
+                CustomMessageBox.Show("The Log Analyzer did not produce a report (on macOS, python3 comes with xcode-select --install).\n" +
+                                      sb.ToString().Trim(), "Log Analyzer");
+                return "";
+            }
+
+            return xmlfile;
         }
 
         public static analysis Results(string xmlfile)

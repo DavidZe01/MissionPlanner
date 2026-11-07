@@ -589,6 +589,22 @@ class ScreenTour
     // Platform services that work without a vehicle.
     private static void PlatformChecks()
     {
+        // the Log Analyzer (ArduPilot's Python one, bundled and run with python3) on one of its
+        // own example logs, through the calls Flight Data's Log Analyzer button makes
+        var sampleLog = Environment.GetEnvironmentVariable("TOUR_ANALYZE_LOG");
+        if (!string.IsNullOrEmpty(sampleLog) && File.Exists(sampleLog))
+            Step("feature:log-analyzer", () =>
+            {
+                var xml = MissionPlanner.Utilities.LogAnalyzer.CheckLogFile(sampleLog);
+                if (string.IsNullOrEmpty(xml) || !File.Exists(xml))
+                    throw new Exception("no report from the Log Analyzer");
+                var analysis = MissionPlanner.Utilities.LogAnalyzer.Results(xml);
+                var findings = analysis.results.Where(r => r.status == "FAIL" || r.status == "WARN").Select(r => r.name + "=" + r.status);
+                Console.WriteLine("TOUR log analyzer: " + analysis.results.Count + " tests, " + string.Join("; ", findings));
+                // underpowered.log: the analyzer's own example of a copter short of thrust
+                if (analysis.results.Count < 10 || !analysis.results.Any(r => r.name == "Thrust" && r.status == "FAIL"))
+                    throw new Exception("unexpected Log Analyzer results: " + analysis.results.Count + " tests, " + string.Join("; ", findings));
+            });
         Step("feature:usb-device-enumeration", () =>
         {
             var ports = MissionPlanner.Utilities.Linux.GetAllCOMPorts();

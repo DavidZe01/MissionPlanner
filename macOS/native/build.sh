@@ -80,6 +80,11 @@ rsync -a --ignore-existing --exclude '*.app' --exclude 'runtimes/' --exclude '*.
 # (system.web, from a Windows Forms template) makes ConfigurationManager reject the whole
 # file, and log4net and the update settings with it. system.diagnostics traces to /ProgramData.
 perl -0pi -e 's{\s*<system\.(web|diagnostics)>.*?</system\.\1>}{}gs' "$bundle/MissionPlanner.dll.config"
+# the Log Analyzer: ArduPilot's own (Python, 4.5.7), which Windows runs frozen as runner.exe;
+# Utilities/LogAnalyzer.cs runs this copy with python3
+rm -rf -- "$bundle/LogAnalyzer"
+cp -R "$native_dir/../LogAnalyzer" "$bundle/LogAnalyzer"
+find "$bundle/LogAnalyzer" -name __pycache__ -prune -exec rm -rf {} +
 # native libraries the code loads by name (see MacNative.cs)
 arch=$(uname -m)
 cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \
