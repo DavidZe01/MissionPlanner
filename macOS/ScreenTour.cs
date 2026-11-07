@@ -480,6 +480,21 @@ class ScreenTour
                     bitmap.Save(Path.Combine(outDir, "map-render.png"), System.Drawing.Imaging.ImageFormat.Png);
                 }
             });
+            // GraphicsPath.AddString takes emSize in pixels (GDI+): the HUD builds its text from
+            // these paths, and as points (96/72 bigger) it overlapped and ran off the edges
+            Step("feature:hud-text-size", () =>
+            {
+                using (var path = new System.Drawing.Drawing2D.GraphicsPath())
+                {
+                    path.AddString("H", System.Drawing.FontFamily.GenericSansSerif, 0, 100, new System.Drawing.Point(0, 0),
+                        System.Drawing.StringFormat.GenericTypographic);
+                    var bounds = path.GetBounds();
+                    Console.WriteLine("TOUR hud text: \"H\" at emSize 100 is " + bounds.Height + " px high");
+                    // a sans-serif capital is about 0.72 em: 72 px, or 96 px if emSize were points
+                    if (bounds.Height < 60 || bounds.Height > 84)
+                        throw new Exception("AddString emSize 100: capital H " + bounds.Height + " px high (about 72 expected)");
+                }
+            });
             // the controls over the map are anchored to its panel's right and bottom edges; the
             // Cocoa SplitContainer once froze them at their design positions as it grew
             Step("feature:map-overlay-anchors", () =>

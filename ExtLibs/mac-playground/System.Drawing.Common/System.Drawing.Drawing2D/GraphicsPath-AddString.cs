@@ -40,9 +40,16 @@ namespace System.Drawing.Drawing2D
 	public partial class GraphicsPath
 	{
 
+		// GDI+ takes emSize in world units (pixels), not points: as a point size the glyphs came
+		// out 96/72 too big (the HUD's text overlapped and ran off its edges)
+		static Font EmFont (FontFamily family, float emSize, int style)
+		{
+			return new Font (family.Name, emSize, (FontStyle)style, GraphicsUnit.Pixel);
+		}
+
 		public void AddString(string s,	FontFamily family,	int style, float emSize, Point origin, StringFormat format)
 		{
-			var font = new Font (family.Name, emSize, (FontStyle)style);
+			var font = EmFont (family, emSize, style);
 			var layoutRect = RectangleF.Empty;
 			layoutRect.Location = origin;
 			NativeDrawString (s, font, Color.Red, layoutRect, format);
@@ -51,7 +58,7 @@ namespace System.Drawing.Drawing2D
 
 		public void AddString(string s,	FontFamily family,	int style, float emSize, PointF origin, StringFormat format)
 		{
-			var font = new Font (family.Name, emSize, (FontStyle)style);
+			var font = EmFont (family, emSize, style);
 			var layoutRect = RectangleF.Empty;
 			layoutRect.Location = origin;
 			NativeDrawString (s, font, Color.Red, layoutRect, format);
@@ -60,14 +67,14 @@ namespace System.Drawing.Drawing2D
 
 		public void AddString(string s,	FontFamily family,	int style, float emSize, Rectangle layoutRect, StringFormat format)
 		{
-			var font = new Font (family.Name, emSize, (FontStyle)style);
+			var font = EmFont (family, emSize, style);
 			NativeDrawString (s, font, Color.Red, layoutRect, format);
 
 		}
 
 		public void AddString(string s,	FontFamily family,	int style, float emSize, RectangleF layoutRect, StringFormat format)
 		{
-			var font = new Font (family.Name, emSize, (FontStyle)style);
+			var font = EmFont (family, emSize, style);
 			NativeDrawString (s, font, Color.Red, layoutRect, format);
 
 		}
