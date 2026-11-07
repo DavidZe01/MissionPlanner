@@ -32,6 +32,9 @@ Changes for Mission Planner:
   bitmap's image while the Graphics lives;
 - `Graphics.Clear` replaces the pixels (alpha included) as in GDI+, instead of
   drawing over them: `Clear(Color.Transparent)` empties a back buffer;
+- SplitContainer resizes its panels without suspending their layout: a control resized
+  while suspended re-anchors its children where they are (for InitializeComponent), so
+  anchored controls in a split panel never followed it as the window grew;
 - `CompositingMode.SourceOver` is CoreGraphics' Normal blend (Porter-Duff source-over),
   not Overlay (the Photoshop-style contrast blend): the map sets it before drawing its
   tiles, and over its light background Overlay left everything nearly white;

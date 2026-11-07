@@ -730,8 +730,10 @@ namespace System.Windows.Forms
 		private void UpdateSplitter ()
 		{
 			this.SuspendLayout ();
-			panel1.SuspendLayout ();
-			panel2.SuspendLayout ();
+			// The panels are resized without suspending their layout: a control resized while
+			// its layout is suspended re-anchors its children where they are (Control.SetBoundsCore,
+			// for InitializeComponent), so anchored controls in a panel (Flight Data's zoom bar
+			// and map legend) never followed the panel as the window grew.
 
 			if (panel1_collapsed) {
 				panel2.Size = this.Size;
@@ -757,16 +759,12 @@ namespace System.Windows.Forms
 					fixed_none_ratio = (double) this.Height / (double)this.SplitterDistance;
 				}
 			}
-			panel1.ResumeLayout ();
-			panel2.ResumeLayout ();
 			this.ResumeLayout ();
 		}
 
 		private void UpdateLayout ()
 		{
-			panel1.SuspendLayout ();
-			panel2.SuspendLayout ();
-
+			// (the panels' layout is not suspended: see UpdateSplitter)
 			if (panel1_collapsed) {
 				panel2.Size = this.Size;
 				panel2.Location = new Point (0, 0);
@@ -815,9 +813,6 @@ namespace System.Windows.Forms
 					}
 				}
 			}
-
-			panel1.ResumeLayout ();
-			panel2.ResumeLayout ();
 		}
 
 		internal override bool IsContainerControl

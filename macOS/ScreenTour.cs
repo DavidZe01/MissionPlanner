@@ -480,6 +480,24 @@ class ScreenTour
                     bitmap.Save(Path.Combine(outDir, "map-render.png"), System.Drawing.Imaging.ImageFormat.Png);
                 }
             });
+            // the controls over the map are anchored to its panel's right and bottom edges; the
+            // Cocoa SplitContainer once froze them at their design positions as it grew
+            Step("feature:map-overlay-anchors", () =>
+            {
+                var zoom = m.FlightData.Controls.Find("TRK_zoom", true).Single();
+                var panel = zoom.Parent;
+                Control legend = panel.Controls["label6"], distance = panel.Controls["distanceBar1"];
+                Console.WriteLine("TOUR map anchors panel=" + panel.Size + " zoom=" + zoom.Bounds + " legend=" + legend.Bounds + " distance=" + distance.Bounds);
+                // the designer's panel is 595x197: only a bigger one tells anchoring from none
+                if (panel.Width < 700 || panel.Height < 300)
+                    return;
+                // designed 0 px from the right, 17 px from the bottom (an AutoSize label: its
+                // height follows the font), 51 px from the right
+                if (Math.Abs(panel.Width - zoom.Right) > 4 || Math.Abs(panel.Height - legend.Bottom - 17) > 8 ||
+                    Math.Abs(panel.Width - distance.Right - 51) > 4)
+                    throw new Exception("map overlay not anchored: panel " + panel.Size + ", zoom bar right " + zoom.Right +
+                                        ", legend bottom " + legend.Bottom + ", distance bar right " + distance.Right);
+            });
             // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
             // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
             var tabControl = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();
