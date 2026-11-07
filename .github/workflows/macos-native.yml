@@ -293,7 +293,7 @@ jobs:
           kill -0 "$sitl_pid" 2>/dev/null || { echo "SITL: did not start"; tail -20 out/sitl.log; exit 0; }
           mkdir -p out/tour-connected
           MISSIONPLANNER_TOUR=1 TOUR_OUT="$PWD/out/tour-connected" TOUR_XWD=/usr/sbin/screencapture \
-              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 MISSIONPLANNER_NO_OPENGL=1 \
+              TOUR_CONNECT=tcp:127.0.0.1:5760 TOUR_ONLY=ConfigFlightModes,ConfigHWCompass2 TOUR_STEP_TIMEOUT=150 MISSIONPLANNER_NO_OPENGL=1 \
               TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
               "$app/Contents/MacOS/MissionPlanner" > out/tour-connected.log 2>&1 &
           pid=$!

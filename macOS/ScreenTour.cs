@@ -545,7 +545,8 @@ class ScreenTour
                     Record("page:" + t.FullName, false, 0, "SKIPPED (hangs the tour)");
                     continue;
                 }
-                if (!string.IsNullOrEmpty(only) && !t.FullName.Contains(only))
+                // (a comma-separated list: the connected tour opens the pages that need a vehicle)
+                if (!string.IsNullOrEmpty(only) && !only.Split(',').Any(o => o.Trim().Length > 0 && t.FullName.Contains(o.Trim())))
                     continue;
                 OpenPage(t);
             }
