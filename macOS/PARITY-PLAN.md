@@ -61,14 +61,14 @@ conectado.
 
 El workflow corre como runner autoalojado en tu MacBook (`runs-on: [self-hosted, macOS,
 ARM64]`) además de en los runners de GitHub, lo que además evita la cola de espera por
-Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 42390800641):
+Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 42404019929):
 
 | Prueba | Resultado |
 | --- | --- |
 | OpenGL con GPU real (no el renderizador por software de la VM de CI) | `Vendor: Apple`, `Version: 2.1 Metal - 91.7` — Metal de verdad, confirmado por log |
 | Recorrido de pantallas sin vehículo | 150/150 (100 %): 12/12 funciones (joystick incluido), 21/21 pantallas, 79/79 páginas, 38/38 formularios. El mapa sale con la imagen satelital (0 de 96 puntos casi blancos), el zoom y la leyenda siguen al panel, y el texto del HUD tiene el tamaño de GDI+ (una H de 100 mide 71,6 px). La brújula (ConfigHWCompass2) lee los parámetros del vehículo al abrirse: se prueba conectado |
 | Conectado al SITL incluido | 42/42 (100 %), 18/18 funciones, 2/2 páginas (modos de vuelo y brújula) |
-| Bibliotecas nativas incluidas (SDL2, SDL3, libusb, ...) | Cada una carga en un proceso aparte, con firma válida |
+| Bibliotecas nativas incluidas (SDL2, SDL3, libusb, SimpleBLE) | Cada una carga en un proceso aparte, con firma válida; Bluetooth LE ya no falta al compilar en tu Mac (faltaba cmake) |
 | Bibliotecas que carga la app en tiempo de ejecución | 1432 en total, 0 desde Homebrew o `/usr/local` (63 del propio `.app`, 46 del GStreamer incluido) — confirma que no depende de nada instalado aparte |
 | Pantalla Retina virtual (2x), HUD por OpenGL y por GDI+ | Ambos modos arrancan y quedan en marcha; `OpenGL view attached: HUD, backing scale 2` confirma que OpenGL se adjuntó a resolución Retina |
 | Abrir un `.tlog` desde Finder | OK |
