@@ -252,10 +252,9 @@ jobs:
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
           python3 macOS/summarize-tour.py out/tour/tour-report.tsv | tail -60 || true
           # libraries loaded by the app (GStreamer, SDL, libusb, SimpleBLE...): none from Homebrew
-          grep -E '^dyld\[[0-9]+\]: ' out/tour.log | sed -E 's/^dyld\[[0-9]+\]: //' | sort -u > out/libraries-loaded.txt || true
-          echo "libraries loaded: $(wc -l < out/libraries-loaded.txt), from the app: $(grep -c 'Mission Planner.app/' out/libraries-loaded.txt), bundled GStreamer: $(grep -c 'MonoBundle/gstreamer/' out/libraries-loaded.txt)"
-          echo "LIBRARIES FROM HOMEBREW OR /usr/local: $(grep -cE '^/(opt/homebrew|usr/local)/' out/libraries-loaded.txt)"
-          grep -E '^/(opt/homebrew|usr/local)/' out/libraries-loaded.txt | head -20 || true
+          # (by process: dyld lists "<uuid> <path>", so the old "^/opt/homebrew" match never hit,
+          # and child processes such as the Log Analyzer's python3 load their own libraries)
+          python3 macOS/libraries-report.py out/tour.log out/libraries-loaded.txt || true
           # where each hung step was stuck: the thread running the tour, then the native main thread
           for f in out/tour/hang-*-managed.txt; do
               [[ -f $f ]] || continue

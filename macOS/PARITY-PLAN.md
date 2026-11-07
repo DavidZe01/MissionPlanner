@@ -31,7 +31,7 @@ Con esto quedan resueltos los puntos 2.1 (interfaz X11), 2.2 (OpenGL), 2.3 (GStr
 (firma Developer ID y notarización) está preparado en el workflow (`sign-notarize.sh`) y
 se activa al añadir al repositorio los secretos de una cuenta del Apple Developer Program;
 sin ella la app va firmada ad hoc. Decisión (uso personal en tu M4): seguir sin cuenta; la app
-se instala con `install.sh`, sin cuarentena, y abre desde Finder sin pasos extra. Siguen pendientes 2.4 (actualizador) y 2.6 (Log Analyzer).
+se instala con `install.sh`, sin cuarentena, y abre desde Finder sin pasos extra. El Log Analyzer (2.6) ya funciona. Sigue pendiente 2.4 (actualizador): con la app entregada en tu Mac por el runner autoalojado, cada build ya la reinstala.
 
 Correcciones que necesitó la biblioteca Cocoa para Mission Planner (detalle en
 `ExtLibs/mac-playground/README.md`): identidades de ensamblado compatibles con .NET
@@ -61,15 +61,15 @@ conectado.
 
 El workflow corre como runner autoalojado en tu MacBook (`runs-on: [self-hosted, macOS,
 ARM64]`) además de en los runners de GitHub, lo que además evita la cola de espera por
-Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 42404019929):
+Apple Silicon. Resultado en tu Mac (macOS 27.0.1, Xcode 27.2, ejecución 42405950109):
 
 | Prueba | Resultado |
 | --- | --- |
 | OpenGL con GPU real (no el renderizador por software de la VM de CI) | `Vendor: Apple`, `Version: 2.1 Metal - 91.7` — Metal de verdad, confirmado por log |
-| Recorrido de pantallas sin vehículo | 150/150 (100 %): 12/12 funciones (joystick incluido), 21/21 pantallas, 79/79 páginas, 38/38 formularios. El mapa sale con la imagen satelital (0 de 96 puntos casi blancos), el zoom y la leyenda siguen al panel, y el texto del HUD tiene el tamaño de GDI+ (una H de 100 mide 71,6 px). La brújula (ConfigHWCompass2) lee los parámetros del vehículo al abrirse: se prueba conectado |
+| Recorrido de pantallas sin vehículo | 151/151 (100 %): 13/13 funciones (joystick y Log Analyzer incluidos), 21/21 pantallas, 79/79 páginas, 38/38 formularios. El mapa sale con la imagen satelital (0 de 96 puntos casi blancos), el zoom y la leyenda siguen al panel, y el texto del HUD tiene el tamaño de GDI+ (una H de 100 mide 71,6 px). La brújula (ConfigHWCompass2) lee los parámetros del vehículo al abrirse: se prueba conectado |
 | Conectado al SITL incluido | 42/42 (100 %), 18/18 funciones, 2/2 páginas (modos de vuelo y brújula) |
 | Bibliotecas nativas incluidas (SDL2, SDL3, libusb, SimpleBLE) | Cada una carga en un proceso aparte, con firma válida; Bluetooth LE ya no falta al compilar en tu Mac (faltaba cmake) |
-| Bibliotecas que carga la app en tiempo de ejecución | 1432 en total, 0 desde Homebrew o `/usr/local` (63 del propio `.app`, 46 del GStreamer incluido) — confirma que no depende de nada instalado aparte |
+| Bibliotecas que carga la app en tiempo de ejecución | 1417 en el proceso de Mission Planner, 0 desde Homebrew o `/usr/local` (67 del propio `.app`, 46 del GStreamer incluido). Contadas por proceso (`macOS/libraries-report.py`): la comprobación anterior nunca podía encontrar una (dyld pone un UUID antes de cada ruta), y el python3 del Log Analyzer es otro proceso |
 | Pantalla Retina virtual (2x), HUD por OpenGL y por GDI+ | Ambos modos arrancan y quedan en marcha; `OpenGL view attached: HUD, backing scale 2` confirma que OpenGL se adjuntó a resolución Retina |
 | Abrir un `.tlog` desde Finder | OK |
 | Instalar con `install.sh` | Sin atributo de cuarentena; la app instalada arranca y queda en marcha. En tu Mac (runner autoalojado) la app no se sube a GitHub: cada build la deja instalada en `~/Applications/Mission Planner.app` y el zip en `~/MissionPlanner-native/` |
@@ -138,7 +138,7 @@ páginas de Setup/Config, las ~70 herramientas de Ctrl+F y los formularios.
 | 9 | Flasheo de Parrot Bebop/Disco | `adb.exe` incluido | Buscaba `adb.exe` | Usa `adb` de Android platform-tools (`brew install android-platform-tools`) |
 | 10 | Flasheo DFU (firmware `.bin`/`.hex` a placas en modo DFU, página de firmware seguro) | libusb/STDFU | `libusb-1.0` no estaba en el `.app` | `libusb` incluido y mapeado |
 | 11 | GStreamer ausente | Lo descarga automáticamente | En ARM64 no hacía nada y el video simplemente no funcionaba | Explica cómo instalarlo (`brew install gstreamer`). Incluirlo en la app es el punto 2.3 |
-| 12 | Log Analyzer | Descarga `runner.exe` | Fallaba al ejecutarlo | Explica la alternativa (navegador de logs, plot.ardupilot.org). Portarlo es el punto 2.6 |
+| 12 | Log Analyzer | Descarga `runner.exe` | Fallaba al ejecutarlo | El mismo analizador de ArduPilot (Python, 4.5.7) incluido en la app y ejecutado con python3; mismo informe (punto 2.6) |
 | 13 | Firma del `.app` | n/a | `BUILD-INFO.txt` se escribía después de firmar, lo que invalidaba la firma. macOS la usa para identificar la app al conceder permisos | Se firma al final y se verifica la firma |
 | 14 | Permisos de privacidad (Bluetooth, cámara, micrófono, red local) | n/a | El ejecutable era el `mono` de Homebrew, que no pertenece a ninguna app: macOS podía cerrar el proceso al primer acceso a Bluetooth o cámara | CI lo confirmó: con el `mono` de Homebrew, macOS atribuye Bluetooth y cámara a `mono-sgen`. El aviso diría "mono-sgen" y el permiso se perdería con cada actualización de Mono. Solución: `mono-host`, un ejecutable dentro del `.app` que carga Mono en el mismo proceso. Verificado en CI (ejecución 41778933586): la app arranca a través de él y macOS atribuye ahora Bluetooth y cámara a `org.ardupilot.missionplanner` (Mission Planner) |
 | 15 | Cobertura de pruebas | n/a | El recorrido abría 4 de las 14 pestañas de Flight Data | Abre todas (Scripts, Telemetry Logs, DataFlash Logs, Servo, Payload…) |
@@ -231,10 +231,7 @@ Plan:
 ### 2.6 Log Analyzer
 
 **Windows:** descarga y ejecuta `runner.exe`, el LogAnalyzer de ArduPilot congelado en un ejecutable de Windows.
-**macOS:** no disponible. El LogAnalyzer en Python ya no existe en ArduPilot master.
-Alternativas:
-1. Descargar el código Python de la última versión de ArduPilot que lo traía y ejecutarlo con `python3` del sistema. Produce el mismo XML que la app ya sabe mostrar.
-2. Enlazar a herramientas web (UAV Log Viewer). Es lo que hace ahora.
+**macOS:** hecho. La app incluye el mismo LogAnalyzer en Python (`Tools/LogAnalyzer` de Copter-4.5.7, el último que lo traía; `macOS/LogAnalyzer`) y lo ejecuta con `python3`, que produce el mismo XML que muestra la ventana de resultados. Parches para el Python 3 de macOS sin numpy: `statistics` en lugar de numpy, y un test que no carga (TestOptFlow pide matplotlib) o que falla (TestCompass en Python 3) se omite o sale como UNKNOWN en vez de cortar el análisis. Necesita `python3` (en macOS, con las herramientas de Xcode). El recorrido lo prueba con uno de sus logs de ejemplo (Thrust: FAIL, como debe).
 
 ### 2.7 Mono, XQuartz y Homebrew como requisitos
 
