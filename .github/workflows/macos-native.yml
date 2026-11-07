@@ -104,7 +104,7 @@ jobs:
           dotnet tool install --global dotnet-stack 2>&1 | tail -1 || true
           # native libraries bundled into the app: joysticks (SDL), DFU flashing (libusb) and
           # GStreamer with its plugins (relocated into the app by dylibbundler, see build.sh)
-          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb gstreamer dylibbundler 2>&1 | tail -2
+          HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 brew install sdl2 libusb gstreamer dylibbundler cmake 2>&1 | tail -2
       - name: Build the Windows Forms test app
         # validated on macOS 26: only when the request commit asks for [formstest]
         if: contains(github.event.head_commit.message, '[formstest]')

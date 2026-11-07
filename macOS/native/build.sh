@@ -97,7 +97,9 @@ done
 # SimpleBLE C bindings (Bluetooth LE through CoreBluetooth), built as for the X11 app
 simpleble_version=v0.9.1
 simpleble_build="$source_dir/bin/macos-native-work/simpleble-$simpleble_version-$arch"
-if [[ ! -f $simpleble_build/out/libsimplecble.dylib ]] && command -v cmake >/dev/null; then
+if [[ ! -f $simpleble_build/out/libsimplecble.dylib ]] && ! command -v cmake >/dev/null; then
+    echo 'cmake not found (brew install cmake): SimpleBLE not built, Bluetooth LE will be unavailable.' >&2
+elif [[ ! -f $simpleble_build/out/libsimplecble.dylib ]]; then
     rm -rf -- "$simpleble_build" && mkdir -p -- "$simpleble_build/out"
     if curl -fsSL "https://codeload.github.com/simpleble/simpleble/tar.gz/refs/tags/$simpleble_version" \
             | tar -xz -C "$simpleble_build" --strip-components=1 \
