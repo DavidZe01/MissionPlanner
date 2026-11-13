@@ -838,6 +838,12 @@ namespace MissionPlanner
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && File.Exists("/usr/bin/caffeinate"))
             {
+#if MACNATIVE
+                // Help > Show Console: Windows shows the process' console window; macOS opens one
+                // in Terminal following the same output
+                if (Settings.Instance["showconsole"] != null && Settings.Instance["showconsole"].ToString() == "True")
+                    MacNative.ShowConsole(Path.Combine(Settings.GetUserDataDirectory(), "console.log"));
+#endif
                 // as SetThreadExecutionState on Windows: no idle system sleep while mp is open
                 // (caffeinate -w ends with this process)
                 try
@@ -1079,6 +1085,10 @@ namespace MissionPlanner
             catch (PlatformNotSupportedException)
             {
                 // .NET has SystemEvents on Windows only
+#if MACNATIVE
+                // macOS: disconnect before the Mac sleeps, as on Windows' suspend
+                MacNative.OnWillSleep(() => doDisconnect(MainV2.comPort));
+#endif
             }
 
             // make sure new enough .net framework is installed

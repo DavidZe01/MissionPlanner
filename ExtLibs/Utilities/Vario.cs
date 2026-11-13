@@ -26,7 +26,7 @@ namespace MissionPlanner.Utilities
             Vario.climbrate = climbrate;
         }
 
-        public static Action<int, int> Beep = (note, durationms) => { Console.Beep(note, durationms); };
+        public static Action<int, int> Beep = (note, durationms) => { Beeper.Beep(note, durationms); };
 
         public static async void mainloop(object o)
         {

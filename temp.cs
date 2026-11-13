@@ -110,7 +110,8 @@ namespace MissionPlanner
                 foreach (var file in files)
                 {
                     log.Info(DateTime.Now.Millisecond + " Doing " + file);
-                    var reg = new Regex(@"Z([0-9]+)\\([0-9]+)\\([0-9]+)");
+                    // Z<zoom>\<y>\<x> (Windows' separator) or Z<zoom>/<y>/<x>
+                    var reg = new Regex(@"Z([0-9]+)[\\/]([0-9]+)[\\/]([0-9]+)");
 
                     var mat = reg.Match(file);
 
@@ -963,6 +964,13 @@ namespace MissionPlanner
 
         private void BUT_driverclean_Click(object sender, EventArgs e)
         {
+            // pnputil and the Windows driver store: other systems need no USB drivers installed
+            if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                CustomMessageBox.Show("Only Windows has board drivers to clean: on this system the boards work without installing drivers.",
+                    "Clean Drivers");
+                return;
+            }
             CleanDrivers.Clean();
         }
 

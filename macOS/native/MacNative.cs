@@ -50,6 +50,10 @@ namespace MissionPlanner
             if (!string.IsNullOrEmpty(dataDir))
                 MissionPlanner.Utilities.Settings.CustomUserDataDirectory = dataDir;
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveUnmanagedDll;
+            // Console.Beep: the alert sound, and tones (the vario) played as sound, as a Mac
+            // has no PC speaker
+            MissionPlanner.Utilities.Beeper.Simple = NSBeep;
+            MissionPlanner.Utilities.Beeper.Tone = Tone;
             // before anything else uses OpenTK, so that it never sets up its own Cocoa layer
             OpenTK.GLControl.InitToolkit();
             // diagnostics: every distinct exception, also the ones Mission Planner handles
@@ -110,6 +114,134 @@ namespace MissionPlanner
             var sitl = Path.GetFullPath(Path.Combine(bundleDir, "..", "Resources", "sitl"));
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MISSIONPLANNER_SITL_DIR")) && File.Exists(Path.Combine(sitl, "ArduCopter")))
                 Environment.SetEnvironmentVariable("MISSIONPLANNER_SITL_DIR", sitl);
+        }
+
+        /// <summary>
+        /// The console window Windows shows with Help > Show Console: the process' output (its
+        /// Console.Out and Console.Error, log4net's console output included) is copied to a file
+        /// that a Terminal window follows.
+        /// </summary>
+        internal static void ShowConsole(string file)
+        {
+            try
+            {
+                var writer = new StreamWriter(new FileStream(file, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)) { AutoFlush = true };
+                Console.SetOut(new TeeWriter(Console.Out, writer));
+                Console.SetError(new TeeWriter(Console.Error, writer));
+                // a .command file opens in Terminal
+                var script = Path.Combine(Path.GetDirectoryName(file), "console.command");
+                File.WriteAllText(script, "#!/bin/sh\nprintf '\\033]0;Mission Planner console\\007'\nexec tail -n 500 -F '" + file.Replace("'", "'\\''") + "'\n");
+                File.SetUnixFileMode(script, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("/usr/bin/open", "-a Terminal \"" + script + "\"") { UseShellExecute = false });
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("show console: " + e.Message);
+            }
+        }
+
+        sealed class TeeWriter : TextWriter
+        {
+            readonly TextWriter first, second;
+
+            public TeeWriter(TextWriter first, TextWriter second)
+            {
+                this.first = first;
+                this.second = TextWriter.Synchronized(second);
+            }
+
+            public override System.Text.Encoding Encoding => first.Encoding;
+
+            public override void Write(char value)
+            {
+                first.Write(value);
+                second.Write(value);
+            }
+
+            public override void Write(string value)
+            {
+                first.Write(value);
+                second.Write(value);
+            }
+
+            public override void WriteLine(string value)
+            {
+                first.WriteLine(value);
+                second.WriteLine(value);
+            }
+
+            public override void Flush()
+            {
+                first.Flush();
+                second.Flush();
+            }
+        }
+
+        static readonly List<Foundation.NSObject> observers = new List<Foundation.NSObject>();
+
+        /// <summary>Runs an action (on the main thread) when the Mac is about to sleep.</summary>
+        internal static void OnWillSleep(Action action)
+        {
+            observers.Add(NSWorkspace.SharedWorkspace.NotificationCenter.AddObserver(NSWorkspace.WillSleepNotification, n =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("before sleep: " + e.Message);
+                }
+            }));
+        }
+
+        [DllImport("/System/Library/Frameworks/AppKit.framework/AppKit")]
+        static extern void NSBeep();
+
+        /// <summary>
+        /// Console.Beep(frequency, duration) as Windows does it since Windows 7, through the
+        /// sound output: a sine tone (with 5 ms fades, no clicks), returning once it has played.
+        /// </summary>
+        internal static void Tone(int frequency, int duration)
+        {
+            // Console.Beep's own limits
+            if (frequency < 37 || frequency > 32767)
+                throw new ArgumentOutOfRangeException(nameof(frequency));
+            if (duration <= 0)
+                throw new ArgumentOutOfRangeException(nameof(duration));
+            const int rate = 44100;
+            int samples = (int)((long)rate * duration / 1000);
+            int fade = Math.Min(rate / 200, samples / 2);
+            using (var ms = new MemoryStream())
+            using (var w = new BinaryWriter(ms))
+            {
+                // a 16-bit mono WAV
+                w.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+                w.Write(36 + samples * 2);
+                w.Write(System.Text.Encoding.ASCII.GetBytes("WAVEfmt "));
+                w.Write(16);
+                w.Write((short)1);
+                w.Write((short)1);
+                w.Write(rate);
+                w.Write(rate * 2);
+                w.Write((short)2);
+                w.Write((short)16);
+                w.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+                w.Write(samples * 2);
+                for (int i = 0; i < samples; i++)
+                {
+                    double envelope = Math.Min(1.0, Math.Min(i, samples - 1 - i) / (double)Math.Max(1, fade));
+                    w.Write((short)(Math.Sin(2 * Math.PI * frequency * i / rate) * envelope * 0.3 * short.MaxValue));
+                }
+                w.Flush();
+                using (var data = Foundation.NSData.FromArray(ms.ToArray()))
+                using (var sound = new NSSound(data))
+                {
+                    sound.Play();
+                    System.Threading.Thread.Sleep(duration);
+                    sound.Stop();
+                }
+            }
         }
 
         [DllImport("libc", EntryPoint = "setenv")]

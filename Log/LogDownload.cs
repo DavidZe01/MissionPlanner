@@ -457,7 +457,7 @@ namespace MissionPlanner.Log
                     }
                 }
 
-                Console.Beep();
+                MissionPlanner.Utilities.Beeper.Beep();
             }
             catch (Exception ex)
             {
@@ -488,7 +488,7 @@ namespace MissionPlanner.Log
                     }
                 }
 
-                Console.Beep();
+                MissionPlanner.Utilities.Beeper.Beep();
             }
             catch (Exception ex)
             {

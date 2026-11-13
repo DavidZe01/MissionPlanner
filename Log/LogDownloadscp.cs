@@ -376,7 +376,7 @@ namespace MissionPlanner.Log
                 UpdateProgress(0, totalBytes, totalBytes);
 
                 AppendSerialLog("Download complete.");
-                Console.Beep();
+                MissionPlanner.Utilities.Beeper.Beep();
             }
             catch (Exception ex)
             {

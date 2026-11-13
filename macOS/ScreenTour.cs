@@ -779,6 +779,17 @@ class ScreenTour
                     throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
             }
         });
+        // Console.Beep's tone (the vario) and alert sound, through the sound output on a Mac
+        Step("feature:beep", () =>
+        {
+            var sw = Stopwatch.StartNew();
+            MissionPlanner.Utilities.Beeper.Beep(880, 150);
+            var ms = sw.ElapsedMilliseconds;
+            MissionPlanner.Utilities.Beeper.Beep();
+            Console.WriteLine("TOUR beep: 880 Hz for 150 ms took " + ms + " ms");
+            if (ms < 140)
+                throw new Exception("tone returned after " + ms + " ms (150 expected)");
+        });
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
         if (IsMac)
@@ -832,12 +843,19 @@ class ScreenTour
             MainV2.speechEngine = speech;
             try
             {
+                // two messages queued, as Windows' SpeakAsync queues them (spoken one after the
+                // other, not over each other), and busy until both are spoken
                 speech.SpeakAsync("Mission Planner test");
+                speech.SpeakAsync("Second message");
+                var busy = !speech.IsReady;
                 var sw = Stopwatch.StartNew();
                 while (!speech.IsReady && sw.ElapsedMilliseconds < 20000)
                     Wait(100);
+                Console.WriteLine("TOUR speech: busy " + busy + ", both spoken in " + sw.ElapsedMilliseconds + " ms");
                 if (!speech.IsReady)
                     throw new Exception("speech did not finish");
+                if (!busy)
+                    throw new Exception("speech was ready straight after two messages");
             }
             finally
             {

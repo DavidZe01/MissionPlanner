@@ -29,6 +29,10 @@ namespace MissionPlanner.Utilities
         {
             get
             {
+#if MACNATIVE
+                if (_speechav != null)
+                    return _avPending <= 0;
+#endif
                 if (MONO)
                 {
                     return _state == SynthesizerState.Ready;
@@ -86,6 +90,9 @@ namespace MissionPlanner.Utilities
 
             if (MONO && MacOS)
             {
+#if MACNATIVE
+                if (!SpeakAV(text))
+#endif
                 SpeakMac(text);
             }
             else if (MONO)
@@ -139,6 +146,49 @@ namespace MissionPlanner.Utilities
             log.Info("TTS: say " + text);
         }
 
+#if MACNATIVE
+        // The native macOS app: AVSpeechSynthesizer queues what it is given, as Windows'
+        // SpeakAsync does (one `say` per message spoke them over each other), in the system
+        // voice of the interface's language (PromptBuilder(CurrentUICulture) on Windows)
+        AVFoundation.AVSpeechSynthesizer _speechav;
+        int _avPending;
+
+        bool SpeakAV(string text)
+        {
+            try
+            {
+                if (_speechav == null)
+                {
+                    var synth = new AVFoundation.AVSpeechSynthesizer();
+                    synth.DidFinishSpeechUtterance += (s, e) => System.Threading.Interlocked.Decrement(ref _avPending);
+                    synth.DidCancelSpeechUtterance += (s, e) => System.Threading.Interlocked.Decrement(ref _avPending);
+                    _speechav = synth;
+                }
+                var utterance = new AVFoundation.AVSpeechUtterance(text);
+                var language = CultureInfo.CurrentUICulture.Name;
+                var voice = string.IsNullOrEmpty(language) ? null : AVFoundation.AVSpeechSynthesisVoice.FromLanguage(language);
+                if (voice != null)
+                    utterance.Voice = voice;
+                System.Threading.Interlocked.Increment(ref _avPending);
+                try
+                {
+                    _speechav.SpeakUtterance(utterance);
+                }
+                catch
+                {
+                    System.Threading.Interlocked.Decrement(ref _avPending);
+                    throw;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return false;
+            }
+        }
+#endif
+
         void SpeakMac(string text)
         {
             try
@@ -175,6 +225,17 @@ namespace MissionPlanner.Utilities
 
         public void SpeakAsyncCancelAll()
         {
+#if MACNATIVE
+            if (_speechav != null)
+            {
+                try
+                {
+                    _speechav.StopSpeaking(AVFoundation.AVSpeechBoundary.Immediate);
+                }
+                catch { }
+                System.Threading.Interlocked.Exchange(ref _avPending, 0);
+            }
+#endif
             if (MONO)
             {
                 try

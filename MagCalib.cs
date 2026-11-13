@@ -722,7 +722,7 @@ namespace MissionPlanner
             }
             else
             {
-                Console.Beep();
+                MissionPlanner.Utilities.Beeper.Beep();
             }
 
             if (minx > 0 && maxx > 0 || minx < 0 && maxx < 0 || miny > 0 && maxy > 0 || miny < 0 && maxy < 0 ||
