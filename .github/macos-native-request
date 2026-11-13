@@ -62,3 +62,4 @@
 ef325d8: the parameter loading page opened in its real state
 f34a0ea: Flight Data tabs kept inside the pane (sidebar-fit)
 c253a76: Flight Data tab panel in a macOS style (mac-sidebar)
+5e22270: Mac panel rows leave room for the vertical scroll bar
