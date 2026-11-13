@@ -273,20 +273,22 @@ namespace System.Windows.Forms.CocoaInternal
 		{
 			var msg = TranslateMouseCore(e, out bool _);
 
-			var handled = false;
-			var auxiliary = e.Phase != NSEventPhase.Changed;
-			if (e.ScrollingDeltaY != 0 || auxiliary)
+			// whole notches only, as a Windows mouse sends (see Extensions.WheelDeltas); an event
+			// that makes no notch yet is still ours, not the superview's
+			e.WheelDeltas(out int deltaX, out int deltaY);
+			var handled = deltaX == 0 && deltaY == 0;
+			if (deltaY != 0)
 			{
-				int delta = e.ScaledAndQuantizedDeltaY();
+				int delta = deltaY;
 				msg.message = Msg.WM_MOUSEWHEEL;
 				msg.wParam = (IntPtr)(((int)e.ModifiersToWParam() & 0xFFFF) | (delta << 16));
 				msg.lParam = (IntPtr)((msg.pt.x & 0xFFFF) | (msg.pt.y << 16));
 				handled = Application.SendMessage(ref msg).ToInt64() == 0;
 			}
 
-			if (e.ScrollingDeltaX != 0 || auxiliary)
+			if (deltaX != 0)
 			{
-				int delta = e.ScaledAndQuantizedDeltaX();
+				int delta = deltaX;
 				msg.message = Msg.WM_MOUSEHWHEEL;
 				msg.wParam = (IntPtr)(((int)e.ModifiersToWParam() & 0xFFFF) | (delta << 16));
 				msg.lParam = (IntPtr)((msg.pt.x & 0xFFFF) | (msg.pt.y << 16));
@@ -295,6 +297,27 @@ namespace System.Windows.Forms.CocoaInternal
 
 			if (!handled)
 				base.ScrollWheel(e);
+		}
+
+		static double magnification;
+
+		// A trackpad pinch, as Windows delivers a precision touchpad's pinch to applications:
+		// Ctrl + mouse wheel, one notch (120) per step of magnification (the map zooms a level)
+		public override void MagnifyWithEvent(NSEvent e)
+		{
+			if (e.Phase == NSEventPhase.Began)
+				magnification = 0;
+			magnification += (double)e.Magnification;
+			const double step = 0.5;
+			var notches = (int)(magnification / step);
+			if (notches == 0)
+				return;
+			magnification -= notches * step;
+			var msg = TranslateMouseCore(e, out bool _);
+			msg.message = Msg.WM_MOUSEWHEEL;
+			msg.wParam = (IntPtr)((((int)e.ModifiersToWParam() | (int)MsgButtons.MK_CONTROL) & 0xFFFF) | ((notches * 120) << 16));
+			msg.lParam = (IntPtr)((msg.pt.x & 0xFFFF) | (msg.pt.y << 16));
+			Application.SendMessage(ref msg);
 		}
 
 		internal MSG TranslateMouseCore(NSEvent e, out bool isClient, NSView target = null)

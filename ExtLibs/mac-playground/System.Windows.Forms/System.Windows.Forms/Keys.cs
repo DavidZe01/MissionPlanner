@@ -237,7 +237,8 @@ namespace System.Windows.Forms {
 	static class KeysEx {
 #if MAC
 		public static bool IsCloseWindow(this Keys k) {
-			return k == (Keys.Cmd | Keys.W);
+			// ⌘W (which arrives as Control, see Extensions.ToKeys), not Ctrl+W
+			return k == (Keys.Cmd | Keys.W) || (k == (Keys.Control | Keys.W) && XplatUICocoa.IsCmdDown && !XplatUICocoa.IsCtrlDown);
 		}
 #else
 		public static bool IsCloseWindow(this Keys k) {

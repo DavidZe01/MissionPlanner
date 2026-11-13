@@ -619,6 +619,36 @@ class ScreenTour
             if (IsMac && ports.Any(p => p.StartsWith("/dev/tty")))
                 throw new Exception("tty devices listed: " + string.Join(",", ports.Where(p => p.StartsWith("/dev/tty"))));
         });
+#if MACNATIVE
+        // ⌘ reaches Windows Forms as Control, so the Ctrl+key shortcuts work with ⌘ too
+        Step("feature:command-key", () =>
+        {
+            var keys = System.Windows.Forms.Mac.Extensions.ToKeys(AppKit.NSEventModifierMask.CommandKeyMask);
+            Console.WriteLine("TOUR command key: " + keys);
+            if (keys != Keys.Control)
+                throw new Exception("command key arrives as " + keys);
+        });
+        // wheel messages in whole notches of 120, as a Windows mouse sends: a mouse wheel line
+        // is one notch, a trackpad's points add up (120 per 40)
+        Step("feature:wheel-delta", () =>
+        {
+            int Wheel(CoreGraphics.CGScrollEventUnit unit, int amount)
+            {
+                using (var cg = new CoreGraphics.CGEvent(null, unit, amount))
+                {
+                    var ev = AppKit.NSEvent.EventWithCGEvent(cg.Handle);
+                    System.Windows.Forms.Mac.Extensions.WheelDeltas(ev, out _, out var dy);
+                    return dy;
+                }
+            }
+            var line = Wheel(CoreGraphics.CGScrollEventUnit.Line, 1);
+            var first = Wheel(CoreGraphics.CGScrollEventUnit.Pixel, 20);
+            var second = Wheel(CoreGraphics.CGScrollEventUnit.Pixel, 20);
+            Console.WriteLine("TOUR wheel: one line " + line + ", trackpad 20 + 20 points " + first + ", " + second);
+            if (line != 120 || first != 0 || second != 120)
+                throw new Exception("wheel deltas: line " + line + ", points " + first + ", " + second + " (120, 0, 120 expected)");
+        });
+#endif
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
         if (IsMac)

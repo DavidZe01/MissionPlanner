@@ -28,8 +28,11 @@ namespace System.Windows.Forms.Mac
 	{
 		static readonly DateTime reference = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 		static readonly Selector swfMarkSel = new Selector("thisIsSwfControl");
-		static double preciseDeltaScale = 1.0;
-		static double rawDeltaScale = 40.0;
+		// Wheel deltas as on Windows: WHEEL_DELTA (120) per notch of a mouse wheel (one line of
+		// a non-precise delta), and a trackpad's precise deltas (points) at 120 per 40 points.
+		static double preciseDeltaScale = 3.0;
+		static double rawDeltaScale = 120.0;
+		const int WheelDelta = 120;
 
 		public static NSMethodSignature GetMethodSignature(this NSObject obj, Selector selector)
 		{
@@ -157,6 +160,55 @@ namespace System.Windows.Forms.Mac
 			}
 		}
 
+		static double wheelRemainderX, wheelRemainderY, lastWheelTime;
+		static IntPtr lastWheelEvent;
+		static double lastWheelEventTime;
+		static int lastWheelX, lastWheelY;
+
+		/// <summary>
+		/// The WM_MOUSEWHEEL/WM_MOUSEHWHEEL deltas for a scroll event, in whole notches (multiples
+		/// of 120) as a Windows mouse sends them: Windows Forms code counts notches as delta / 120
+		/// (a trackpad's small deltas scrolled nothing) or acts on each message (a map zooms a
+		/// level per message, and out on a delta of 0). Trackpad deltas add up until they make a
+		/// notch; the gesture's begin/end events and its momentum (scrolling on after the fingers
+		/// leave, which Windows mice do not have) give none. 0 means: send no message.
+		/// </summary>
+		public static void WheelDeltas(this NSEvent e, out int deltaX, out int deltaY)
+		{
+			// the same event can be offered twice (MonoWindow.PreprocessScrollWheel, then the view)
+			if (e.Handle == lastWheelEvent && e.Timestamp == lastWheelEventTime)
+			{
+				deltaX = lastWheelX;
+				deltaY = lastWheelY;
+				return;
+			}
+			deltaX = deltaY = 0;
+			if (e.MomentumPhase == NSEventPhase.None)
+			{
+				if (e.Phase == NSEventPhase.Began || e.Timestamp - lastWheelTime > 0.5)
+					wheelRemainderX = wheelRemainderY = 0;
+				lastWheelTime = e.Timestamp;
+				var scale = e.HasPreciseScrollingDeltas ? preciseDeltaScale : rawDeltaScale;
+				deltaX = TakeNotches(ref wheelRemainderX, (double)e.ScrollingDeltaX * scale);
+				deltaY = TakeNotches(ref wheelRemainderY, (double)e.ScrollingDeltaY * scale);
+			}
+			lastWheelEvent = e.Handle;
+			lastWheelEventTime = e.Timestamp;
+			lastWheelX = deltaX;
+			lastWheelY = deltaY;
+		}
+
+		static int TakeNotches(ref double remainder, double delta)
+		{
+			// turning back answers at once
+			if (delta != 0 && remainder != 0 && Math.Sign(delta) != Math.Sign(remainder))
+				remainder = 0;
+			remainder += delta;
+			var notches = (int)(remainder / WheelDelta);
+			remainder -= notches * WheelDelta;
+			return notches * WheelDelta;
+		}
+
 		public static int ScaledAndQuantizedDeltaY(this NSEvent e)
 		{
 			return ScaleAndQuantizeDelta((float)e.ScrollingDeltaY, e.HasPreciseScrollingDeltas);
@@ -176,7 +228,9 @@ namespace System.Windows.Forms.Mac
 		{
 			uint wParam = 0;
 
-			if ((e.ModifierFlags & NSEventModifierMask.ControlKeyMask) != 0)
+			// ⌘ counts as Control, as for the keyboard (see ToKeys)
+			if ((e.ModifierFlags & NSEventModifierMask.ControlKeyMask) != 0 ||
+				!commandKeyIsCmd && (e.ModifierFlags & NSEventModifierMask.CommandKeyMask) != 0)
 				wParam |= (int)MsgButtons.MK_CONTROL;
 			if ((e.ModifierFlags & NSEventModifierMask.ShiftKeyMask) != 0)
 				wParam |= (int)MsgButtons.MK_SHIFT;
@@ -679,11 +733,18 @@ namespace System.Windows.Forms.Mac
 			return e;
 		}
 
+		// ⌘ reaches the application as Control, so the Ctrl+key shortcuts written for Windows
+		// (keyData == (Keys.Control | Keys.S), KeyEventArgs.Control) answer to ⌘+key as well as
+		// to Ctrl+key. The AppContext switch System.Windows.Forms.Cocoa.CommandKeyIsCmd keeps
+		// the separate Keys.Cmd instead.
+		static readonly bool commandKeyIsCmd =
+			AppContext.TryGetSwitch("System.Windows.Forms.Cocoa.CommandKeyIsCmd", out var isCmd) && isCmd;
+
 		public static Keys ToKeys(this NSEventModifierMask modifiers)
 		{
 			Keys keys = Keys.None;
 			if ((NSEventModifierMask.ShiftKeyMask & modifiers) != 0) { keys |= Keys.Shift; }
-			if ((NSEventModifierMask.CommandKeyMask & modifiers) != 0) { keys |= Keys.Cmd; }
+			if ((NSEventModifierMask.CommandKeyMask & modifiers) != 0) { keys |= commandKeyIsCmd ? Keys.Cmd : Keys.Control; }
 			if ((NSEventModifierMask.AlternateKeyMask & modifiers) != 0) { keys |= Keys.Alt; }
 			if ((NSEventModifierMask.ControlKeyMask & modifiers) != 0) { keys |= Keys.Control; }
 			return keys;

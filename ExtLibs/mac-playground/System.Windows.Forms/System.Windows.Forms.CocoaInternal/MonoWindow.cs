@@ -281,9 +281,10 @@ namespace System.Windows.Forms.CocoaInternal
 				// This is to allow SWF wrappers of native views to handle messages before the native view swallows them (WebView, for example).
 
 				var p = driver.NativeToMonoScreen(this.ConvertPointToScreenSafe(e.LocationInWindow));
-				if (Math.Abs(e.ScrollingDeltaY - nfloat.Epsilon) > 0)
+				e.WheelDeltas(out int deltaX, out int deltaY);
+				if (deltaY != 0)
 				{
-					var delta = e.ScaledAndQuantizedDeltaY();
+					var delta = deltaY;
 					var wParam = (IntPtr)(((int)e.ModifiersToWParam() & 0xFFFF) | (delta << 16));
 					var lParam = (IntPtr)((p.X & 0xFFFF) | (p.Y << 16));
 					var msg = new MSG { hwnd = control.Handle, message = Msg.WM_MOUSEWHEEL, wParam = wParam, lParam = lParam };
@@ -291,9 +292,9 @@ namespace System.Windows.Forms.CocoaInternal
 						return true;
 				}
 
-				if (Math.Abs(e.ScrollingDeltaX - nfloat.Epsilon) > 0)
+				if (deltaX != 0)
 				{
-					int delta = e.ScaledAndQuantizedDeltaX();
+					int delta = deltaX;
 					var wParam = (IntPtr)(((int)e.ModifiersToWParam() & 0xFFFF) | (delta << 16));
 					var lParam = (IntPtr)((p.X & 0xFFFF) | (p.Y << 16));
 					var msg = new MSG { hwnd = control.Handle, message = Msg.WM_MOUSEHWHEEL, wParam = wParam, lParam = lParam };
