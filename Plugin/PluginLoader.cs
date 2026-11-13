@@ -17,6 +17,8 @@ namespace MissionPlanner.Plugin
 {
     public class PluginLoader
     {
+        static readonly bool IsMonoRuntime = Type.GetType("Mono.Runtime") != null;
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         static PluginLoader()
@@ -256,7 +258,8 @@ namespace MissionPlanner.Plugin
                         InitPlugin(ans, Path.GetFileName(csFile));
 
                         log.Info("CodeGenRoslyn: " + csFile);
-                        if (Program.MONO)
+                        // (a pause the Mono runtime needed between compiled plugins; .NET does not)
+                        if (IsMonoRuntime)
                             Thread.Sleep(2000);
                         continue;
                     }
@@ -286,7 +289,7 @@ namespace MissionPlanner.Plugin
                         if (results?.CompiledAssembly != null)
                         {
                             log.Info("CodeGen: " + csFile);
-                            if (Program.MONO)
+                            if (IsMonoRuntime)
                                 Thread.Sleep(2000);
                             continue;
                         }

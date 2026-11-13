@@ -779,6 +779,55 @@ class ScreenTour
                     throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
             }
         });
+        // the plugins Windows ships as DLLs (Shortcuts, FaceMap, Dowding: build.sh builds them)
+        // loaded, beside the ones compiled from source
+        Step("feature:plugins", () =>
+        {
+            var expected = new[] { "Shortcuts", "FaceMap", "Dowding" };
+            var sw = Stopwatch.StartNew();
+            string[] loaded;
+            while (true)
+            {
+                lock (MissionPlanner.Plugin.PluginLoader.Plugins)
+                    loaded = MissionPlanner.Plugin.PluginLoader.Plugins.Select(p => p.GetType().Assembly.GetName().Name).Distinct().ToArray();
+                if (expected.All(loaded.Contains) || sw.ElapsedMilliseconds > 60000)
+                    break;
+                Wait(1000);
+            }
+            Console.WriteLine("TOUR plugins: " + loaded.Length + " loaded (" + string.Join(",", expected.Where(loaded.Contains)) +
+                              "), errors: " + string.Join("; ", MissionPlanner.Plugin.PluginLoader.ErrorInfo.Keys.Select(Path.GetFileName)));
+            var missing = expected.Where(e => !loaded.Contains(e)).ToArray();
+            if (missing.Length > 0)
+                throw new Exception("plugins not loaded: " + string.Join(", ", missing));
+        });
+        // the data directory's one-time move to ~/Documents/Mission Planner (as Windows'
+        // Documents\Mission Planner), tried on temporary directories
+        Step("feature:data-migration", () =>
+        {
+            var root = Path.Combine(Path.GetTempPath(), "mp-migration-" + Guid.NewGuid().ToString("N"));
+            try
+            {
+                var target = Path.Combine(root, "Documents", "Mission Planner");
+                var appSupport = Path.Combine(root, "Library", "Application Support", "Mission Planner");
+                var mono = Path.Combine(root, ".local", "share", "Mission Planner");
+                Directory.CreateDirectory(appSupport);
+                File.WriteAllText(Path.Combine(appSupport, "config.xml"), "<Config />");
+                Directory.CreateDirectory(mono);
+                var used = MissionPlanner.Utilities.Settings.MigrateMacDataDirectory(target, appSupport, mono);
+                var moved = used == target && File.Exists(Path.Combine(target, "config.xml")) && !Directory.Exists(appSupport);
+                // once there, later builds' directories are left alone
+                Directory.CreateDirectory(appSupport);
+                var again = MissionPlanner.Utilities.Settings.MigrateMacDataDirectory(target, appSupport, mono);
+                Console.WriteLine("TOUR data migration: moved " + moved + ", second run uses " + (again == target ? "Documents" : again) +
+                                  "; this run: " + MissionPlanner.Utilities.Settings.GetUserDataDirectory());
+                if (!moved || again != target || !Directory.Exists(appSupport))
+                    throw new Exception("data migration: moved " + moved + ", second run " + again);
+            }
+            finally
+            {
+                try { Directory.Delete(root, true); } catch { }
+            }
+        });
         // Console.Beep's tone (the vario) and alert sound, through the sound output on a Mac
         Step("feature:beep", () =>
         {

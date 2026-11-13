@@ -65,6 +65,45 @@ for attempt in 1 2 3; do
 done
 [[ $build_succeeded == 1 ]] || exit 1
 
+# The DLL plugins Windows ships in plugins/ (Shortcuts, FaceMap, Dowding), built against the app
+# just built: the same arguments, and the app's macOS SDK version (see Build.targets). Only
+# each plugin's own DLL goes in plugins/, beside the ones Mission Planner compiles from source.
+if [[ $(uname -s) == Darwin ]]; then
+    property_args=("-p:RuntimeIdentifier=osx-$(uname -m | sed 's/x86_64/x64/')")
+else
+    property_args=(${extra[@]+"${extra[@]}"})
+fi
+platform_version=$(dotnet msbuild MissionPlanner.csproj -p:Configuration=Release "${build_args[@]:5}" \
+    ${property_args[@]+"${property_args[@]}"} $patches -p:TargetFramework=net10.0-macos \
+    -getProperty:TargetPlatformVersion 2>/dev/null | tr -d '\r' | tail -1)
+plugin_dir="$source_dir/bin/Release/net461/plugins"
+mkdir -p "$plugin_dir"
+# what is there before (the plugins compiled from source): the plugin builds also copy the
+# app's assemblies there, which Mission Planner would then load as plugins
+before_plugins=$(ls -A "$plugin_dir")
+for plugin in Shortcuts FaceMap Dowding; do
+    if dotnet build "plugins/$plugin/$plugin.csproj" -c Release "${build_args[@]:5}" ${extra[@]+"${extra[@]}"} $patches \
+        "-p:MissionPlannerMacAppPlatformVersion=$platform_version" "$@" > "${TMPDIR:-/tmp}/plugin-$plugin.log" 2>&1; then
+        # FaceMap and Dowding build into bin/Release/net461/plugins themselves
+        dll=$(find "plugins/$plugin/bin" "$plugin_dir" -name "$plugin.dll" -newer MissionPlanner.csproj 2>/dev/null | head -1 || true)
+        if [[ -n $dll ]]; then
+            [[ $dll == "$plugin_dir/$plugin.dll" ]] || cp -- "$dll" "$plugin_dir/"
+            echo "Plugin $plugin: $plugin_dir/$plugin.dll"
+            rm -f "${TMPDIR:-/tmp}/plugin-$plugin.log"
+            continue
+        fi
+    fi
+    # not fatal (the app works without it), but the screen tour reports a missing plugin
+    echo "PLUGIN $plugin: did not build (plugin-$plugin.log)" >&2
+    grep -E ': error ' "${TMPDIR:-/tmp}/plugin-$plugin.log" | sort -u | head -5 >&2 || true
+done
+while IFS= read -r entry; do
+    case $entry in
+        Shortcuts.dll|FaceMap.dll|Dowding.dll) ;;
+        *) grep -qxF -- "$entry" <<< "$before_plugins" || rm -rf -- "${plugin_dir:?}/$entry" ;;
+    esac
+done < <(ls -A "$plugin_dir")
+
 [[ $(uname -s) == Darwin ]] || exit 0
 
 # Complete the app bundle: Mission Planner looks for its data files (Scripts, plugins,

@@ -10,7 +10,7 @@
     <IsMacPlaygroundProject Condition="$(MSBuildProjectDirectory.Replace('\','/').Contains('/ExtLibs/mac-playground/'))">true</IsMacPlaygroundProject>
     <!-- Projects that use Windows Forms or System.Drawing, and the ones that reference
          them. The other libraries stay netstandard2.0, which .NET for macOS runs as is. -->
-    <MissionPlannerMacProjects>;MissionPlanner;MissionPlanner.Controls;BSE.Windows.Forms;BaseClasses;ZedGraph;GMap.NET.WindowsForms;GMap.NET.Drawing;MissionPlanner.Maps;OSDConfigurator;SvgNet;AviFile;DirectShowLib;WebCamService;GDAL.NET;tlogThumbnailHandler;</MissionPlannerMacProjects>
+    <MissionPlannerMacProjects>;MissionPlanner;MissionPlanner.Controls;BSE.Windows.Forms;BaseClasses;ZedGraph;GMap.NET.WindowsForms;GMap.NET.Drawing;MissionPlanner.Maps;OSDConfigurator;SvgNet;AviFile;DirectShowLib;WebCamService;GDAL.NET;tlogThumbnailHandler;Shortcuts;FaceMap;Dowding;</MissionPlannerMacProjects>
     <IsMissionPlannerMacProject Condition="$(MissionPlannerMacProjects.Contains(';$(MSBuildProjectName);'))">true</IsMissionPlannerMacProject>
   </PropertyGroup>
 
@@ -139,6 +139,21 @@
       <_LinkerFrameworks Remove="OpenGLES" />
     </ItemGroup>
   </Target>
+
+  <!-- The DLL plugins Windows ships in plugins/ (Shortcuts, FaceMap, Dowding), which build.sh
+       builds after Mission Planner: they reference the app, which targets the newest macOS SDK
+       (a library gets the workload's default one, too old to reference it), so they take the
+       app's version (MissionPlannerMacAppPlatformVersion, from build.sh). -->
+  <PropertyGroup Condition="('$(MSBuildProjectName)' == 'Shortcuts' Or '$(MSBuildProjectName)' == 'FaceMap' Or '$(MSBuildProjectName)' == 'Dowding') And '$(MissionPlannerMacAppPlatformVersion)' != ''">
+    <TargetFrameworks>net10.0-macos$(MissionPlannerMacAppPlatformVersion)</TargetFrameworks>
+    <!-- (the app's assemblies still come along with them: build.sh keeps only each plugin's DLL) -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'Shortcuts' Or '$(MSBuildProjectName)' == 'FaceMap' Or '$(MSBuildProjectName)' == 'Dowding'">
+    <ProjectReference Update="@(ProjectReference)">
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
 
   <!-- As in the net472 builds, MissionPlanner.Drawing (a Skia System.Drawing for Android)
        is only visible under an alias, so its types do not clash with System.Drawing's. -->

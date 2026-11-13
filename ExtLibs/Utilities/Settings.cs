@@ -348,6 +348,18 @@ namespace MissionPlanner.Utilities
                 return CustomUserDataDirectory + Path.DirectorySeparatorChar + AppConfigName +
                        Path.DirectorySeparatorChar;
 
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
+            {
+                if (macUserDataDirectory == null)
+                {
+                    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    macUserDataDirectory = MigrateMacDataDirectory(Path.Combine(home, "Documents", AppConfigName),
+                        Path.Combine(home, "Library", "Application Support", AppConfigName),
+                        Path.Combine(home, ".local", "share", AppConfigName)) + Path.DirectorySeparatorChar;
+                }
+                return macUserDataDirectory;
+            }
+
             var oldApproachPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
                 Path.DirectorySeparatorChar + AppConfigName + Path.DirectorySeparatorChar;
             var path = "";
@@ -368,6 +380,39 @@ namespace MissionPlanner.Utilities
 
             path += Path.DirectorySeparatorChar + AppConfigName + Path.DirectorySeparatorChar;
             return path;
+        }
+
+        static string macUserDataDirectory;
+
+        /// <summary>
+        /// macOS keeps Mission Planner's data in ~/Documents/Mission Planner, as Windows does in
+        /// Documents\Mission Planner. Earlier macOS builds used ~/Library/Application Support (.NET)
+        /// or ~/.local/share (Mono): the first of those found is moved there once, when the
+        /// Documents folder has none yet. Returns the directory to use (the old one if the move
+        /// failed).
+        /// </summary>
+        public static string MigrateMacDataDirectory(string target, params string[] previous)
+        {
+            if (Directory.Exists(target))
+                return target;
+            foreach (var old in previous)
+            {
+                if (!Directory.Exists(old))
+                    continue;
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(target));
+                    Directory.Move(old, target);
+                    Console.WriteLine("Mission Planner data moved from " + old + " to " + target);
+                    return target;
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("Mission Planner data left in " + old + ": " + ex.Message);
+                    return old;
+                }
+            }
+            return target;
         }
 
         /// <summary>
