@@ -659,11 +659,34 @@ class ScreenTour
                     }
                     var sideways = Descendants(page).OfType<ScrollableControl>().Where(c => c.Visible && c.HorizontalScroll.Visible)
                         .Select(c => c.Name).ToList();
+                    // controls laid over one another (siblings whose bounds cross)
+                    foreach (var parent in new Control[] { page }.Concat(Descendants(page)))
+                    {
+                        var shown = parent.Controls.Cast<Control>().Where(c => c.Visible && c.Width > 0 && c.Height > 0).ToList();
+                        for (int i = 0; i < shown.Count; i++)
+                            for (int j = i + 1; j < shown.Count; j++)
+                            {
+                                var cross = System.Drawing.Rectangle.Intersect(shown[i].Bounds, shown[j].Bounds);
+                                if (cross.Width > 2 && cross.Height > 2)
+                                    past.Add(shown[i].Name + " over " + shown[j].Name);
+                            }
+                    }
                     if (checkedPages.Contains(page.Name))
                     {
                         Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + ": page " + page.ClientSize +
                                           (past.Count > 0 ? ", past the edge: " + string.Join(", ", past) : ", inside") +
                                           (sideways.Count > 0 ? ", sideways bar: " + string.Join(", ", sideways) : ""));
+                        foreach (var list in Descendants(page).OfType<FlowLayoutPanel>().Where(l => l.Visible && l.Controls.Count > 0))
+                        {
+                            var row = list.Controls[0];
+                            Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + " row " + row.Name + " " + row.Bounds +
+                                              " in " + list.ClientSize + ": " + string.Join(", ", row.Controls.Cast<Control>()
+                                                  .Where(c => c.Visible).Select(c => c.Name + " " + c.Bounds.X + "+" + c.Width)));
+                            var narrow = list.Controls.Cast<Control>().Where(r => r.Visible &&
+                                r.Width < list.ClientSize.Width - list.Padding.Horizontal - r.Margin.Horizontal - SystemInformation.VerticalScrollBarWidth - 2).ToList();
+                            if (narrow.Count > 0)
+                                past.Add(narrow.Count + " rows of " + list.Name + " narrower than it (" + narrow[0].Width + " of " + list.ClientSize.Width + ")");
+                        }
                         if (past.Count > 0)
                             problems.Add(page.Name + " at " + width + " px: " + string.Join(", ", past.Take(6)));
                         if (sideways.Count > 0)

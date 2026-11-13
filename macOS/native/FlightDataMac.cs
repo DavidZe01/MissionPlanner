@@ -741,8 +741,8 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        // the controls of a ServoOptions, RelayOptions or AuxOptions row, by their designer names
-        static readonly string[] macOptionLead = { "mavlinkComboBox1" };
+        // the controls of a ServoOptions, RelayOptions or AuxOptions row, by their designer names (the
+        // lead, AuxOptions' choice, by its type: AuxOptions renames it to its parameter when shown)
         static readonly string[] macOptionButtons = { "BUT_Low", "but_mid", "BUT_High", "BUT_Repeat" };
         static readonly string[] macOptionLight = { "TXT_rcchannel" };
         static readonly string[] macOptionFields = { "TXT_pwm_low", "TXT_low_value", "txt_midvalue", "TXT_pwm_high", "TXT_highvalue" };
@@ -774,7 +774,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 const int height = 24, joined = 2, fieldWidth = 52;
-                var lead = MacFind(row, macOptionLead).FirstOrDefault();
+                var lead = row.Controls.OfType<ComboBox>().FirstOrDefault();
                 var buttons = MacFind(row, macOptionButtons).Where(MacShown).ToArray();
                 var light = MacFind(row, macOptionLight).FirstOrDefault();
                 var fields = MacFind(row, macOptionFields).Where(MacShown).ToArray();
