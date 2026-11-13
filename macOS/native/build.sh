@@ -133,6 +133,10 @@ echo "Serial port helper: $bundle/$ports_lib"
 # (system.web, from a Windows Forms template) makes ConfigurationManager reject the whole
 # file, and log4net and the update settings with it. system.diagnostics traces to /ProgramData.
 perl -0pi -e 's{\s*<system\.(web|diagnostics)>.*?</system\.\1>}{}gs' "$bundle/MissionPlanner.dll.config"
+# the commit this app is built from, which "Check for updates" compares with the newest build
+# kept on this Mac (~/MissionPlanner-native/BUILD.txt, written by the workflow)
+build_commit=${GITHUB_SHA:-$(git -C "$source_dir" rev-parse HEAD 2>/dev/null || echo unknown)}
+echo "$build_commit" > "$app/Contents/Resources/BUILD.txt"
 # the Log Analyzer: ArduPilot's own (Python, 4.5.7), which Windows runs frozen as runner.exe;
 # Utilities/LogAnalyzer.cs runs this copy with python3
 rm -rf -- "$bundle/LogAnalyzer"

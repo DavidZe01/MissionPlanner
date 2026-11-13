@@ -130,8 +130,106 @@ namespace MissionPlanner.Utilities
             }
         }
 
+#if MACNATIVE
+        // The native macOS app is built on this Mac (the self-hosted runner) and kept in
+        // ~/MissionPlanner-native: the zip and BUILD.txt ("<commit> <run url>"). The installed
+        // app has its own commit in Contents/Resources/BUILD.txt (build.sh). A different commit
+        // there is the update, installed as Windows' Updater does it: once the app has quit,
+        // replaced, then started again.
+        static string MacBuildsDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "MissionPlanner-native");
+        static string MacUpdateZip => Path.Combine(MacBuildsDir, "MissionPlanner-macos-native-arm64.zip");
+
+        static string FirstWord(string file)
+        {
+            try
+            {
+                return File.Exists(file) ? File.ReadAllText(file).Trim().Split(' ', '\n')[0].Trim() : "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        public static string MacInstalledBuild =>
+            FirstWord(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "BUILD.txt")));
+
+        public static string MacAvailableBuild => File.Exists(MacUpdateZip) ? FirstWord(Path.Combine(MacBuildsDir, "BUILD.txt")) : "";
+
+        public static bool MacUpdateAvailable =>
+            MacAvailableBuild != "" && MacInstalledBuild != "" && MacAvailableBuild != MacInstalledBuild;
+
+        static void CheckForMacUpdate(bool NotifyNoUpdate)
+        {
+            log.Info("macOS build: installed " + MacInstalledBuild + ", on this Mac " + MacAvailableBuild);
+            if (!MacUpdateAvailable)
+            {
+                if (NotifyNoUpdate)
+                    MainV2.instance.Invoke((Action)delegate { CustomMessageBox.Show(Strings.UpdateNotFound); });
+                return;
+            }
+            MainV2.instance.Invoke((Action)delegate
+            {
+                var available = MacAvailableBuild;
+                var dr = CustomMessageBox.Show(Strings.UpdateFound + " (build " + available.Substring(0, Math.Min(8, available.Length)) + ")",
+                    Strings.UpdateNow, MessageBoxButtons.YesNo);
+                if (dr == (int)DialogResult.Yes)
+                    DoMacUpdate();
+            });
+        }
+
+        static void DoMacUpdate()
+        {
+            try
+            {
+                var app = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", ".."));
+                if (!app.EndsWith(".app"))
+                    throw new Exception("not running from an app bundle: " + app);
+                var script = Path.Combine(Path.GetTempPath(), "mission-planner-update.sh");
+                File.WriteAllText(script, @"#!/bin/bash
+# Mission Planner's macOS update: wait for the app to quit, then replace it and start it
+pid=$1 zip=$2 app=$3
+while kill -0 ""$pid"" 2>/dev/null; do sleep 0.5; done
+work=$(mktemp -d)
+ditto -x -k ""$zip"" ""$work"" || exit 1
+new=$(find ""$work"" -maxdepth 1 -name '*.app' | head -1)
+[[ -n $new ]] && codesign --verify --deep --strict ""$new"" || { open ""$app""; exit 1; }
+rm -rf ""$app.old"" && mv ""$app"" ""$app.old"" || exit 1
+if ditto ""$new"" ""$app""; then rm -rf ""$app.old""; else rm -rf ""$app""; mv ""$app.old"" ""$app""; fi
+xattr -dr com.apple.quarantine ""$app"" 2>/dev/null
+rm -rf ""$work""
+open ""$app""
+");
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo("/bin/bash")
+                    {
+                        UseShellExecute = false,
+                        Arguments = "\"" + script + "\" " + Process.GetCurrentProcess().Id + " \"" + MacUpdateZip + "\" \"" + app + "\""
+                    }
+                };
+                log.Info("Starting new process: " + process.StartInfo.FileName + " with " + process.StartInfo.Arguments);
+                process.Start();
+                log.Info("Quitting existing process");
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                log.Error("Update Failed", ex);
+                CustomMessageBox.Show("Update Failed " + ex.Message);
+            }
+        }
+#endif
+
         public static void CheckForUpdate(bool NotifyNoUpdate = false)
         {
+#if MACNATIVE
+            if (MacOSApp)
+            {
+                CheckForMacUpdate(NotifyNoUpdate);
+                return;
+            }
+#endif
             var baseurl = ConfigurationManager.AppSettings["UpdateLocationVersion"];
 
             if (dobeta)
@@ -244,6 +342,13 @@ namespace MissionPlanner.Utilities
 
             if (MacOSApp)
             {
+#if MACNATIVE
+                if (MacUpdateAvailable)
+                {
+                    DoMacUpdate();
+                    return;
+                }
+#endif
                 ShowMacOSUpdate(null);
                 return;
             }

@@ -648,7 +648,6 @@ class ScreenTour
             if (line != 120 || first != 0 || second != 120)
                 throw new Exception("wheel deltas: line " + line + ", points " + first + ", " + second + " (120, 0, 120 expected)");
         });
-#endif
         // the JPEG encoder found by MIME type, as the HUD and map images of the web server look
         // it up (HUD.GetEncoder("image/jpeg")), honouring the quality parameter
         Step("feature:image-encoders", () =>
@@ -779,6 +778,16 @@ class ScreenTour
                     throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
             }
         });
+        // "Check for updates": the commit of this build, recorded in the bundle by build.sh, and
+        // the newest build kept on this Mac
+        Step("feature:updater", () =>
+        {
+            var installed = MissionPlanner.Utilities.Update.MacInstalledBuild;
+            Console.WriteLine("TOUR updater: installed build " + installed + ", on this Mac " + MissionPlanner.Utilities.Update.MacAvailableBuild +
+                              ", update available " + MissionPlanner.Utilities.Update.MacUpdateAvailable);
+            if (string.IsNullOrEmpty(installed))
+                throw new Exception("no Contents/Resources/BUILD.txt in the app");
+        });
         // the plugins Windows ships as DLLs (Shortcuts, FaceMap, Dowding: build.sh builds them)
         // loaded, beside the ones compiled from source
         Step("feature:plugins", () =>
@@ -841,8 +850,7 @@ class ScreenTour
         });
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
-        if (IsMac)
-            Step("feature:owner-drawn-combo", () =>
+        Step("feature:owner-drawn-combo", () =>
             {
                 using (var form = new Form { Width = 300, Height = 100 })
                 {
@@ -868,6 +876,9 @@ class ScreenTour
                     form.Close();
                 }
             });
+        // (the checks above are of the native app's own code: ExtLibs/mac-playground, the
+        // updater, build.sh's plugins; the Mono build of this tour, macOS/build-tests.sh, has none)
+#endif
         // TOUR_SERIAL_LOOPBACK: a serial port that sends back what it receives (a pty from
         // macOS/native/pty-bridge.py), opened the way Mission Planner opens a USB board or radio
         var loopback = Environment.GetEnvironmentVariable("TOUR_SERIAL_LOOPBACK");
