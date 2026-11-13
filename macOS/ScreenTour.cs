@@ -343,6 +343,14 @@ class ScreenTour
                 host.Show();
             }
             var control = (UserControl)Activator.CreateInstance(type);
+            // Mission Planner shows the "loading parameters" page only while a vehicle's
+            // parameters are still arriving; once they all have (0 of 0 without a vehicle) its
+            // timer reloads the main screen every 100 ms. Open it in its real state: one to go.
+            var param = MainV2.comPort.MAV.param;
+            var reported = param.TotalReported;
+            var loading = type.Name == "ConfigParamLoading";
+            if (loading)
+                param.TotalReported = param.TotalReceived + 1;
             try
             {
                 control.Dock = DockStyle.Fill;
@@ -360,6 +368,8 @@ class ScreenTour
             {
                 host.Controls.Remove(control);
                 control.Dispose();
+                if (loading)
+                    param.TotalReported = reported;
             }
         });
     }
