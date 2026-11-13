@@ -5244,7 +5244,20 @@ namespace MissionPlanner.GCSViews
                     return false;
             }
 
-            hudGStreamer.Start(GStreamer.LocalCameraPipeline(index));
+            int width = 0, height = 0;
+            double fps = 0;
+#if MACNATIVE
+            // the mode chosen in Config > Planner, as DirectShow's media type on Windows
+            var modes = MacNative.CameraModes(index);
+            int option;
+            if (int.TryParse(Settings.Instance["video_options"], out option) && option >= 0 && option < modes.Count)
+            {
+                width = modes[option].Item1;
+                height = modes[option].Item2;
+                fps = modes[option].Item3;
+            }
+#endif
+            hudGStreamer.Start(GStreamer.LocalCameraPipeline(index, width, height, fps));
             return true;
         }
 

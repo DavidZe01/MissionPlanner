@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
@@ -175,6 +176,55 @@ namespace MissionPlanner
                 first.Flush();
                 second.Flush();
             }
+        }
+
+        // The cameras in avfvideosrc's device-index order ([AVCaptureDevice devicesWithMediaType:]),
+        // and the modes (size, highest frame rate) each offers, as DirectShow lists them on Windows
+        static AVFoundation.AVCaptureDevice[] Cameras()
+        {
+#pragma warning disable CA1422 // what avfvideosrc itself uses
+            return AVFoundation.AVCaptureDevice.DevicesWithMediaType("vide" /* AVMediaTypeVideo */)
+                   ?? Array.Empty<AVFoundation.AVCaptureDevice>();
+#pragma warning restore CA1422
+        }
+
+        internal static List<string> CameraNames()
+        {
+            var names = new List<string>();
+            try
+            {
+                foreach (var camera in Cameras())
+                    names.Add(camera.LocalizedName);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("cameras: " + e.Message);
+            }
+            return names;
+        }
+
+        internal static List<Tuple<int, int, double>> CameraModes(int index)
+        {
+            var modes = new List<Tuple<int, int, double>>();
+            try
+            {
+                var cameras = Cameras();
+                if (index < 0 || index >= cameras.Length)
+                    return modes;
+                foreach (var format in cameras[index].Formats)
+                {
+                    var size = ((CoreMedia.CMVideoFormatDescription)format.FormatDescription).Dimensions;
+                    var fps = format.VideoSupportedFrameRateRanges.Select(r => r.MaxFrameRate).DefaultIfEmpty(0).Max();
+                    var mode = Tuple.Create(size.Width, size.Height, Math.Round(fps, 3));
+                    if (!modes.Contains(mode))
+                        modes.Add(mode);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("camera modes: " + e.Message);
+            }
+            return modes;
         }
 
         static readonly List<Foundation.NSObject> observers = new List<Foundation.NSObject>();

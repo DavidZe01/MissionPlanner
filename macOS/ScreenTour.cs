@@ -993,6 +993,22 @@ class ScreenTour
         {
             var cameras = MissionPlanner.Utilities.GStreamer.ListLocalCameras();
             Console.WriteLine("TOUR cameras: " + cameras.Count);
+#if MACNATIVE
+            // Config > Planner's camera list and each camera's modes (AVFoundation, in
+            // avfvideosrc's order), and the capture pipeline for a chosen mode
+            var names = MacNative.CameraNames();
+            for (int i = 0; i < names.Count; i++)
+            {
+                var modes = MacNative.CameraModes(i);
+                Console.WriteLine("TOUR camera " + i + " " + names[i] + ": " + modes.Count + " modes (" +
+                                  string.Join(", ", modes.Take(6).Select(m => m.Item1 + "x" + m.Item2 + "@" + m.Item3)) + ")");
+                if (modes.Count == 0)
+                    throw new Exception("no modes for camera " + names[i]);
+            }
+            var pipeline = MissionPlanner.Utilities.GStreamer.LocalCameraPipeline(0, 1280, 720, 29.97);
+            if (!pipeline.Contains("video/x-raw,width=1280,height=720,framerate=29970/1000"))
+                throw new Exception("camera pipeline without the mode: " + pipeline);
+#endif
         });
         Step("feature:gstreamer-discovery", () =>
         {

@@ -1185,7 +1185,7 @@ namespace MissionPlanner.Utilities
         /// Pipeline that captures a local camera into the appsink, used where
         /// DirectShow is unavailable (macOS: AVFoundation, Linux: V4L2).
         /// </summary>
-        public static string LocalCameraPipeline(int index)
+        public static string LocalCameraPipeline(int index, int width = 0, int height = 0, double fps = 0)
         {
             string source;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -1197,6 +1197,13 @@ namespace MissionPlanner.Utilities
             }
             else
                 source = "ksvideosrc device-index=" + index;
+            // the mode chosen in Config > Planner (as DirectShow's media type on Windows)
+            if (width > 0 && height > 0)
+            {
+                source += " ! video/x-raw,width=" + width + ",height=" + height;
+                if (fps > 0)
+                    source += ",framerate=" + (int)Math.Round(fps * 1000) + "/1000";
+            }
             return source + " ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink";
         }
 

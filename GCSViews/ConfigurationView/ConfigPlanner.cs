@@ -262,6 +262,8 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             {
                 // GStreamer capture (AVFoundation on macOS, V4L2 on Linux)
                 Settings.Instance["video_device"] = Math.Max(0, CMB_videosources.SelectedIndex).ToString();
+                if (CMB_videoresolutions.SelectedIndex >= 0)
+                    Settings.Instance["video_options"] = CMB_videoresolutions.SelectedIndex.ToString();
                 if (GCSViews.FlightData.StartLocalCamera(Math.Max(0, CMB_videosources.SelectedIndex)))
                     BUT_videostart.Enabled = false;
                 return;
@@ -305,7 +307,24 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         private void CMB_videosources_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (MainV2.MONO)
+            {
+#if MACNATIVE
+                // the camera's modes from AVFoundation, as DirectShow's on Windows
+                CMB_videoresolutions.DataSource = MacNative.CameraModes(CMB_videosources.SelectedIndex)
+                    .Select(m => new GCSBitmapInfo(m.Item1, m.Item2, m.Item3 > 0 ? (long)(10000000.0 / m.Item3) : 0, "", null)).ToList();
+                if (Settings.Instance["video_options"] != "" && CMB_videosources.Text != "")
+                {
+                    try
+                    {
+                        CMB_videoresolutions.SelectedIndex = Settings.Instance.GetInt32("video_options");
+                    }
+                    catch
+                    {
+                    } // ignore bad entries
+                }
+#endif
                 return;
+            }
 
             int hr;
             int count;
@@ -751,7 +770,12 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             if (MainV2.MONO)
             {
+#if MACNATIVE
+                // in the order avfvideosrc numbers them
+                CMB_videosources.DataSource = MacNative.CameraNames();
+#else
                 CMB_videosources.DataSource = GStreamer.ListLocalCameras();
+#endif
                 return;
             }
             // the reason why i dont populate this list is because on linux/mac this call will fail.
