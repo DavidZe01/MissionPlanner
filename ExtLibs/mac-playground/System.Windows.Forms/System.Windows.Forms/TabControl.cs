@@ -279,6 +279,14 @@ namespace System.Windows.Forms {
 
 		}
 
+		// Windows' tab control keeps its text clear of the tab's edges even with Padding.X 0 (Mission
+		// Planner's tabs use 0): sizing and drawing a tab use at least this margin on each side
+		internal const int MinimumTextPaddingX = 3;
+
+		internal int TextPaddingX {
+			get { return Math.Max (padding.X, MinimumTextPaddingX); }
+		}
+
 		[MonoTODO ("RTL not supported")]
 		[Localizable (true)]
 		[DefaultValue (false)]
@@ -1279,7 +1287,7 @@ namespace System.Windows.Forms {
 				width = item_size.Width;
 			} else {			
 				width = MeasureStringWidth (DeviceContext, page.Text, Font);
-				width += (Padding.X * 2) + 2;
+				width += (TextPaddingX * 2) + 2;
 
 				if (ImageList != null && page.ImageIndex >= 0) {
 					width += ImageList.ImageSize.Width + ThemeEngine.Current.TabControlImagePadding.X;

@@ -589,8 +589,24 @@ namespace System.Windows.Forms {
 				if (e is HandledMouseEventArgs)
 					((HandledMouseEventArgs)e).Handled = true;
 			}
-				
+
 			base.OnMouseWheel(e);
+		}
+
+		// A sideways scroll (a trackpad's two-finger swipe left or right) moves the horizontal bar, in
+		// the same direction as WM_MOUSEWHEEL moves the vertical one.
+		internal override void OnMouseHWheel(MouseEventArgs e) {
+			if (HScroll && hscrollbar.VisibleInternal && e.Delta != 0) {
+				int maximum_scrollbar_value = hscrollbar.Maximum - hscrollbar.LargeChange + 1;
+				int step = Math.Max(hscrollbar.SmallChange, hscrollbar.LargeChange / 4) * Math.Max(1, Math.Abs(e.Delta) / 120);
+				int value = hscrollbar.Value + (e.Delta > 0 ? -step : step);
+				hscrollbar.Value = Math.Max(hscrollbar.Minimum, Math.Min(Math.Max(hscrollbar.Minimum, maximum_scrollbar_value), value));
+
+				if (e is HandledMouseEventArgs)
+					((HandledMouseEventArgs)e).Handled = true;
+			}
+
+			base.OnMouseHWheel(e);
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Advanced)]

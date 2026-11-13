@@ -419,6 +419,7 @@ namespace System.Windows.Forms.Theming.Default
 			}
 
 			Point padding = tab.Padding;
+			padding.X = tab.TextPaddingX;
 			interior = new Rectangle (bounds.Left + padding.X - 1, // substract a little offset
 				bounds.Top + padding.Y,
 				bounds.Width - (padding.X * 2), 

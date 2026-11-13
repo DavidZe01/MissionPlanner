@@ -3351,17 +3351,27 @@ namespace MissionPlanner.GCSViews
                 {
                     var number = modify.NumericUpDown;
                     string format = "F" + number.DecimalPlaces;
-                    number.Width = Math.Max(
+                    int textWidth = Math.Max(
                         TextRenderer.MeasureText(number.Minimum.ToString(format), number.Font).Width,
-                        TextRenderer.MeasureText(number.Maximum.ToString(format), number.Font).Width) +
-                        SystemInformation.VerticalScrollBarWidth + 6;
+                        TextRenderer.MeasureText(number.Maximum.ToString(format), number.Font).Width);
+#if MACNATIVE
+                    number.Width = MacUpDownWidth(number, textWidth);
+#else
+                    number.Width = textWidth + SystemInformation.VerticalScrollBarWidth + 6;
+#endif
                     var buttonSize = modify.Button.GetPreferredSize(Size.Empty);
                     preferred = new Size(number.Width + buttonSize.Width,
                         Math.Max(number.Height, buttonSize.Height));
                     modify.Margin = BUTactiondo.Margin;
                     // Keep the number and its button on the same row.
                     modify.AutoSize = false;
+#if MACNATIVE
+                    // (as on Windows the table fills the pane: the button takes what is left of the cell)
+                    modify.MinimumSize = new Size(0, preferred.Height);
+                    FitModifyAndSet(modify);
+#else
                     modify.MinimumSize = preferred;
+#endif
                 }
                 else if (combo != null)
                 {
@@ -3394,10 +3404,20 @@ namespace MissionPlanner.GCSViews
                 row.Height = rowHeight;
             }
 
+#if MACNATIVE
+            // As on Windows the table fills the pane (anchored left and right): in a narrow pane its
+            // controls shrink within their cells rather than run past the pane's edge. The measured
+            // widths still give each column its share, and the pane its default width below.
+            tableLayoutPanel1.MinimumSize = new Size(0, rowHeight * tableLayoutPanel1.RowCount);
+            tableLayoutPanel1.Height = tableLayoutPanel1.MinimumSize.Height;
+            tableLayoutPanel1.AutoScroll = false;
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+#else
             tableLayoutPanel1.MinimumSize = new Size(tableWidth, rowHeight * tableLayoutPanel1.RowCount);
             tableLayoutPanel1.Height = tableLayoutPanel1.MinimumSize.Height;
             // Right anchoring prevents WinForms AutoScroll from exposing clipped controls.
             tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+#endif
             tabActions.AutoScroll = true;
             tabActions.Resize += (sender, e) => ResizeLinuxActionTable();
             ResizeLinuxActionTable();
@@ -3410,6 +3430,10 @@ namespace MissionPlanner.GCSViews
                 int hudHeight = Math.Max(0, SubMainLeft.Height - actionHeight - SubMainLeft.SplitterWidth - 2);
                 int widthForHeight = (int)(hudHeight * (hud1.SixteenXNine ? 16f / 9f : 4f / 3f)) +
                     MainH.SplitterDistance - hud1.Width;
+#if MACNATIVE
+                // wide enough for the whole table (up to 2/3 of the window), so that at first nothing shrinks
+                widthForHeight = int.MaxValue;
+#endif
                 int maximumWidth = Math.Max(MainH.Panel1MinSize,
                     Math.Min((MainH.Width - MainH.SplitterWidth) * 2 / 3, widthForHeight));
                 MainH.SplitterDistance = Math.Min(tableWidth + borders, maximumWidth);
@@ -3421,6 +3445,39 @@ namespace MissionPlanner.GCSViews
             tableLayoutPanel1.Width = Math.Max(tableLayoutPanel1.MinimumSize.Width,
                 tabActions.ClientSize.Width - tabActions.Padding.Horizontal);
         }
+
+#if MACNATIVE
+        // The width a Cocoa NumericUpDown needs to show textWidth of text: its text field (whose bezel
+        // and cell insets take more room than Windows' edit box), the gap and the stepper beside it.
+        internal static int MacUpDownWidth(NumericUpDown number, int textWidth)
+        {
+            const int fieldInsets = 12, gap = 4;
+            int stepper = number.Controls.Cast<Control>().Where(c => !(c is TextBoxBase))
+                .Select(c => c.PreferredSize.Width).DefaultIfEmpty(SystemInformation.VerticalScrollBarWidth).Aggregate(Math.Max);
+            var field = number.Controls.OfType<TextBoxBase>().FirstOrDefault();
+            int borders = field == null ? 0 : field.Width - field.ClientSize.Width + field.Padding.Horizontal;
+            return textWidth + borders + fieldInsets + gap + stepper;
+        }
+
+        // A ModifyandSet in a cell narrower than its number and button: the button keeps the row and
+        // takes the rest of the cell (its text clipped, as on Windows), instead of wrapping out of sight.
+        private static void FitModifyAndSet(ModifyandSet modify)
+        {
+            var row = modify.Controls.OfType<FlowLayoutPanel>().FirstOrDefault();
+            if (row != null)
+                row.WrapContents = false;
+            modify.Button.AutoSize = false;
+            EventHandler fit = (sender, e) =>
+            {
+                var number = modify.NumericUpDown;
+                modify.Button.Width = Math.Max(0, modify.ClientSize.Width - number.Width - number.Margin.Horizontal -
+                    modify.Button.Margin.Horizontal);
+                modify.Button.Height = Math.Max(number.Height, modify.Button.GetPreferredSize(Size.Empty).Height);
+            };
+            modify.Resize += fit;
+            fit(modify, EventArgs.Empty);
+        }
+#endif
 
         private void ActionComboDropDown(object sender, EventArgs e)
         {

@@ -50,6 +50,11 @@ namespace System.Windows.Forms
 					HasHorizontalScroller = !vert,
 					AutohidesScrollers = true,
 					DrawsBackground = false,
+					// drawn whenever it is shown, as on Windows: Windows Forms lays the bar out in its own
+					// space (a control's AutoScroll bars too), which the system's overlay style (the
+					// default with a trackpad) left empty until the user scrolled, so content beyond the
+					// edge looked cut off with nothing to scroll it by
+					ScrollerStyle = NSScrollerStyle.Legacy,
 				};
 
 				var ctrlsize = DefaultControlSize;

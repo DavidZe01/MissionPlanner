@@ -524,6 +524,12 @@ class ScreenTour
                     throw new Exception("map overlay not anchored: panel " + panel.Size + ", zoom bar right " + zoom.Right +
                                         ", legend bottom " + legend.Bottom + ", distance bar right " + distance.Right);
             });
+#if MACNATIVE
+            // the tabs under the HUD: nothing may run past the pane's edge (the Actions table fills
+            // it as on Windows, at Windows' default 300 px and at the pane's own width), a scrollable
+            // tab shows its scroll bar and scrolls sideways, and each tab's text clears its edges
+            Step("feature:sidebar-fit", () => SidebarFit(m.FlightData));
+#endif
             // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
             // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
             var tabControl = (TabControl)m.FlightData.Controls.Find("tabControlactions", true).Single();
@@ -589,6 +595,88 @@ class ScreenTour
         start.Start();
         Program.Main(new string[0]);
     }
+
+#if MACNATIVE
+    private static void SidebarFit(Control flightData)
+    {
+        var mainH = (SplitContainer)flightData.Controls.Find("MainH", true).Single();
+        var tabs = (TabControl)flightData.Controls.Find("tabControlactions", true).Single();
+        var actions = tabs.TabPages["tabActions"];
+        var table = actions.Controls.Find("tableLayoutPanel1", true).Single();
+        var servo = tabs.TabPages["tabServo"];
+        var servos = (ScrollableControl)servo.Controls.Find("flowLayoutPanelServos", true).Single();
+        var selected = tabs.SelectedIndex;
+        var distance = mainH.SplitterDistance;
+        var problems = new List<string>();
+        try
+        {
+            foreach (var width in new[] { distance, 300 })
+            {
+                mainH.SplitterDistance = width;
+                tabs.SelectedTab = actions;
+                Wait(600);
+                foreach (Control c in table.Controls)
+                {
+                    if (!c.Visible)
+                        continue;
+                    var right = actions.PointToClient(c.PointToScreen(System.Drawing.Point.Empty)).X + c.Width;
+                    if (right > actions.ClientSize.Width + 1)
+                        problems.Add(c.Name + " ends at " + right + " of " + actions.ClientSize.Width + " (pane " + width + ")");
+                    var modify = c as ModifyandSet;
+                    if (modify == null)
+                        continue;
+                    var number = modify.NumericUpDown;
+                    var field = number.Controls.OfType<TextBoxBase>().FirstOrDefault();
+                    var text = number.Value.ToString("F" + number.DecimalPlaces);
+                    var textWidth = TextRenderer.MeasureText(text, number.Font).Width;
+                    if (field != null && field.Width < textWidth + 8)
+                        problems.Add(c.Name + " field " + field.Width + " px for \"" + text + "\" (" + textWidth + " px)");
+                    if (width == distance && (modify.Button.Top >= modify.Height || modify.Button.Width <= 0))
+                        problems.Add(c.Name + " button out of sight: " + modify.Button.Bounds + " in " + modify.Size);
+                }
+                Console.WriteLine("TOUR sidebar pane " + width + ": actions " + actions.ClientSize + ", table " + table.Bounds);
+            }
+            mainH.SplitterDistance = 300;
+            tabs.SelectedTab = servo;
+            Wait(600);
+            var hscroll = typeof(ScrollableControl).GetField("hscrollbar", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(servos);
+            var scrollview = typeof(ScrollBar).GetField("scrollview", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(hscroll) as AppKit.NSScrollView;
+            var style = scrollview == null ? "none" : scrollview.ScrollerStyle.ToString();
+            int before = servos.HorizontalScroll.Value;
+            var wheel = typeof(Control).GetMethod("OnMouseHWheel", BindingFlags.NonPublic | BindingFlags.Instance);
+            wheel.Invoke(servos, new object[] { new HandledMouseEventArgs(MouseButtons.None, 0, 0, 0, -120) });
+            int after = servos.HorizontalScroll.Value;
+            Console.WriteLine("TOUR sidebar servo: display " + servos.DisplayRectangle.Size + " client " + servos.ClientSize +
+                              ", horizontal bar visible " + servos.HorizontalScroll.Visible + " style " + style +
+                              ", sideways scroll " + before + " -> " + after);
+            if (servos.DisplayRectangle.Width > servos.ClientSize.Width)
+            {
+                if (!servos.HorizontalScroll.Visible)
+                    problems.Add("Servo/Relay wider than the pane without a horizontal scroll bar");
+                if (style != "Legacy")
+                    problems.Add("Servo/Relay scroll bar style " + style + " (hidden until scrolling)");
+                if (after <= before)
+                    problems.Add("a sideways scroll did not move Servo/Relay (" + before + " -> " + after + ")");
+            }
+            servos.HorizontalScroll.Value = 0;
+            using (var g = tabs.CreateGraphics())
+                for (int i = 0; i < tabs.TabCount; i++)
+                {
+                    var textWidth = (int)Math.Ceiling(g.MeasureString(tabs.TabPages[i].Text, tabs.Font).Width);
+                    var rect = tabs.GetTabRect(i);
+                    if (rect.Width < textWidth + 2 * 3)
+                        problems.Add("tab " + tabs.TabPages[i].Text + " " + rect.Width + " px for " + textWidth + " px of text");
+                }
+        }
+        finally
+        {
+            mainH.SplitterDistance = distance;
+            tabs.SelectedIndex = selected;
+        }
+        if (problems.Count > 0)
+            throw new Exception(string.Join("; ", problems));
+    }
+#endif
 
     private static readonly HashSet<string> NeedsVehicle = new HashSet<string> { "ConfigHWCompass2" };
 
