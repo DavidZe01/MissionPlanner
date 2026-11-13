@@ -676,7 +676,7 @@ class ScreenTour
                         Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + ": page " + page.ClientSize +
                                           (past.Count > 0 ? ", past the edge: " + string.Join(", ", past) : ", inside") +
                                           (sideways.Count > 0 ? ", sideways bar: " + string.Join(", ", sideways) : ""));
-                        foreach (var list in Descendants(page).OfType<FlowLayoutPanel>().Where(l => l.Visible && l.Controls.Count > 0))
+                        foreach (var list in page.Controls.OfType<FlowLayoutPanel>().Where(l => l.Visible && l.Controls.Count > 0)) // the option lists
                         {
                             var row = list.Controls[0];
                             Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + " row " + row.Name + " " + row.Bounds +

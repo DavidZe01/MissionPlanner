@@ -120,7 +120,7 @@ namespace MissionPlanner.Controls
                 {
                     // must be actioned inside the catch, as this thread was just aborted
                     Running = false;
-                    this.BeginInvoke((MethodInvoker)this.Close);
+                    CloseFromBackground();
                     return;
                 }
                 else
@@ -156,7 +156,7 @@ namespace MissionPlanner.Controls
             {
                 //ShowDoneCancelled();
                 Running = false;
-                this.BeginInvoke((MethodInvoker)this.Close);
+                CloseFromBackground();
                 return;
             }
 
@@ -176,6 +176,20 @@ namespace MissionPlanner.Controls
 
             ShowDone();
             Running = false;
+        }
+
+        // Closes the dialog from the background thread, unless it has already been closed (by the user,
+        // say, in the moment between the work finishing and this call): BeginInvoke on a window that
+        // no longer exists throws, and on this thread pool thread that ended the application.
+        private void CloseFromBackground()
+        {
+            try
+            {
+                if (this.IsHandleCreated && !this.IsDisposed && !this.Disposing)
+                    this.BeginInvoke((MethodInvoker)this.Close);
+            }
+            catch (InvalidOperationException) { }
+            catch (ObjectDisposedException) { }
         }
 
         // Called as a possible last operation of the bg thread that was cancelled
@@ -200,18 +214,23 @@ namespace MissionPlanner.Controls
             if (!this.IsHandleCreated)
                 return;
 
-            this.Invoke((MethodInvoker)delegate
-                {
-                    this.progressBar1.Style = ProgressBarStyle.Continuous;
-                    this.progressBar1.Value = 100;
-                    this.btnCancel.Visible = false;
-                    this.btnClose.Visible = false;
-                    this.ControlBox = true;
-                });
+            try
+            {
+                this.Invoke((MethodInvoker)delegate
+                    {
+                        this.progressBar1.Style = ProgressBarStyle.Continuous;
+                        this.progressBar1.Value = 100;
+                        this.btnCancel.Visible = false;
+                        this.btnClose.Visible = false;
+                        this.ControlBox = true;
+                    });
+            }
+            catch (InvalidOperationException) { return; } // already closed
+            catch (ObjectDisposedException) { return; }
 
             Thread.Sleep(100);         
 
-            this.BeginInvoke((MethodInvoker)this.Close);
+            CloseFromBackground();
         }
 
         // Called as a possible last operation of the bg thread
