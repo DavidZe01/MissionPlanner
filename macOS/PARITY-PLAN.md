@@ -103,6 +103,25 @@ renderizador por software de Apple en vez de la GPU; en Retina, OpenGL dibuja a 
 de la pantalla (las llamadas que Mission Planner hace en puntos se escalan) y el HUD GDI+
 dibuja directo en la vista, también a resolución Retina.
 
+### Paridad con Windows: segunda ronda (pendiente de validar en tu Mac)
+
+Implementado en la app nativa, con un paso `feature:*` del recorrido para cada punto (aún sin
+ejecutar en el runner):
+
+| Área | Qué hace ahora como Windows | Prueba |
+|---|---|---|
+| Puertos serie | System.IO.Ports con su librería nativa para Apple Silicon (antes no abría ninguno); un `cu.*` por dispositivo; aviso al enchufar una placa (`DeviceChanged`); nombres de dispositivo en el desplegable | `serial-open` (pty, 57600 y 921600), tour conectado por serie |
+| Teclado, rueda, trackpad | ⌘ = Ctrl en los atajos; rueda en pasos de 120; sin inercia; pellizco = Ctrl+rueda | `command-key`, `wheel-delta` |
+| Dibujo | codificadores con MIME (`/hud.jpg`), calidad JPEG, texto por unidad, ImageAttributes y SetColorKey, GIF animados, vehículos inactivos al 39 % | `image-encoders`, `text-units`, `image-attributes`, `animated-gif` |
+| Controles | hover, cursores de espera y mano, métricas del sistema, líneas de TextBox (SSH), varios monitores, tema de ventanas nuevas, ZedGraph Copy/Save | `system-metrics`, `textbox-lines`, `owner-drawn-combo` |
+| Sistema | pitidos y vario, desconexión al suspender, voz en cola en el idioma de la interfaz, Show Console | `beep`, `speech` |
+| Datos | `~/Documents/Mission Planner`, con migración desde `~/Library/Application Support` | `data-migration` |
+| Incluido en la app | plugins DLL (Shortcuts, FaceMap, Dowding), GDAL, adb, Python con numpy para el Log Analyzer | `plugins`, `gdal`, `adb`, `python` |
+| Joystick | ejes en el sitio de DirectInput según su uso HID | `joystick-axis-usages` |
+| Cámara | resoluciones en Config → Planner | `local-camera-enumeration` |
+| Actualizaciones | compara con el último build guardado en el Mac y lo instala | `updater` |
+| SITL | todas las versiones (stable, beta, dev) de los cuatro vehículos, publicadas por `sitl-macos.yml` en la release `sitl-macos` | `sitl-download` |
+
 ## Cómo se hizo la comparación
 
 El port ejecuta el mismo `MissionPlanner.exe` (código C# idéntico salvo los
