@@ -57,3 +57,4 @@
 2026-11-07 native: library check per process
 2026-11-13 parity round 2: serial, Cocoa input/drawing, subsystems (SITL, GDAL, adb, Python, plugins, updater)
 2026-11-13 fixes from the first run: serial speeds, minimal GDAL, updater, tour pipes
+2026-11-13 GDAL without PROJ's datum grids
