@@ -175,9 +175,17 @@ jobs:
           app=$(head -1 out/mp-app.txt)
           [[ -n $app ]] || { echo "no app"; exit 1; }
           cc -O0 -o out/dlopen-probe macOS/native/dlopen-probe.c
-          for lib in libSDL2-2.0.0 libSDL3 libusb-1.0.0 libsimplecble libsimpleble libuser32stub; do
+          for lib in libSystem.IO.Ports.Native libSDL2-2.0.0 libSDL3 libusb-1.0.0 libsimplecble libsimpleble libuser32stub; do
               dylib="$app/Contents/MonoBundle/$lib.dylib"
-              [[ -f $dylib ]] || { echo "LIBRARY $lib: not bundled"; continue; }
+              if [[ ! -f $dylib ]]; then
+                  # serial ports cannot work without this one
+                  if [[ $lib == libSystem.IO.Ports.Native ]]; then
+                      echo "LIBRARY $lib: NOT BUNDLED" | tee -a out/result.txt
+                  else
+                      echo "LIBRARY $lib: not bundled"
+                  fi
+                  continue
+              fi
               rc=0
               out=$(perl -e 'alarm 20; exec @ARGV' out/dlopen-probe "$dylib" main 2>&1) || rc=$?
               case $rc in
@@ -237,6 +245,18 @@ jobs:
           # one of the Log Analyzer's own example logs, for feature:log-analyzer
           export TOUR_ANALYZE_LOG="$RUNNER_TEMP/underpowered.log"
           gunzip -c macOS/tests/underpowered.log.gz > "$TOUR_ANALYZE_LOG"
+          # a serial port that echoes what it receives (a pty), for feature:serial-open
+          ports_file="$RUNNER_TEMP/serial-loopback.txt"
+          rm -f "$ports_file"
+          python3 macOS/native/pty-bridge.py loopback "$ports_file" &
+          loopback_pid=$!
+          for _ in $(seq 1 50); do [[ -s $ports_file ]] && break; sleep 0.1; done
+          if [[ -s $ports_file ]]; then
+              export TOUR_SERIAL_LOOPBACK=$(head -1 "$ports_file")
+              echo "serial loopback: $TOUR_SERIAL_LOOPBACK"
+          else
+              echo "SERIAL LOOPBACK: pty-bridge.py did not start" | tee -a out/result.txt
+          fi
           # a step that hangs ends the run (TOUR HANG, stacks from tour-hang.sh); the next run resumes after it
           for attempt in 1 2 3 4 5 6; do
               # DYLD_PRINT_LIBRARIES: every library the process loads, to check where they come from
@@ -246,7 +266,8 @@ jobs:
                   run_limited 1500 "$exe" >> out/tour.log 2>&1 || true
               grep -q '^TOUR_DONE' out/tour.log && break
           done
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR map|^TOUR log analyzer|^TOUR NEEDS VEHICLE|^TOUR gstreamer' out/tour.log | cut -c1-220 | head -120 || true
+          kill "$loopback_pid" 2>/dev/null || true
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR map|^TOUR log analyzer|^TOUR NEEDS VEHICLE|^TOUR gstreamer|^TOUR serial|^TOUR owner-drawn' out/tour.log | cut -c1-220 | head -120 || true
           # OpenGL (NSOpenGLContext) and the bundled GStreamer
           grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12 || true
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
@@ -304,6 +325,52 @@ jobs:
           kill "$sitl_pid" 2>/dev/null || true
           grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-connected.log | cut -c1-220 || true
           python3 macOS/summarize-tour.py out/tour-connected/tour-report.tsv | tail -30 || true
+      - name: Connected tour over a serial port
+        # the same, with Mission Planner on a serial port, as with a board on USB or a telemetry
+        # radio: two ptys joined by macOS/native/pty-bridge.py, the simulator's SERIAL0 on one
+        # and Mission Planner on the other (opened through System.IO.Ports, as a real port)
+        timeout-minutes: 20
+        run: |
+          app=$(head -1 out/mp-app.txt)
+          [[ -n $app ]] || exit 0
+          app=$PWD/$app
+          sitl_dir="$app/Contents/Resources/sitl"
+          [[ -x $sitl_dir/ArduCopter ]] || { echo "SITL: not bundled"; exit 0; }
+          ports_file="$RUNNER_TEMP/serial-bridge.txt"
+          rm -f "$ports_file"
+          python3 macOS/native/pty-bridge.py bridge "$ports_file" &
+          bridge_pid=$!
+          for _ in $(seq 1 50); do [[ -f $ports_file && $(wc -l < "$ports_file") -ge 2 ]] && break; sleep 0.1; done
+          sitl_port=$(sed -n 1p "$ports_file" 2>/dev/null) mp_port=$(sed -n 2p "$ports_file" 2>/dev/null)
+          if [[ -z $sitl_port || -z $mp_port ]]; then
+              echo "SERIAL TOUR: pty-bridge.py did not start" | tee -a out/result.txt
+              kill "$bridge_pid" 2>/dev/null || true
+              exit 0
+          fi
+          echo "simulator on $sitl_port, Mission Planner on $mp_port"
+          simdir=$(mktemp -d) sitl_log=$PWD/out/sitl-serial.log
+          (cd "$simdir" && exec "$sitl_dir/ArduCopter" -Mquad -O-35.363261,149.165230,584,353 -s1 \
+              --serial0 "uart:$sitl_port:115200" --defaults "$sitl_dir/copter.parm" > "$sitl_log" 2>&1) &
+          sitl_pid=$!
+          sleep 8
+          if ! kill -0 "$sitl_pid" 2>/dev/null; then
+              echo "SERIAL TOUR: SITL did not start" | tee -a out/result.txt
+              tail -20 "$sitl_log"
+              kill "$bridge_pid" 2>/dev/null || true
+              exit 0
+          fi
+          mkdir -p out/tour-serial
+          MISSIONPLANNER_TOUR=1 TOUR_OUT="$PWD/out/tour-serial" TOUR_XWD=/usr/sbin/screencapture \
+              TOUR_CONNECT="serial:$mp_port:115200" TOUR_ONLY=ConfigFlightModes TOUR_STEP_TIMEOUT=150 MISSIONPLANNER_NO_OPENGL=1 \
+              TOUR_HANG_CMD="$PWD/macOS/native/tour-hang.sh" \
+              "$app/Contents/MacOS/MissionPlanner" > out/tour-serial.log 2>&1 &
+          pid=$!
+          for _ in $(seq 1 900); do kill -0 "$pid" 2>/dev/null || break; sleep 1; done
+          kill -9 "$pid" 2>/dev/null || true
+          kill "$sitl_pid" "$bridge_pid" 2>/dev/null || true
+          grep -E '^TOUR_DONE|^TOUR HANG|^TOUR FAIL|^TOUR connected|^TOUR (parameters|parameter |mission|mavftp|onboard|altitude)' out/tour-serial.log | cut -c1-220 || true
+          grep -q '^TOUR connected' out/tour-serial.log || echo "SERIAL TOUR: not connected over $mp_port" | tee -a out/result.txt
+          python3 macOS/summarize-tour.py out/tour-serial/tour-report.tsv | tail -30 || true
       - name: Open a telemetry log from Finder
         # LaunchServices hands the file to the app as an Apple event (Info.plist document types)
         timeout-minutes: 5

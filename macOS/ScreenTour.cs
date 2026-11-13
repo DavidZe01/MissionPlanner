@@ -15,7 +15,8 @@ using MissionPlanner.Utilities;
 // fail. Used to compare platforms (macOS, Linux) against the Windows build.
 //
 // Environment: TOUR_OUT (output directory), TOUR_XWD (xwd or screencapture binary, optional),
-// TOUR_CONNECT (optional connection string such as tcp:127.0.0.1:5760).
+// TOUR_CONNECT (optional connection string such as tcp:127.0.0.1:5760 or serial:/dev/ttys003:115200),
+// TOUR_SERIAL_LOOPBACK (optional serial port that echoes what it receives).
 class ScreenTour
 {
     [DllImport("libc", EntryPoint = "_exit")]
@@ -614,7 +615,49 @@ class ScreenTour
         {
             var ports = MissionPlanner.Comms.SerialPort.GetPortNames();
             Console.WriteLine("TOUR serial ports: " + string.Join(",", ports));
+            // one entry per device, as Windows lists one COMx: the cu.X device, not tty.X too
+            if (IsMac && ports.Any(p => p.StartsWith("/dev/tty")))
+                throw new Exception("tty devices listed: " + string.Join(",", ports.Where(p => p.StartsWith("/dev/tty"))));
         });
+        // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
+        // device name: the native list shows that drawing, while Text stays the bare port
+        if (IsMac)
+            Step("feature:owner-drawn-combo", () =>
+            {
+                using (var form = new Form { Width = 300, Height = 100 })
+                {
+                    var combo = new ComboBox { DrawMode = DrawMode.OwnerDrawFixed, Width = 250 };
+                    combo.DrawItem += (s, e) =>
+                    {
+                        if (e.Index < 0) return;
+                        e.DrawBackground();
+                        e.Graphics.DrawString(combo.Items[e.Index] + " CubeOrange", e.Font, System.Drawing.Brushes.Black, e.Bounds.X, e.Bounds.Y);
+                    };
+                    combo.Items.Add("/dev/cu.usbmodem1");
+                    form.Controls.Add(combo);
+                    form.Show();
+                    combo.SelectedIndex = 0;
+                    Wait(300);
+                    var shown = typeof(ComboBox).GetMethod("OwnerDrawnText", BindingFlags.Instance | BindingFlags.NonPublic)
+                        ?.Invoke(combo, new object[] { 0 }) as string;
+                    Console.WriteLine("TOUR owner-drawn combo: list \"" + shown + "\", text \"" + combo.Text + "\"");
+                    if (shown != "/dev/cu.usbmodem1 CubeOrange")
+                        throw new Exception("owner-drawn combo list shows \"" + shown + "\"");
+                    if (combo.Text != "/dev/cu.usbmodem1")
+                        throw new Exception("owner-drawn combo Text is \"" + combo.Text + "\"");
+                    form.Close();
+                }
+            });
+        // TOUR_SERIAL_LOOPBACK: a serial port that sends back what it receives (a pty from
+        // macOS/native/pty-bridge.py), opened the way Mission Planner opens a USB board or radio
+        var loopback = Environment.GetEnvironmentVariable("TOUR_SERIAL_LOOPBACK");
+        if (!string.IsNullOrEmpty(loopback))
+            Step("feature:serial-open", () =>
+            {
+                // a SiK radio's speed and a fast USB-serial adapter's (not a POSIX B* constant)
+                foreach (var baud in new[] { 57600, 921600 })
+                    SerialRoundTrip(loopback, baud);
+            });
         Step("feature:joystick-enumeration", () =>
         {
             var devices = MissionPlanner.Joystick.JoystickBase.getDevices();
@@ -835,14 +878,54 @@ class ScreenTour
         });
     }
 
+    private static void SerialRoundTrip(string path, int baud)
+    {
+        var port = new MissionPlanner.Comms.SerialPort(path, baud) { ReadTimeout = 2000 };
+        port.Open();
+        try
+        {
+            // every byte value, as MAVLink is binary
+            var sent = Enumerable.Range(0, 1024).Select(i => (byte)i).ToArray();
+            port.Write(sent, 0, sent.Length);
+            var got = new byte[sent.Length];
+            var n = 0;
+            var sw = Stopwatch.StartNew();
+            while (n < got.Length && sw.ElapsedMilliseconds < 5000)
+            {
+                if (port.BytesToRead > 0)
+                    n += port.Read(got, n, Math.Min(port.BytesToRead, got.Length - n));
+                else
+                    System.Threading.Thread.Sleep(10);
+            }
+            Console.WriteLine("TOUR serial " + path + " at " + baud + ": " + n + "/" + sent.Length + " bytes back");
+            if (n != sent.Length || !got.SequenceEqual(sent))
+                throw new Exception("serial " + path + " at " + baud + ": " + n + "/" + sent.Length + " bytes back" +
+                                    (n == sent.Length ? ", different" : ""));
+        }
+        finally
+        {
+            port.Close();
+        }
+    }
+
     private static void Connect(string connect)
     {
-        // tcp:host:port
+        // tcp:host:port, or serial:/dev/port:baud (through the same call as choosing the port
+        // and baud rate in the connection bar and pressing Connect)
         var parts = connect.Split(':');
-        if (parts.Length != 3 || parts[0] != "tcp")
-            throw new ArgumentException("TOUR_CONNECT must be tcp:host:port");
-        MainV2.comPort.BaseStream = new MissionPlanner.Comms.TcpSerial { Host = parts[1], Port = parts[2] };
-        MainV2.instance.doConnect(MainV2.comPort, "preset", "115200", true, false);
+        if (parts.Length == 3 && parts[0] == "serial")
+        {
+            MainV2.instance.doConnect(MainV2.comPort, parts[1], parts[2], true, false);
+        }
+        else if (parts.Length == 3 && parts[0] == "tcp")
+        {
+            MainV2.comPort.BaseStream = new MissionPlanner.Comms.TcpSerial { Host = parts[1], Port = parts[2] };
+            MainV2.instance.doConnect(MainV2.comPort, "preset", "115200", true, false);
+        }
+        else
+        {
+            throw new ArgumentException("TOUR_CONNECT must be tcp:host:port or serial:/dev/port:baud");
+        }
         var sw = Stopwatch.StartNew();
         while (sw.ElapsedMilliseconds < 120000 && (!MainV2.comPort.BaseStream.IsOpen || MainV2.comPort.MAV.param.Count < 100))
             Wait(500);

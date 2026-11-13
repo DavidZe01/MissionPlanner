@@ -151,6 +151,12 @@ namespace System.Drawing
 			return c;
 		}
 
+		// While set, DrawString records its text here instead of drawing it: Windows Forms on
+		// Cocoa uses it to show an owner-drawn ComboBox's items (what its DrawItem writes) in
+		// the native list, which cannot host the drawing itself.
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public System.Text.StringBuilder CaptureText { get; set; }
+
 		public void DrawString(string s, Font font, Brush brush, PointF point)
 		{
 			DrawString(s, font, brush, new RectangleF(point.X, point.Y, 0, 0), null);
@@ -306,6 +312,14 @@ namespace System.Drawing
 #endif
 			if (String.IsNullOrEmpty(s))
 				return;
+
+			if (CaptureText != null)
+			{
+				if (CaptureText.Length > 0)
+					CaptureText.Append(' ');
+				CaptureText.Append(s);
+				return;
+			}
 
 			if (font == null)
 				font = SystemFonts.DefaultFont;

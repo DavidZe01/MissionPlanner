@@ -682,6 +682,37 @@ namespace System.Windows.Forms
 				eh(this, e);
 		}
 
+		internal bool IsOwnerDrawn
+		{
+			get { return DrawMode == DrawMode.OwnerDrawFixed || DrawMode == DrawMode.OwnerDrawVariable; }
+		}
+
+		// What an owner-drawn item's DrawItem writes (Mission Planner's port list: "port
+		// device-name"), for the native NSComboBox list, which shows text only
+		internal string OwnerDrawnText(int index)
+		{
+			var text = GetItemText(items[index]);
+			if (!IsOwnerDrawn)
+				return text;
+			try
+			{
+				using (var bitmap = new Bitmap(1, 1))
+				using (var g = Graphics.FromImage(bitmap))
+				{
+					g.CaptureText = new System.Text.StringBuilder();
+					var height = ItemHeight > 0 ? ItemHeight : Font.Height + 2;
+					HandleDrawItem(new DrawItemEventArgs(g, Font, new Rectangle(0, 0, Math.Max(Width, 100), height),
+						index, DrawItemState.None, ForeColor, BackColor));
+					var drawn = g.CaptureText.ToString().Trim();
+					return drawn.Length > 0 ? drawn : text;
+				}
+			}
+			catch
+			{
+				return text;
+			}
+		}
+
 		internal void HandleDrawItem(DrawItemEventArgs e)
 		{
 			// Only raise OnDrawItem if we are in an OwnerDraw mode
@@ -1385,9 +1416,71 @@ namespace System.Windows.Forms
 
 				foreach (object item in owner.items)
 					popup.AddItem(owner.GetItemText(item));
+				for (int i = 0; i < owner.items.Count; i++)
+					Decorate(i);
 
 				if (owner.selected_index >= 0 && owner.selected_index < popup.Items().Length)
 					popup.SelectItem(owner.selected_index);
+			}
+
+			// An owner-drawn combo (DrawMode OwnerDrawFixed/Variable) shows what its DrawItem
+			// paints, as on Windows (Mission Planner's port list adds the device names there):
+			// each menu item gets that drawing as its image instead of a title. Text and the
+			// selection come from the items themselves, never from these titles.
+			void Decorate(int index)
+			{
+				if (owner == null || owner.DrawMode == DrawMode.Normal)
+					return;
+				var menuItems = popup.Items();
+				if (index < 0 || index >= menuItems.Length || index >= owner.items.Count)
+					return;
+				var height = owner.ItemHeight > 0 ? owner.ItemHeight : owner.Font.Height + 2;
+				var width = Math.Max(Math.Max(owner.DropDownWidth, owner.Width), 100);
+				try
+				{
+					using (var bitmap = new Bitmap(width, height))
+					{
+						using (var g = Graphics.FromImage(bitmap))
+							owner.HandleDrawItem(new DrawItemEventArgs(g, owner.Font, new Rectangle(0, 0, width, height),
+								index, DrawItemState.None, owner.ForeColor, owner.BackColor));
+						// a DrawItem that painted nothing (no handler, or one that skips this
+						// item) would leave a blank entry: keep the title then
+						if (!Painted(bitmap))
+							return;
+						menuItems[index].Image = bitmap.ToNSImage();
+					}
+					menuItems[index].AttributedTitle = new NSAttributedString("");
+				}
+				catch
+				{
+					// the item keeps its plain title
+				}
+			}
+
+			static bool Painted(Bitmap bitmap)
+			{
+				for (int y = 0; y < bitmap.Height; y++)
+					for (int x = 0; x < bitmap.Width; x++)
+						if (bitmap.GetPixel(x, y).A != 0)
+							return true;
+				return false;
+			}
+
+			int IndexOfText(string value)
+			{
+				if (owner != null)
+					for (int i = 0; i < owner.items.Count; i++)
+						if (owner.GetItemText(owner.items[i]) == value)
+							return i;
+				return (int)popup.IndexOfItem(value);
+			}
+
+			string SelectedItemText()
+			{
+				var index = (int)popup.IndexOfSelectedItem;
+				if (owner != null && index >= 0 && index < owner.items.Count)
+					return owner.GetItemText(owner.items[index]);
+				return popup?.SelectedItem?.Title;
 			}
 
 			public NSControl Control
@@ -1397,10 +1490,10 @@ namespace System.Windows.Forms
 
 			public string Text
 			{
-				get { return popup?.SelectedItem?.Title; }
+				get { return SelectedItemText(); }
 				set
 				{
-					var index = popup.IndexOfItem(value);
+					var index = IndexOfText(value);
 					if (index != -1)
 						popup.SelectItem(index);
 				}
@@ -1408,7 +1501,7 @@ namespace System.Windows.Forms
 
 			public string SelectedText
 			{
-				get { return popup?.SelectedItem?.Title; }
+				get { return SelectedItemText(); }
 				set { }
 			}
 
@@ -1430,11 +1523,13 @@ namespace System.Windows.Forms
 			public void AddItem(string title)
 			{
 				popup.AddItem(title);
+				Decorate((int)popup.ItemCount - 1);
 			}
 
 			public void InsertItem(string title, int index)
 			{
 				popup.InsertItem(title, index);
+				Decorate(index);
 			}
 
 			public void Release()
@@ -1461,6 +1556,7 @@ namespace System.Windows.Forms
 			public void SetItemTitle(int index, string title)
 			{
 				popup.Items()[index].Title = title;
+				Decorate(index);
 			}
 
 			public void SelectAll()
@@ -1565,6 +1661,16 @@ namespace System.Windows.Forms
 			public void SelectItem(int value)
 			{
 				combo.SelectItem(value);
+				RestoreItemText();
+			}
+
+			// NSComboBox fills its field with the list's text; an owner-drawn list shows more than
+			// the item (see OwnerDrawnText), so put back the item's own text, which Text returns
+			void RestoreItemText()
+			{
+				var index = (int)combo.SelectedIndex;
+				if (owner != null && owner.IsOwnerDrawn && index >= 0 && index < owner.items.Count)
+					combo.StringValue = owner.GetItemText(owner.items[index]);
 			}
 
 			public void SetItemTitle(int index, string title)
@@ -1622,6 +1728,7 @@ namespace System.Windows.Forms
 				indexofCompleted = -1;
 				owner.BeginInvoke((Action)delegate
 				{
+					RestoreItemText();
 					owner.OnImpSelectedItemChanged(sender, e);
 					owner.OnTextChanged(e);
 				});
@@ -1645,9 +1752,7 @@ namespace System.Windows.Forms
 			[Export("comboBox:objectValueForItemAtIndex:")]
 			public override NSObject ObjectValueForItem(NSComboBox comboBox, nint index)
 			{
-				var item = owner.items[(int)index];
-				var title = owner.GetItemText(item);
-				return (NSString)title;
+				return (NSString)owner.OwnerDrawnText((int)index);
 			}
 
 			[Export("numberOfItemsInComboBox:")]

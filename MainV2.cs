@@ -4521,6 +4521,74 @@ namespace MissionPlanner
         }
 
 
+        void RaiseDeviceChanged(WM_DEVICECHANGE_enum cause)
+        {
+            if (DeviceChanged != null)
+            {
+                try
+                {
+                    DeviceChanged(cause);
+                }
+                catch
+                {
+                }
+            }
+
+            foreach (var item in MissionPlanner.Plugin.PluginLoader.Plugins)
+            {
+                item.Host.ProcessDeviceChanged(cause);
+            }
+        }
+
+        // a USB board, radio or serial adapter shows up on macOS as /dev/cu.*: compare that list
+        // every second and raise what Windows' WM_DEVICECHANGE does, on the UI thread, so Install
+        // Firmware, Secure and plugins see a board plugged in
+        System.Threading.Timer serialDeviceWatcher;
+        string[] serialDevices = new string[0];
+
+        void StartSerialDeviceWatcher()
+        {
+            if (serialDeviceWatcher != null)
+                return;
+            serialDevices = ListSerialDevices();
+            serialDeviceWatcher = new System.Threading.Timer(_ =>
+            {
+                var now = ListSerialDevices();
+                var added = now.Except(serialDevices).Any();
+                var removed = serialDevices.Except(now).Any();
+                serialDevices = now;
+                if (!added && !removed)
+                    return;
+                log.InfoFormat("Serial devices changed: {0}", string.Join(", ", now));
+                try
+                {
+                    BeginInvoke((Action) delegate
+                    {
+                        if (removed)
+                            RaiseDeviceChanged(WM_DEVICECHANGE_enum.DBT_DEVICEREMOVECOMPLETE);
+                        if (added)
+                            RaiseDeviceChanged(WM_DEVICECHANGE_enum.DBT_DEVICEARRIVAL);
+                    });
+                }
+                catch (InvalidOperationException)
+                {
+                    // the window is closing
+                }
+            }, null, 1000, 1000);
+        }
+
+        static string[] ListSerialDevices()
+        {
+            try
+            {
+                return Directory.GetFiles("/dev", "cu.*");
+            }
+            catch
+            {
+                return new string[0];
+            }
+        }
+
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
@@ -4553,6 +4621,10 @@ namespace MissionPlanner
                     catch
                     {
                     }
+
+                    // macOS sends no WM_DEVICECHANGE: watch its serial devices instead
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        StartSerialDeviceWatcher();
 
                     break;
 
@@ -4604,21 +4676,7 @@ namespace MissionPlanner
 
                     log.InfoFormat("Device Change {0} {1} {2}", m.Msg, (WM_DEVICECHANGE_enum) m.WParam, m.LParam);
 
-                    if (DeviceChanged != null)
-                    {
-                        try
-                        {
-                            DeviceChanged((WM_DEVICECHANGE_enum) m.WParam);
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    foreach (var item in MissionPlanner.Plugin.PluginLoader.Plugins)
-                    {
-                        item.Host.ProcessDeviceChanged((WM_DEVICECHANGE_enum) m.WParam);
-                    }
+                    RaiseDeviceChanged((WM_DEVICECHANGE_enum) m.WParam);
 
                     break;
                 case 0x86: // WM_NCACTIVATE

@@ -78,6 +78,13 @@
     <PackageReference Include="Microsoft.Win32.SystemEvents" Version="10.0.14" />
   </ItemGroup>
 
+  <!-- System.IO.Ports 4.7.0 has no osx-arm64 build of its native helper
+       (System.IO.Ports.Native): every serial port failed to open with DllNotFoundException
+       (USB telemetry, firmware upload, SiK radios). 10.x has one; Windows keeps 4.7.0. -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'MissionPlanner' Or '$(MSBuildProjectName)' == 'MissionPlanner.Comms' Or '$(MSBuildProjectName)' == 'Ntrip'">
+    <PackageReference Update="System.IO.Ports" Version="10.0.14" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(MSBuildProjectName)' == 'MissionPlanner.Controls'">
     <Compile Include="$(MSBuildThisFileDirectory)GLControl.cs" Link="macOS/GLControl.cs" />
     <!-- came with the OpenTK.GLControl package before -->

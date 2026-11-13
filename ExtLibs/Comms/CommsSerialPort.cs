@@ -311,7 +311,13 @@ namespace MissionPlanner.Comms
                 }
 
                 // a port removed mid-enumeration can leave a null entry, which ComboBox.Items.AddRange rejects
-                return allPorts.Where(p => !string.IsNullOrWhiteSpace(p)).Distinct().ToArray();
+                var list = allPorts.Where(p => !string.IsNullOrWhiteSpace(p)).Distinct();
+                // macOS has each serial device twice, /dev/tty.X (waits for carrier) and /dev/cu.X
+                // (the one to open), and System.IO.Ports adds /dev/tty itself: list the cu.X ones, as
+                // Windows lists one COM port per device (BLE and other custom ports are not in /dev)
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    list = list.Where(p => !p.StartsWith("/dev/") || p.StartsWith("/dev/cu."));
+                return list.ToArray();
             }
         }
 

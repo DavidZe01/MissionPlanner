@@ -76,6 +76,20 @@ app=$(find "$out_dir" -maxdepth 1 -name '*.app' | head -1)
 [[ -n $app && -f $app/Contents/Info.plist && -d $app/Contents/MacOS ]] || { echo "no app bundle in $out_dir" >&2; exit 1; }
 bundle="$app/Contents/MonoBundle"
 rsync -a --ignore-existing --exclude '*.app' --exclude 'runtimes/' --exclude '*.pdb' "$out_dir/" "$bundle/"
+# System.IO.Ports' native helper: without it no serial port opens (USB telemetry, firmware
+# upload, SiK radios). The SDK normally puts it in MonoBundle; otherwise take this RID's
+# copy from the output's runtimes/ (excluded above) or from the NuGet package
+rid="osx-$(uname -m | sed 's/x86_64/x64/')"
+ports_lib=libSystem.IO.Ports.Native.dylib
+if [[ ! -f $bundle/$ports_lib ]]; then
+    # (find fails on a missing directory, which set -e/pipefail would turn into an exit)
+    src=$( { find "$out_dir/runtimes/$rid/native" \
+        "${NUGET_PACKAGES:-$HOME/.nuget/packages}/runtime.$rid.runtime.native.system.io.ports"/10.*/runtimes/"$rid"/native \
+        -name "$ports_lib" 2>/dev/null || true; } | sort | tail -1)
+    [[ -n $src ]] || { echo "$ports_lib for $rid not found: serial ports would not open" >&2; exit 1; }
+    cp -- "$src" "$bundle/$ports_lib"
+fi
+echo "Serial port helper: $bundle/$ports_lib"
 # The configuration file without .NET Framework-only sections: on .NET an unknown section
 # (system.web, from a Windows Forms template) makes ConfigurationManager reject the whole
 # file, and log4net and the update settings with it. system.diagnostics traces to /ProgramData.

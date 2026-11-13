@@ -165,6 +165,10 @@ namespace MissionPlanner
                     // no-op versions of the few Win32 calls libraries make while painting
                     yield return Path.Combine(bundleDir, "libuser32stub.dylib");
                     yield break;
+                case "libsystem.io.ports.native":
+                    // System.IO.Ports' helper (build.sh bundles the osx-arm64 one from 10.x)
+                    yield return Path.Combine(bundleDir, "libSystem.IO.Ports.Native.dylib");
+                    yield break;
                 case "libusb-1.0":
                 case "libusb-1.0.dll":
                     foreach (var dir in libraryDirs) yield return Path.Combine(dir, "libusb-1.0.0.dylib");
