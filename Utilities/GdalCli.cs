@@ -28,8 +28,16 @@ namespace MissionPlanner.Utilities
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        // GDAL in the native macOS app (build.sh: the tools, their libraries and GDAL's and PROJ's
+        // data), as Windows ships GDAL with Mission Planner; then a Homebrew or framework one
+        private static readonly string bundled =
+            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "gdal"));
+
         private static readonly string[] searchDirs =
-            {"/opt/homebrew/bin", "/usr/local/bin", "/usr/bin", "/Library/Frameworks/GDAL.framework/Programs"};
+        {
+            Path.Combine(bundled, "bin"), "/opt/homebrew/bin", "/usr/local/bin", "/usr/bin",
+            "/Library/Frameworks/GDAL.framework/Programs"
+        };
 
         // largest side of the cached reprojected image
         private const int MaxCachedSize = 8192;
@@ -63,7 +71,7 @@ namespace MissionPlanner.Utilities
             get { return Tool("gdalinfo") != null && Tool("gdalwarp") != null && Tool("gdal_translate") != null; }
         }
 
-        private static string Run(string tool, params string[] args)
+        internal static string Run(string tool, params string[] args)
         {
             var psi = new ProcessStartInfo(Tool(tool),
                 string.Join(" ", args.Select(a => "\"" + a.Replace("\"", "\\\"") + "\"")))
@@ -73,6 +81,14 @@ namespace MissionPlanner.Utilities
                 RedirectStandardError = true,
                 CreateNoWindow = true
             };
+            if (psi.FileName.StartsWith(bundled + Path.DirectorySeparatorChar))
+            {
+                // its data, and no driver plugins from elsewhere (Homebrew's would load Homebrew's libraries)
+                psi.EnvironmentVariables["GDAL_DATA"] = Path.Combine(bundled, "share", "gdal");
+                psi.EnvironmentVariables["PROJ_DATA"] = Path.Combine(bundled, "share", "proj");
+                psi.EnvironmentVariables["PROJ_LIB"] = Path.Combine(bundled, "share", "proj");
+                psi.EnvironmentVariables["GDAL_DRIVER_PATH"] = "disable";
+            }
             using (var p = Process.Start(psi))
             {
                 var stderr = p.StandardError.ReadToEndAsync();
@@ -296,6 +312,16 @@ namespace MissionPlanner.Utilities
                 var bmp = GetBitmap(p1.Lng, p1.Lat, p2.Lng, p2.Lat, (int) Projection.TileSize.Width, (int) Projection.TileSize.Height);
                 if (bmp == null)
                     return null;
+
+                // Flight Planner's "GDAL Opacity", as the GDAL bindings' provider applies it
+                var opacity = global::GDAL.GDALProvider.Instance.opacity;
+                if (opacity < 1 && opacity > 0)
+                {
+                    var faded = global::GDAL.GDALProvider.ChangeImageOpacity(bmp, opacity);
+                    if (!ReferenceEquals(faded, bmp))
+                        bmp.Dispose();
+                    bmp = faded;
+                }
 
                 var ms = new MemoryStream();
                 bmp.Save(ms, ImageFormat.Png);

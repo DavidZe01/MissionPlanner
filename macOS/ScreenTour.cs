@@ -778,6 +778,47 @@ class ScreenTour
                     throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
             }
         });
+        // GDAL in the app: a GeoTIFF made by its gdal_translate, loaded as the "GDAL Custom" map
+        // overlay loads one (gdalinfo, gdalwarp to WGS84, gdal_translate to PNG)
+        Step("feature:gdal", () =>
+        {
+            var translate = MissionPlanner.Utilities.GdalCli.Tool("gdal_translate");
+            var bundled = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "gdal"));
+            if (translate == null || !translate.StartsWith(bundled))
+                throw new Exception("GDAL not in the app (found " + (translate ?? "none") + ")");
+            var dir = Path.Combine(Path.GetTempPath(), "mp-gdal-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            try
+            {
+                var png = Path.Combine(dir, "source.png");
+                using (var bmp = new System.Drawing.Bitmap(64, 64))
+                {
+                    var random = new Random(1);
+                    for (int y = 0; y < 64; y++)
+                        for (int x = 0; x < 64; x++)
+                            bmp.SetPixel(x, y, System.Drawing.Color.FromArgb(255, random.Next(256), x * 4, y * 4));
+                    bmp.Save(png, System.Drawing.Imaging.ImageFormat.Png);
+                }
+                var images = Path.Combine(dir, "images");
+                Directory.CreateDirectory(images);
+                MissionPlanner.Utilities.GdalCli.Run("gdal_translate", "-of", "GTiff", "-a_srs", "EPSG:4326",
+                    "-a_ullr", "149.16", "-35.36", "149.17", "-35.37", png, Path.Combine(images, "test.tif"));
+                File.Delete(png);
+                new MissionPlanner.Utilities.GdalCli().ScanDirectory(images);
+                using (var tile = MissionPlanner.Utilities.GdalCli.GetBitmap(149.16, -35.36, 149.17, -35.37, 64, 64))
+                {
+                    var centre = tile?.GetPixel(32, 32);
+                    Console.WriteLine("TOUR gdal: " + MissionPlanner.Utilities.GdalCli.Run("gdalinfo", "--version").Trim() +
+                                      ", overlay " + (tile == null ? "none" : tile.Width + "x" + tile.Height + ", centre " + centre));
+                    if (tile == null || centre.Value.A == 0)
+                        throw new Exception("the GeoTIFF was not drawn on the map");
+                }
+            }
+            finally
+            {
+                try { Directory.Delete(dir, true); } catch { }
+            }
+        });
         // adb in the app (Parrot flashing), as adb.exe ships with Windows
         Step("feature:adb", () =>
         {

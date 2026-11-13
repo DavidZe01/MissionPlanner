@@ -234,6 +234,34 @@ if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
     codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
 fi
 
+# GDAL (georeferenced images on the map: Utilities/GdalCli runs gdalinfo, gdalwarp and
+# gdal_translate), which Windows ships with Mission Planner: Homebrew's tools with every library
+# they load (dylibbundler, @executable_path) and GDAL's and PROJ's data, in Contents/Resources/gdal
+gdal_prefix=$(brew --prefix gdal 2>/dev/null || true)
+if [[ -n $gdal_prefix && -x $gdal_prefix/bin/gdalinfo ]] && command -v dylibbundler >/dev/null; then
+    gdal="$app/Contents/Resources/gdal"
+    rm -rf -- "$gdal" && mkdir -p -- "$gdal/bin" "$gdal/lib" "$gdal/share" "$source_dir/bin/macos-native-work"
+    for tool in gdalinfo gdalwarp gdal_translate; do
+        cp -L "$gdal_prefix/bin/$tool" "$gdal/bin/"
+    done
+    chmod -R u+w "$gdal"
+    fix=()
+    for f in "$gdal"/bin/*; do fix+=(-x "$f"); done
+    dylibbundler -of -b "${fix[@]}" -d "$gdal/lib" -p '@executable_path/../lib/' -s "$(brew --prefix)/lib" \
+        < /dev/null > "$source_dir/bin/macos-native-work/gdal-dylibbundler.log" 2>&1 \
+        || { echo "GDAL bundling failed" >&2; tail -20 "$source_dir/bin/macos-native-work/gdal-dylibbundler.log" >&2; }
+    cp -RL "$gdal_prefix/share/gdal" "$gdal/share/gdal"
+    proj_prefix=$(brew --prefix proj 2>/dev/null || true)
+    [[ -n $proj_prefix && -d $proj_prefix/share/proj ]] && cp -RL "$proj_prefix/share/proj" "$gdal/share/proj"
+    codesign --force --sign - "$gdal"/lib/*.dylib "$gdal"/bin/*
+    if otool -L "$gdal"/lib/*.dylib "$gdal"/bin/* | grep -E '^\s+/(opt|usr/local)/' >&2; then
+        echo "GDAL: references outside the app remain (above)" >&2
+    fi
+    echo "GDAL: $("$gdal/bin/gdalinfo" --version 2>&1 | head -1), $(ls "$gdal/lib" | wc -l | tr -d ' ') libraries, $(du -sh "$gdal" | cut -f1)"
+else
+    echo "GDAL not bundled (brew install gdal dylibbundler)" >&2
+fi
+
 # adb (Android platform-tools), which Windows ships as adb.exe for flashing Parrot vehicles:
 # Google's own macOS build (signed by Google, universal), kept in a cache between builds;
 # Firmware.AdbPath finds it in Contents/Resources/platform-tools
