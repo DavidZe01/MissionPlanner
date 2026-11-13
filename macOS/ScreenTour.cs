@@ -946,6 +946,16 @@ class ScreenTour
                 foreach (var baud in new[] { 57600, 921600 })
                     SerialRoundTrip(loopback, baud);
             });
+        // joystick axes where DirectInput puts them, from their HID usages: a stick with X, Y,
+        // Rz and a slider, and one with X, Y, a rudder, a throttle and a dial
+        Step("feature:joystick-axis-usages", () =>
+        {
+            var stick = MissionPlanner.Joystick.JoystickSDL.HidAxes.Slots(new uint[] { 0x10030, 0x10031, 0x10035, 0x10036 });
+            var pedals = MissionPlanner.Joystick.JoystickSDL.HidAxes.Slots(new uint[] { 0x10030, 0x10031, 0x10037, 0x200BA, 0x200BB });
+            Console.WriteLine("TOUR joystick axes: X,Y,Rz,Slider -> " + string.Join(",", stick) + "; X,Y,Dial,Rudder,Throttle -> " + string.Join(",", pedals));
+            if (string.Join(",", stick) != "0,1,5,6" || string.Join(",", pedals) != "0,1,6,5,10")
+                throw new Exception("joystick axes placed " + string.Join(",", stick) + " and " + string.Join(",", pedals));
+        });
         Step("feature:joystick-enumeration", () =>
         {
             var devices = MissionPlanner.Joystick.JoystickBase.getDevices();

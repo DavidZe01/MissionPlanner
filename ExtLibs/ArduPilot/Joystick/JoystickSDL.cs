@@ -90,17 +90,194 @@ namespace MissionPlanner.Joystick
         /// <summary>Axis/button/hat state in the same layout as the Linux backend.</summary>
         public class SDLJoystickState : LinuxJoystickState, IMyJoystickState
         {
+            /// <summary>Where DirectInput's second slider (a Dial) goes in the axis map.</summary>
+            public const byte Slider2 = 10;
+
             private readonly int[] pov;
+            private readonly Dictionary<byte, ushort> axis;
 
             public SDLJoystickState(Dictionary<byte, ushort> axis, Dictionary<byte, bool> buttons, int[] pov)
                 : base(axis, buttons)
             {
                 this.pov = pov;
+                this.axis = axis;
             }
 
             public new int[] GetPointOfView()
             {
                 return pov;
+            }
+
+            // both of DirectInput's sliders (the Linux layout has one)
+            public new int[] GetSlider()
+            {
+                return new int[] {axis[6], axis[Slider2]};
+            }
+        }
+
+        /// <summary>
+        /// The DirectInput axis each SDL axis is on Windows. SDL on macOS lists a device's axes by
+        /// HID usage (X, Y, Z, Rx, Ry, Rz, Slider, Dial, Wheel, then the simulation ones), so with
+        /// the device's own usages, read from IOKit, axis i is placed where DirectInput puts that
+        /// usage (a stick with X, Y, Rz and a slider has them as X, Y, Rz and Slider, not as X,
+        /// Y, Z and Rx). Null where the usages cannot be read: SDL's order then.
+        /// </summary>
+        public static class HidAxes
+        {
+            const string iokit = "/System/Library/Frameworks/IOKit.framework/IOKit";
+            const string cf = "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation";
+
+            [DllImport(iokit)] static extern IntPtr IOHIDManagerCreate(IntPtr allocator, uint options);
+            [DllImport(iokit)] static extern void IOHIDManagerSetDeviceMatching(IntPtr manager, IntPtr matching);
+            [DllImport(iokit)] static extern IntPtr IOHIDManagerCopyDevices(IntPtr manager);
+            [DllImport(iokit)] static extern IntPtr IOHIDDeviceGetProperty(IntPtr device, IntPtr key);
+            [DllImport(iokit)] static extern IntPtr IOHIDDeviceCopyMatchingElements(IntPtr device, IntPtr matching, uint options);
+            [DllImport(iokit)] static extern int IOHIDElementGetType(IntPtr element);
+            [DllImport(iokit)] static extern uint IOHIDElementGetUsagePage(IntPtr element);
+            [DllImport(iokit)] static extern uint IOHIDElementGetUsage(IntPtr element);
+            [DllImport(iokit)] static extern uint IOHIDElementGetCookie(IntPtr element);
+            [DllImport(cf)] static extern long CFSetGetCount(IntPtr set);
+            [DllImport(cf)] static extern void CFSetGetValues(IntPtr set, IntPtr[] values);
+            [DllImport(cf)] static extern long CFArrayGetCount(IntPtr array);
+            [DllImport(cf)] static extern IntPtr CFArrayGetValueAtIndex(IntPtr array, long index);
+            [DllImport(cf)] [return: MarshalAs(UnmanagedType.I1)] static extern bool CFNumberGetValue(IntPtr number, int type, out int value);
+            [DllImport(cf)] static extern IntPtr CFStringCreateWithCString(IntPtr allocator, string text, uint encoding);
+            [DllImport(cf)] static extern void CFRelease(IntPtr cfobject);
+
+            const uint GenericDesktop = 0x01, Simulation = 0x02;
+
+            public static int[] Slots(int vendor, int product, int count)
+            {
+                try
+                {
+                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || vendor == 0 || count == 0)
+                        return null;
+                    var usages = AxisUsages(vendor, product);
+                    if (usages == null || usages.Count != count)
+                        return null;
+                    return Slots(usages);
+                }
+                catch (Exception ex)
+                {
+                    log.Error("HID axis usages", ex);
+                    return null;
+                }
+            }
+
+            /// <summary>DirectInput's place for each axis (page &lt;&lt; 16 | usage), in SDL's order.</summary>
+            public static int[] Slots(IList<uint> usages)
+            {
+                var slots = new int[usages.Count];
+                var used = new HashSet<int>();
+                for (int i = 0; i < usages.Count; i++)
+                {
+                    slots[i] = -1;
+                    var page = usages[i] >> 16;
+                    var usage = usages[i] & 0xffff;
+                    // X, Y, Z, Rx, Ry, Rz
+                    if (page == GenericDesktop && usage >= 0x30 && usage <= 0x35 && used.Add((int)(usage - 0x30)))
+                        slots[i] = (int)(usage - 0x30);
+                }
+                // a rudder is DirectInput's Rz, when the device has no Rz of its own
+                for (int i = 0; i < usages.Count; i++)
+                    if (slots[i] < 0 && usages[i] == (Simulation << 16 | 0xBA) && used.Add(5))
+                        slots[i] = 5;
+                // the rest (Slider, Dial, Wheel, throttle, ...) are sliders, then spare places
+                var spare = new List<int> {6, SDLJoystickState.Slider2};
+                for (int s = 11; s < 128; s++)
+                    spare.Add(s);
+                for (int i = 0; i < usages.Count; i++)
+                {
+                    if (slots[i] >= 0)
+                        continue;
+                    var slot = spare.First(x => !used.Contains(x));
+                    used.Add(slot);
+                    slots[i] = slot;
+                }
+                return slots;
+            }
+
+            static IntPtr Key(string name)
+            {
+                return CFStringCreateWithCString(IntPtr.Zero, name, 0x08000100);
+            }
+
+            static int Property(IntPtr device, string name)
+            {
+                var key = Key(name);
+                try
+                {
+                    var value = IOHIDDeviceGetProperty(device, key);
+                    int result;
+                    return value != IntPtr.Zero && CFNumberGetValue(value, 3, out result) ? result : 0;
+                }
+                finally
+                {
+                    CFRelease(key);
+                }
+            }
+
+            // the axes SDL's IOKit driver takes, in its order: sorted by usage, by cookie once
+            static List<uint> AxisUsages(int vendor, int product)
+            {
+                var manager = IOHIDManagerCreate(IntPtr.Zero, 0);
+                if (manager == IntPtr.Zero)
+                    return null;
+                try
+                {
+                    IOHIDManagerSetDeviceMatching(manager, IntPtr.Zero);
+                    var set = IOHIDManagerCopyDevices(manager);
+                    if (set == IntPtr.Zero)
+                        return null;
+                    try
+                    {
+                        var devices = new IntPtr[CFSetGetCount(set)];
+                        CFSetGetValues(set, devices);
+                        foreach (var device in devices)
+                        {
+                            if (Property(device, "VendorID") != vendor || Property(device, "ProductID") != product)
+                                continue;
+                            if (Property(device, "PrimaryUsagePage") != GenericDesktop)
+                                continue;
+                            var elements = IOHIDDeviceCopyMatchingElements(device, IntPtr.Zero, 0);
+                            if (elements == IntPtr.Zero)
+                                continue;
+                            try
+                            {
+                                var found = new List<KeyValuePair<uint, uint>>();
+                                var cookies = new HashSet<uint>();
+                                for (long i = 0; i < CFArrayGetCount(elements); i++)
+                                {
+                                    var element = CFArrayGetValueAtIndex(elements, i);
+                                    var type = IOHIDElementGetType(element);
+                                    if (type != 1 && type != 2 && type != 3) // Input_Misc, Input_Button, Input_Axis
+                                        continue;
+                                    var page = IOHIDElementGetUsagePage(element);
+                                    var usage = IOHIDElementGetUsage(element);
+                                    var axis = page == GenericDesktop && usage >= 0x30 && usage <= 0x38 ||
+                                               page == Simulation && (usage == 0xBA || usage == 0xBB || usage == 0xC4 || usage == 0xC5);
+                                    if (axis && cookies.Add(IOHIDElementGetCookie(element)))
+                                        found.Add(new KeyValuePair<uint, uint>(usage, page << 16 | usage));
+                                }
+                                // stable, as SDL inserts an equal usage after the ones before it
+                                return found.OrderBy(f => f.Key).Select(f => f.Value).ToList();
+                            }
+                            finally
+                            {
+                                CFRelease(elements);
+                            }
+                        }
+                        return null;
+                    }
+                    finally
+                    {
+                        CFRelease(set);
+                    }
+                }
+                finally
+                {
+                    CFRelease(manager);
+                }
             }
         }
 
@@ -115,6 +292,8 @@ namespace MissionPlanner.Joystick
             private static readonly Dictionary<string, IntPtr> handles = new Dictionary<string, IntPtr>();
             private static readonly ConcurrentDictionary<string, SDLJoystickState> states = new ConcurrentDictionary<string, SDLJoystickState>();
             private static readonly ConcurrentDictionary<string, Tuple<int, int, int>> counts = new ConcurrentDictionary<string, Tuple<int, int, int>>();
+            // each opened joystick's axes in DirectInput's places (HidAxes), or null
+            private static readonly Dictionary<string, int[]> axisSlots = new Dictionary<string, int[]>();
 
             public static bool Available
             {
@@ -244,8 +423,10 @@ namespace MissionPlanner.Joystick
                     int axes = Native.SDL_JoystickNumAxes(js), buttons = Native.SDL_JoystickNumButtons(js), hats = Native.SDL_JoystickNumHats(js);
                     counts[kv.Key] = Tuple.Create(axes, buttons, hats);
                     var axis = new Dictionary<byte, ushort>();
+                    int[] slots;
+                    axisSlots.TryGetValue(kv.Key, out slots);
                     for (int a = 0; a < axes && a < 128; a++)
-                        axis[(byte)a] = (ushort)(Native.SDL_JoystickGetAxis(js, a) + 32768);
+                        axis[(byte)(slots != null && a < slots.Length ? slots[a] : a)] = (ushort)(Native.SDL_JoystickGetAxis(js, a) + 32768);
                     var button = new Dictionary<byte, bool>();
                     for (int b = 0; b < buttons && b < 128; b++)
                         button[(byte)b] = Native.SDL_JoystickGetButton(js, b) != 0;
@@ -316,6 +497,9 @@ namespace MissionPlanner.Joystick
                         return false;
                     }
                     handles[name] = js;
+                    var slots = HidAxes.Slots(Native.SDL_JoystickGetVendor(js), Native.SDL_JoystickGetProduct(js), Native.SDL_JoystickNumAxes(js));
+                    axisSlots[name] = slots;
+                    log.Info("joystick " + name + " axes: " + (slots == null ? "SDL order" : string.Join(",", slots)));
                     Poll();
                     return true;
                 }, false);
@@ -394,6 +578,10 @@ namespace MissionPlanner.Joystick
             public static extern byte SDL_JoystickGetButton(IntPtr joystick, int button);
             [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
             public static extern byte SDL_JoystickGetHat(IntPtr joystick, int hat);
+            [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+            public static extern ushort SDL_JoystickGetVendor(IntPtr joystick);
+            [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+            public static extern ushort SDL_JoystickGetProduct(IntPtr joystick);
 
             public static string GetError()
             {
