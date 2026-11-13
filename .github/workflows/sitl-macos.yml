@@ -1,0 +1,73 @@
+name: SITL for macOS
+
+# ArduPilot's simulators for macOS on Apple Silicon, every vehicle (Copter, Heli, Plane,
+# Rover) and channel (stable, beta, dev) the Simulation screen offers, as ArduPilot publishes
+# them for Windows: built on the owner's Mac (self-hosted runner) by macOS/native/build-sitl.sh
+# and published as assets of the "sitl-macos" release, with index.json, which
+# GCSViews/SITL.cs downloads from. Only on request: a push to macos-arm64 that changes
+# .github/sitl-macos-request, or the Actions "Run workflow" button. Only the simulators whose
+# ArduPilot commit changed are rebuilt.
+on:
+  push:
+    branches: [macos-arm64]
+    paths: ['.github/sitl-macos-request']
+  workflow_dispatch:
+
+concurrency:
+  group: sitl-macos
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  sitl:
+    name: Build and publish the simulators
+    runs-on: [self-hosted, macOS, ARM64]
+    timeout-minutes: 240
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE: sitl-macos
+    steps:
+      - uses: actions/checkout@v4
+      - name: Previous index
+        run: |
+          rm -rf sitl-prev sitl-out && mkdir -p sitl-prev
+          if gh release view "$RELEASE" > /dev/null 2>&1; then
+              gh release download "$RELEASE" --pattern index.json --dir sitl-prev --clobber || true
+          fi
+          [[ -f sitl-prev/index.json ]] && python3 -m json.tool sitl-prev/index.json | head -40 || echo "no previous index"
+      - name: Build the simulators that changed
+        timeout-minutes: 220
+        run: |
+          prev=""
+          [[ -f sitl-prev/index.json ]] && prev=sitl-prev/index.json
+          ./macOS/native/build-sitl.sh sitl-out "$prev" \
+              "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$RELEASE/"
+          ls -la sitl-out
+          file sitl-out/Ardu* 2>/dev/null || true
+      - name: Check the new simulators start
+        run: |
+          for f in sitl-out/Ardu*; do
+              [[ -f $f ]] || continue
+              out=$(perl -e 'alarm 20; exec @ARGV' "$f" --help 2>&1 | head -1) || true
+              echo "$(basename "$f"): $out"
+              [[ -n $out ]] || { echo "SITL $(basename "$f"): does not start"; exit 1; }
+          done
+      - name: Publish
+        run: |
+          if ! gh release view "$RELEASE" > /dev/null 2>&1; then
+              gh release create "$RELEASE" --target "$GITHUB_SHA" --title "ArduPilot SITL for macOS (Apple Silicon)" \
+                  --notes "ArduPilot's simulators for macOS on Apple Silicon (every vehicle; stable, beta and dev), built by .github/workflows/sitl-macos.yml. Mission Planner's Simulation screen downloads them by index.json."
+          fi
+          # the binaries first, the index last: the index never names a binary not yet there
+          shopt -s nullglob
+          files=(sitl-out/Ardu* sitl-out/copter.parm)
+          if (( ${#files[@]} )); then
+              gh release upload "$RELEASE" "${files[@]}" --clobber
+          fi
+          gh release upload "$RELEASE" sitl-out/index.json --clobber
+          echo "Published: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$RELEASE"

@@ -819,6 +819,42 @@ class ScreenTour
                 try { Directory.Delete(dir, true); } catch { }
             }
         });
+        // the Simulation screen's download of a simulator for macOS (Plane, beta), as Windows
+        // downloads ArduPilot's: from the sitl-macos release (sitl-macos.yml), sha256 checked
+        Step("feature:sitl-download", () =>
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "mp-sitl-" + Guid.NewGuid().ToString("N"));
+            try
+            {
+                Directory.CreateDirectory(dir);
+                var index = Path.Combine(dir, "index.json");
+                if (!System.Threading.Tasks.Task.Run(() => MissionPlanner.Utilities.Download.getFilefromNetAsync(MissionPlanner.GCSViews.SITL.MacSITLIndexUrl, index)).GetAwaiter().GetResult() ||
+                    !File.Exists(index))
+                {
+                    Console.WriteLine("TOUR sitl download: no sitl-macos release yet (run sitl-macos.yml)");
+                    return;
+                }
+                var sw = Stopwatch.StartNew();
+                var path = // (off the UI thread: the download awaits on it otherwise)
+                    System.Threading.Tasks.Task.Run(() => MissionPlanner.GCSViews.SITL.GetMacSITL(dir, "ArduPlane", "beta")).GetAwaiter().GetResult();
+                if (path == null)
+                    throw new Exception("ArduPlane beta not downloaded (or its sha256 differs)");
+                var psi = new ProcessStartInfo(path, "--help") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+                using (var proc = Process.Start(psi))
+                {
+                    var output = proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+                    proc.WaitForExit(20000);
+                    Console.WriteLine("TOUR sitl download: ArduPlane beta in " + sw.ElapsedMilliseconds + " ms, " + new FileInfo(path).Length +
+                                      " bytes; --help: " + output.Split('\n')[0].Trim());
+                    if (output.Trim().Length == 0)
+                        throw new Exception("the downloaded simulator does not start");
+                }
+            }
+            finally
+            {
+                try { Directory.Delete(dir, true); } catch { }
+            }
+        });
         // adb in the app (Parrot flashing), as adb.exe ships with Windows
         Step("feature:adb", () =>
         {

@@ -268,11 +268,95 @@ namespace MissionPlanner.GCSViews
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
+        // macOS (Apple Silicon): ArduPilot publishes no macOS simulators, so this fork builds them
+        // for every vehicle and channel (.github/workflows/sitl-macos.yml) and publishes them in
+        // its sitl-macos release, listed with their sha256 in index.json
+        public static string MacSITLIndexUrl =
+            "https://github.com/DavidZe01/MissionPlanner/releases/download/sitl-macos/index.json";
+
+        static string Sha256(string file)
+        {
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            using (var stream = File.OpenRead(file))
+                return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// The simulator of a vehicle and channel for macOS, downloaded as on Windows (again only
+        /// when the published one changed), or the one downloaded before for "Skip Download".
+        /// Null when there is none: no network, or no build of that channel yet.
+        /// </summary>
+        public static async Task<string> GetMacSITL(string directory, string vehicle, string channel)
+        {
+            var path = Path.Combine(directory, vehicle);
+            if (channel == null)
+                return File.Exists(path) ? path : null;
+            try
+            {
+                Directory.CreateDirectory(directory);
+                var indexFile = Path.Combine(directory, "index-macos.json");
+                if (!await Download.getFilefromNetAsync(MacSITLIndexUrl, indexFile).ConfigureAwait(false) || !File.Exists(indexFile))
+                    return null;
+                var entry = JObject.Parse(File.ReadAllText(indexFile))["binaries"]?
+                    .FirstOrDefault(b => (string)b["vehicle"] == vehicle && (string)b["channel"] == channel);
+                if (entry == null)
+                    return null;
+                var sha = (string)entry["sha256"];
+                if (!File.Exists(path) || Sha256(path) != sha)
+                {
+                    var download = path + ".download";
+                    if (!await Download.getFilefromNetAsync((string)entry["url"], download).ConfigureAwait(false) ||
+                        !File.Exists(download) || Sha256(download) != sha)
+                    {
+                        log.Error("SITL download failed or does not match its sha256: " + entry["url"]);
+                        try { File.Delete(download); } catch { }
+                        return null;
+                    }
+                    if (File.Exists(path))
+                        File.Delete(path);
+                    File.Move(download, path);
+                    log.Info("SITL " + vehicle + " " + channel + ": " + entry["version"] + " (" + entry["commit"] + ")");
+                }
+                chmod(path, S_IRUSR | S_IXUSR | S_IWUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+                return path;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return null;
+            }
+        }
+
         private async Task<string> CheckandGetSITLImage(string filename)
         {
             // Save the selected version for next time
             Settings.Instance["sitl_download_version"] = cmb_version.SelectedIndex.ToString();
             var release_type = cmb_version.SelectedValue as APFirmware.RELEASE_TYPES?;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            {
+                string channel = null;
+                if (release_type == APFirmware.RELEASE_TYPES.DEV)
+                    channel = "dev";
+                else if (release_type == APFirmware.RELEASE_TYPES.BETA)
+                    channel = "beta";
+                else if (release_type == APFirmware.RELEASE_TYPES.OFFICIAL)
+                    channel = "stable";
+                if (channel != null)
+                {
+                    // kill old session - so we can overwrite if needed
+                    simulator.ForEach(a =>
+                    {
+                        try { a.Kill(); } catch { }
+                    });
+                }
+                var load = channel != null ? Common.LoadingBox("Downloading", "Downloading sitl software") : null;
+                var mac = await GetMacSITL(sitldirectory, Path.GetFileNameWithoutExtension(filename), channel);
+                load?.Close();
+                if (mac != null)
+                    return mac;
+                // no network, or no build of that channel yet: the simulators in the app below
+            }
             if (BundledPath != "")
             {
                 filename = filename.Replace(".elf", "");
@@ -338,6 +422,10 @@ namespace MissionPlanner.GCSViews
                     return path;
                 }
             }
+
+            // (Linux ARM and Windows' Cygwin simulators do not run on macOS)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                return null;
 
             if (RuntimeInformation.OSArchitecture == Architecture.Arm ||
                RuntimeInformation.OSArchitecture == Architecture.Arm64)

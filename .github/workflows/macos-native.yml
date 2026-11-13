@@ -54,18 +54,43 @@ jobs:
           run-id: ${{ steps.sitl.outputs.run }}
           github-token: ${{ github.token }}
       - name: SITL simulators kept on this Mac
-        # a self-hosted runner keeps the simulators between runs, so the app still bundles
-        # them when no "sitl" artifact is left (they expire, and the artifact storage can be
-        # full): the newest artifact, else the copy kept here, else the app the last run
-        # installed (build.sh puts them in Contents/Resources/sitl)
+        # the simulators the app bundles (build.sh puts them in Contents/Resources/sitl): the
+        # newest "sitl" artifact, else the stable ones of the sitl-macos release, else the copy
+        # a self-hosted runner keeps between runs, else the app the last run installed
         if: runner.environment == 'self-hosted'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           cache="$HOME/Library/Caches/MissionPlanner-native/sitl-bin"
           installed="$HOME/Applications/Mission Planner.app/Contents/Resources/sitl"
           mkdir -p "$(dirname "$cache")"
+          if [[ ! -f sitl-bin/ArduCopter ]]; then
+              # the stable simulators of the sitl-macos release (sitl-macos.yml), sha256 checked
+              rel="$RUNNER_TEMP/sitl-release" && rm -rf "$rel" && mkdir -p "$rel"
+              if gh release download sitl-macos --repo "${{ github.repository }}" --dir "$rel" \
+                     --pattern index.json --pattern '*-stable' --pattern copter.parm 2>/dev/null; then
+                  python3 - "$rel" <<'PY' && mkdir -p sitl-bin && cp "$rel"/out/* sitl-bin/ && echo "SITL: from the sitl-macos release"
+          import hashlib, json, os, sys
+          rel = sys.argv[1]
+          os.makedirs(os.path.join(rel, "out"), exist_ok=True)
+          versions = []
+          for b in json.load(open(os.path.join(rel, "index.json")))["binaries"]:
+              if b["channel"] != "stable":
+                  continue
+              data = open(os.path.join(rel, b["vehicle"] + "-stable"), "rb").read()
+              if hashlib.sha256(data).hexdigest() != b["sha256"]:
+                  sys.exit("sha256 mismatch: " + b["vehicle"])
+              open(os.path.join(rel, "out", b["vehicle"]), "wb").write(data)
+              versions.append(b["vehicle"] + " " + b["ref"] + " " + b["commit"] + " " + b["version"])
+          open(os.path.join(rel, "out", "VERSION.txt"), "w").write("\n".join(versions) + "\n")
+          if os.path.exists(os.path.join(rel, "copter.parm")):
+              open(os.path.join(rel, "out", "copter.parm"), "wb").write(open(os.path.join(rel, "copter.parm"), "rb").read())
+          PY
+              fi
+          fi
           if [[ -f sitl-bin/ArduCopter ]]; then
               rm -rf "$cache" && cp -R sitl-bin "$cache"
-              echo "SITL: from the artifact (kept in $cache)"
+              echo "SITL: kept in $cache"
           elif [[ -f $cache/ArduCopter ]]; then
               rm -rf sitl-bin && cp -R "$cache" sitl-bin
               echo "SITL: kept on this Mac"
@@ -267,7 +292,7 @@ jobs:
               grep -q '^TOUR_DONE' out/tour.log && break
           done
           kill "$loopback_pid" 2>/dev/null || true
-          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR map|^TOUR log analyzer|^TOUR NEEDS VEHICLE|^TOUR gstreamer|^TOUR serial|^TOUR owner-drawn|^TOUR command key|^TOUR wheel|^TOUR image encoders|^TOUR text units|^TOUR system metrics|^TOUR image attributes|^TOUR textbox lines|^TOUR animated gif|^TOUR speech|^TOUR beep|^TOUR data migration|^TOUR plugins|^TOUR updater|^TOUR adb|^TOUR gdal|^TOUR joystick|^TOUR camera' out/tour.log | cut -c1-220 | head -120 || true
+          grep -E '^TOUR_(RUNTIME|DONE)|^TOUR HANG|^TOUR CRASH|^TOUR FAIL|^TOUR mainmenu|^TOUR dialog closed|^TOUR hang dump|^TOUR hud|^TOUR map|^TOUR log analyzer|^TOUR NEEDS VEHICLE|^TOUR gstreamer|^TOUR serial|^TOUR owner-drawn|^TOUR command key|^TOUR wheel|^TOUR image encoders|^TOUR text units|^TOUR system metrics|^TOUR image attributes|^TOUR textbox lines|^TOUR animated gif|^TOUR speech|^TOUR beep|^TOUR data migration|^TOUR plugins|^TOUR updater|^TOUR adb|^TOUR gdal|^TOUR joystick|^TOUR camera|^TOUR sitl download' out/tour.log | cut -c1-220 | head -120 || true
           # OpenGL (NSOpenGLContext) and the bundled GStreamer
           grep -E 'HUD OpenGL|OpenGL context|OpenGL backing scale|OpenGL pixel format|Vendor:|Version:|Device:|gl True|Found gstreamer|GStreamer [0-9]' out/tour.log | sort | uniq -c | sort -rn | head -12 || true
           cp -R "$HOME/Library/Logs/DiagnosticReports" out/crash-reports-tour 2>/dev/null || true
