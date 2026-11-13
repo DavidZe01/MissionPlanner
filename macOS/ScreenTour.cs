@@ -686,8 +686,8 @@ class ScreenTour
             Console.WriteLine("TOUR mac sidebar actions: " + moved.Count + " controls (" + moved.OfType<MyButton>().Count() + " buttons, " +
                               moved.OfType<ComboBox>().Count() + " choices, " + moved.OfType<ModifyandSet>().Count() + " values), " +
                               table.Controls.Count + " left in the grid");
-            if (moved.Count != 22 || table.Controls.Count != 0 || moved.OfType<ModifyandSet>().Count() != 3)
-                problems.Add("Actions has " + moved.Count + " controls (22 expected), the grid " + table.Controls.Count);
+            if (moved.Count != 23 || table.Controls.Count != 0 || moved.OfType<ModifyandSet>().Count() != 3)
+                problems.Add("Actions has " + moved.Count + " controls (the designer's 23 expected), the grid " + table.Controls.Count);
             var deaf = moved.OfType<MyButton>().Where(b => !clickable(b)).Select(b => b.Name).ToList();
             var servoLow = flightData.Controls.Find("BUT_Low", true).FirstOrDefault();
             if (servoLow == null || !clickable(servoLow))

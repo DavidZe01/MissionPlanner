@@ -282,6 +282,21 @@ namespace MissionPlanner.GCSViews
             macActionsLayingOut = true;
             try
             {
+                // (the vertical scroll bar lies over the client area: leave its width when needed)
+                int height = MacLayoutActionsAt(width);
+                if (height > macActions.ClientSize.Height)
+                    height = MacLayoutActionsAt(width - SystemInformation.VerticalScrollBarWidth);
+                macActions.AutoScrollMinSize = new Size(0, height);
+            }
+            finally
+            {
+                macActionsLayingOut = false;
+            }
+        }
+
+        private int MacLayoutActionsAt(int width)
+        {
+            {
                 int top = macActions.AutoScrollPosition.Y;
                 int y = MacMargin;
 
@@ -324,11 +339,7 @@ namespace MissionPlanner.GCSViews
                     y += MacRowHeight + MacGap;
                 }
 
-                macActions.AutoScrollMinSize = new Size(0, y - MacGap + MacMargin);
-            }
-            finally
-            {
-                macActionsLayingOut = false;
+                return y - MacGap + MacMargin;
             }
         }
 
@@ -391,26 +402,48 @@ namespace MissionPlanner.GCSViews
             list.AutoScroll = true;
             list.Padding = new Padding(MacMargin, MacMargin / 2, MacMargin, MacMargin / 2);
             foreach (Control row in list.Controls)
+            {
                 MacOptionRow(row);
+                row.SizeChanged += (sender, e) => MacFitOptionRows(list);
+            }
             list.ControlAdded += (sender, e) =>
             {
                 MacOptionRow(e.Control);
+                e.Control.SizeChanged += (s2, e2) => MacFitOptionRows(list);
                 MacFitOptionRows(list);
             };
             list.Resize += (sender, e) => MacFitOptionRows(list);
             MacFitOptionRows(list);
         }
 
+        static readonly HashSet<Control> macListsFitting = new HashSet<Control>();
+
+        // Each row as wide as the list's client area, less the vertical scroll bar when the rows are
+        // taller than the list: the bar lies over the client area, so rows fitted to all of it would
+        // run under the bar and add a sideways one.
         private static void MacFitOptionRows(ScrollableControl list)
         {
-            int width = list.ClientSize.Width - list.Padding.Horizontal;
-            if (width <= 0)
+            if (!macListsFitting.Add(list))
                 return;
-            foreach (Control row in list.Controls)
+            try
             {
-                int rowWidth = Math.Max(0, width - row.Margin.Horizontal);
-                if (row.Width != rowWidth)
-                    row.Width = rowWidth;
+                // (the Cocoa Windows Forms' ClientSize includes the scroll bars, which lie over it)
+                int bar = SystemInformation.VerticalScrollBarWidth;
+                var rows = list.Controls.Cast<Control>().Where(MacShown).ToList();
+                int contentHeight = rows.Sum(r => r.Height + r.Margin.Vertical) + list.Padding.Vertical;
+                int width = list.ClientSize.Width - list.Padding.Horizontal - (contentHeight > list.ClientSize.Height ? bar : 0);
+                if (width <= 0)
+                    return;
+                foreach (Control row in list.Controls)
+                {
+                    int rowWidth = Math.Max(0, width - row.Margin.Horizontal);
+                    if (row.Width != rowWidth)
+                        row.Width = rowWidth;
+                }
+            }
+            finally
+            {
+                macListsFitting.Remove(list);
             }
         }
 
