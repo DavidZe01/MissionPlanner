@@ -113,7 +113,8 @@ if [[ -n $commits_to_build ]]; then
             ./waf configure --board sitl > "$log-configure.log" 2>&1 || { tail -40 "$log-configure.log" >&2; exit 1; }
             # shellcheck disable=SC2086
             ./waf $targets > "$log-build.log" 2>&1 || { tail -40 "$log-build.log" >&2; exit 1; }
-            version=$(git describe --tags --always)
+            # the release tag (Copter-4.7.2), not the moving stable/beta ones on the same commit
+            version=$(git describe --tags --always --exclude "*-stable" --exclude "*-beta" --exclude "*-latest")
             awk -v c="$commit" '$4 == c && $5 == "build" {print $1, $2, $7}' "$entries" | while read -r vehicle channel binary; do
                 cp "build/sitl/bin/$binary" "$out/$vehicle-$channel"
                 chmod 755 "$out/$vehicle-$channel"
