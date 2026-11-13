@@ -47,6 +47,7 @@ namespace MissionPlanner.GCSViews
             MacActionsLayout();
             MacOptionList(flowLayoutPanelServos);
             MacOptionList(flowLayoutPanel1);
+            MacStylePages();
             MacButtonShapes(tabControlactions);
             // pages added later (a plugin's) get the same buttons
             tabControlactions.ControlAdded += (sender, e) => MacButtonShapes(e.Control);
@@ -385,6 +386,299 @@ namespace MissionPlanner.GCSViews
             };
             modify.Resize += fit;
             fit(modify, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region The other pages: a stack of rows
+
+        // A page's controls in rows from top to bottom, as wide as the page, scrolling only vertically.
+        abstract class MacRow
+        {
+            public abstract IEnumerable<Control> Controls { get; }
+        }
+
+        // buttons of one width, in as many columns as fit (up to MaxColumns)
+        sealed class MacGridRow : MacRow
+        {
+            public Control[] Items;
+            public int MaxColumns = 4, MinWidth = 64;
+            public override IEnumerable<Control> Controls => Items;
+        }
+
+        // a lead (label or button) in the stack's lead column, a control filling the rest, and an
+        // optional trailing control at its own width
+        sealed class MacPairRow : MacRow
+        {
+            public Control Lead, Field, Trailing;
+            public override IEnumerable<Control> Controls => new[] { Lead, Field, Trailing }.Where(c => c != null);
+        }
+
+        // one control as wide as the stack (its own height, or Height)
+        sealed class MacFullRow : MacRow
+        {
+            public Control Item;
+            public int Height;
+            public override IEnumerable<Control> Controls => new[] { Item };
+        }
+
+        // controls at their own size, one after another, on as many lines as needed
+        sealed class MacWrapRow : MacRow
+        {
+            public Control[] Items;
+            public override IEnumerable<Control> Controls => Items;
+        }
+
+        sealed class MacStack
+        {
+            public Panel Host;
+            public MacRow[] Rows;
+            public bool LayingOut;
+        }
+
+        readonly List<MacStack> macStacks = new List<MacStack>();
+
+        /// <summary>The panels the other pages' controls are laid out in (the screen tour checks them).</summary>
+        internal IEnumerable<Panel> MacStackHosts => macStacks.Select(st => st.Host);
+
+        private void MacStylePages()
+        {
+            // Transponder
+            MacStackPage(tabTransponder,
+                new MacGridRow { Items = new Control[] { STBY_btn, ON_btn, ALT_btn, IDENT_btn } },
+                new MacPairRow { Lead = FlightID_label, Field = FlightID_tb },
+                new MacPairRow { Lead = Squawk_label, Field = Squawk_nud },
+                new MacPairRow { Lead = NIC_lbl, Field = NIC_tb },
+                new MacPairRow { Lead = NACp_lbl, Field = NACp_tb },
+                new MacWrapRow { Items = new Control[] { Mode_clb, fault_clb } },
+                new MacFullRow { Item = XPDRConnect_btn, Height = MacRowHeight });
+
+            // Scripts
+            foreach (var label in new[] { labelScriptStatus, labelSelectedScript })
+            {
+                label.AutoSize = false;
+                label.AutoEllipsis = true;
+            }
+            MacStackPage(tabScripts,
+                new MacFullRow { Item = labelScriptStatus, Height = 20 },
+                new MacFullRow { Item = labelSelectedScript, Height = 20 },
+                new MacFullRow { Item = checkBoxRedirectOutput, Height = 22 },
+                new MacGridRow { Items = new Control[] { BUT_select_script, BUT_run_script, BUT_abort_script, BUT_edit_selected } });
+
+            // Payload Control
+            MacStackPage(tabPayload,
+                new MacWrapRow { Items = new Control[] { groupBoxPitch, groupBoxYaw, groupBoxRoll } },
+                new MacGridRow { Items = new Control[] { BUT_resetGimbalPos, BUT_GimbalVideo } });
+
+            // Telemetry Logs (out of its grid, which stays empty and hidden)
+            foreach (var label in new[] { LBL_logfn, lbl_logpercent, lbl_playbackspeed })
+            {
+                label.AutoSize = false;
+                label.AutoEllipsis = true;
+                label.TextAlign = ContentAlignment.MiddleLeft;
+            }
+            var speeds = new Control[] { BUT_speed1_10, BUT_speed1_4, BUT_speed1_2, BUT_speed1, BUT_speed2, BUT_speed5, BUT_speed10 };
+            MacStackPage(tabTLogs,
+                new MacPairRow { Lead = BUT_loadtelem, Field = LBL_logfn },
+                new MacPairRow { Lead = BUT_playlog, Field = tracklog, Trailing = lbl_logpercent },
+                new MacGridRow { Items = new Control[] { BUT_log2kml }, MaxColumns = 1 },
+                new MacPairRow { Lead = label2, Field = lbl_playbackspeed },
+                new MacGridRow { Items = speeds, MaxColumns = 7, MinWidth = 40 });
+            tableLayoutPaneltlogs.Visible = false;
+
+            // DataFlash Logs (out of its fixed 350 px grid)
+            MacStackPage(tablogbrowse,
+                new MacGridRow
+                {
+                    Items = new Control[] { BUT_DFMavlink, BUT_logbrowse, BUT_loganalysis, but_dflogtokml, but_bintolog, BUT_matlab, BUT_georefimage },
+                    MaxColumns = 3,
+                });
+            tableLayoutPanel2.Visible = false;
+
+            // Status: the same name/value pairs, in the columns that fit, scrolling vertically
+            tabStatus.Paint -= tabStatus_Paint;
+            tabStatus.Paint += MacStatusPaint;
+            tabStatus.Resize += (sender, e) => tabStatus.Invalidate();
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                null, tabStatus, new object[] { true });
+        }
+
+        private void MacStackPage(TabPage page, params MacRow[] rows)
+        {
+            var stack = new MacStack
+            {
+                Host = new Panel { Name = "mac" + page.Name, Dock = DockStyle.Fill, AutoScroll = true },
+                Rows = rows,
+            };
+            page.Controls.Add(stack.Host);
+            stack.Host.BringToFront();
+            foreach (var control in rows.SelectMany(r => r.Controls).Distinct())
+            {
+                stack.Host.Controls.Add(control);
+                control.Dock = DockStyle.None;
+                control.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                control.Margin = Padding.Empty;
+                control.VisibleChanged += (sender, e) => stack.Host.PerformLayout();
+                control.TextChanged += (sender, e) => stack.Host.PerformLayout();
+            }
+            // anything the page holds besides (a plugin's, say) follows as a full row
+            var rest = page.Controls.Cast<Control>().Where(c => c != stack.Host && !(c is TableLayoutPanel)).ToList();
+            if (rest.Count > 0)
+            {
+                stack.Rows = rows.Concat(rest.Select(c => (MacRow)new MacFullRow { Item = c })).ToArray();
+                foreach (var control in rest)
+                {
+                    stack.Host.Controls.Add(control);
+                    control.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                }
+            }
+            stack.Host.Layout += (sender, e) => MacLayoutStack(stack);
+            stack.Host.Resize += (sender, e) => MacLayoutStack(stack);
+            macStacks.Add(stack);
+            MacLayoutStack(stack);
+        }
+
+        private static int MacLeadWidth(Control control)
+        {
+            return control is ButtonBase
+                ? MacButtonWidth(control)
+                : TextRenderer.MeasureText(control.Text, control.Font, Size.Empty, TextFormatFlags.SingleLine).Width + 4;
+        }
+
+        private static void MacLayoutStack(MacStack stack)
+        {
+            var host = stack.Host;
+            int width = host.ClientSize.Width - 2 * MacMargin;
+            if (stack.LayingOut || width <= 0)
+                return;
+            stack.LayingOut = true;
+            try
+            {
+                // (the vertical scroll bar lies over the client area: leave its width when needed)
+                int height = MacLayoutStackAt(stack, width);
+                if (height > host.ClientSize.Height)
+                    height = MacLayoutStackAt(stack, width - SystemInformation.VerticalScrollBarWidth);
+                host.AutoScrollMinSize = new Size(0, height);
+            }
+            finally
+            {
+                stack.LayingOut = false;
+            }
+        }
+
+        private static int MacLayoutStackAt(MacStack stack, int width)
+        {
+            int top = stack.Host.AutoScrollPosition.Y;
+            int y = MacMargin;
+            int lead = stack.Rows.OfType<MacPairRow>().Where(r => MacShown(r.Lead)).Select(r => MacLeadWidth(r.Lead))
+                .DefaultIfEmpty(0).Aggregate(Math.Max);
+            lead = Math.Min(lead, width / 2);
+
+            foreach (var row in stack.Rows)
+            {
+                if (!row.Controls.Any(MacShown))
+                    continue;
+                switch (row)
+                {
+                    case MacGridRow grid:
+                    {
+                        var items = grid.Items.Where(MacShown).ToList();
+                        int column = items.Select(c => Math.Max(grid.MinWidth, MacButtonWidth(c) - (64 - grid.MinWidth)))
+                            .Aggregate(Math.Max);
+                        int columns = Math.Max(1, Math.Min(Math.Min(grid.MaxColumns, items.Count), (width + MacGap) / (column + MacGap)));
+                        int cellWidth = (width - (columns - 1) * MacGap) / columns;
+                        int cellHeight = Math.Max(MacRowHeight, items.Max(c => c.Text.Contains("\n") ? c.Height : 0));
+                        for (int i = 0; i < items.Count; i++)
+                            items[i].Bounds = new Rectangle(MacMargin + (i % columns) * (cellWidth + MacGap),
+                                top + y + (i / columns) * (cellHeight + MacGap), cellWidth, cellHeight);
+                        y += (items.Count + columns - 1) / columns * (cellHeight + MacGap);
+                        break;
+                    }
+                    case MacPairRow pair:
+                    {
+                        int trailing = pair.Trailing != null && MacShown(pair.Trailing) ? MacLeadWidth(pair.Trailing) + 8 : 0;
+                        int fieldWidth = Math.Max(0, width - lead - MacGap - (trailing > 0 ? trailing + MacGap : 0));
+                        int rowHeight = Math.Max(MacRowHeight, pair.Field is TrackBar ? pair.Field.Height : 0);
+                        Action<Control, int, int, bool> place = (c, x, w, fill) =>
+                        {
+                            int h = fill || c is ButtonBase ? MacRowHeight : c.Height;
+                            if (c is Label)
+                                h = MacRowHeight;
+                            c.Bounds = new Rectangle(x, top + y + (rowHeight - h) / 2, w, h);
+                        };
+                        place(pair.Lead, MacMargin, lead, false);
+                        if (MacShown(pair.Field))
+                        {
+                            int fieldHeight = pair.Field is TrackBar ? pair.Field.Height : pair.Field is Label ? MacRowHeight : pair.Field.Height;
+                            pair.Field.Bounds = new Rectangle(MacMargin + lead + MacGap, top + y + (rowHeight - fieldHeight) / 2, fieldWidth, fieldHeight);
+                        }
+                        if (trailing > 0)
+                            place(pair.Trailing, MacMargin + width - trailing, trailing, false);
+                        y += rowHeight + MacGap;
+                        break;
+                    }
+                    case MacFullRow full:
+                    {
+                        int h = full.Height > 0 ? full.Height : full.Item.Height;
+                        full.Item.Bounds = new Rectangle(MacMargin, top + y, width, h);
+                        y += h + MacGap;
+                        break;
+                    }
+                    case MacWrapRow wrap:
+                    {
+                        int x = 0, line = 0;
+                        foreach (var item in wrap.Items.Where(MacShown))
+                        {
+                            int w = Math.Min(item.Width, width);
+                            if (x > 0 && x + w > width)
+                            {
+                                y += line + MacGap;
+                                x = 0;
+                                line = 0;
+                            }
+                            item.Bounds = new Rectangle(MacMargin + x, top + y, w, item.Height);
+                            x += w + MacGap;
+                            line = Math.Max(line, item.Height);
+                        }
+                        y += line + MacGap;
+                        break;
+                    }
+                }
+            }
+            return y - MacGap + MacMargin;
+        }
+
+        // Status: the same name/value pairs tabStatus_Paint draws, in as many 190 px columns as fit
+        // the width (one at least), down each column, scrolling vertically instead of sideways.
+        private void MacStatusPaint(object sender, PaintEventArgs e)
+        {
+            const int nameWidth = 120, valueWidth = 70, columnWidth = 190, rowHeight = 15, margin = 10;
+            var list = MainV2.comPort.MAV.cs.GetItemList(true);
+            var cs = bindingSourceStatusTab.Current as CurrentState;
+            Func<int, int> rowsFor = columns => (list.Count + columns - 1) / columns;
+            int width = tabStatus.ClientSize.Width - 2 * margin;
+            int columnsFit = Math.Max(1, (width + columnWidth - nameWidth - valueWidth) / columnWidth);
+            int height = 2 * margin + rowsFor(columnsFit) * rowHeight;
+            if (height > tabStatus.ClientSize.Height)
+            {
+                columnsFit = Math.Max(1, (width - SystemInformation.VerticalScrollBarWidth + columnWidth - nameWidth - valueWidth) / columnWidth);
+                height = 2 * margin + rowsFor(columnsFit) * rowHeight;
+            }
+            if (tabStatus.AutoScrollMinSize != new Size(0, height))
+                tabStatus.AutoScrollMinSize = new Size(0, height);
+
+            int rows = Math.Max(1, rowsFor(columnsFit));
+            var g = e.Graphics;
+            g.TranslateTransform(0, tabStatus.AutoScrollPosition.Y);
+            using (var brush = new SolidBrush(tabStatus.ForeColor))
+                for (int i = 0; i < list.Count; i++)
+                {
+                    int x = margin + i / rows * columnWidth, y = margin + i % rows * rowHeight;
+                    g.DrawString(list[i], Font, brush, new RectangleF(x, y, nameWidth, rowHeight));
+                    if (cs != null)
+                        g.DrawString(typeof(CurrentState).GetProperty(list[i])?.GetValue(cs)?.ToString(), Font, brush,
+                            new RectangleF(x + nameWidth, y, valueWidth, rowHeight));
+                }
         }
 
         #endregion

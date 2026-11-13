@@ -640,7 +640,7 @@ class ScreenTour
             }
 
             // inside the pane, and nothing to scroll sideways
-            var checkedPages = new[] { "tabActions", "tabServo", "tabAuxFunction" };
+            var checkedPages = new[] { "tabActions", "tabServo", "tabAuxFunction", "tabTransponder", "tabScripts", "tabPayload", "tabTLogs", "tablogbrowse", "tabStatus" };
             foreach (var width in new[] { distance, 300 })
             {
                 mainH.SplitterDistance = width;
@@ -706,23 +706,41 @@ class ScreenTour
             if (background.A == 255 && (background.GetBrightness() < 0.5f) != appearance.Contains("Dark"))
                 problems.Add("appearance " + appearance + " on a " + (background.GetBrightness() < 0.5f ? "dark" : "light") + " theme");
 
-            // a sideways scroll still moves a page that is wider than the pane (Status draws its columns)
+            // the other pages: their controls moved into the stacks, with their handlers; the grids empty
+            var expected = new Dictionary<string, int>
+            {
+                { "mactabTransponder", 15 }, { "mactabScripts", 7 }, { "mactabPayload", 5 }, { "mactabTLogs", 15 }, { "mactablogbrowse", 7 },
+            };
+            foreach (var host in flightData.MacStackHosts)
+            {
+                var children = host.Controls.Cast<Control>().ToList();
+                var buttons = children.OfType<ButtonBase>().Where(b => !(b is CheckBox)).ToList();
+                var silent = buttons.Where(b => !clickable(b)).Select(b => b.Name).ToList();
+                Console.WriteLine("TOUR mac sidebar " + host.Name + ": " + children.Count + " controls, " + buttons.Count + " buttons" +
+                                  (silent.Count > 0 ? ", without a click handler: " + string.Join(", ", silent) : ""));
+                int count;
+                if (expected.TryGetValue(host.Name, out count) && children.Count != count)
+                    problems.Add(host.Name + " has " + children.Count + " controls (" + count + " expected)");
+                if (silent.Count > 0)
+                    problems.Add(host.Name + " buttons without their click handler: " + string.Join(", ", silent));
+            }
+            foreach (var grid in new[] { "tableLayoutPaneltlogs", "tableLayoutPanel2" })
+            {
+                var left = flightData.Controls.Find(grid, true).Single().Controls.Cast<Control>()
+                    .Count(c => c.Name != "panel2" && !(c is Panel && c.Controls.Count == 0));
+                if (left > 0)
+                    problems.Add(grid + " still holds " + left + " controls");
+            }
             var status = tabs.TabPages["tabStatus"];
             if (status != null)
             {
                 mainH.SplitterDistance = 300;
                 tabs.SelectedTab = status;
                 Wait(300);
-                if (status.HorizontalScroll.Visible)
-                {
-                    int before = status.HorizontalScroll.Value;
-                    typeof(Control).GetMethod("OnMouseHWheel", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .Invoke(status, new object[] { new HandledMouseEventArgs(MouseButtons.None, 0, 0, 0, -120) });
-                    Console.WriteLine("TOUR mac sidebar status sideways scroll " + before + " -> " + status.HorizontalScroll.Value);
-                    if (status.HorizontalScroll.Value <= before)
-                        problems.Add("a sideways scroll did not move Status");
-                    status.HorizontalScroll.Value = 0;
-                }
+                Console.WriteLine("TOUR mac sidebar status: scroll size " + status.AutoScrollMinSize + ", client " + status.ClientSize +
+                                  ", vertical bar " + status.VerticalScroll.Visible + ", horizontal bar " + status.HorizontalScroll.Visible);
+                if (status.AutoScrollMinSize.Width != 0 || status.HorizontalScroll.Visible)
+                    problems.Add("Status scrolls sideways (" + status.AutoScrollMinSize + ")");
             }
         }
         finally
