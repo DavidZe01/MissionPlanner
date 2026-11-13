@@ -778,6 +778,22 @@ class ScreenTour
                     throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
             }
         });
+        // adb in the app (Parrot flashing), as adb.exe ships with Windows
+        Step("feature:adb", () =>
+        {
+            var adb = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "platform-tools", "adb"));
+            if (!File.Exists(adb))
+                throw new Exception("no adb in the app: " + adb);
+            var psi = new ProcessStartInfo(adb, "version") { UseShellExecute = false, RedirectStandardOutput = true };
+            using (var proc = Process.Start(psi))
+            {
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit(10000);
+                Console.WriteLine("TOUR adb: " + output.Split('\n')[0].Trim());
+                if (proc.ExitCode != 0)
+                    throw new Exception("adb version exited with " + proc.ExitCode);
+            }
+        });
         // "Check for updates": the commit of this build, recorded in the bundle by build.sh, and
         // the newest build kept on this Mac
         Step("feature:updater", () =>

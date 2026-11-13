@@ -371,6 +371,8 @@ namespace MissionPlanner.Utilities
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var adb = new[]
             {
+                // the one in the native macOS app (build.sh), as adb.exe ships with Windows
+                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "platform-tools", "adb")),
                 "/opt/homebrew/bin/adb", "/usr/local/bin/adb", "/usr/bin/adb",
                 Path.Combine(home, "Library", "Android", "sdk", "platform-tools", "adb"),
                 Path.Combine(home, "Android", "Sdk", "platform-tools", "adb")

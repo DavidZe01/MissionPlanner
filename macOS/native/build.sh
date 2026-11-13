@@ -234,6 +234,29 @@ if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
     codesign --force --sign - "$app/Contents/Resources/sitl"/Ardu*
 fi
 
+# adb (Android platform-tools), which Windows ships as adb.exe for flashing Parrot vehicles:
+# Google's own macOS build (signed by Google, universal), kept in a cache between builds;
+# Firmware.AdbPath finds it in Contents/Resources/platform-tools
+adb_cache="$HOME/Library/Caches/MissionPlanner-native/platform-tools"
+if [[ ! -x $adb_cache/adb ]]; then
+    adb_zip="$(mktemp -d)/platform-tools.zip"
+    if curl -fsSL --retry 3 -o "$adb_zip" https://dl.google.com/android/repository/platform-tools-latest-darwin.zip \
+        && rm -rf "$adb_cache.new" && mkdir -p "$adb_cache.new" && ditto -x -k "$adb_zip" "$adb_cache.new" \
+        && [[ -x $adb_cache.new/platform-tools/adb ]]; then
+        rm -rf "$adb_cache" && mv "$adb_cache.new/platform-tools" "$adb_cache" && rm -rf "$adb_cache.new"
+    else
+        echo "adb: platform-tools could not be downloaded (Parrot flashing will need brew install android-platform-tools)" >&2
+    fi
+    rm -rf "$(dirname "$adb_zip")"
+fi
+if [[ -x $adb_cache/adb ]]; then
+    mkdir -p -- "$app/Contents/Resources/platform-tools"
+    cp -- "$adb_cache/adb" "$adb_cache/NOTICE.txt" "$app/Contents/Resources/platform-tools/" 2>/dev/null \
+        || cp -- "$adb_cache/adb" "$app/Contents/Resources/platform-tools/"
+    codesign --verify "$app/Contents/Resources/platform-tools/adb" || codesign --force --sign - "$app/Contents/Resources/platform-tools/adb"
+    echo "adb: $("$app/Contents/Resources/platform-tools/adb" version | head -1)"
+fi
+
 # Contents/MonoBundle is not a nested-code location for codesign --deep (Frameworks,
 # PlugIns, MacOS, ...): the libraries there are sealed as the app's resources, never
 # signed themselves. One whose signature install_name_tool broke above (SDL2, SDL3,
