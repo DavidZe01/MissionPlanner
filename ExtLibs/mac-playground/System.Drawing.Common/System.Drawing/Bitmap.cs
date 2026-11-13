@@ -970,30 +970,36 @@ namespace System.Drawing {
 			UnlockBits(bmpData);
 		}
 
+		// GDI+ has encoders for BMP, JPEG, GIF, TIFF and PNG; any other format (MemoryBmp, Emf,
+		// Wmf, Exif...) is written as PNG, as Windows does
 		private string GetTypeIdentifier(ImageFormat format)
 		{
-			if (format == ImageFormat.Bmp)
+			var guid = format?.Guid ?? ImageFormat.Png.Guid;
+			if (guid == ImageFormat.Bmp.Guid)
 				return "com.microsoft.bmp";
-			if (format == ImageFormat.Gif)
+			if (guid == ImageFormat.Gif.Guid)
 				return "com.compuserve.gif";
-			if (format == ImageFormat.Icon)
-				return "com.microsoft.ico";
-			if (format == ImageFormat.Jpeg)
+			if (guid == ImageFormat.Jpeg.Guid)
 				return "public.jpeg";
-			if (format == ImageFormat.Png)
-				return "public.png";
-			if (format == ImageFormat.Tiff)
+			if (guid == ImageFormat.Tiff.Guid)
 				return "public.tiff";
-			if (format == ImageFormat.Wmf)
-				return "com.adobe.pdf"; // FIXME
-			if (format == ImageFormat.MemoryBmp)
-				throw new NotImplementedException("ImageFormat.MemoryBmp not supported");
-			// ImageFormat.Emf: // FIXME
-			// ImageFormat.Exif: // FIXME
 			return "public.png";
 		}
 
-		private void Save(CGImageDestination dest)
+		// JPEG quality: Encoder.Quality (0-100) if given, else GDI+'s default of 75
+		private static CGImageDestinationOptions GetDestinationOptions(ImageFormat format, EncoderParameters parameters)
+		{
+			if (format?.Guid != ImageFormat.Jpeg.Guid)
+				return null;
+			long quality = 75;
+			if (parameters?.Param != null)
+				foreach (var p in parameters.Param)
+					if (p?.Encoder?.Guid == Encoder.Quality.Guid && p.FirstLong() is long q)
+						quality = Math.Max(0, Math.Min(100, q));
+			return new CGImageDestinationOptions { LossyCompressionQuality = quality / 100f };
+		}
+
+		private void Save(CGImageDestination dest, CGImageDestinationOptions options = null)
 		{
 			if (NativeCGImage == null)
 				throw new ObjectDisposedException("cgimage");
@@ -1001,7 +1007,7 @@ namespace System.Drawing {
 			bool lastOK = true;
 			int savedFrame = currentFrame, framesSaved = 0;
 			for (int frame = 0; frame < frameCount; frame++)
-				if (lastOK = TryAddFrame(dest, frame))
+				if (lastOK = TryAddFrame(dest, frame, options))
 					++framesSaved;
 
 			if (currentFrame != savedFrame || !lastOK)
@@ -1013,7 +1019,7 @@ namespace System.Drawing {
 			dest.Close();
 		}
 
-		bool TryAddFrame(CGImageDestination dest, int frame)
+		bool TryAddFrame(CGImageDestination dest, int frame, CGImageDestinationOptions options)
 		{
 			try
 			{
@@ -1022,7 +1028,7 @@ namespace System.Drawing {
 					InitializeImageFrame(frame);
 
 				if (!corrupted)
-					dest.AddImage(NativeCGImage, (NSDictionary)null);
+					dest.AddImage(NativeCGImage, options);
 
 				return true;
 			}
@@ -1035,11 +1041,17 @@ namespace System.Drawing {
 
 		public new void Save(string path, ImageCodecInfo encoder, EncoderParameters parameters)
 		{
-			// Workaround
-			Save(path, encoder.Format);
+			if (encoder == null)
+				throw new ArgumentNullException(nameof(encoder));
+			Save(path, encoder.Format, parameters);
 		}
 
 		public new void Save (string path, ImageFormat format)
+		{
+			Save(path, format, null);
+		}
+
+		void Save(string path, ImageFormat format, EncoderParameters parameters)
 		{
 			if (path == null)
 				throw new ArgumentNullException ("path");
@@ -1049,31 +1061,31 @@ namespace System.Drawing {
 
 			// Create an image destination that saves into the path that is passed in
 			using (var dest = CGImageDestination.Create(url, GetTypeIdentifier(format), frameCount))
-				Save(dest);
+				Save(dest, GetDestinationOptions(format, parameters));
 		}
 
+		// as on Windows, in the image's own format whatever the file's extension (a bitmap made
+		// in memory, MemoryBmp, is written as PNG)
 		public new void Save (string path)
 		{
 			if (path == null)
 				throw new ArgumentNullException ("path");
-
-			var format = ImageFormat.Png;
-			switch (Path.GetExtension (path)) {
-				case ".jpg": format = ImageFormat.Jpeg; break;
-				case ".tiff": format = ImageFormat.Tiff; break;
-				case ".bmp": format = ImageFormat.Bmp; break;
-				case ".gif": format = ImageFormat.Gif; break;
-			}
-			Save (path, format);
+			Save (path, RawFormat);
 		}
 
 		public new void Save(Stream stream, ImageCodecInfo encoder, EncoderParameters parameters)
 		{
-			// Workaround
-			Save(stream, encoder.Format);
+			if (encoder == null)
+				throw new ArgumentNullException(nameof(encoder));
+			Save(stream, encoder.Format, parameters);
 		}
 
 		public new void Save(Stream stream, ImageFormat format)
+		{
+			Save(stream, format, null);
+		}
+
+		void Save(Stream stream, ImageFormat format, EncoderParameters parameters)
 		{
 			if (stream == null)
 				throw new ArgumentNullException("stream");
@@ -1081,7 +1093,7 @@ namespace System.Drawing {
 			using (var imageData = new NSMutableData())
 			{
 				using (var dest = CGImageDestination.Create(imageData, GetTypeIdentifier(format), frameCount))
-					Save(dest);
+					Save(dest, GetDestinationOptions(format, parameters));
 
 				using (var ms = imageData.AsStream())
 					ms.CopyTo(stream, 64 * 1024);

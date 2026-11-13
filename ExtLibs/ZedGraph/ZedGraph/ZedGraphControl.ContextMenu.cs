@@ -241,13 +241,22 @@ namespace ZedGraph
 			{
 				//Clipboard.SetDataObject( _masterPane.GetImage(), true );
 
-				// Threaded copy mode to avoid crash with MTA
-				// Contributed by Dave Moor
-				Thread ct = new Thread( new ThreadStart( this.ClipboardCopyThread ) );
-				//ct.ApartmentState = ApartmentState.STA;
-				ct.SetApartmentState( ApartmentState.STA );
-				ct.Start();
-				ct.Join();
+				if ( IsWindows )
+				{
+					// Threaded copy mode to avoid crash with MTA
+					// Contributed by Dave Moor
+					Thread ct = new Thread( new ThreadStart( this.ClipboardCopyThread ) );
+					//ct.ApartmentState = ApartmentState.STA;
+					ct.SetApartmentState( ApartmentState.STA );
+					ct.Start();
+					ct.Join();
+				}
+				else
+				{
+					// no COM apartments elsewhere (SetApartmentState throws): the clipboard is
+					// used from the UI thread
+					ClipboardCopyThread();
+				}
 
 				if ( isShowMessage )
 				{
@@ -284,10 +293,21 @@ namespace ZedGraph
 		/// it will place an Emf image (vector) on the ClipBoard instead of the regular bitmap.</remarks>
 		/// <param name="isShowMessage">boolean value that determines whether or not a prompt will be
 		/// displayed.  true to show a message of "Image Copied to ClipBoard".</param>
+		static bool IsWindows
+		{
+			get { return RuntimeInformation.IsOSPlatform( OSPlatform.Windows ); }
+		}
+
 		public void CopyEmf(bool isShowMessage)
 		{
 			if (_masterPane != null)
 			{
+				// EMF (a Windows metafile) only exists on Windows: copy the bitmap elsewhere
+				if (!IsWindows)
+				{
+					Copy(isShowMessage);
+					return;
+				}
 				// Threaded copy mode to avoid crash with MTA
 				// Contributed by Dave Moor
 				Thread ct = new Thread(new ThreadStart(this.ClipboardCopyThreadEmf));
@@ -370,27 +390,32 @@ namespace ZedGraph
 		{
 			if ( _masterPane != null )
 			{
+				// EMF (a Windows metafile) only exists on Windows: elsewhere the list starts at
+				// PNG, and filter indexes are shifted back by one to keep the cases below
+				int skip = IsWindows ? 0 : 1;
 				_saveFileDialog.Filter =
-					"Emf Format (*.emf)|*.emf|" +
+					(IsWindows ? "Emf Format (*.emf)|*.emf|" : "") +
 					"PNG Format (*.png)|*.png|" +
 					"Gif Format (*.gif)|*.gif|" +
 					"Jpeg Format (*.jpg)|*.jpg|" +
 					"Tiff Format (*.tif)|*.tif|" +
 					"Bmp Format (*.bmp)|*.bmp";
+				if ( !IsWindows )
+					_saveFileDialog.FilterIndex = 1;
 
 				if ( DefaultFileName != null && DefaultFileName.Length > 0 )
 				{
 					String ext = System.IO.Path.GetExtension( DefaultFileName ).ToLower();
 					switch (ext)
 					{
-						case ".emf": _saveFileDialog.FilterIndex = 1; break;
-						case ".png": _saveFileDialog.FilterIndex = 2; break;
-						case ".gif": _saveFileDialog.FilterIndex = 3; break;
+						case ".emf": if ( IsWindows ) _saveFileDialog.FilterIndex = 1; break;
+						case ".png": _saveFileDialog.FilterIndex = 2 - skip; break;
+						case ".gif": _saveFileDialog.FilterIndex = 3 - skip; break;
 						case ".jpeg":
-						case ".jpg": _saveFileDialog.FilterIndex = 4; break;
+						case ".jpg": _saveFileDialog.FilterIndex = 4 - skip; break;
 						case ".tiff":
-						case ".tif": _saveFileDialog.FilterIndex = 5; break;
-						case ".bmp": _saveFileDialog.FilterIndex = 6; break;
+						case ".tif": _saveFileDialog.FilterIndex = 5 - skip; break;
+						case ".bmp": _saveFileDialog.FilterIndex = 6 - skip; break;
 					}
 					//If we were passed a file name, not just an extension, use it
 					if ( DefaultFileName.Length > ext.Length )
@@ -404,7 +429,7 @@ namespace ZedGraph
 					Stream myStream = _saveFileDialog.OpenFile();
 					if ( myStream != null )
 					{
-						if ( _saveFileDialog.FilterIndex == 1 )
+						if ( IsWindows && _saveFileDialog.FilterIndex == 1 )
 						{
 							myStream.Close();
 							SaveEmfFile( _saveFileDialog.FileName );
@@ -412,7 +437,7 @@ namespace ZedGraph
 						else
 						{
 							ImageFormat format = ImageFormat.Png;
-                            switch (_saveFileDialog.FilterIndex)
+                            switch (_saveFileDialog.FilterIndex + skip)
 							{
 								case 2: format = ImageFormat.Png; break;
 								case 3: format = ImageFormat.Gif; break;

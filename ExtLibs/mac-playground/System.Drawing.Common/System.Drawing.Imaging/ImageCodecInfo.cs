@@ -63,22 +63,46 @@ namespace System.Drawing.Imaging
 
 
 		// methods		
+		// GDI+'s built-in codecs, with the identifiers, MIME types and extensions Windows reports
+		// (code picks an encoder by MimeType, e.g. "image/jpeg"); Bitmap.Save writes them with ImageIO
+		static ImageCodecInfo Codec(ImageFormat format, int clsid, string name, string extensions, string mime, ImageCodecFlags flags)
+		{
+			return new ImageCodecInfo
+			{
+				Format = format,
+				Clsid = new Guid(clsid, 0x1a04, 0x11d3, 0x9a, 0x73, 0x00, 0x00, 0xf8, 0x1e, 0xf3, 0x2e),
+				FormatID = format.Guid,
+				CodecName = "Built-in " + name + " Codec",
+				FormatDescription = name,
+				FilenameExtension = extensions,
+				MimeType = mime,
+				Flags = flags | ImageCodecFlags.Builtin | ImageCodecFlags.SupportBitmap,
+				Version = 1,
+			};
+		}
+
+		const ImageCodecFlags Both = ImageCodecFlags.Encoder | ImageCodecFlags.Decoder;
+
 		public static ImageCodecInfo[] GetImageDecoders()
 		{
-			Console.WriteLine("Not implemented: ImageCodecInfo.GetImageDecoders()");
-			return new ImageCodecInfo[] { };
+			return new ImageCodecInfo[] {
+				Codec(ImageFormat.Bmp, 0x557cf400, "BMP", "*.BMP;*.DIB;*.RLE", "image/bmp", Both),
+				Codec(ImageFormat.Jpeg, 0x557cf401, "JPEG", "*.JPG;*.JPEG;*.JPE;*.JFIF", "image/jpeg", Both),
+				Codec(ImageFormat.Gif, 0x557cf402, "GIF", "*.GIF", "image/gif", Both),
+				Codec(ImageFormat.Tiff, 0x557cf405, "TIFF", "*.TIF;*.TIFF", "image/tiff", Both),
+				Codec(ImageFormat.Png, 0x557cf406, "PNG", "*.PNG", "image/png", Both),
+				Codec(ImageFormat.Icon, 0x557cf407, "ICO", "*.ICO", "image/x-icon", ImageCodecFlags.Decoder),
+			};
 		}
 
 		public static ImageCodecInfo[] GetImageEncoders()
 		{
-			// Workaround - formats supported by Bitmap.Save(), as saving falls back to it.
-			return new ImageCodecInfo[] { 
-				new ImageCodecInfo { Format = ImageFormat.Gif, FormatID = ImageFormat.Gif.Guid, CodecName="Gif codec" },
-				new ImageCodecInfo { Format = ImageFormat.Icon, FormatID = ImageFormat.Icon.Guid, CodecName="Icon codec" },
-				new ImageCodecInfo { Format = ImageFormat.Jpeg, FormatID = ImageFormat.Jpeg.Guid, CodecName="Jpeg codec" },
-				new ImageCodecInfo { Format = ImageFormat.Png, FormatID = ImageFormat.Png.Guid, CodecName="Png codec" },
-				new ImageCodecInfo { Format = ImageFormat.Tiff, FormatID = ImageFormat.Tiff.Guid, CodecName="Tiff codec" },
-				new ImageCodecInfo { Format = ImageFormat.Wmf, FormatID = ImageFormat.Wmf.Guid, CodecName="Pdf codec" },
+			return new ImageCodecInfo[] {
+				Codec(ImageFormat.Bmp, 0x557cf400, "BMP", "*.BMP;*.DIB;*.RLE", "image/bmp", Both),
+				Codec(ImageFormat.Jpeg, 0x557cf401, "JPEG", "*.JPG;*.JPEG;*.JPE;*.JFIF", "image/jpeg", Both),
+				Codec(ImageFormat.Gif, 0x557cf402, "GIF", "*.GIF", "image/gif", Both),
+				Codec(ImageFormat.Tiff, 0x557cf405, "TIFF", "*.TIF;*.TIFF", "image/tiff", Both),
+				Codec(ImageFormat.Png, 0x557cf406, "PNG", "*.PNG", "image/png", Both),
 			};
 		}
 	}

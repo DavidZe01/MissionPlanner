@@ -649,6 +649,52 @@ class ScreenTour
                 throw new Exception("wheel deltas: line " + line + ", points " + first + ", " + second + " (120, 0, 120 expected)");
         });
 #endif
+        // the JPEG encoder found by MIME type, as the HUD and map images of the web server look
+        // it up (HUD.GetEncoder("image/jpeg")), honouring the quality parameter
+        Step("feature:image-encoders", () =>
+        {
+            var jpeg = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.MimeType == "image/jpeg");
+            if (jpeg == null)
+                throw new Exception("no image/jpeg encoder");
+            long Size(long quality)
+            {
+                using (var bmp = new System.Drawing.Bitmap(200, 200))
+                using (var g = System.Drawing.Graphics.FromImage(bmp))
+                using (var ms = new MemoryStream())
+                {
+                    for (int i = 0; i < 200; i += 4)
+                        g.DrawLine(new System.Drawing.Pen(System.Drawing.Color.FromArgb(i, 255 - i, (i * 7) % 255)), 0, i, 200, 200 - i);
+                    var parameters = new System.Drawing.Imaging.EncoderParameters(1);
+                    parameters.Param[0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+                    bmp.Save(ms, jpeg, parameters);
+                    var bytes = ms.ToArray();
+                    if (bytes.Length < 4 || bytes[0] != 0xFF || bytes[1] != 0xD8)
+                        throw new Exception("not a JPEG at quality " + quality);
+                    return bytes.Length;
+                }
+            }
+            long low = Size(20), high = Size(95);
+            Console.WriteLine("TOUR image encoders: " + string.Join(",", System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders().Select(c => c.MimeType)) +
+                              "; JPEG quality 20: " + low + " bytes, 95: " + high + " bytes");
+            if (low >= high)
+                throw new Exception("JPEG quality ignored (" + low + " >= " + high + " bytes)");
+        });
+        // text measured with the font's own unit: 12 pt is 96/72 of 12 px (a cache that ignored
+        // the unit gave the second the first one's size)
+        Step("feature:text-units", () =>
+        {
+            using (var bmp = new System.Drawing.Bitmap(10, 10))
+            using (var g = System.Drawing.Graphics.FromImage(bmp))
+            using (var px = new System.Drawing.Font("Arial", 12, System.Drawing.GraphicsUnit.Pixel))
+            using (var pt = new System.Drawing.Font("Arial", 12, System.Drawing.GraphicsUnit.Point))
+            {
+                var wpx = g.MeasureString("Mission Planner", px).Width;
+                var wpt = g.MeasureString("Mission Planner", pt).Width;
+                Console.WriteLine("TOUR text units: 12 px " + wpx + ", 12 pt " + wpt + " wide");
+                if (wpt / wpx < 1.25 || wpt / wpx > 1.42)
+                    throw new Exception("12 pt is " + (wpt / wpx) + " times 12 px (96/72 = 1.33 expected)");
+            }
+        });
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
         if (IsMac)

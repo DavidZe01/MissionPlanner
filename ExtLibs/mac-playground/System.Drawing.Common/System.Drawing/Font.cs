@@ -362,6 +362,7 @@ namespace System.Drawing
 			return f != null
 				&& this.Name == f.Name
 				&& (int)Math.Round(10.0 * this.Size) == (int)Math.Round(10.0 * f.Size)
+				&& this.Unit == f.Unit
 				&& this.Underline == f.Underline
 				&& this.Bold == f.Bold
 				&& this.Strikeout == f.Strikeout

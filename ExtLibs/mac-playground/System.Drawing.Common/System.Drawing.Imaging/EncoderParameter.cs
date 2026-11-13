@@ -304,6 +304,14 @@ namespace System.Drawing.Imaging
 			Dispose(false);
 		}
 
+		// the first value of a ValueTypeLong parameter (Encoder.Quality), or null
+		internal long? FirstLong()
+		{
+			if (valuesCount < 1 || valuePtr == IntPtr.Zero || type != EncoderParameterValueType.ValueTypeLong)
+				return null;
+			return Marshal.ReadInt32(valuePtr);
+		}
+
 		internal static int NativeSize()
 		{
 			Console.WriteLine("NotImplemented: EncoderParameter.ToNativePtr()");

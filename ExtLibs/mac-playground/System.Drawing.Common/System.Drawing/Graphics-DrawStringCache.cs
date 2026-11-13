@@ -89,7 +89,8 @@ namespace System.Drawing
 		public string GetKey(string s, Font font, Brush brush, RectangleF layoutRectangle, StringFormat format)
 		{
 			font ??= SystemFonts.DefaultFont;
-			var fnt = $"{font.Name}|{font.Size}|{font.Italic.ToStr()}{font.Underline.ToStr()}{font.Strikeout.ToStr()}";
+			// (the unit and boldness too: 12 px is not 12 pt, bold is wider)
+			var fnt = $"{font.Name}|{font.Size}|{(int)font.Unit}|{font.Bold.ToStr()}{font.Italic.ToStr()}{font.Underline.ToStr()}{font.Strikeout.ToStr()}";
 			var bsh = "";
 			if (brush is SolidBrush sb)
 				bsh = $"SB{ToString(sb.Color)}";
@@ -194,7 +195,7 @@ namespace System.Drawing
 			font ??= SystemFonts.DefaultFont;
 			return s
 				+ "|" + layoutArea.Width.ToStr() + "|" + layoutArea.Height.ToStr()
-				+ "|" + font.Name + "|" + font.Size.ToString() + "|" + font.Italic.ToStr() + font.Underline.ToStr() + font.Strikeout.ToStr()
+				+ "|" + font.Name + "|" + font.Size.ToString() + "|" + ((int)font.Unit).ToString() + "|" + font.Bold.ToStr() + font.Italic.ToStr() + font.Underline.ToStr() + font.Strikeout.ToStr()
 				+ "|" + ((int)format.FormatFlags).ToString() + "|" + ((int)format.HotkeyPrefix).ToString() + "|" + ((int)format.Alignment).ToString() + "|" + ((int)format.LineAlignment).ToString() + "|" + ((int)format.Trimming).ToString();
 		}
 
