@@ -139,11 +139,15 @@ namespace MissionPlanner.Utilities
         static string MacBuildsDir => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "MissionPlanner-native");
         static string MacUpdateZip => Path.Combine(MacBuildsDir, "MissionPlanner-macos-native-arm64.zip");
 
-        static string FirstWord(string file)
+        // "<commit> <build time, Unix seconds> ..."
+        static string Word(string file, int index)
         {
             try
             {
-                return File.Exists(file) ? File.ReadAllText(file).Trim().Split(' ', '\n')[0].Trim() : "";
+                if (!File.Exists(file))
+                    return "";
+                var words = File.ReadAllText(file).Trim().Split(new[] {' ', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+                return index < words.Length ? words[index].Trim() : "";
             }
             catch
             {
@@ -151,13 +155,26 @@ namespace MissionPlanner.Utilities
             }
         }
 
-        public static string MacInstalledBuild =>
-            FirstWord(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "BUILD.txt")));
+        static string InstalledBuildFile => Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "BUILD.txt"));
 
-        public static string MacAvailableBuild => File.Exists(MacUpdateZip) ? FirstWord(Path.Combine(MacBuildsDir, "BUILD.txt")) : "";
+        public static string MacInstalledBuild => Word(InstalledBuildFile, 0);
 
-        public static bool MacUpdateAvailable =>
-            MacAvailableBuild != "" && MacInstalledBuild != "" && MacAvailableBuild != MacInstalledBuild;
+        public static string MacAvailableBuild => File.Exists(MacUpdateZip) ? Word(Path.Combine(MacBuildsDir, "BUILD.txt"), 0) : "";
+
+        // a different build that is newer (by build time, where both have one)
+        public static bool MacUpdateAvailable
+        {
+            get
+            {
+                if (MacAvailableBuild == "" || MacInstalledBuild == "" || MacAvailableBuild == MacInstalledBuild)
+                    return false;
+                long installed, available;
+                if (long.TryParse(Word(InstalledBuildFile, 1), out installed) &&
+                    long.TryParse(Word(Path.Combine(MacBuildsDir, "BUILD.txt"), 1), out available))
+                    return available > installed;
+                return true;
+            }
+        }
 
         static void CheckForMacUpdate(bool NotifyNoUpdate)
         {

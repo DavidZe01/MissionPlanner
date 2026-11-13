@@ -840,9 +840,11 @@ class ScreenTour
                 if (path == null)
                     throw new Exception("ArduPlane beta not downloaded (or its sha256 differs)");
                 var psi = new ProcessStartInfo(path, "--help") { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+                psi.Environment.Remove("DYLD_PRINT_LIBRARIES");
                 using (var proc = Process.Start(psi))
                 {
-                    var output = proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+                    var errors = proc.StandardError.ReadToEndAsync();
+                    var output = proc.StandardOutput.ReadToEnd() + errors.Result;
                     proc.WaitForExit(20000);
                     Console.WriteLine("TOUR sitl download: ArduPlane beta in " + sw.ElapsedMilliseconds + " ms, " + new FileInfo(path).Length +
                                       " bytes; --help: " + output.Split('\n')[0].Trim());
@@ -863,9 +865,13 @@ class ScreenTour
                 throw new Exception("no Python in the app: " + python);
             var psi = new ProcessStartInfo(python, "-B -E -s -c \"import sys, numpy; print(sys.version.split()[0], 'numpy', numpy.__version__)\"")
                 { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            // (not the tour's DYLD_PRINT_LIBRARIES, and stderr read alongside stdout: a full pipe
+            // would block the process)
+            psi.Environment.Remove("DYLD_PRINT_LIBRARIES");
             using (var proc = Process.Start(psi))
             {
-                var output = proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+                var errors = proc.StandardError.ReadToEndAsync();
+                var output = proc.StandardOutput.ReadToEnd() + errors.Result;
                 proc.WaitForExit(30000);
                 Console.WriteLine("TOUR python: " + output.Trim());
                 if (proc.ExitCode != 0)

@@ -136,7 +136,8 @@ perl -0pi -e 's{\s*<system\.(web|diagnostics)>.*?</system\.\1>}{}gs' "$bundle/Mi
 # the commit this app is built from, which "Check for updates" compares with the newest build
 # kept on this Mac (~/MissionPlanner-native/BUILD.txt, written by the workflow)
 build_commit=${GITHUB_SHA:-$(git -C "$source_dir" rev-parse HEAD 2>/dev/null || echo unknown)}
-echo "$build_commit" > "$app/Contents/Resources/BUILD.txt"
+# (and when: an update is a newer build, not just another one)
+echo "$build_commit $(date +%s)" > "$app/Contents/Resources/BUILD.txt"
 # the Log Analyzer: ArduPilot's own (Python, 4.5.7), which Windows runs frozen as runner.exe;
 # Utilities/LogAnalyzer.cs runs this copy with python3
 rm -rf -- "$bundle/LogAnalyzer"
@@ -264,31 +265,69 @@ if [[ -n ${MP_SITL_DIR:-} && -d $MP_SITL_DIR ]]; then
 fi
 
 # GDAL (georeferenced images on the map: Utilities/GdalCli runs gdalinfo, gdalwarp and
-# gdal_translate), which Windows ships with Mission Planner: Homebrew's tools with every library
-# they load (dylibbundler, @executable_path) and GDAL's and PROJ's data, in Contents/Resources/gdal
-gdal_prefix=$(brew --prefix gdal 2>/dev/null || true)
-if [[ -n $gdal_prefix && -x $gdal_prefix/bin/gdalinfo ]] && command -v dylibbundler >/dev/null; then
+# gdal_translate), which Windows ships with Mission Planner. Homebrew's gdal brings 175
+# libraries (940 MB); this one is built from source once (cached) with the drivers the map
+# overlay reads and writes (GeoTIFF, VRT, PNG, JPEG, GIF) and GDAL's own copies of their
+# libraries, only PROJ from Homebrew (brew install proj). In Contents/Resources/gdal, with
+# every library it loads (dylibbundler, @executable_path) and GDAL's and PROJ's data.
+gdal_version=3.10.1
+gdal_cache="$HOME/Library/Caches/MissionPlanner-native/gdal-$gdal_version"
+proj_prefix=$(brew --prefix proj 2>/dev/null || true)
+if [[ ! -x $gdal_cache/bin/gdalinfo && -n $proj_prefix && -d $proj_prefix/lib/cmake ]] && command -v cmake >/dev/null; then
+    gdal_src="$source_dir/bin/macos-native-work/gdal-src"
+    rm -rf -- "$gdal_src" "$gdal_cache.new" && mkdir -p -- "$gdal_src"
+    if curl -fsSL --retry 3 "https://github.com/OSGeo/gdal/releases/download/v$gdal_version/gdal-$gdal_version.tar.gz" \
+            | tar -xz -C "$gdal_src" \
+        && cmake -S "$gdal_src/gdal-$gdal_version" -B "$gdal_src/build" -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$gdal_cache.new" -DCMAKE_PREFIX_PATH="$proj_prefix" \
+            -DBUILD_SHARED_LIBS=ON -DBUILD_APPS=ON -DBUILD_TESTING=OFF \
+            -DBUILD_PYTHON_BINDINGS=OFF -DBUILD_JAVA_BINDINGS=OFF -DBUILD_CSHARP_BINDINGS=OFF \
+            -DGDAL_USE_EXTERNAL_LIBS=OFF -DGDAL_USE_TIFF_INTERNAL=ON -DGDAL_USE_GEOTIFF_INTERNAL=ON \
+            -DGDAL_USE_PNG_INTERNAL=ON -DGDAL_USE_JPEG_INTERNAL=ON -DGDAL_USE_GIF_INTERNAL=ON \
+            -DGDAL_USE_ZLIB_INTERNAL=ON -DGDAL_USE_JSONC_INTERNAL=ON \
+            -DGDAL_BUILD_OPTIONAL_DRIVERS=OFF -DOGR_BUILD_OPTIONAL_DRIVERS=OFF \
+            -DGDAL_ENABLE_DRIVER_PNG=ON -DGDAL_ENABLE_DRIVER_JPEG=ON -DGDAL_ENABLE_DRIVER_GIF=ON \
+            > "$source_dir/bin/macos-native-work/gdal-cmake.log" 2>&1 \
+        && cmake --build "$gdal_src/build" -j "$(sysctl -n hw.ncpu)" > "$source_dir/bin/macos-native-work/gdal-build.log" 2>&1 \
+        && cmake --install "$gdal_src/build" > /dev/null 2>&1; then
+        rm -rf -- "$gdal_cache" && mv -- "$gdal_cache.new" "$gdal_cache"
+    else
+        echo "GDAL: could not be built (bin/macos-native-work/gdal-*.log)" >&2
+        tail -30 "$source_dir/bin/macos-native-work/gdal-cmake.log" "$source_dir/bin/macos-native-work/gdal-build.log" 2>/dev/null >&2 || true
+        rm -rf -- "$gdal_cache.new"
+    fi
+    rm -rf -- "$gdal_src"
+fi
+if [[ -x $gdal_cache/bin/gdalinfo ]] && command -v dylibbundler >/dev/null; then
     gdal="$app/Contents/Resources/gdal"
     rm -rf -- "$gdal" && mkdir -p -- "$gdal/bin" "$gdal/lib" "$gdal/share" "$source_dir/bin/macos-native-work"
     for tool in gdalinfo gdalwarp gdal_translate; do
-        cp -L "$gdal_prefix/bin/$tool" "$gdal/bin/"
+        cp -L "$gdal_cache/bin/$tool" "$gdal/bin/"
     done
     chmod -R u+w "$gdal"
     fix=()
     for f in "$gdal"/bin/*; do fix+=(-x "$f"); done
-    dylibbundler -of -b "${fix[@]}" -d "$gdal/lib" -p '@executable_path/../lib/' -s "$(brew --prefix)/lib" \
+    # (dylibbundler asks on the terminal for a library it cannot find: no terminal here)
+    dylibbundler -of -b "${fix[@]}" -d "$gdal/lib" -p '@executable_path/../lib/' -s "$gdal_cache/lib" -s "$(brew --prefix)/lib" \
         < /dev/null > "$source_dir/bin/macos-native-work/gdal-dylibbundler.log" 2>&1 \
         || { echo "GDAL bundling failed" >&2; tail -20 "$source_dir/bin/macos-native-work/gdal-dylibbundler.log" >&2; }
-    cp -RL "$gdal_prefix/share/gdal" "$gdal/share/gdal"
-    proj_prefix=$(brew --prefix proj 2>/dev/null || true)
+    # each run path once: dyld refuses a binary that lists one twice
+    for f in "$gdal"/bin/* "$gdal"/lib/*.dylib; do
+        for rpath in $(otool -l "$f" | awk '/cmd LC_RPATH/ {getline; getline; print $2}' | sort | uniq -d); do
+            while (( $(otool -l "$f" | awk '/cmd LC_RPATH/ {getline; getline; print $2}' | grep -cxF -- "$rpath") > 1 )); do
+                install_name_tool -delete_rpath "$rpath" "$f"
+            done
+        done
+    done
+    cp -RL "$gdal_cache/share/gdal" "$gdal/share/gdal"
     [[ -n $proj_prefix && -d $proj_prefix/share/proj ]] && cp -RL "$proj_prefix/share/proj" "$gdal/share/proj"
     codesign --force --sign - "$gdal"/lib/*.dylib "$gdal"/bin/*
     if otool -L "$gdal"/lib/*.dylib "$gdal"/bin/* | grep -E '^\s+/(opt|usr/local)/' >&2; then
         echo "GDAL: references outside the app remain (above)" >&2
     fi
-    echo "GDAL: $("$gdal/bin/gdalinfo" --version 2>&1 | head -1), $(ls "$gdal/lib" | wc -l | tr -d ' ') libraries, $(du -sh "$gdal" | cut -f1)"
+    echo "GDAL: $(GDAL_DATA="$gdal/share/gdal" PROJ_DATA="$gdal/share/proj" GDAL_DRIVER_PATH=disable "$gdal/bin/gdalinfo" --version 2>&1 | head -1), $(ls "$gdal/lib" | wc -l | tr -d ' ') libraries, $(du -sh "$gdal" | cut -f1)"
 else
-    echo "GDAL not bundled (brew install gdal dylibbundler)" >&2
+    echo "GDAL not bundled (needs brew install proj cmake dylibbundler)" >&2
 fi
 
 # adb (Android platform-tools), which Windows ships as adb.exe for flashing Parrot vehicles:

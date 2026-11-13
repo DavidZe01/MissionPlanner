@@ -489,6 +489,63 @@ namespace MissionPlanner.Comms
         }
         */
 
+        // macOS: termios has constants only up to 230400, so System.IO.Ports refuses the faster
+        // speeds Windows takes (921600, 1500000, ... : ArgumentException when the port opens).
+        // macOS sets any speed with the IOSSIOSPEED ioctl: the port opens at a standard speed and
+        // then gets the one asked for.
+        static readonly bool isMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        static readonly int[] posixSpeeds =
+            {50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400};
+        const ulong IOSSIOSPEED = 0x80085402; // _IOW('T', 2, speed_t)
+        int macSpeed;
+
+        [DllImport("libc", SetLastError = true)]
+        static extern int ioctl(int fd, ulong request, ref ulong speed);
+
+        public new int BaudRate
+        {
+            get { return macSpeed != 0 ? macSpeed : base.BaudRate; }
+            set
+            {
+                if (isMac && Array.IndexOf(posixSpeeds, value) < 0)
+                {
+                    macSpeed = value;
+                    if (base.IsOpen)
+                        SetMacSpeed(value);
+                    else if (Array.IndexOf(posixSpeeds, base.BaudRate) < 0)
+                        base.BaudRate = 115200;
+                    return;
+                }
+                macSpeed = 0;
+                base.BaudRate = value;
+            }
+        }
+
+        void SetMacSpeed(int speed)
+        {
+            var stream = base.BaseStream;
+            System.Runtime.InteropServices.SafeHandle handle = null;
+            for (var type = stream.GetType(); type != null && handle == null; type = type.BaseType)
+                foreach (var field in type.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic))
+                    if (typeof(System.Runtime.InteropServices.SafeHandle).IsAssignableFrom(field.FieldType))
+                    {
+                        handle = field.GetValue(stream) as System.Runtime.InteropServices.SafeHandle;
+                        if (handle != null)
+                            break;
+                    }
+            if (handle == null || handle.IsInvalid)
+                throw new IOException("no handle to set " + speed + " baud on " + PortName);
+            ulong value = (ulong)speed;
+            if (ioctl(handle.DangerousGetHandle().ToInt32(), IOSSIOSPEED, ref value) != 0)
+            {
+                var errno = Marshal.GetLastWin32Error();
+                // ENOTTY: not a serial line (a pseudo-terminal, a virtual port), which has no speed
+                if (errno == 25)
+                    return;
+                throw new IOException("cannot set " + speed + " baud on " + PortName + " (errno " + errno + ")");
+            }
+        }
+
         public new void Open()
         {
             // 500ms write timeout - win32 api default
@@ -539,6 +596,19 @@ namespace MissionPlanner.Comms
             }
             if (espFix)
                 base.Handshake = System.IO.Ports.Handshake.None;
+
+            if (macSpeed != 0)
+            {
+                try
+                {
+                    SetMacSpeed(macSpeed);
+                }
+                catch
+                {
+                    Close();
+                    throw;
+                }
+            }
         }
 
         public new void Close()
