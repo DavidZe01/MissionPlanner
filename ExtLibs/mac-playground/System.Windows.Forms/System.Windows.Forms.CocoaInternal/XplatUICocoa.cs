@@ -1626,10 +1626,69 @@ namespace System.Windows.Forms {
 			// Handled by MonoView
 		}
 
-		[MonoTODO]
-		internal override void ResetMouseHover (IntPtr handle) {
-			throw new NotImplementedException ();
+		// WM_MOUSEHOVER, as Windows sends it to a window tracking the mouse (Control.MouseHover,
+		// ListView item hover): once the mouse has rested within MouseHoverSize for MouseHoverTime
+		// over the window, then not again until it enters anew or ResetMouseHover asks for more
+		NSTimer hoverTimer;
+		IntPtr hoverHwnd;
+		Point hoverPoint;
+		bool hoverDone;
+
+		internal void TrackMouseHover (IntPtr hwnd, Point screenPoint)
+		{
+			if (hwnd != hoverHwnd) {
+				hoverHwnd = hwnd;
+				hoverDone = false;
+			} else if (hoverDone) {
+				return;
+			} else if (hoverTimer != null
+				&& Math.Abs (screenPoint.X - hoverPoint.X) <= MouseHoverSize.Width / 2
+				&& Math.Abs (screenPoint.Y - hoverPoint.Y) <= MouseHoverSize.Height / 2) {
+				return; // still resting: the timer runs on
+			}
+			hoverPoint = screenPoint;
+			StartHoverTimer ();
 		}
+
+		internal void CancelMouseHover (IntPtr hwnd)
+		{
+			if (hwnd != hoverHwnd)
+				return;
+			hoverHwnd = IntPtr.Zero;
+			hoverTimer?.Invalidate ();
+			hoverTimer = null;
+		}
+
+		void StartHoverTimer ()
+		{
+			hoverTimer?.Invalidate ();
+			hoverTimer = NSTimer.CreateScheduledTimer (MouseHoverTime / 1000.0, false, t => {
+				hoverTimer = null;
+				var hwnd = hoverHwnd;
+				if (hwnd == IntPtr.Zero || hoverDone || !(ObjCRuntime.Runtime.TryGetNSObject (hwnd) is NSView))
+					return;
+				hoverDone = true;
+				try {
+					int x = hoverPoint.X, y = hoverPoint.Y;
+					ScreenToClient (hwnd, ref x, ref y);
+					var buttons = Mac.Extensions.ButtonMaskToWParam (NSEvent.CurrentPressedMouseButtons);
+					SendMessage (hwnd, Msg.WM_MOUSEHOVER, (IntPtr)buttons, (IntPtr)((y << 16) | (x & 0xFFFF)));
+				} catch (Exception e) {
+					Console.Error.WriteLine ("WM_MOUSEHOVER: " + e.Message);
+				}
+			});
+		}
+
+		internal override void ResetMouseHover (IntPtr handle) {
+			if (handle != hoverHwnd)
+				return;
+			hoverDone = false;
+			StartHoverTimer ();
+		}
+
+		// Windows' defaults (SPI_GETMOUSEHOVERWIDTH/HEIGHT/TIME)
+		internal override Size MouseHoverSize { get { return new Size (4, 4); } }
+		internal override int MouseHoverTime { get { return 400; } }
 
 		internal override void ScreenToClient (IntPtr handle, ref int x, ref int y)
 		{
@@ -2495,7 +2554,9 @@ namespace System.Windows.Forms {
 			}
 		}
 
-		internal override  Size CursorSize { get{ throw new NotImplementedException(); } }
+		// Windows' standard values (SM_CXCURSOR, SM_CXICON, ...) where macOS has no equivalent:
+		// ObjectListView's tooltips and others read them, and they threw
+		internal override  Size CursorSize { get{ return new Size (32, 32); } }
 		internal override  bool DragFullWindows { get{ return true; } }
 		internal override  Size DragSize {
 			get {
@@ -2509,14 +2570,20 @@ namespace System.Windows.Forms {
 			}
 		}
 
-		internal override  Size IconSize { get{ throw new NotImplementedException(); } }
-		internal override  Size MaxWindowTrackSize { get{ throw new NotImplementedException(); } }
+		internal override  Size IconSize { get{ return new Size (32, 32); } }
+		// the whole desktop, as Windows' SM_CXMAXTRACK (a little more than the virtual screen)
+		internal override  Size MaxWindowTrackSize {
+			get {
+				var r = VirtualScreen;
+				return new Size (r.Width + 2 * FrameBorderSize.Width + 12, r.Height + 2 * FrameBorderSize.Height + 12);
+			}
+		}
 		internal override bool MenuAccessKeysUnderlined {
 			get {
 				return false;
 			}
 		}
-		internal override Size MinimizedWindowSpacingSize { get{ throw new NotImplementedException(); } }
+		internal override Size MinimizedWindowSpacingSize { get{ return new Size (160, 28); } }
 
 		internal override Size MinimumWindowSize {
 			get {

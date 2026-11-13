@@ -695,6 +695,18 @@ class ScreenTour
                     throw new Exception("12 pt is " + (wpt / wpx) + " times 12 px (96/72 = 1.33 expected)");
             }
         });
+        // system metrics that threw NotImplementedException (ObjectListView's tooltips read them),
+        // and the wait cursor of long operations
+        Step("feature:system-metrics", () =>
+        {
+            Console.WriteLine("TOUR system metrics: cursor " + SystemInformation.CursorSize + ", icon " + SystemInformation.IconSize +
+                              ", max track " + SystemInformation.MaxWindowTrackSize + ", hover " + SystemInformation.MouseHoverSize +
+                              " " + SystemInformation.MouseHoverTime + " ms");
+            var previous = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.AppStarting;
+            Cursor.Current = previous;
+        });
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
         if (IsMac)

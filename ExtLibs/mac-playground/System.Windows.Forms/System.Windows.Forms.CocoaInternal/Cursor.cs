@@ -181,7 +181,8 @@ namespace System.Windows.Forms.CocoaInternal {
 		public void SetStandardCursor () {
 			switch (id) {
 				case StdCursor.AppStarting:
-//					NSCursor.spinningCursor().set();
+					// Windows' arrow with an hourglass
+					(BusyCursor ("busyButClickableCursor") ?? NSCursor.ArrowCursor).Set();
 					break;
 				case StdCursor.Arrow:
 					NSCursor.ArrowCursor.Set();
@@ -193,7 +194,8 @@ namespace System.Windows.Forms.CocoaInternal {
 					NSCursor.ArrowCursor.Set();
 					break;
 				case StdCursor.Hand:
-					NSCursor.OpenHandCursor.Set();
+					// Windows' Hand is the pointing hand of links
+					NSCursor.PointingHandCursor.Set();
 					break;
 				case StdCursor.Help:
 					NSCursor.ArrowCursor.Set();
@@ -262,13 +264,27 @@ namespace System.Windows.Forms.CocoaInternal {
 					NSCursor.ResizeLeftRightCursor.Set();
 					break;
 				case StdCursor.WaitCursor:
-//					NSCursor.SpinningCursor().set();
+					// Windows' hourglass: AppKit's own wait cursor (not public API, hence by name)
+					(BusyCursor ("_waitCursor") ?? BusyCursor ("busyButClickableCursor") ?? NSCursor.ArrowCursor).Set();
 					break;
 				default:
 					NSCursor.ArrowCursor.Set();
 					break;
 			}
 			return;
+		}
+
+		static NSCursor BusyCursor (string selector)
+		{
+			try {
+				var cls = new ObjCRuntime.Class ("NSCursor");
+				var sel = new ObjCRuntime.Selector (selector);
+				if (!MacApi.LibObjc.bool_objc_msgSend_IntPtr (cls.Handle, new ObjCRuntime.Selector ("respondsToSelector:").Handle, sel.Handle))
+					return null;
+				return ObjCRuntime.Runtime.GetNSObject<NSCursor> (MacApi.LibObjc.IntPtr_objc_msgSend (cls.Handle, sel.Handle));
+			} catch {
+				return null;
+			}
 		}
 
 //		[DllImport ("/System/Library/Frameworks/Cocoa.framework/Versions/Current/Cocoa")]

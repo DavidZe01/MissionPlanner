@@ -156,8 +156,10 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                         {
                             if (MainV2.MONO)
                             {
+                                // the line typed, without the line break if the text box has
+                                // already added it (Windows: the last character is always one)
                                 cmd = TXT_terminal.Text.Substring(inputStartPos,
-                                    TXT_terminal.Text.Length - inputStartPos);
+                                    TXT_terminal.Text.Length - inputStartPos).TrimEnd('\r', '\n');
                             }
                             else
                             {

@@ -141,6 +141,7 @@ namespace System.Windows.Forms.CocoaInternal
 				msg.hwnd = driver.LastEnteredHwnd;
 				msg.message = Msg.WM_MOUSELEAVE;
 				driver.LastEnteredHwnd = IntPtr.Zero;
+				driver.CancelMouseHover(msg.hwnd);
 
 				if (HitTest.HTNOWHERE != (HitTest)Application.SendMessage(msg.hwnd, Msg.WM_NCHITTEST, msg.wParam, msg.lParam))
 					Application.SendMessage(ref msg);
@@ -242,6 +243,8 @@ namespace System.Windows.Forms.CocoaInternal
 			msg.wParam = (IntPtr)theEvent.ModifierFlags.ToWParam();
 			msg.message = client ? Msg.WM_MOUSEMOVE : Msg.WM_NCMOUSEMOVE;
 			Application.SendMessage(ref msg);
+			if (client)
+				driver.TrackMouseHover(msg.hwnd, new Point(msg.pt.x, msg.pt.y));
 		}
 
 		public override void MouseDragged(NSEvent theEvent)
