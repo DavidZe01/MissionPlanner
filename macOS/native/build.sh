@@ -320,7 +320,12 @@ if [[ -x $gdal_cache/bin/gdalinfo ]] && command -v dylibbundler >/dev/null; then
         done
     done
     cp -RL "$gdal_cache/share/gdal" "$gdal/share/gdal"
-    [[ -n $proj_prefix && -d $proj_prefix/share/proj ]] && cp -RL "$proj_prefix/share/proj" "$gdal/share/proj"
+    # PROJ's database and settings, not Homebrew's datum-shift grids (hundreds of MB of .tif
+    # files; Windows' GDAL has none either)
+    if [[ -n $proj_prefix && -d $proj_prefix/share/proj ]]; then
+        mkdir -p "$gdal/share/proj"
+        find -L "$proj_prefix/share/proj" -maxdepth 1 -type f ! -iname '*.tif' ! -iname '*.tiff' -exec cp -L {} "$gdal/share/proj/" \;
+    fi
     codesign --force --sign - "$gdal"/lib/*.dylib "$gdal"/bin/*
     if otool -L "$gdal"/lib/*.dylib "$gdal"/bin/* | grep -E '^\s+/(opt|usr/local)/' >&2; then
         echo "GDAL: references outside the app remain (above)" >&2
