@@ -855,6 +855,23 @@ class ScreenTour
                 try { Directory.Delete(dir, true); } catch { }
             }
         });
+        // the Log Analyzer's own Python in the app (with numpy), as Windows runs it frozen
+        Step("feature:python", () =>
+        {
+            var python = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "python", "bin", "python3"));
+            if (!File.Exists(python))
+                throw new Exception("no Python in the app: " + python);
+            var psi = new ProcessStartInfo(python, "-B -E -s -c \"import sys, numpy; print(sys.version.split()[0], 'numpy', numpy.__version__)\"")
+                { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            using (var proc = Process.Start(psi))
+            {
+                var output = proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+                proc.WaitForExit(30000);
+                Console.WriteLine("TOUR python: " + output.Trim());
+                if (proc.ExitCode != 0)
+                    throw new Exception("the app's Python failed: " + output.Trim());
+            }
+        });
         // adb in the app (Parrot flashing), as adb.exe ships with Windows
         Step("feature:adb", () =>
         {

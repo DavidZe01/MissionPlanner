@@ -142,6 +142,35 @@ echo "$build_commit" > "$app/Contents/Resources/BUILD.txt"
 rm -rf -- "$bundle/LogAnalyzer"
 cp -R "$native_dir/../LogAnalyzer" "$bundle/LogAnalyzer"
 find "$bundle/LogAnalyzer" -name __pycache__ -prune -exec rm -rf {} +
+# ... and a Python for it, as Windows runs it frozen (runner.exe) with nothing to install: a
+# self-contained one (python-build-standalone) with numpy (the optical flow test), kept in a
+# cache between builds. Without it the analyzer uses Homebrew's or the system's python3.
+py_version=3.12.8 py_build=20250115
+py_arch=$(uname -m | sed 's/arm64/aarch64/')
+py_cache="$HOME/Library/Caches/MissionPlanner-native/python-$py_version-$py_build-$py_arch"
+if [[ ! -x $py_cache/python/bin/python3 ]]; then
+    rm -rf "$py_cache.new" && mkdir -p "$py_cache.new"
+    if curl -fsSL --retry 3 "https://github.com/astral-sh/python-build-standalone/releases/download/$py_build/cpython-$py_version%2B$py_build-$py_arch-apple-darwin-install_only_stripped.tar.gz" \
+            | tar -xz -C "$py_cache.new" \
+        && "$py_cache.new/python/bin/python3" -m pip install -q --no-cache-dir --disable-pip-version-check numpy; then
+        rm -rf "$py_cache" && mv "$py_cache.new" "$py_cache"
+    else
+        echo "Python for the Log Analyzer could not be prepared (it will use python3 from the system)" >&2
+        rm -rf "$py_cache.new"
+    fi
+fi
+if [[ -x $py_cache/python/bin/python3 ]]; then
+    rm -rf -- "$app/Contents/Resources/python"
+    cp -R "$py_cache/python" "$app/Contents/Resources/python"
+    # every program and library in it must carry a valid signature (Apple Silicon kills the
+    # process that loads one without)
+    while IFS= read -r -d '' f; do
+        if file -b "$f" | grep -q Mach-O; then
+            codesign --verify "$f" 2>/dev/null || codesign --force --sign - "$f"
+        fi
+    done < <(find "$app/Contents/Resources/python" -type f \( -name '*.so' -o -name '*.dylib' -o -perm -u+x \) -print0)
+    echo "Python: $("$app/Contents/Resources/python/bin/python3" -c 'import sys, numpy; print(sys.version.split()[0], "numpy", numpy.__version__)')"
+fi
 # native libraries the code loads by name (see MacNative.cs)
 arch=$(uname -m)
 cc -dynamiclib -O2 -arch "$arch" -install_name @loader_path/libuser32stub.dylib \

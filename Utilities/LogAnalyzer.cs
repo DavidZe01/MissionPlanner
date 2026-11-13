@@ -131,10 +131,12 @@ namespace MissionPlanner.Utilities
                 return "";
             }
 
-            // Homebrew's python3 first (it may have numpy for the optical flow test), then the
-            // system's (/usr/bin/python3: the Xcode command line tools)
+            // the app's own Python with numpy (build.sh: self-contained, as Windows runs the
+            // analyzer frozen in runner.exe), then Homebrew's python3, then the system's
+            // (/usr/bin/python3: the Xcode command line tools)
             string python = null;
-            foreach (var candidate in new[] { "/opt/homebrew/bin/python3", "/usr/local/bin/python3", "/usr/bin/python3" })
+            var bundled = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "Resources", "python", "bin", "python3"));
+            foreach (var candidate in new[] { bundled, "/opt/homebrew/bin/python3", "/usr/local/bin/python3", "/usr/bin/python3" })
                 if (File.Exists(candidate))
                 {
                     python = candidate;
