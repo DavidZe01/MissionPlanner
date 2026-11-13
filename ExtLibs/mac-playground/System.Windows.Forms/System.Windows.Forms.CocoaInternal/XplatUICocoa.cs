@@ -171,6 +171,13 @@ namespace System.Windows.Forms {
 
 			// Cache main screen height for flipping screen coordinates.
 			GetDisplaySize(out initialScreenSize);
+			// ... and refresh it when the displays change (one plugged in or out, a new
+			// resolution or arrangement): the primary display's height is the flip between
+			// Cocoa's bottom-up and Windows' top-down screen coordinates
+			NSNotificationCenter.DefaultCenter.AddObserver (NSApplication.DidChangeScreenParametersNotification, n => {
+				initialScreenSize = Size.Empty;
+				GetDisplaySize (out initialScreenSize);
+			});
 
 			// Initialize the Caret
 			Caret.Timer = new Timer ();
@@ -2619,9 +2626,15 @@ namespace System.Windows.Forms {
 			}
 		}
 
+		// as Windows: the bounds of all the displays together
 		internal override Rectangle VirtualScreen {
 			get {
-				return WorkingArea;
+				Rectangle all = Rectangle.Empty;
+				foreach (var nsScreen in NSScreen.Screens ?? Array.Empty<NSScreen> ()) {
+					var frame = NativeToMonoScreen (nsScreen.Frame);
+					all = all.IsEmpty ? frame : Rectangle.Union (all, frame);
+				}
+				return all.IsEmpty ? WorkingArea : all;
 			}
 		}
 

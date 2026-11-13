@@ -707,6 +707,78 @@ class ScreenTour
             Cursor.Current = Cursors.AppStarting;
             Cursor.Current = previous;
         });
+        // ImageAttributes: a colour key makes white transparent (BSE panels' magenta icons), and
+        // an alpha matrix through the overloads that threw (inactive vehicles are drawn at 39%)
+        Step("feature:image-attributes", () =>
+        {
+            using (var src = new System.Drawing.Bitmap(4, 4))
+            using (var dst = new System.Drawing.Bitmap(4, 4))
+            using (var g = System.Drawing.Graphics.FromImage(dst))
+            using (var ia = new System.Drawing.Imaging.ImageAttributes())
+            {
+                using (var gs = System.Drawing.Graphics.FromImage(src))
+                {
+                    gs.Clear(System.Drawing.Color.White);
+                    gs.FillRectangle(System.Drawing.Brushes.Black, 0, 0, 2, 4);
+                }
+                g.Clear(System.Drawing.Color.Red);
+                ia.SetColorKey(System.Drawing.Color.White, System.Drawing.Color.White);
+                g.DrawImage(src, new System.Drawing.Rectangle(0, 0, 4, 4), 0, 0, 4, 4, System.Drawing.GraphicsUnit.Pixel, ia);
+                var keyed = dst.GetPixel(3, 1);
+                var kept = dst.GetPixel(0, 1);
+                Console.WriteLine("TOUR image attributes: colour key white -> " + keyed + ", black -> " + kept);
+                if (keyed.R < 200 || keyed.G > 60 || kept.R > 60)
+                    throw new Exception("colour key: white drew " + keyed + ", black " + kept);
+                // the parallelogram overload with a 39% alpha matrix, as GMapMarker*.IsTransparent
+                g.Clear(System.Drawing.Color.White);
+                var cm = new System.Drawing.Imaging.ColorMatrix { Matrix33 = 0.39f };
+                using (var alpha = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    alpha.SetColorMatrix(cm, System.Drawing.Imaging.ColorMatrixFlag.Default, System.Drawing.Imaging.ColorAdjustType.Bitmap);
+                    g.DrawImage(src, new[] { new System.Drawing.PointF(0, 0), new System.Drawing.PointF(4, 0), new System.Drawing.PointF(0, 4) },
+                        new System.Drawing.RectangleF(0, 0, 4, 4), System.Drawing.GraphicsUnit.Pixel, alpha);
+                }
+                var faded = dst.GetPixel(0, 1);
+                Console.WriteLine("TOUR image attributes: black at 39% over white -> " + faded);
+                if (faded.R < 120 || faded.R > 190)
+                    throw new Exception("alpha matrix: black at 39% over white drew " + faded);
+            }
+        });
+        // an animated GIF (two 4x4 frames: red for 10/100 s, blue for 20/100 s): its frames and
+        // delays, which ImageAnimator, PictureBox and ObjectListView step through
+        Step("feature:animated-gif", () =>
+        {
+            var gif = Convert.FromBase64String("R0lGODlhBAAEAIEAAP8AAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQACgAAACwAAAAABAAEAAAICQABCBxIsCCAgAAh+QQBFAABACwAAAAABAAEAIEAAP8AAAAAAAAAAAAICQABCBxIsCCAgAA7");
+            using (var bmp = new System.Drawing.Bitmap(new MemoryStream(gif)))
+            {
+                var frames = bmp.GetFrameCount(System.Drawing.Imaging.FrameDimension.Time);
+                var delays = bmp.GetPropertyItem(0x5100).Value;
+                var first = bmp.GetPixel(1, 1);
+                bmp.SelectActiveFrame(System.Drawing.Imaging.FrameDimension.Time, 1);
+                var second = bmp.GetPixel(1, 1);
+                int d0 = BitConverter.ToInt32(delays, 0), d1 = BitConverter.ToInt32(delays, 4);
+                Console.WriteLine("TOUR animated gif: " + frames + " frames, delays " + d0 + "," + d1 + ", colours " + first + " then " + second);
+                if (frames != 2 || d0 != 10 || d1 != 20 || first.R < 200 || second.B < 200 || second.R > 60)
+                    throw new Exception("animated GIF: " + frames + " frames, delays " + d0 + "," + d1 + ", colours " + first + ", " + second);
+            }
+        });
+        // lines of a text box as Windows numbers them (the SSH terminal selects lines with these)
+        Step("feature:textbox-lines", () =>
+        {
+            using (var box = new TextBox { Multiline = true, Text = "ab\r\ncd\nef" })
+            {
+                var l0 = box.GetFirstCharIndexFromLine(0);
+                var l1 = box.GetFirstCharIndexFromLine(1);
+                var l2 = box.GetFirstCharIndexFromLine(2);
+                var l3 = box.GetFirstCharIndexFromLine(3);
+                var line = box.GetLineFromCharIndex(l2 + 1);
+                Console.WriteLine("TOUR textbox lines: starts " + l0 + "," + l1 + "," + l2 + "," + l3 + "; char " + (l2 + 1) + " on line " + line +
+                                  " of \"" + box.Text.Replace("\r", "\\r").Replace("\n", "\\n") + "\"");
+                var text = box.Text;
+                if (l0 != 0 || l1 < 0 || l2 < 0 || l3 != -1 || line != 2 || text.Substring(l1, 2) != "cd" || text.Substring(l2, 2) != "ef")
+                    throw new Exception("text box lines: " + l0 + "," + l1 + "," + l2 + "," + l3 + ", line " + line);
+            }
+        });
         // an owner-drawn ComboBox like the connection bar's port list, whose DrawItem adds the
         // device name: the native list shows that drawing, while Text stays the bare port
         if (IsMac)

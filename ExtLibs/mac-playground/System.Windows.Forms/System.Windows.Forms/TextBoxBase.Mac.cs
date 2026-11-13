@@ -703,22 +703,59 @@ namespace System.Windows.Forms
 			return imp.GetPositionFromCharIndex(index);
 		}
 
+		// Lines as in Lines: separated by "\r\n", "\n" or "\r" (the SSH terminal and others
+		// find and select lines with these; they returned 0 or -1 whatever the text)
+		static bool IsLineBreak(string text, int i, out int length)
+		{
+			length = 0;
+			if (text[i] == '\r')
+				length = i + 1 < text.Length && text[i + 1] == '\n' ? 2 : 1;
+			else if (text[i] == '\n')
+				length = 1;
+			return length > 0;
+		}
+
 		public int GetFirstCharIndexFromLine(int lineNumber)
 		{
-			NotImplemented(MethodBase.GetCurrentMethod(), lineNumber);
+			if (lineNumber < 0)
+				throw new ArgumentOutOfRangeException(nameof(lineNumber));
+			var text = Text ?? "";
+			if (lineNumber == 0)
+				return 0;
+			int line = 0;
+			for (int i = 0; i < text.Length; i++)
+			{
+				if (IsLineBreak(text, i, out int length))
+				{
+					i += length - 1;
+					if (++line == lineNumber)
+						return i + 1;
+				}
+			}
 			return -1;
 		}
 
 		public int GetFirstCharIndexOfCurrentLine()
 		{
-			NotImplemented(MethodBase.GetCurrentMethod());
-			return 0;
+			return GetFirstCharIndexFromLine(GetLineFromCharIndex(SelectionStart));
 		}
 
 		public virtual int GetLineFromCharIndex(int index)
 		{
-			NotImplemented(MethodBase.GetCurrentMethod(), index);
-			return 0;
+			var text = Text ?? "";
+			index = Math.Max(0, Math.Min(index, text.Length));
+			int line = 0;
+			for (int i = 0; i < index; i++)
+			{
+				if (IsLineBreak(text, i, out int length))
+				{
+					if (i + length > index)
+						break; // inside a "\r\n": still the line it ends
+					i += length - 1;
+					line++;
+				}
+			}
+			return line;
 		}
 
 		#endregion // Public Instance Methods

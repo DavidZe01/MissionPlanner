@@ -14,6 +14,8 @@ namespace System.Drawing.Imaging
 
 		internal bool isColorMatrixSet;
 		internal bool isGammaSet;
+		internal bool isColorKeySet;
+		internal Color colorKeyLow, colorKeyHigh;
 
 		/// <summary>
 		/// Clears the color matrix.
@@ -99,19 +101,25 @@ namespace System.Drawing.Imaging
 			SetColorKey (colorLow, colorHigh, ColorAdjustType.Default);
 		}
 
+		// applied by Graphics.DrawImage (the Default/Bitmap adjustment, the one images use)
 		public void SetColorKey (Color colorLow, Color colorHigh, ColorAdjustType type)
 		{
-			// FIXME
+			if (type != ColorAdjustType.Default && type != ColorAdjustType.Bitmap)
+				return;
+			colorKeyLow = colorLow;
+			colorKeyHigh = colorHigh;
+			isColorKeySet = true;
 		}
 
 		public void ClearColorKey ()
 		{
-			// FIXME
+			ClearColorKey (ColorAdjustType.Default);
 		}
 
 		public void ClearColorKey (ColorAdjustType type)
 		{
-			// FIXME
+			if (type == ColorAdjustType.Default || type == ColorAdjustType.Bitmap)
+				isColorKeySet = false;
 		}
 
 		/// <summary>
@@ -196,7 +204,16 @@ namespace System.Drawing.Imaging
 		#region ICloneable implementation
 		public object Clone ()
 		{
-			throw new NotImplementedException ();
+			var clone = (ImageAttributes)MemberwiseClone ();
+			if (colorMatrix != null)
+				{
+				var copy = new ColorMatrix ();
+				for (int r = 0; r < 5; r++)
+					for (int c = 0; c < 5; c++)
+						copy [r, c] = colorMatrix [r, c];
+				clone.colorMatrix = copy;
+			}
+			return clone;
 		}
 		#endregion
 		

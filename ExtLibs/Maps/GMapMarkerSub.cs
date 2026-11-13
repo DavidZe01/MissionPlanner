@@ -74,7 +74,7 @@ namespace MissionPlanner.Maps
             {
             }
 
-#if NET472_OR_GREATER
+#if NET472_OR_GREATER || MACNATIVE
             var ia = new System.Drawing.Imaging.ImageAttributes();
             if (IsTransparent)
             {

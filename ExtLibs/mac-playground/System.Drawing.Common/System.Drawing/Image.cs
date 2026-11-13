@@ -194,23 +194,39 @@ namespace System.Drawing {
 			}
 		}
 
+		// the frames of an animated image (GIF), which ImageAnimator, PictureBox and
+		// ObjectListView step through; other images have one
+		int FrameCount => this is Bitmap b ? Math.Max (1, b.frameCount) : 1;
+
 		public int GetFrameCount (FrameDimension dimension)
 		{
-			return 1;
+			return FrameCount;
 		}
 
 		public int SelectActiveFrame(FrameDimension dimension, int frameIndex)
 		{
-			if (frameIndex != 1)
-				throw new NotImplementedException ();
-			return frameIndex;		
+			if (frameIndex < 0 || frameIndex >= FrameCount)
+				throw new ArgumentException ("Parameter is not valid.", nameof (frameIndex));
+			(this as Bitmap)?.SelectFrame (frameIndex);
+			return 0;
+		}
+
+		const int PropertyTagFrameDelay = 0x5100;
+
+		PropertyItem FrameDelayItem ()
+		{
+			var delays = (this as Bitmap)?.FrameDelays () ?? new int [1];
+			var value = new byte [delays.Length * 4];
+			Buffer.BlockCopy (delays, 0, value, 0, value.Length);
+			return new PropertyItem { Id = PropertyTagFrameDelay, Type = 4 /* PropertyTagTypeLong */, Len = value.Length, Value = value };
 		}
 
 		public PropertyItem GetPropertyItem(int propid)
 		{
-			if (propid == 0x5100) // Frame delay
-				return new PropertyItem();
-			throw new NotImplementedException ();
+			if (propid == PropertyTagFrameDelay && FrameCount > 1)
+				return FrameDelayItem ();
+			// as GDI+: a property the image does not have
+			throw new ArgumentException ("Property cannot be found.", nameof (propid));
 		}
 
 		[Browsable (false)]
@@ -550,7 +566,7 @@ namespace System.Drawing {
 		{
 			get
 			{
-				return Array.Empty<int>();
+				return FrameCount > 1 ? new [] { PropertyTagFrameDelay } : Array.Empty<int>();
 			}
 		}
 
@@ -559,7 +575,7 @@ namespace System.Drawing {
 		{
 			get
 			{
-				return Array.Empty<PropertyItem>();
+				return FrameCount > 1 ? new [] { FrameDelayItem () } : Array.Empty<PropertyItem>();
 			}
 		}
 	}

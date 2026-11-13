@@ -376,6 +376,32 @@ namespace System.Drawing {
 			currentFrame = frame;
 		}
 
+		// animated images (GIF): the frame shown and drawn, as Image.SelectActiveFrame chooses it
+		internal void SelectFrame(int frame)
+		{
+			if (imageSource != null && frame != currentFrame)
+				InitializeImageFrame(frame);
+		}
+
+		// each frame's delay in hundredths of a second (GDI+'s PropertyTagFrameDelay, 0x5100)
+		internal int[] FrameDelays()
+		{
+			var delays = new int[Math.Max(1, frameCount)];
+			if (imageSource == null)
+				return delays;
+			for (int i = 0; i < frameCount; i++)
+			{
+				using (var properties = imageSource.CopyProperties((NSDictionary)null, i))
+				{
+					var gif = properties?[new NSString("{GIF}")] as NSDictionary;
+					var delay = (gif?[new NSString("UnclampedDelayTime")] ?? gif?[new NSString("DelayTime")]) as NSNumber;
+					if (delay != null)
+						delays[i] = (int)Math.Round(delay.DoubleValue * 100);
+				}
+			}
+			return delays;
+		}
+
 		private void GuessPixelFormat()
 		{
 			bool hasAlpha;

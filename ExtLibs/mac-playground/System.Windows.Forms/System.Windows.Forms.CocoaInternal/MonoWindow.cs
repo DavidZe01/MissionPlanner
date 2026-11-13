@@ -562,7 +562,10 @@ namespace System.Windows.Forms.CocoaInternal
 
 			base.ResignKeyWindow();
 
-			//driver.SendMessage(ContentView.Handle, Msg.WM_NCACTIVATE, (IntPtr)WindowActiveFlags.WA_INACTIVE, (IntPtr)(-1));
+			// as Windows tells the window losing activation which one takes it (lParam): Mission
+			// Planner's main window themes the forms that open over it on this message
+			driver.SendMessage(ContentView.Handle, Msg.WM_NCACTIVATE, (IntPtr)WindowActiveFlags.WA_INACTIVE,
+				newKeyWindow?.ContentView != null ? newKeyWindow.ContentView.Handle : IntPtr.Zero);
 			driver.SendMessage(ContentView.Handle, Msg.WM_ACTIVATE, (IntPtr)WindowActiveFlags.WA_INACTIVE, newKeyWindow != null ? newKeyWindow.ContentView.Handle : IntPtr.Zero);
 
 			/*foreach (NSWindow utility_window in XplatUICocoa.UtilityWindows)

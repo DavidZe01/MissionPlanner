@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Mac;
 using CoreGraphics;
@@ -450,11 +451,8 @@ namespace System.Drawing
 		public void DrawImage (Image image, PointF [] destPoints, RectangleF srcRect, GraphicsUnit srcUnit, 
                                 ImageAttributes imageAttr)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
-			if (destPoints == null)
-				throw new ArgumentNullException ("destPoints");
-			throw new NotImplementedException ();
+			DrawImageParallelogram (image, destPoints, srcRect, srcUnit, imageAttr);
+			return;
 			//Status status = GDIPlus.GdipDrawImagePointsRect (nativeObject, image.NativeObject,
 			//	destPoints, destPoints.Length , srcRect.X, srcRect.Y,
 			//	srcRect.Width, srcRect.Height, srcUnit, 
@@ -541,12 +539,10 @@ namespace System.Drawing
 
 		public void DrawImage (Image image, Point [] destPoints, Rectangle srcRect, GraphicsUnit srcUnit, ImageAttributes imageAttr, DrawImageAbort callback, int callbackData)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
 			if (destPoints == null)
 				throw new ArgumentNullException ("destPoints");
-
-			throw new NotImplementedException ();
+			DrawImageParallelogram (image, Array.ConvertAll (destPoints, p => (PointF)p), srcRect, srcUnit, imageAttr);
+			return;
 			//Status status = GDIPlus.GdipDrawImagePointsRectI (nativeObject, image.NativeObject,
 			//	destPoints, destPoints.Length , srcRect.X, srcRect.Y, 
 			//	srcRect.Width, srcRect.Height, srcUnit, 
@@ -578,6 +574,9 @@ namespace System.Drawing
 		
 		public void DrawImage (Image image, PointF [] destPoints, RectangleF srcRect, GraphicsUnit srcUnit, ImageAttributes imageAttr, DrawImageAbort callback, int callbackData)
 		{
+			// (the abort callback, for long draws on GDI+'s side, is not needed here)
+			DrawImageParallelogram (image, destPoints, srcRect, srcUnit, imageAttr);
+			return;
 			//Status status = GDIPlus.GdipDrawImagePointsRect (nativeObject, image.NativeObject,
 			//	destPoints, destPoints.Length , srcRect.X, srcRect.Y,
 			//	srcRect.Width, srcRect.Height, srcUnit, 
@@ -618,6 +617,50 @@ namespace System.Drawing
 				colorMatrix.Matrix40 == 0f && colorMatrix.Matrix41 == 0f && colorMatrix.Matrix42 == 0f && colorMatrix.Matrix43 == 0f && colorMatrix.Matrix44 == 1.0f;
 		}
 
+		// GDI+'s three destination points (upper-left, upper-right, lower-left): the image drawn
+		// into that parallelogram, through the overload that applies the ImageAttributes
+		void DrawImageParallelogram (Image image, PointF [] destPoints, RectangleF srcRect, GraphicsUnit srcUnit, ImageAttributes imageAttr)
+		{
+			if (image == null)
+				throw new ArgumentNullException ("image");
+			if (destPoints == null)
+				throw new ArgumentNullException ("destPoints");
+			if (destPoints.Length != 3 && destPoints.Length != 4)
+				throw new ArgumentException ("Destination points must be an array with a length of 3 or 4. " +
+					"A length of 3 defines a parallelogram with the upper-left, upper-right, " +
+					"and lower-left corners. A length of 4 defines a polygon.");
+			int width = Math.Max (1, (int)Math.Round (srcRect.Width)), height = Math.Max (1, (int)Math.Round (srcRect.Height));
+			var state = Save ();
+			try {
+				using (var m = new Matrix (new RectangleF (0, 0, width, height), new [] { destPoints [0], destPoints [1], destPoints [2] }))
+					MultiplyTransform (m);
+				DrawImage (image, new Rectangle (0, 0, width, height), srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height, srcUnit, imageAttr);
+			} finally {
+				Restore (state);
+			}
+		}
+
+		// SetColorKey: the pixels whose colour lies between the low and high keys become transparent
+		static CGImage ApplyColorKey (CGImage image, Color low, Color high)
+		{
+			int w = (int)image.Width, h = (int)image.Height;
+			var data = new byte [w * h * 4];
+			using (var colorSpace = CGColorSpace.CreateDeviceRGB ())
+			using (var bitmap = new CGBitmapContext (data, w, h, 8, w * 4, colorSpace, CGImageAlphaInfo.PremultipliedLast)) {
+				bitmap.DrawImage (new CGRect (0, 0, w, h), image);
+				for (int i = 0; i < data.Length; i += 4) {
+					int a = data [i + 3];
+					if (a == 0)
+						continue;
+					// the colour itself (the bitmap is premultiplied by alpha)
+					int r = data [i] * 255 / a, g = data [i + 1] * 255 / a, b = data [i + 2] * 255 / a;
+					if (r >= low.R && r <= high.R && g >= low.G && g <= high.G && b >= low.B && b <= high.B)
+						data [i] = data [i + 1] = data [i + 2] = data [i + 3] = 0;
+				}
+				return bitmap.ToImage ();
+			}
+		}
+
 		public void DrawImage (Image image, Rectangle destRect, float srcX, float srcY, float srcWidth, float srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttrs)
 		{
 			if (image == null)
@@ -653,6 +696,9 @@ namespace System.Drawing
 //			float scaleX = subImage.Width/srcRect1.Width;
 //			float scaleY = subImage.Height/srcRect1.Height;
 //			transform.Scale (scaleX, scaleY);
+
+			if (imageAttrs != null && imageAttrs.isColorKeySet)
+				subImage = ApplyColorKey (subImage, imageAttrs.colorKeyLow, imageAttrs.colorKeyHigh);
 
 			bool resetAlpha = false;
 			if (imageAttrs != null) {
@@ -724,9 +770,9 @@ namespace System.Drawing
 		
 		public void DrawImage (Image image, Rectangle destRect, int srcX, int srcY, int srcWidth, int srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttr, DrawImageAbort callback)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
-			throw new NotImplementedException ();
+			// (the abort callback, for long draws on GDI+'s side, is not needed here)
+			DrawImage (image, destRect, (float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight, srcUnit, imageAttr);
+			return;
 			//Status status = GDIPlus.GdipDrawImageRectRectI (nativeObject, image.NativeObject, 
             //                            destRect.X, destRect.Y, destRect.Width, 
 			//		destRect.Height, srcX, srcY, srcWidth, srcHeight,
@@ -737,9 +783,9 @@ namespace System.Drawing
 		
 		public void DrawImage (Image image, Rectangle destRect, float srcX, float srcY, float srcWidth, float srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttrs, DrawImageAbort callback)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
-			throw new NotImplementedException ();
+			// (the abort callback, for long draws on GDI+'s side, is not needed here)
+			DrawImage (image, destRect, (float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight, srcUnit, imageAttrs);
+			return;
 			//Status status = GDIPlus.GdipDrawImageRectRect (nativeObject, image.NativeObject, 
             //                            destRect.X, destRect.Y, destRect.Width, 
 			//		destRect.Height, srcX, srcY, srcWidth, srcHeight,
@@ -750,9 +796,9 @@ namespace System.Drawing
 
 		public void DrawImage (Image image, Rectangle destRect, float srcX, float srcY, float srcWidth, float srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttrs, DrawImageAbort callback, IntPtr callbackData)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
-			throw new NotImplementedException ();
+			// (the abort callback, for long draws on GDI+'s side, is not needed here)
+			DrawImage (image, destRect, (float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight, srcUnit, imageAttrs);
+			return;
 			//Status status = GDIPlus.GdipDrawImageRectRect (nativeObject, image.NativeObject, 
 			//	destRect.X, destRect.Y, destRect.Width, destRect.Height,
 			//	srcX, srcY, srcWidth, srcHeight, srcUnit, 
@@ -762,9 +808,9 @@ namespace System.Drawing
 
 		public void DrawImage (Image image, Rectangle destRect, int srcX, int srcY, int srcWidth, int srcHeight, GraphicsUnit srcUnit, ImageAttributes imageAttrs, DrawImageAbort callback, IntPtr callbackData)
 		{
-			if (image == null)
-				throw new ArgumentNullException ("image");
-			throw new NotImplementedException ();
+			// (the abort callback, for long draws on GDI+'s side, is not needed here)
+			DrawImage (image, destRect, (float)srcX, (float)srcY, (float)srcWidth, (float)srcHeight, srcUnit, imageAttrs);
+			return;
 			//Status status = GDIPlus.GdipDrawImageRectRect (nativeObject, image.NativeObject, 
             //           		destRect.X, destRect.Y, destRect.Width, destRect.Height,
 			//	srcX, srcY, srcWidth, srcHeight, srcUnit,
