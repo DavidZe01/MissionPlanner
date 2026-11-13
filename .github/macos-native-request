@@ -60,3 +60,4 @@
 2026-11-13 GDAL without PROJ's datum grids
 2026-11-13 again: the runner shut down during the previous request
 ef325d8: the parameter loading page opened in its real state
+f34a0ea: Flight Data tabs kept inside the pane (sidebar-fit)
