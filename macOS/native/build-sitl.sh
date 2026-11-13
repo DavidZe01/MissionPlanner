@@ -86,6 +86,12 @@ if [[ -n $commits_to_build ]]; then
         "$work/venv/bin/pip" install -q empy==3.3.4 pexpect future ptyprocess lxml
     fi
     export PATH="$work/venv/bin:$PATH"
+    # ArduPilot links macOS builds with -ld_classic, which newer Xcode no longer has: its new
+    # linker then rejects the unaligned pointers of the packed AP_FWVersion ("pointer not
+    # aligned"), which it only accepts without chained fixups
+    if [[ $(uname -s) == Darwin ]]; then
+        export LINKFLAGS="${LINKFLAGS:-} -Wl,-no_fixup_chains"
+    fi
     for commit in $commits_to_build; do
         refs=$(awk -v c="$commit" '$4 == c {print $3}' "$entries" | sort -u | tr '\n' ' ')
         targets=$(awk -v c="$commit" '$4 == c && $5 == "build" {print $6}' "$entries" | sort -u | tr '\n' ' ')

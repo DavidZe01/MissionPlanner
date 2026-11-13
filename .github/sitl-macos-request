@@ -2,3 +2,4 @@
 # publishes them in the "sitl-macos" release (.github/workflows/sitl-macos.yml). Add a line
 # per request.
 2026-11-13 build every vehicle and channel (first publication)
+2026-11-13 again, linking without chained fixups (newer Xcode)
