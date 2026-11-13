@@ -24,6 +24,19 @@ namespace MissionPlanner
     {
         static readonly string bundleDir = AppContext.BaseDirectory;
 
+        /// <summary>
+        /// Draws the native views under a control (pop-up menus, text fields, steppers, scroll bars) in
+        /// macOS' dark or light appearance, whatever the system's, so that they match the colours the
+        /// application's theme paints around them.
+        /// </summary>
+        internal static void SetAppearance(System.Windows.Forms.Control control, bool dark)
+        {
+            if (!control.IsHandleCreated)
+                return;
+            if (Runtime.GetNSObject(control.Handle) is NSView view)
+                view.Appearance = NSAppearance.GetAppearance(dark ? NSAppearance.NameDarkAqua : NSAppearance.NameAqua);
+        }
+
         // GStreamer inside the app (build.sh), before a Homebrew or framework one
         static readonly string bundledGStreamer = Path.Combine(AppContext.BaseDirectory, "gstreamer");
 

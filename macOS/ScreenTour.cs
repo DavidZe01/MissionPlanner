@@ -525,10 +525,11 @@ class ScreenTour
                                         ", legend bottom " + legend.Bottom + ", distance bar right " + distance.Right);
             });
 #if MACNATIVE
-            // the tabs under the HUD: nothing may run past the pane's edge (the Actions table fills
-            // it as on Windows, at Windows' default 300 px and at the pane's own width), a scrollable
-            // tab shows its scroll bar and scrolls sideways, and each tab's text clears its edges
-            Step("feature:sidebar-fit", () => SidebarFit(m.FlightData));
+            // the tab panel under the HUD in its macOS style (macOS/native/FlightDataMac.cs): a pop-up
+            // menu in place of the tab strip, kept in step with the pages; Actions, Servo/Relay and Aux
+            // Function inside the pane at its own width and at Windows' default 300 px; the same
+            // controls with their handlers; native controls in the theme's dark or light appearance
+            Step("feature:mac-sidebar", () => MacSidebar(m.FlightData));
 #endif
             // every tab the Flight Data screen shows (Quick, Actions, Messages, PreFlight, Gauges,
             // Status, Servo/Relay, Aux Function, Scripts, Payload, Telemetry Logs, DataFlash Logs, ...)
@@ -597,84 +598,151 @@ class ScreenTour
     }
 
 #if MACNATIVE
-    private static void SidebarFit(Control flightData)
+    private static void MacSidebar(MissionPlanner.GCSViews.FlightData flightData)
     {
         var mainH = (SplitContainer)flightData.Controls.Find("MainH", true).Single();
         var tabs = (TabControl)flightData.Controls.Find("tabControlactions", true).Single();
-        var actions = tabs.TabPages["tabActions"];
-        var table = actions.Controls.Find("tableLayoutPanel1", true).Single();
-        var servo = tabs.TabPages["tabServo"];
-        var servos = (ScrollableControl)servo.Controls.Find("flowLayoutPanelServos", true).Single();
+        var picker = flightData.MacTabPicker;
+        var problems = new List<string>();
+        if (picker == null)
+            throw new Exception("no page pop-up menu");
         var selected = tabs.SelectedIndex;
         var distance = mainH.SplitterDistance;
-        var problems = new List<string>();
         try
         {
+            // the tab strip hidden, the pop-up menu listing the pages in order and following them
+            if (tabs.TabStripVisible || tabs.DisplayRectangle.Top > 1)
+                problems.Add("tab strip shown (display rectangle " + tabs.DisplayRectangle + ")");
+            Func<string> listing = () => string.Join(",", picker.Items.Cast<object>());
+            Console.WriteLine("TOUR mac sidebar pages: " + listing());
+            if (picker.Items.Count != tabs.TabCount)
+                problems.Add("menu has " + picker.Items.Count + " pages, the tab control " + tabs.TabCount);
+            if (tabs.TabCount > 1)
+            {
+                int other = (selected + 1) % tabs.TabCount;
+                picker.SelectedIndex = other;
+                Wait(200);
+                if (tabs.SelectedIndex != other)
+                    problems.Add("menu item " + other + " selected page " + tabs.SelectedIndex);
+                tabs.SelectedIndex = selected; // as Ctrl+1..0 do
+                Wait(200);
+                if (picker.SelectedIndex != selected)
+                    problems.Add("page " + selected + " left the menu at " + picker.SelectedIndex);
+                // a page removed and added again (as Customize and plugins do)
+                var last = tabs.TabPages[tabs.TabCount - 1];
+                tabs.TabPages.Remove(last);
+                if (picker.Items.Count != tabs.TabCount)
+                    problems.Add("menu not rebuilt after a page was removed");
+                tabs.TabPages.Add(last);
+                if (picker.Items.Count != tabs.TabCount || !picker.Items[picker.Items.Count - 1].ToString().StartsWith(last.Text))
+                    problems.Add("menu not rebuilt after a page was added: " + listing());
+                tabs.SelectedIndex = selected;
+            }
+
+            // inside the pane, and nothing to scroll sideways
+            var checkedPages = new[] { "tabActions", "tabServo", "tabAuxFunction" };
             foreach (var width in new[] { distance, 300 })
             {
                 mainH.SplitterDistance = width;
-                tabs.SelectedTab = actions;
-                Wait(600);
-                foreach (Control c in table.Controls)
+                foreach (TabPage page in tabs.TabPages)
                 {
-                    if (!c.Visible)
-                        continue;
-                    var right = actions.PointToClient(c.PointToScreen(System.Drawing.Point.Empty)).X + c.Width;
-                    if (right > actions.ClientSize.Width + 1)
-                        problems.Add(c.Name + " ends at " + right + " of " + actions.ClientSize.Width + " (pane " + width + ")");
-                    var modify = c as ModifyandSet;
-                    if (modify == null)
-                        continue;
-                    var number = modify.NumericUpDown;
-                    var field = number.Controls.OfType<TextBoxBase>().FirstOrDefault();
-                    var text = number.Value.ToString("F" + number.DecimalPlaces);
-                    var textWidth = TextRenderer.MeasureText(text, number.Font).Width;
-                    if (field != null && field.Width < textWidth + 8)
-                        problems.Add(c.Name + " field " + field.Width + " px for \"" + text + "\" (" + textWidth + " px)");
-                    if (width == distance && (modify.Button.Top >= modify.Height || modify.Button.Width <= 0))
-                        problems.Add(c.Name + " button out of sight: " + modify.Button.Bounds + " in " + modify.Size);
+                    tabs.SelectedTab = page;
+                    Wait(checkedPages.Contains(page.Name) ? 500 : 150);
+                    var past = new List<string>();
+                    foreach (var c in Descendants(page))
+                    {
+                        if (!c.Visible || c.Width <= 0)
+                            continue;
+                        var right = page.PointToClient(c.PointToScreen(System.Drawing.Point.Empty)).X + c.Width;
+                        if (right > page.ClientSize.Width + 1)
+                            past.Add(c.Name + " to " + right);
+                    }
+                    var sideways = Descendants(page).OfType<ScrollableControl>().Where(c => c.Visible && c.HorizontalScroll.Visible)
+                        .Select(c => c.Name).ToList();
+                    if (checkedPages.Contains(page.Name))
+                    {
+                        Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + ": page " + page.ClientSize +
+                                          (past.Count > 0 ? ", past the edge: " + string.Join(", ", past) : ", inside") +
+                                          (sideways.Count > 0 ? ", sideways bar: " + string.Join(", ", sideways) : ""));
+                        if (past.Count > 0)
+                            problems.Add(page.Name + " at " + width + " px: " + string.Join(", ", past.Take(6)));
+                        if (sideways.Count > 0)
+                            problems.Add(page.Name + " at " + width + " px scrolls sideways: " + string.Join(", ", sideways));
+                    }
+                    else if (past.Count > 0 || sideways.Count > 0)
+                        // the pages the second phase lays out: reported only
+                        Console.WriteLine("TOUR mac sidebar pane " + width + " " + page.Name + " (not yet laid out): " +
+                                          past.Count + " past the edge" + (sideways.Count > 0 ? ", sideways bar" : ""));
                 }
-                Console.WriteLine("TOUR sidebar pane " + width + ": actions " + actions.ClientSize + ", table " + table.Bounds);
             }
-            mainH.SplitterDistance = 300;
-            tabs.SelectedTab = servo;
-            Wait(600);
-            var hscroll = typeof(ScrollableControl).GetField("hscrollbar", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(servos);
-            var scrollview = typeof(ScrollBar).GetField("scrollview", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(hscroll) as AppKit.NSScrollView;
-            var style = scrollview == null ? "none" : scrollview.ScrollerStyle.ToString();
-            int before = servos.HorizontalScroll.Value;
-            var wheel = typeof(Control).GetMethod("OnMouseHWheel", BindingFlags.NonPublic | BindingFlags.Instance);
-            wheel.Invoke(servos, new object[] { new HandledMouseEventArgs(MouseButtons.None, 0, 0, 0, -120) });
-            int after = servos.HorizontalScroll.Value;
-            Console.WriteLine("TOUR sidebar servo: display " + servos.DisplayRectangle.Size + " client " + servos.ClientSize +
-                              ", horizontal bar visible " + servos.HorizontalScroll.Visible + " style " + style +
-                              ", sideways scroll " + before + " -> " + after);
-            if (servos.DisplayRectangle.Width > servos.ClientSize.Width)
+
+            // the same controls, with their handlers
+            var actions = flightData.MacActions;
+            var clickKey = typeof(Control).GetField("ClickEvent", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            var events = typeof(System.ComponentModel.Component).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
+            Func<Control, bool> clickable = c => ((System.ComponentModel.EventHandlerList)events.GetValue(c))[clickKey] != null;
+            var table = flightData.Controls.Find("tableLayoutPanel1", true).Single();
+            var moved = actions.Controls.Cast<Control>().ToList();
+            Console.WriteLine("TOUR mac sidebar actions: " + moved.Count + " controls (" + moved.OfType<MyButton>().Count() + " buttons, " +
+                              moved.OfType<ComboBox>().Count() + " choices, " + moved.OfType<ModifyandSet>().Count() + " values), " +
+                              table.Controls.Count + " left in the grid");
+            if (moved.Count != 22 || table.Controls.Count != 0 || moved.OfType<ModifyandSet>().Count() != 3)
+                problems.Add("Actions has " + moved.Count + " controls (22 expected), the grid " + table.Controls.Count);
+            var deaf = moved.OfType<MyButton>().Where(b => !clickable(b)).Select(b => b.Name).ToList();
+            var servoLow = flightData.Controls.Find("BUT_Low", true).FirstOrDefault();
+            if (servoLow == null || !clickable(servoLow))
+                deaf.Add("servo BUT_Low");
+            if (deaf.Count > 0)
+                problems.Add("buttons without their click handler: " + string.Join(", ", deaf));
+            var rounded = moved.OfType<MyButton>().Count(b => b.CornerRadius > 0);
+            Console.WriteLine("TOUR mac sidebar buttons rounded: " + rounded + "/" + moved.OfType<MyButton>().Count());
+
+            // native controls in the theme's appearance
+            var panel = tabs.Parent;
+            var view = ObjCRuntime.Runtime.GetNSObject(panel.Handle) as AppKit.NSView;
+            var appearance = view?.Appearance?.Name ?? "inherited";
+            var background = tabs.TabCount > 0 ? tabs.TabPages[0].BackColor : panel.BackColor;
+            Console.WriteLine("TOUR mac sidebar appearance: " + appearance + " on " + background);
+            if (background.A == 255 && (background.GetBrightness() < 0.5f) != appearance.Contains("Dark"))
+                problems.Add("appearance " + appearance + " on a " + (background.GetBrightness() < 0.5f ? "dark" : "light") + " theme");
+
+            // a sideways scroll still moves a page that is wider than the pane (Status draws its columns)
+            var status = tabs.TabPages["tabStatus"];
+            if (status != null)
             {
-                if (!servos.HorizontalScroll.Visible)
-                    problems.Add("Servo/Relay wider than the pane without a horizontal scroll bar");
-                if (style != "Legacy")
-                    problems.Add("Servo/Relay scroll bar style " + style + " (hidden until scrolling)");
-                if (after <= before)
-                    problems.Add("a sideways scroll did not move Servo/Relay (" + before + " -> " + after + ")");
-            }
-            servos.HorizontalScroll.Value = 0;
-            using (var g = tabs.CreateGraphics())
-                for (int i = 0; i < tabs.TabCount; i++)
+                mainH.SplitterDistance = 300;
+                tabs.SelectedTab = status;
+                Wait(300);
+                if (status.HorizontalScroll.Visible)
                 {
-                    var textWidth = (int)Math.Ceiling(g.MeasureString(tabs.TabPages[i].Text, tabs.Font).Width);
-                    var rect = tabs.GetTabRect(i);
-                    if (rect.Width < textWidth + 2 * 3)
-                        problems.Add("tab " + tabs.TabPages[i].Text + " " + rect.Width + " px for " + textWidth + " px of text");
+                    int before = status.HorizontalScroll.Value;
+                    typeof(Control).GetMethod("OnMouseHWheel", BindingFlags.NonPublic | BindingFlags.Instance)
+                        .Invoke(status, new object[] { new HandledMouseEventArgs(MouseButtons.None, 0, 0, 0, -120) });
+                    Console.WriteLine("TOUR mac sidebar status sideways scroll " + before + " -> " + status.HorizontalScroll.Value);
+                    if (status.HorizontalScroll.Value <= before)
+                        problems.Add("a sideways scroll did not move Status");
+                    status.HorizontalScroll.Value = 0;
                 }
+            }
         }
         finally
         {
             mainH.SplitterDistance = distance;
-            tabs.SelectedIndex = selected;
+            if (selected >= 0 && selected < tabs.TabCount)
+                tabs.SelectedIndex = selected;
         }
         if (problems.Count > 0)
             throw new Exception(string.Join("; ", problems));
+    }
+
+    private static IEnumerable<Control> Descendants(Control root)
+    {
+        foreach (Control child in root.Controls)
+        {
+            yield return child;
+            foreach (var grandchild in Descendants(child))
+                yield return grandchild;
+        }
     }
 #endif
 

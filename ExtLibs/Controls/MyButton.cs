@@ -55,6 +55,15 @@ namespace MissionPlanner.Controls
 
         protected override Size DefaultSize => base.DefaultSize;
 
+        /// <summary>
+        /// Radius of the button's corners in pixels; 0 (the default) keeps the classic square look.
+        /// The corners outside the radius show the parent's background.
+        /// </summary>
+        [System.ComponentModel.Browsable(true), System.ComponentModel.Category("Appearance")]
+        [DefaultValue(0)]
+        public int CornerRadius { get { return _CornerRadius; } set { _CornerRadius = Math.Max(0, value); this.Invalidate(); } }
+        int _CornerRadius;
+
         public MyButton()
         {
             _BGGradTop = Color.FromArgb(0x94, 0xc1, 0x1f);
@@ -79,7 +88,7 @@ namespace MissionPlanner.Controls
             {
                 Graphics gr = pevent.Graphics;
 
-                gr.Clear(this.BackColor);
+                gr.Clear(_CornerRadius > 0 ? ParentBackColor() : this.BackColor);
 
                 gr.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -94,6 +103,8 @@ namespace MissionPlanner.Controls
                 float wid = this.Height / 3f;
 
                 wid = 1;
+                if (_CornerRadius > 0)
+                    wid = Math.Max(1, Math.Min(_CornerRadius * 2, Math.Min(this.Width, this.Height) - 1));
 
                 int width = this.Width - 1;
                 int height = this.Height - 1;
@@ -155,6 +166,15 @@ namespace MissionPlanner.Controls
             catch { }
 
             inOnPaint = false;
+        }
+
+        // the first opaque background behind the button (what shows around rounded corners)
+        Color ParentBackColor()
+        {
+            for (Control c = this.Parent; c != null; c = c.Parent)
+                if (c.BackColor.A == 255)
+                    return c.BackColor;
+            return this.BackColor;
         }
 
         protected override void OnClick(EventArgs e)

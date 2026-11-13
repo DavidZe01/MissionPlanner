@@ -172,7 +172,24 @@ namespace System.Windows.Forms {
 		
 		public override Rectangle DisplayRectangle {
 			get {
+				if (!tab_strip_visible)
+					return ClientRectangle;
 				return ThemeEngine.Current.TabControlGetDisplayRectangle (this);
+			}
+		}
+
+		bool tab_strip_visible = true;
+
+		// false: no tabs and no border, the selected page fills the control (the application picks the
+		// page another way, e.g. a pop-up menu). TabPages, SelectedIndex and their events are unchanged.
+		[DefaultValue (true)]
+		public bool TabStripVisible {
+			get { return tab_strip_visible; }
+			set {
+				if (tab_strip_visible == value)
+					return;
+				tab_strip_visible = value;
+				Redraw ();
 			}
 		}
 
@@ -956,7 +973,7 @@ namespace System.Windows.Forms {
 
 		private void MouseDownHandler (object sender, MouseEventArgs e)
 		{
-			if ((e.Button & MouseButtons.Left) == 0)
+			if ((e.Button & MouseButtons.Left) == 0 || !tab_strip_visible)
 				return;
 
 			if (ShowSlider) {
@@ -1449,6 +1466,11 @@ namespace System.Windows.Forms {
 
 		private void Draw (Graphics dc, Rectangle clip)
 		{
+			if (!tab_strip_visible) {
+				using (var brush = new SolidBrush (BackColor))
+					dc.FillRectangle (brush, clip);
+				return;
+			}
 			ThemeEngine.Current.DrawTabControl (dc, clip, this);
 		}
 
@@ -1542,6 +1564,10 @@ namespace System.Windows.Forms {
 
 		void OnMouseMove (object sender, MouseEventArgs e)
 		{
+			if (!tab_strip_visible) {
+				EnteredTabPage = null;
+				return;
+			}
 			if (!mouse_down_on_a_tab_page && ShowSlider) {
 				if (LeftSliderState == PushButtonState.Pressed ||
 					RightSliderState == PushButtonState.Pressed)
