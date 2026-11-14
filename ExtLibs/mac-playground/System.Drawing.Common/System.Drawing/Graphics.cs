@@ -741,12 +741,18 @@ namespace System.Drawing {
 			applyModelView();
 		}
 		
+		// A copy each way, as GDI+: code saves the transform, translates and rotates, then sets the
+		// saved one back (Mission Planner's map markers). Returning the live matrix, the "saved" one
+		// was the one being changed, so nothing was restored and everything drawn afterwards was
+		// moved and turned with the vehicle marker.
 		public Matrix Transform {
 			get {
-				return modelMatrix;
+				return modelMatrix.Clone();
 			}
 			set {
-				modelMatrix = value;
+				if (value == null)
+					throw new ArgumentNullException (nameof (value));
+				modelMatrix = value.Clone();
 				applyModelView();
 			}
 		}
@@ -1464,7 +1470,7 @@ namespace System.Drawing {
 			LastBrush = null;
 			//LastPen = gstate.lastPen;
 			//LastBrush = gstate.lastBrush;
-			modelMatrix = gstate.model;
+			modelMatrix = gstate.model.Clone();
 			viewMatrix = gstate.view;
 			renderingOrigin = gstate.renderingOrigin;
 			graphicsUnit = gstate.pageUnit;

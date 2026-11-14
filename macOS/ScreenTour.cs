@@ -923,6 +923,30 @@ class ScreenTour
         });
         // text measured with the font's own unit: 12 pt is 96/72 of 12 px (a cache that ignored
         // the unit gave the second the first one's size)
+        // Graphics.Transform hands out a copy, as GDI+: a marker that saves it, translates and rotates,
+        // then sets the saved one back must leave nothing behind (the map's guided-mode point once
+        // moved and turned with the vehicle marker drawn before it)
+        Step("feature:graphics-transform", () =>
+        {
+            using (var bitmap = new System.Drawing.Bitmap(40, 40))
+            using (var g = System.Drawing.Graphics.FromImage(bitmap))
+            {
+                g.Clear(System.Drawing.Color.White);
+                var saved = g.Transform;
+                g.TranslateTransform(20, 20);
+                g.RotateTransform(180);
+                var savedAfter = saved.Elements;
+                g.Transform = saved;
+                g.FillRectangle(System.Drawing.Brushes.Black, 0, 0, 10, 10);
+                var corner = bitmap.GetPixel(5, 5);
+                var elsewhere = bitmap.GetPixel(15, 15);
+                Console.WriteLine("TOUR graphics transform: saved " + string.Join(",", savedAfter) + ", drawn at the origin " + corner + ", beside it " + elsewhere);
+                if (savedAfter[4] != 0 || savedAfter[5] != 0 || savedAfter[0] != 1)
+                    throw new Exception("the saved transform changed with the graphics: " + string.Join(",", savedAfter));
+                if (corner.R > 60 || elsewhere.R < 200)
+                    throw new Exception("drawing after restoring the transform was moved (origin " + corner + ", beside " + elsewhere + ")");
+            }
+        });
         Step("feature:text-units", () =>
         {
             using (var bmp = new System.Drawing.Bitmap(10, 10))
