@@ -65,3 +65,4 @@ c253a76: Flight Data tab panel in a macOS style (mac-sidebar)
 5e22270: Mac panel rows leave room for the vertical scroll bar
 06df966: Mac panel phase 2 (remaining Flight Data pages)
 9f6756b: Aux Function's choice beside its buttons; overlap checks
+7eb48db: progress dialog close race; Aux Function row check
