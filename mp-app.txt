@@ -1,0 +1,1 @@
+bin/Release/net461/Mission Planner.app

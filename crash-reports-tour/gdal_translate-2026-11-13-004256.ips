@@ -1,0 +1,102 @@
+{"app_name":"gdal_translate","timestamp":"2026-11-13 00:42:56.00 -0500","app_version":"","slice_uuid":"02315a4e-614e-3605-ae37-fd473b3954d2","build_version":"","platform":1,"share_with_app_devs":0,"is_first_party":1,"bug_type":"309","os_version":"macOS 27.0.1 (26A434)","roots_installed":0,"incident_id":"F2B174FA-BB2F-4DDD-ACC5-8456904B3142","name":"gdal_translate"}
+{
+  "uptime" : 150000,
+  "procRole" : "Unspecified",
+  "version" : 2,
+  "userID" : 501,
+  "deployVersion" : 210,
+  "modelCode" : "Mac16,12",
+  "coalitionID" : 24098,
+  "osVersion" : {
+    "train" : "macOS 27.0.1",
+    "build" : "26A434",
+    "releaseType" : "User"
+  },
+  "captureTime" : "2026-11-13 00:42:56.1655 -0500",
+  "codeSigningMonitor" : 2,
+  "incident" : "F2B174FA-BB2F-4DDD-ACC5-8456904B3142",
+  "pid" : 58297,
+  "translated" : false,
+  "cpuType" : "ARM-64",
+  "procLaunch" : "2026-11-13 00:42:56.0596 -0500",
+  "procStartAbsTime" : 3715511715804,
+  "procExitAbsTime" : 3715512952928,
+  "procName" : "gdal_translate",
+  "procPath" : "\/Users\/USER\/*\/Mission Planner.app\/Contents\/Resources\/gdal\/bin\/gdal_translate",
+  "parentProc" : "MissionPlanner",
+  "parentPid" : 58251,
+  "coalitionName" : "com.apple.Terminal",
+  "crashReporterKey" : "0966C7F7-E296-70A8-1052-D1265DA81D19",
+  "developerMode" : 1,
+  "responsiblePid" : 7703,
+  "responsibleProc" : "Terminal",
+  "codeSigningID" : "gdal_translate-5555494402315a4e614e3605ae37fd473b3954d2",
+  "codeSigningTeamID" : "",
+  "codeSigningFlags" : 570425857,
+  "codeSigningValidationCategory" : 10,
+  "codeSigningTrustLevel" : 4294967295,
+  "codeSigningAuxiliaryInfo" : 0,
+  "instructionByteStream" : {"beforePC":"QAEAAHAAAAAAAQAAaAAAABgBAABQAQAAdAEAACABAAAwQYDSARAA1A==","atPC":"AwEAVH8jA9X9e7+p\/QMAkSz1\/5e\/AwCR\/XvBqP8PX9bAA1\/WEC2A0g=="},
+  "bootSessionUUID" : "37D2BA69-79D2-4B3A-B40F-5DEF41D55714",
+  "wakeTime" : 1074,
+  "sleepWakeUUID" : "2FCA0870-D05D-4F3C-A78A-4AA2508ED48B",
+  "sip" : "enabled",
+  "exception" : {"codes":"0x0000000000000000, 0x0000000000000000","rawCodes":[0,0],"type":"EXC_CRASH","signal":"SIGABRT"},
+  "termination" : {"code":0,"flags":518,"namespace":"DYLD","reasons":["duplicate LC_RPATH '@executable_path\/..\/lib\/'"]},
+  "extMods" : {"caller":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"system":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"targeted":{"thread_create":0,"thread_set_state":0,"task_for_pid":0},"warnings":0},
+  "faultingThread" : 0,
+  "threads" : [{"triggered":true,"id":4430439,"threadState":{"x":[{"value":6},{"value":0},{"value":6156683952},{"value":20},{"value":6156682928},{"value":0},{"value":99},{"value":0},{"value":32},{"value":6156682960},{"value":46},{"value":6},{"value":11029623813713710},{"value":16},{"value":6156682864},{"value":311296},{"value":521},{"value":6156682448},{"value":0},{"value":0},{"value":6156682928},{"value":20},{"value":6156683952},{"value":0},{"value":6},{"value":0},{"value":1},{"value":65535},{"value":4314087424}],"flavor":"ARM_THREAD_STATE64","lr":{"value":6591187140},"cpsr":{"value":0},"fp":{"value":6156682880},"sp":{"value":6156682816},"esr":{"value":1442840704,"description":"(Syscall)"},"pc":{"value":6590528820,"matchesCrashFrame":1},"far":{"value":0}},"frames":[{"imageOffset":23860,"symbol":"__abort_with_payload","symbolLocation":8,"imageIndex":0},{"imageOffset":682180,"symbol":"abort_with_payload_wrapper_internal","symbolLocation":104,"imageIndex":0},{"imageOffset":682232,"symbol":"abort_with_payload","symbolLocation":16,"imageIndex":0},{"imageOffset":227480,"symbol":"dyld4::halt(char const*, dyld4::StructuredError const*)","symbolLocation":308,"imageIndex":0},{"imageOffset":213100,"symbol":"dyld4::prepare(dyld4::APIs&, mach_o::UnsafeHeader const*)","symbolLocation":5580,"imageIndex":0},{"imageOffset":207492,"symbol":"dyld4::start(dyld4::KernelArgs*, void*, void*, unsigned long long)::$_1::operator()() const","symbolLocation":320,"imageIndex":0},{"imageOffset":204324,"symbol":"start","symbolLocation":6596,"imageIndex":0}]}],
+  "usedImages" : [
+  {
+    "source" : "P",
+    "arch" : "arm64e",
+    "base" : 6590504960,
+    "size" : 784100,
+    "uuid" : "d341ddcb-7969-3a9c-8e03-0cf4751398a9",
+    "path" : "\/usr\/lib\/dyld",
+    "name" : "dyld"
+  },
+  {
+    "size" : 0,
+    "source" : "A",
+    "base" : 0,
+    "uuid" : "00000000-0000-0000-0000-000000000000"
+  }
+],
+  "sharedCache" : {
+  "base" : 6585761792,
+  "size" : 7410368512,
+  "uuid" : "c284a291-b68b-3d0d-a1a0-3f866f87efdc"
+},
+  "vmSummary" : "ReadOnly portion of Libraries: Total=1.6G resident=0K(0%) swapped_out_or_unallocated=1.6G(100%)\nWritable regions: Total=8304K written=112K(1%) resident=112K(1%) swapped_out=0K(0%) unallocated=8192K(99%)\n\n                                VIRTUAL   REGION \nREGION TYPE                        SIZE    COUNT (non-coalesced) \n===========                     =======  ======= \nDyld Private Memory                 16K        1 \nGuard                            385.0G        1 \nStack                             8176K        1 \nStack Guard                       56.0M        1 \n__AUTH_CONST                        25K        1 \n__DATA                               4K        1 \n__DATA_CONST                        11K        1 \n__DATA_DIRTY                        14K        1 \n__LINKEDIT                         1.6G        1 \n__TEXT                             768K        1 \n__TPRO_CONST                       128K        1 \nmapped file                        224K        3 \npage table in kernel               112K        1 \n===========                     =======  ======= \nTOTAL                            386.6G       15 \n",
+  "legacyInfo" : {
+  "threadTriggered" : {
+
+  }
+},
+  "logWritingSignature" : "656a2b25ea8d95a2f16109855c701dc7ba0580f4",
+  "bug_type" : "309",
+  "roots_installed" : 0,
+  "trmStatus" : 1,
+  "trialInfo" : {
+  "rollouts" : [
+    {
+      "rolloutId" : "64628732bf2f5257dedc8988",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000001
+    },
+    {
+      "rolloutId" : "645eb1d0417dab722a215927",
+      "factorPackIds" : [
+
+      ],
+      "deploymentId" : 240000005
+    }
+  ],
+  "experiments" : [
+
+  ]
+}
+}

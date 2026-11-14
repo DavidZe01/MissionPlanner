@@ -1,0 +1,560 @@
+2026-11-13 20:14:31.581 MissionPlanner[46978:5027150] Could not find `System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `ObjectListView, Version=2.5.1.30870, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4`.
+2026-11-13 20:14:31.581 MissionPlanner[46978:5027150] Could not find `System.Data.SqlClient, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+2026-11-13 20:14:31.581 MissionPlanner[46978:5027150] Could not find `System.Data.Odbc, Version=0.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51` referenced by assembly `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+If your error is about Microsoft.DirectX.DirectInput, please install the latest directx redist from here http://www.microsoft.com/en-us/download/details.aspx?id=35 
+
+
+Debug under mono    MONO_LOG_LEVEL=debug mono MissionPlanner.exe
+To fix any filename case issues under mono use    export MONO_IOMAP=drive:case
+for pinvoke      MONO_LOG_LEVEL=debug MONO_LOG_MASK=dll mono MissionPlanner.exe
+watch -n 1 ls -l /proc/$(pidof mono)/fd
+watch -n 1 lsof -p $(pidof mono)
+Data Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/
+Log Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/logs
+Running Dir /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/
+User Data Dir /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/
+PlacesRecentDocuments Dir 
+PlacesDesktop Dir /Users/david/Desktop
+PlacesPersonal Dir /Users/david/Documents
+PlacesMyComputer Dir 
+INFO MissionPlanner.Program - ******************* Logging Configured *******************
+INFO MissionPlanner.Program - /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/arm64/libSkiaSharp
+INFO MissionPlanner.Program - Skia Error 
+ERROR MissionPlanner.Program - System.DllNotFoundException: Unable to load shared library 'kernel32.dll' or one of its dependencies. In order to help diagnose loading problems, consider setting the DYLD_PRINT_LIBRARIES environment variable: 
+dlopen(/kernel32.dll.dylib, 0x0001): tried: '/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll.dylib' (no such file), '/kernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file)
+dlopen(kernel32.dll.dylib, 0x0001): tried: 'kernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll.dylib' (no such file), '/usr/lib/kernel32.dll.dylib' (no such file, not in dyld cache), 'kernel32.dll.dylib' (no such file)
+dlopen(/libkernel32.dll.dylib, 0x0001): tried: '/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll.dylib' (no such file), '/libkernel32.dll.dylib' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file)
+dlopen(libkernel32.dll.dylib, 0x0001): tried: 'libkernel32.dll.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll.dylib' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll.dylib' (no such file), '/usr/lib/libkernel32.dll.dylib' (no such file, not in dyld cache), 'libkernel32.dll.dylib' (no such file)
+dlopen(/kernel32.dll, 0x0001): tried: '/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/kernel32.dll' (no such file), '/kernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file)
+dlopen(kernel32.dll, 0x0001): tried: 'kernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/kernel32.dll' (no such file), '/usr/lib/kernel32.dll' (no such file, not in dyld cache), 'kernel32.dll' (no such file)
+dlopen(/libkernel32.dll, 0x0001): tried: '/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/libkernel32.dll' (no such file), '/libkernel32.dll' (no such file)
+dlopen(/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll, 0x0001): tried: '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file)
+dlopen(libkernel32.dll, 0x0001): tried: 'libkernel32.dll' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibkernel32.dll' (no such file), '/Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/libkernel32.dll' (no such file), '/usr/lib/libkernel32.dll' (no such file, not in dyld cache), 'libkernel32.dll' (no such file)
+
+   at MissionPlanner.Utilities.NativeLibrary.LoadLibrary(String dllToLoad)
+   at MissionPlanner.Program.Start(String[] args)
+10.0.0.0
+Splash .ctor
+IconFile
+Splash.Show()
+ShowWindow:Mission Planner 1.3.83 build 1.3.9813.36018, activate=True
+Debugger.IsAttached False
+Application.DoEvents
+Application.DoEvents
+Setup GMaps 1
+Setup GMaps 2
+Setup GoogleMapProvider API
+Setup Tracking.productName
+Setup Tracking.primaryScreenBitsPerPixel
+Setup Settings.Instance.UserAgent
+Setup check gdal dir
+Setup gdal (command line tools)
+Setup proxy
+Setup proxy
+Setup CleanupFiles
+INFO MissionPlanner.Program - 64bit os True, 64bit process True, OS Arch Arm64, OS Desc macOS 27.0.1, FW Desc .NET 10.0.15
+INFO MissionPlanner.Program - Runtime Version v4.0.30319
+Application.Run(new MainV2())
+INFO MissionPlanner.MainV2 - Mainv2 ctor
+INFO MissionPlanner.MainV2 - Loading config
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1784 in file:line:column <filename unknown>:0:0
+ adsb_UpdatePlanePosition MainV2 System.EventHandler`1[MissionPlanner.Utilities.adsb+PointLatLngAltHdg]
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 1868 in file:line:column <filename unknown>:0:0
+ <.ctor>b__106_0 MainV2 System.EventHandler`1[System.ValueTuple`2[System.String,MAVLink+MAV_COLLISION_THREAT_LEVEL]]
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+BurntKermit.mpsystheme theme is loading
+Background to Color [A=255, R=38, G=39, B=40]
+Control Background to Color [A=255, R=67, G=68, B=69]
+Text to Color [White]
+TextBox Background to Color [A=255, R=67, G=68, B=69]
+Button Text to Color [A=255, R=64, G=87, B=4]
+Button Background top to Color [A=255, R=148, G=193, B=31]
+Button Background bottom to Color [A=255, R=205, G=226, B=150]
+ProgressBar Top to Color [A=255, R=102, G=139, B=26]
+ProgressBar Bottom to Color [A=255, R=124, G=164, B=40]
+ProgressBar Outline to Color [A=255, R=150, G=174, B=112]
+BannerColor1 to Color [A=255, R=64, G=87, B=4]
+BannerColor2 to Color [A=255, R=148, G=193, B=31]
+Disabled Button to Color [A=150, R=43, G=58, B=3]
+Button Mouseover to Color [A=73, R=43, G=58, B=3]
+Button Mousedown to Color [A=73, R=43, G=58, B=3]
+CurrentPPM Background to Color [Green]
+Graph Chart Fill to Color [A=255, R=31, G=31, B=32]
+Graph Pane Fill to Color [A=255, R=55, G=55, B=56]
+Graph Legend Fill to Color [A=255, R=133, G=132, B=131]
+Rich Text Box text to Color [WhiteSmoke]
+BackStageView Button Area to Color [Black]
+BSV Unselected Text to Color [WhiteSmoke]
+Horizontal ProgressBar to Color [A=255, R=148, G=193, B=31]
+HUD text and drawings to Color [LightGray]
+HUD Ground top to Color [A=255, R=155, G=184, B=36]
+HUD Ground bottom to Color [A=255, R=65, G=79, B=7]
+HUD Sky top to Color [Blue]
+HUD Sky bottom to Color [LightBlue]
+INFO MissionPlanner.Utilities.srtm - .cctor
+INFO MissionPlanner.Utilities.srtm - requestRunner start
+INFO MissionPlanner.Utilities.srtm - /Users/david/actions-runner/_work/_temp/mp-data-hidpi/Mission Planner/srtm
+INFO MissionPlanner.Utilities.Speech - TTS: init, mono = True
+INFO MissionPlanner.MainV2 - Create FD
+INFO MissionPlanner.GCSViews.FlightData - Ctor Start
+INFO MissionPlanner.Controls.HUD - Static HUD ctor
+INFO MissionPlanner.Controls.HUD - Instance HUD ctor
+OpenGL pixel format 0 (accelerated)
+INFO MissionPlanner.Controls.HUD - HUD OpenGL (NSOpenGLContext): True
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz
+Using backup param data
+INFO MissionPlanner.GCSViews.FlightData - Components Done
+INFO MissionPlanner.GCSViews.FlightData - Tunning Graph Settings
+INFO MissionPlanner.GCSViews.FlightData - HUD Settings
+INFO MissionPlanner.GCSViews.FlightData - Graph Setup
+INFO MissionPlanner.GCSViews.FlightData - Map Setup
+INFO MissionPlanner.MainV2 - Create FP
+INFO MissionPlanner.GCSViews.FlightPlanner - Loading wp params
+INFO MissionPlanner.GCSViews.FlightPlanner - param WP_RADIUS 30
+INFO MissionPlanner.GCSViews.FlightPlanner - param LOITER_RADIUS 45
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - Reading MAV_CMD for ArduPlane
+INFO MissionPlanner.GCSViews.FlightPlanner - Command item count 0 orig list 56
+INFO MissionPlanner.GCSViews.FlightPlanner - updateMapType invoke req? False
+INFO MissionPlanner.MainV2 - Create SIM
+INFO MissionPlanner.MAVLinkInterface - Subscribed .ctor at offset 17876 in file:line:column <filename unknown>:0:0
+ comPort_MavChanged MainV2 System.EventHandler
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - myview width 944 height 508
+INFO MissionPlanner.MainV2 - this   width 944 height 536
+INFO MissionPlanner.MainV2 - myview width 944 height 508
+INFO MissionPlanner.MainV2 - this   width 944 height 568
+INFO MissionPlanner.MainV2 - Load Pluggins
+INFO MissionPlanner.Plugin.PluginLoader - Plugin path: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/Shortcuts.dll
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Shortcuts 0.1 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/Shortcuts.dll time 0.000898 s
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/Dowding.dll
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Dowding 0.1 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/Dowding.dll time 0.000678 s
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/FaceMap.dll
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Face Map 1.0.0.0 by Jonathan Wang
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Load /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/FaceMap.dll time 0.000331 s
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Grid 1.3.9813.36018 by Michael Oborne
+INFO MissionPlanner.MainV2 - Load Pluggins... Done
+INFO MissionPlanner.MainV2 - show FlightData
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize start
+Open MissionPlanner.GCSViews.FlightData FlightData
+INFO MissionPlanner.GCSViews.FlightData - Activate Called
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnHandleCreated Start
+INFO MissionPlanner.Controls.HUD - OnLoad Start
+INFO MissionPlanner.Controls.HUD - Vendor: Apple
+INFO MissionPlanner.Controls.HUD - Version: 2.1 Metal - 91.7
+INFO MissionPlanner.Controls.HUD - Device: Apple M4
+INFO MissionPlanner.Controls.HUD - OnLoad Done
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 365 235
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 365 273
+OpenGL view attached: HUD, backing scale 2
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 365 271
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 22755555.555555556 bps 1024 4.5E-05s 0.83387625% of 122800     
+INFO MissionPlanner.Utilities.Download - 10138613.861386139 bps 1024 0.000101s 0.46812925% of 218743     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 0.996487% of 102761     
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.51650393% of 198256     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 0.91165656% of 112323     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 0.61184007% of 167364     
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 0.9917963% of 103247     
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 1.6030809% of 63877     
+INFO MissionPlanner.Controls.HUD - OnResize start
+INFO MissionPlanner.Controls.HUD - OnResize doing
+HUD resize 365 271
+INFO MissionPlanner.MainV2 - Saving config
+INFO MissionPlanner.MainV2 - show FlightData... Done
+INFO MissionPlanner.MainV2 - start http
+INFO MissionPlanner.MainV2 - start joystick
+INFO MissionPlanner.Utilities.httpserver - Listening for client
+INFO MissionPlanner.MainV2 - start serialreader
+INFO MissionPlanner.MainV2 - start adsbsender
+INFO MissionPlanner.MainV2 - start plugin thread
+INFO MissionPlanner.MainV2 - start AutoConnect
+INFO MissionPlanner.ArduPilot.APFirmware - https://firmware.oborne.me/manifest.json.gz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - Get https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz OK
+INFO MissionPlanner.Utilities.Download - 146285714.2857143 bps 1024 7E-06s 0.595709% of 171896     
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink default port",
+  "Enabled": true,
+  "Port": 14550,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Mavlink alt port",
+  "Enabled": true,
+  "Port": 14551,
+  "Protocol": "Udp",
+  "Format": "MAVLink",
+  "Direction": "Inbound",
+  "ConfigString": ""
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5000 h264",
+  "Enabled": true,
+  "Port": 5000,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5000 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5100 h264",
+  "Enabled": true,
+  "Port": 5100,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5100 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5600 h264",
+  "Enabled": true,
+  "Port": 5600,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5600 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H264 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Utilities.AutoConnect - {
+  "Label": "Video udp 5601 h265",
+  "Enabled": true,
+  "Port": 5601,
+  "Protocol": "Udp",
+  "Format": "Video",
+  "Direction": "Inbound",
+  "ConfigString": "udpsrc port=5601 buffer-size=90000 ! application/x-rtp,media=(string)video,clock-rate=(int)90000,encoding-name=(string)H265 ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRA ! appsink name=outsink sync=false"
+}
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Small stuff 0.10 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2-menu.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+INFO MissionPlanner.MainV2 - appload time
+INFO MissionPlanner.Utilities.Update - macOS build: installed a99c099f20b5d8a54f54885c3e27e24a7256c6a9, on this Mac f624ebd6c2c80bf14f3772c7510b5a17db7b59a6
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es-MX, PublicKeyToken=null
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es-MX, PublicKeyToken=null
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es-MX, PublicKeyToken=null
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es, PublicKeyToken=null
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es, PublicKeyToken=null
+INFO MissionPlanner.MainV2 - Loaded 4855 airports
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder MissionPlanner.Strings, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null-> MissionPlanner.Strings.resources, Version=1.0.0.0, Culture=es, PublicKeyToken=null
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/SITL/apm.pdef.xml.gz 63877
+INFO MissionPlanner.Utilities.Download - 364419.4294179704 bps 64941 0.178204s 62.898678% of 103247     
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] started scanning.
+HUD 4 hz drawtime 2 gl True
+INFO MissionPlanner.Utilities.Download - 395724.3918667924 bps 96941 0.244971s 44.317307% of 218743     
+INFO MissionPlanner.Utilities.Download - 395688.8564163058 bps 96941 0.244993s 78.94218% of 122800     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AntennaTracker/apm.pdef.xml.gz 122800
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Button change 0.1 by EOSBandi
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example-watchbutton.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+INFO MissionPlanner.Utilities.Download - 398355.47537938715 bps 96941 0.243353s 48.89688% of 198256     
+INFO MissionPlanner.Utilities.Download - 396676.5282364158 bps 96941 0.244383s 94.33637% of 102761     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/AP_Periph/apm.pdef.xml.gz 102761
+INFO MissionPlanner.Utilities.Download - 402726.07929808233 bps 96941 0.240712s 86.305565% of 112323     
+INFO MissionPlanner.Utilities.Download - 253180.13444068594 bps 40941 0.161707s 23.817308% of 171896     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Blimp/apm.pdef.xml.gz 112323
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduCopter/apm.pdef.xml.gz 198256
+INFO MissionPlanner.Utilities.Download - 387426.1643846566 bps 96941 0.250218s 57.922256% of 167364     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduSub/apm.pdef.xml.gz 167364
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Heli/apm.pdef.xml.gz 103247
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 256000000 bps 1024 4E-06s 2.5653872% of 39916     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Copter/LogMessages.xml.xz 39916
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/ArduPlane/apm.pdef.xml.gz 218743
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 341333333.3333333 bps 1024 3E-06s 2.4772596% of 41336     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Plane/LogMessages.xml.xz 41336
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 2.6887932% of 38084     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Rover/LogMessages.xml.xz 38084
+INFO MissionPlanner.Utilities.Download - https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz OK
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/Parameters/Rover/apm.pdef.xml.gz 171896
+INFO MissionPlanner.Utilities.Download - 512000000 bps 1024 2E-06s 2.7312493% of 37492     
+INFO MissionPlanner.Utilities.Download - Got https://autotest.ardupilot.org/LogMessages/Tracker/LogMessages.xml.xz 37492
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Camera Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4-herelink.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+INFO MissionPlanner.Utilities.KIndex - K-Index is 0
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8-modechange.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init LED Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example15-leds.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN Log Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example10-canlogfile.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init HUD 0.2 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example9-hudonoff.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example4.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [1C43C150-5C4E-EDF1-B402-BEF07FBCE652]
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Link Forward  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example19-multiforward.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DeviceProgramming
+INFO MissionPlanner.Plugin.PluginLoader - Try load log4net
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+HUD 2 hz drawtime 3 gl True
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CubeLan 8 port Switch 0.1 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example23-switch.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example17-menuremove.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es-MX, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es-MX, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es-MX, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder System.Private.Xml, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51-> System.Private.Xml.resources, Version=10.0.0.0, Culture=es, PublicKeyToken=cc7b13ffcd2ddd51
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder Microsoft.CodeAnalysis.CSharp, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35-> Microsoft.CodeAnalysis.CSharp.resources, Version=3.9.0.0, Culture=es-MX, PublicKeyToken=31bf3856ad364e35
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder Microsoft.CodeAnalysis.CSharp, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35-> Microsoft.CodeAnalysis.CSharp.resources, Version=3.9.0.0, Culture=es-MX, PublicKeyToken=31bf3856ad364e35
+INFO MissionPlanner.Plugin.PluginLoader - LoadFromSameFolder Microsoft.CodeAnalysis.CSharp, Version=3.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35-> Microsoft.CodeAnalysis.CSharp.resources, Version=3.9.0.0, Culture=es-MX, PublicKeyToken=31bf3856ad364e35
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example22-payloadconfig.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example13-herelink2.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [06820A68-6B40-33BF-511E-E11B796E351A]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example5-latencytracker.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init tracemp 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example11-trace.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init mass Control 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example14-mass.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example2.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init FenceDist 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example3-fencedist.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load DroneCAN
+HUD 1 hz drawtime 1 gl True
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init CAN RTCM Extract 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example7-canrtcm.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: AirPods Pro de David [C5E7AA75-7E5E-24CE-D85F-0DBC4C48D0AD]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+INFO MissionPlanner.ArduPilot.APFirmware - 103354
+INFO MissionPlanner.ArduPilot.APFirmware - https://raw.githubusercontent.com/CubePilot/periph-manifest/main/manifest.json
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init multiple positions  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example20-multiplepositions.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init MapIconDesc 0.10 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example6-mapicondesc.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Anonymize Binlog 1.0 by MissionPlanner
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/AnonymizeBinlogPlugin.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [C8BC7ABE-F8AC-8B67-1499-A499D8EC6693]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [4150FA3E-F056-CAA2-59C2-E994A6DF4521]
+INFO MissionPlanner.ArduPilot.APFirmware - 103356
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init generator 0.11 by Michael Oborne
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/generator.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example12-forwarding.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load MissionPlanner.WebAPIs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init Donate 0.10 by Example
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example16-donate.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example21-persistentsimple.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs
+INFO MissionPlanner.Plugin.PluginLoader - Try load BouncyCastle.Cryptography
+INFO MissionPlanner.Plugin.PluginLoader - Plugin Init External API  by 
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example18-externalapi.cs
+INFO MissionPlanner.Plugin.PluginLoader - Plugin: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs
+INFO MissionPlanner.Plugin.PluginLoader - CodeGenRoslyn: /Users/david/actions-runner/_work/MissionPlanner/MissionPlanner/bin/Release/net461/Mission Planner.app/Contents/MonoBundle/plugins/example8.cs
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [54DE391E-01CD-5E9E-6D98-C67C3D6E6D9E]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+HUD 1 hz drawtime 1 gl True
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device:  [54DE391E-01CD-5E9E-6D98-C67C3D6E6D9E]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [3F593C4A-1186-5114-D497-519DCE7A2030]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [7A565D0F-3A25-3A43-327D-CE565998736D]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] found device:  [FFD46E57-1A33-55E6-0747-227B6138B730]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3]
+HUD 1 hz drawtime 1 gl True
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] updated device: iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171]
+Adapter Default Adapter [39a76676-2788-46c9-afa0-f0c0c31e6fd9] stopped scanning.
+[0]  [7A565D0F-3A25-3A43-327D-CE565998736D] -56 dBm Non-Connectable
+[1] Apple Watch de David [DB54002B-24F7-05DD-472F-8790DE32BFB0] -66 dBm Connectable
+[2]  [3F593C4A-1186-5114-D497-519DCE7A2030] -55 dBm Non-Connectable
+[3] [LG] webOS TV UP7750PSB [9570120E-0C09-7B8F-B129-B6351219244D] -81 dBm Connectable
+    Service UUID: 0000feb9-0000-1000-8000-00805f9b34fb
+    Service data: 
+[4]  [1C43C150-5C4E-EDF1-B402-BEF07FBCE652] -63 dBm Non-Connectable
+[5] iPad de David (2) [92CFDBE9-D53B-AFDF-AA4C-0803AF9A4171] -58 dBm Connectable
+[6] iPhone de David [8BCE7390-CBC0-7556-FEBD-F2EBE90F108B] -51 dBm Connectable
+[7]  [06820A68-6B40-33BF-511E-E11B796E351A] -74 dBm Non-Connectable
+[8]  [FFD46E57-1A33-55E6-0747-227B6138B730] -51 dBm Non-Connectable
+[9]  [C8BC7ABE-F8AC-8B67-1499-A499D8EC6693] -93 dBm Connectable
+[10] AirPods Pro de David [C5E7AA75-7E5E-24CE-D85F-0DBC4C48D0AD] -47 dBm Non-Connectable
+[11] 50" Crystal UHD [8AA69873-F497-35B8-C9B5-2FE9D75B27B3] -78 dBm Non-Connectable
+[12]  [4150FA3E-F056-CAA2-59C2-E994A6DF4521] -98 dBm Non-Connectable
+    Service UUID: 0000fef3-0000-1000-8000-00805f9b34fb
+    Service data: 
+[13] 55" Crystal UHD [95F1E48C-D66E-664B-FB83-36AFCD71C9C0] -81 dBm Non-Connectable
+[14]  [54DE391E-01CD-5E9E-6D98-C67C3D6E6D9E] -98 dBm Non-Connectable
+HUD 1 hz drawtime 1 gl True
+INFO MissionPlanner.Utilities.Airports - getAirports - regen list
+INFO MissionPlanner.Utilities.Airports - getAirports done 0.002003 sec
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 10 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 6 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 10 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 2 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 7 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 6 gl True
+HUD 1 hz drawtime 8 gl True
+HUD 1 hz drawtime 6 gl True
+HUD 1 hz drawtime 5 gl True
+HUD 1 hz drawtime 4 gl True
+HUD 1 hz drawtime 3 gl True
+HUD 1 hz drawtime 3 gl True
