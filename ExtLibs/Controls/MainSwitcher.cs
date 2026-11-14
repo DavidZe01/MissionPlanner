@@ -151,6 +151,15 @@ namespace MissionPlanner.Controls
             if (nextscreen.Control == null || nextscreen.Control.IsDisposed)
                 CreateControl(nextscreen);
 
+#if MACNATIVE
+            // The Cocoa (Mono) Windows Forms recompute the anchor distances of a control's children
+            // when its size changes while its layout is suspended, keeping the children at their
+            // design size: a screen built with anchors (Simulation) then stayed at its design layout,
+            // shrunk by the difference, instead of growing to the window. Sized before suspending,
+            // the children follow their anchors, as on Windows.
+            nextscreen.Control.AutoScaleMode = AutoScaleMode.None;
+            nextscreen.Control.Size = MainControl.Size;
+#endif
             MainControl.SuspendLayout();
             nextscreen.Control.SuspendLayout();
 

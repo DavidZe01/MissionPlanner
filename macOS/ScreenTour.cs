@@ -552,6 +552,9 @@ class ScreenTour
             ShowMain("InitialSetup", m.MenuInitConfig, 4000);
             ShowMain("ConfigTune", m.MenuConfigTune, 4000);
             ShowMain("Simulation", m.MenuSimulation, 3000);
+            // the Simulation screen's anchored boxes follow the window (they once kept their design
+            // size, shrunk by the window's difference: Options vanished, the vehicles were cut off)
+            Step("feature:screen-anchors", () => ScreenAnchors(m));
             ShowMain("Help", m.MenuHelp, 2000);
             ShowMain("FlightData-again", m.MenuFlightData, 2000);
             var skip = (Environment.GetEnvironmentVariable("TOUR_SKIP") ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -786,6 +789,33 @@ class ScreenTour
         }
     }
 #endif
+
+    private static void ScreenAnchors(MainV2 m)
+    {
+        var screen = (Control)MainV2.View.current?.Control;
+        if (screen == null)
+            throw new Exception("no screen shown");
+        var problems = new List<string>();
+        Console.WriteLine("TOUR screen anchors " + screen.GetType().Name + " " + screen.Size + ": " + string.Join(", ",
+            screen.Controls.Cast<Control>().Select(c => c.Name + " " + c.Bounds)));
+        foreach (Control c in screen.Controls)
+        {
+            if (!c.Visible || c.Dock != DockStyle.None)
+                continue;
+            if (c.Width <= 0 || c.Height <= 0)
+                problems.Add(c.Name + " collapsed to " + c.Size);
+            if ((c.Anchor & (AnchorStyles.Left | AnchorStyles.Right)) == (AnchorStyles.Left | AnchorStyles.Right) &&
+                screen.Width - c.Right > 40)
+                problems.Add(c.Name + " ends " + (screen.Width - c.Right) + " px before the screen's right edge");
+            if (c.Right > screen.Width + 1)
+                problems.Add(c.Name + " runs past the screen's right edge");
+        }
+        foreach (var inner in screen.Controls.Cast<Control>().SelectMany(c => c.Controls.Cast<Control>()))
+            if (inner.Visible && inner.Dock == DockStyle.None && (inner.Left < -1 || inner.Right > inner.Parent.ClientSize.Width + 1))
+                problems.Add(inner.Name + " cut off in " + inner.Parent.Name + " (" + inner.Bounds + " in " + inner.Parent.ClientSize + ")");
+        if (problems.Count > 0)
+            throw new Exception(string.Join("; ", problems));
+    }
 
     private static readonly HashSet<string> NeedsVehicle = new HashSet<string> { "ConfigHWCompass2" };
 
