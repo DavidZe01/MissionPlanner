@@ -798,18 +798,24 @@ class ScreenTour
         var problems = new List<string>();
         Console.WriteLine("TOUR screen anchors " + screen.GetType().Name + " " + screen.Size + ": " + string.Join(", ",
             screen.Controls.Cast<Control>().Select(c => c.Name + " " + c.Bounds)));
-        foreach (Control c in screen.Controls)
-        {
-            if (!c.Visible || c.Dock != DockStyle.None)
-                continue;
-            if (c.Width <= 0 || c.Height <= 0)
-                problems.Add(c.Name + " collapsed to " + c.Size);
-            if ((c.Anchor & (AnchorStyles.Left | AnchorStyles.Right)) == (AnchorStyles.Left | AnchorStyles.Right) &&
-                screen.Width - c.Right > 40)
-                problems.Add(c.Name + " ends " + (screen.Width - c.Right) + " px before the screen's right edge");
-            if (c.Right > screen.Width + 1)
-                problems.Add(c.Name + " runs past the screen's right edge");
-        }
+        // the screen as designed: its controls' distances to the right and bottom edges
+        using (var design = (Control)Activator.CreateInstance(screen.GetType()))
+            foreach (Control c in screen.Controls)
+            {
+                if (!c.Visible || c.Dock != DockStyle.None)
+                    continue;
+                if (c.Width <= 0 || c.Height <= 0)
+                    problems.Add(c.Name + " collapsed to " + c.Size);
+                if (c.Right > screen.Width + 1)
+                    problems.Add(c.Name + " runs past the screen's right edge");
+                var d = design.Controls[c.Name];
+                if (d == null)
+                    continue;
+                if ((c.Anchor & AnchorStyles.Right) != 0 && Math.Abs((screen.Width - c.Right) - (design.Width - d.Right)) > 2)
+                    problems.Add(c.Name + " ends " + (screen.Width - c.Right) + " px from the right edge (" + (design.Width - d.Right) + " as designed)");
+                if ((c.Anchor & AnchorStyles.Bottom) != 0 && Math.Abs((screen.Height - c.Bottom) - (design.Height - d.Bottom)) > 2)
+                    problems.Add(c.Name + " ends " + (screen.Height - c.Bottom) + " px from the bottom (" + (design.Height - d.Bottom) + " as designed)");
+            }
         foreach (var inner in screen.Controls.Cast<Control>().SelectMany(c => c.Controls.Cast<Control>()))
             if (inner.Visible && inner.Dock == DockStyle.None && (inner.Left < -1 || inner.Right > inner.Parent.ClientSize.Width + 1))
                 problems.Add(inner.Name + " cut off in " + inner.Parent.Name + " (" + inner.Bounds + " in " + inner.Parent.ClientSize + ")");
