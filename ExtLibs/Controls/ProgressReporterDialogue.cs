@@ -188,8 +188,7 @@ namespace MissionPlanner.Controls
                 if (this.IsHandleCreated && !this.IsDisposed && !this.Disposing)
                     this.BeginInvoke((MethodInvoker)this.Close);
             }
-            catch (InvalidOperationException) { }
-            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { } // (ObjectDisposedException too)
         }
 
         // Called as a possible last operation of the bg thread that was cancelled
@@ -225,8 +224,7 @@ namespace MissionPlanner.Controls
                         this.ControlBox = true;
                     });
             }
-            catch (InvalidOperationException) { return; } // already closed
-            catch (ObjectDisposedException) { return; }
+            catch (InvalidOperationException) { return; } // already closed (ObjectDisposedException too)
 
             Thread.Sleep(100);         
 
